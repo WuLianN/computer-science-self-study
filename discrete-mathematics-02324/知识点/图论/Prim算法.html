@@ -198,7 +198,7 @@ function render(k){
   Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
   for(let j=0;j<=k;j++){
     const g=edgeEls[steps[j].chosen.u+"-"+steps[j].chosen.v];
-    g.classList.add(j===k ? "consider" : "accept");
+    g.classList.add((j===k && k < steps.length-1) ? "consider" : "accept");
   }
   logEl.innerHTML = steps.slice(0,k+1).map((s,i)=>{
     const e=s.chosen;

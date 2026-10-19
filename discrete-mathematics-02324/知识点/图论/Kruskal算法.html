@@ -174,7 +174,7 @@ function render(k){
   Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
   for(let j=0;j<=k;j++){
     const g=edgeEls[steps[j].edge.u+"-"+steps[j].edge.v];
-    g.classList.add(j===k ? "consider" : (steps[j].accepted ? "accept" : "reject"));
+    g.classList.add((j===k && k < steps.length-1) ? "consider" : (steps[j].accepted ? "accept" : "reject"));
   }
   logEl.innerHTML = steps.slice(0,k+1).map((s,i)=>{
     const e=s.edge;

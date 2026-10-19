@@ -171,7 +171,7 @@ examples.forEach((ex,i)=>{
     Object.values(vertexEls).forEach(c=>c.classList.remove("hot"));
     for(let j=0;j<=k;j++){
       const g=edgeEls[cur.seq[j]];
-      if(g) g.classList.add(j===k?"consider":"accept");
+      if(g) g.classList.add((j===k && k < cur.seq.length-1)?"consider":"accept");
     }
     cur.path.slice(0,k+1).forEach(id=>{ if(vertexEls[id]) vertexEls[id].classList.add("hot"); });
     statusEl.textContent = cur.label + "：" + cur.path.slice(0,k+1).join(" → ");
