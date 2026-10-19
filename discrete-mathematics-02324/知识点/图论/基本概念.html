@@ -30,13 +30,14 @@
   .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
   .note b{color:var(--warn)}
   a.inline{color:var(--brand);font-weight:700;text-decoration:none}
-  .fig{text-align:center}
+  .figs{display:flex;gap:16px;flex-wrap:wrap;width:100%}
+  .fig{text-align:center;flex:1;min-width:170px}
   .fig .cap{font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.5}
   .fig .cap b{color:var(--ink)}
   a.inline:hover{text-decoration:underline}
   svg circle.v{fill:#fff;stroke:#4f46e5;stroke-width:2}
   svg text.v{font-size:14px;text-anchor:middle;fill:var(--ink);font-weight:700}
-  svg line.e{stroke:#94a3b8;stroke-width:2}
+  svg line.e, svg path.e{stroke:#94a3b8;stroke-width:2}
   svg .hot{fill:var(--warn);stroke:var(--warn)}
   svg line.arrow{stroke:#94a3b8;stroke-width:2}
   svg .hi{stroke:var(--warn);stroke-width:3}
@@ -130,8 +131,9 @@
   <div class="txt">
     <h3>简单图</h3>
     <b>简单图</b>：无环（顶点到自己不连边）、<b>无平行边</b>（两点之间至多一条边）。自考判定定理（如 Dirac）通常<b>只对简单图成立</b>。<br>
-    <b>多重图</b>：两点间可有多条平行边（右图 a–b 两条）。带环或平行边的就不是简单图。
+    <b>多重图</b>：两点间可有多条平行边（下图右，a–b 两条）。带环或平行边的就不是简单图。
   </div>
+  <div class="figs">
   <div class="fig">
     <svg width="160" height="150" viewBox="0 0 160 150">
       <line class="e" x1="50" y1="40" x2="120" y2="40"/>
@@ -150,7 +152,8 @@
       <circle class="v" cx="50" cy="45" r="15"/><text class="v" x="50" y="50">a</text>
       <circle class="v" cx="120" cy="45" r="15"/><text class="v" x="120" y="50">b</text>
     </svg>
-    <div class="cap"><b>✗ 多重图</b>：a–b 之间有 2 条平行边<br>（一一直、一弯曲，数得出来）</div>
+    <div class="cap"><b>✗ 多重图</b>：a–b 之间有 2 条平行边<br>（一条直、一条弯，数得出来）</div>
+  </div>
   </div>
 </div>
 
