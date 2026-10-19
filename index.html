@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自考本科试卷库</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --text:#1f2937; --muted:#6b7280;
+    --primary:#4f46e5; --primary-soft:#eef2ff; --border:#e5e7eb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.6;
+    padding:0 16px 64px;
+  }
+  header{
+    max-width:960px;margin:0 auto;padding:48px 0 32px;text-align:center;
+  }
+  header h1{font-size:2rem;letter-spacing:.5px}
+  header p{color:var(--muted);margin-top:8px;font-size:.95rem}
+  main{max-width:960px;margin:0 auto}
+  .subject{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.04);
+  }
+  .subject-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .code{
+    background:var(--primary-soft);color:var(--primary);font-weight:600;
+    padding:4px 10px;border-radius:999px;font-size:.85rem;
+  }
+  .subject h2{font-size:1.25rem}
+  .subject .desc{color:var(--muted);font-size:.9rem;margin:6px 0 16px}
+  .papers{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+  .paper{
+    display:block;text-decoration:none;color:var(--text);
+    border:1px solid var(--border);border-radius:10px;padding:14px 16px;
+    background:#fafbff;transition:.15s;font-size:.95rem;
+  }
+  .paper:hover{border-color:var(--primary);background:var(--primary-soft);transform:translateY(-2px)}
+  .paper .pdf{font-size:.78rem;color:var(--muted);margin-top:4px}
+  footer{max-width:960px;margin:40px auto 0;text-align:center;color:var(--muted);font-size:.85rem}
+  footer a{color:var(--primary);text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>自考本科试卷库</h1>
+  <p>计算机科学与技术专业 · 历年真题与详解</p>
+</header>
+<main id="app"></main>
+<footer>
+  本站为静态资源站点，托管于 GitHub Pages。
+</footer>
+
+<script>
+/* ============================================================
+   新增学科 / 试卷：只需在下面这个数组里追加数据即可。
+   注意 url 使用“相对于本页(仓库根目录)的路径”，不要加开头的斜杠。
+   ============================================================ */
+const subjects = [
+  {
+    code: "02324",
+    name: "离散数学",
+    desc: "全国自考本科《离散数学》历年真题详解",
+    papers: [
+      {
+        title: "2025年10月《离散数学》真题详解",
+        url: "discrete-mathematics-02324/全国2025年10月自考02324《离散数学》真题/真题详解.html"
+      }
+    ]
+  }
+  /* 示例：后续新增学科，照抄一段即可
+  ,
+  {
+    code: "02325",
+    name: "计算机系统结构",
+    desc: "……",
+    papers: [
+      { title: "2025年4月真题详解", url: "computer-system-architecture-02325/2025年4月/真题详解.html" }
+    ]
+  }
+  */
+];
+
+const app = document.getElementById("app");
+subjects.forEach(s => {
+  const sec = document.createElement("section");
+  sec.className = "subject";
+
+  const head = document.createElement("div");
+  head.className = "subject-head";
+  head.innerHTML = `<span class="code">${s.code}</span><h2>${s.name}</h2>`;
+  sec.appendChild(head);
+
+  if (s.desc) {
+    const d = document.createElement("div");
+    d.className = "desc";
+    d.textContent = s.desc;
+    sec.appendChild(d);
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "papers";
+  s.papers.forEach(p => {
+    const a = document.createElement("a");
+    a.className = "paper";
+    a.href = p.url;
+    a.innerHTML = `<div>${p.title}</div>`;
+    grid.appendChild(a);
+  });
+  sec.appendChild(grid);
+  app.appendChild(sec);
+});
+</script>
+</body>
+</html>
