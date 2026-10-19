@@ -406,11 +406,18 @@
   <div class="sol">
     <span class="lab">解答：</span><br>
     <b>r(R)（自反闭包）= R ∪ I<sub>A</sub></b>，补上所有 &lt;x,x&gt;：<br>
+    &nbsp;&nbsp;📌 <b>I<sub>A</sub> 是 A 上的恒等关系</b>：I<sub>A</sub> = {&lt;x,x&gt; | x∈A} = {&lt;1,1&gt;,&lt;2,2&gt;,&lt;3,3&gt;}（每个元素只和自己成对）。自反闭包就是给 R 补齐"每个元素到自身的自反边"。<br>
     r(R) = {&lt;1,1&gt;, &lt;1,3&gt;, &lt;2,2&gt;, &lt;3,2&gt;, <b>&lt;3,3&gt;</b>}<br><br>
     <b>s(R)（对称闭包）= R ∪ R⁻¹</b>，把每条边加上反向边：<br>
-    s(R) = {&lt;1,1&gt;, &lt;1,3&gt;, <b>&lt;3,1&gt;</b>, &lt;2,2&gt;, &lt;3,2&gt;}<br><br>
+    &nbsp;&nbsp;📌 <b>R⁻¹ 是 R 的逆关系</b>：R⁻¹ = {&lt;y,x&gt; | &lt;x,y&gt;∈R}，即把 R 中每个有序对的两分量对调。本题 R = {&lt;1,1&gt;,&lt;1,3&gt;,&lt;2,2&gt;,&lt;3,2&gt;}，故 R⁻¹ = {&lt;1,1&gt;,&lt;3,1&gt;,&lt;2,2&gt;,&lt;2,3&gt;}。对称闭包就是给 R 补齐所有"反向边"，使关系变为对称的。<br>
+    s(R) = {&lt;1,1&gt;, &lt;1,3&gt;, <b>&lt;3,1&gt;</b>, &lt;2,2&gt;, &lt;3,2&gt;, <b>&lt;2,3&gt;</b>}<br><br>
     <b>t(R)（传递闭包）= R ∪ R² ∪ R³</b>（n=3 时最多算到 R³）：<br>
-    R² = R∘R：由 1→1→1 得 &lt;1,1&gt;；1→1→3 得 &lt;1,3&gt;；1→3→2 得 <b>&lt;1,2&gt;</b>；2→2→2 得 &lt;2,2&gt;；3→2→2 得 &lt;3,2&gt;。<br>
+    &nbsp;&nbsp;📌 <b>为什么最多到 Rⁿ？</b> 定理：对 |A|=n 的集合，t(R)=R∪R²∪…∪Rⁿ。因为 Rᵏ 表示"走 k 步可达"；若 k&gt;n，一条 k 条边、k+1 个顶点的路径必然重复经过某顶点（鸽巢原理），形成回路，删掉该回路可得更短路径。故任何要补的有序对都能用长度 ≤ n 的路径表示，无需算更高次幂。本题 n=3，算到 R³ 即可（实际 R² 已闭合，R³ 无新增）。<br>
+    R² = R∘R：&lt;a,c&gt;∈R² 表示"先 a→b、再 b→c"（存在中转点 b 使 &lt;a,b&gt;∈R 且 &lt;b,c&gt;∈R）。本题 R 的箭头：1→1、1→3、2→2、3→2，逐个起点走两步：<br>
+    &nbsp;&nbsp;· 从 1 出发：1→1→1 得 &lt;1,1&gt;；1→1→3 得 &lt;1,3&gt;；1→3→2 得 <b>&lt;1,2&gt;</b><br>
+    &nbsp;&nbsp;· 从 2 出发：2→2→2 得 &lt;2,2&gt;<br>
+    &nbsp;&nbsp;· 从 3 出发：3→2→2 得 &lt;3,2&gt;<br>
+    故 R² = {&lt;1,1&gt;, <b>&lt;1,2&gt;</b>, &lt;1,3&gt;, &lt;2,2&gt;, &lt;3,2&gt;}。<br>
     再算 R³ = R²∘R 不再产生新元素（R² 已传递）。<br>
     t(R) = {&lt;1,1&gt;, <b>&lt;1,2&gt;</b>, &lt;1,3&gt;, &lt;2,2&gt;, &lt;3,2&gt;}</div>
   <span class="tag">考点：三种闭包</span><span class="tag">公式：r=R∪I，s=R∪R⁻¹，t=R∪R²∪…∪Rⁿ</span>
