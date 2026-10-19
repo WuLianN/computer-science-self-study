@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 关系知识点</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .card code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .lvl{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;margin-right:6px}
+  .def{background:#fafbff;border:1px solid #c7d2fe;border-left:5px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .def .dt{font-weight:800;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .def code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .thm{background:var(--ok-soft);border:1px solid #a7f3d0;border-left:5px solid var(--ok);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .thm .dt{font-weight:800;color:var(--ok);margin-bottom:6px;font-size:15px}
+  .thm code{background:#d1fae5;color:var(--ok);border-radius:6px;padding:1px 7px;font-weight:700}
+  table.tb{border-collapse:collapse;width:100%;margin:8px 0;font-size:13.5px}
+  table.tb th,table.tb td{border:1px solid var(--line);padding:5px 9px;text-align:center}
+  table.tb th{background:var(--brand-soft);color:var(--brand)}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 关系</h1>
+  <p>关系章是图论、代数系统（尤其格）的共同地基。一条主线：二元关系 → 五大性质 → 闭包 → 等价关系与划分 → <b>偏序关系与哈斯图</b>（后者直接通向「格与布尔代数」）。与图论同用矩阵/有向图表示。</p>
+  <span class="pill">二元关系</span><span class="pill">五大性质</span><span class="pill">闭包</span><span class="pill">等价关系</span><span class="pill">偏序 / 哈斯图</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+    <a href="../代数系统/格与布尔代数.html">→ 格与布尔代数（偏序/哈斯图延伸）</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录（定义 · 定理）</div>
+  <a href="#s1">一、二元关系（定义）</a>
+  <a href="#s2">二、关系五大性质（定义 + 判定）</a>
+  <a href="#s3">三、闭包（定义 + 公式）</a>
+  <a href="#s4">四、等价关系与划分（定义 + 定理）</a>
+  <a href="#s5">五、偏序关系与哈斯图（定义）</a>
+  <a href="#s6">六、核心定理速记</a>
+  <a href="#s7">七、真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、二元关系（定义）</h2>
+
+<div class="def">
+  <div class="dt">定义 1　笛卡尔积与二元关系</div>
+  <b>笛卡尔积</b>：A×B = { (a,b) | a∈A, b∈B }。<br>
+  <b>二元关系 R</b>：A×B 的任一子集，记作 R⊆A×B。若 (a,b)∈R 记作 <code>aRb</code>。<br>
+  当 A=B 时称 <b>A 上关系</b>；关系 R 的<b>定义域</b> dom R、<b>值域</b> ran R 分别由出现于有序对首/次的元素组成。
+</div>
+
+<div class="def">
+  <div class="dt">定义 2　关系的三种表示</div>
+  • <b>集合</b>：罗列有序对，如 R={(1,2),(2,3)}。<br>
+  • <b>关系矩阵 M<sub>R</sub></b>：m×n 的 0-1 矩阵，<code>mᵢⱼ=1 ⟺ (aᵢ,bⱼ)∈R</code>（与图论的邻接矩阵同源）。<br>
+  • <b>关系图（有向图）</b>：顶点为元素，有向边 (a,b) 表示 aRb。
+</div>
+
+<div class="card">
+  <h3>例：A={1,2,3}，R={(1,2),(2,3)}</h3>
+  <div class="mtx" style="display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap">
+    <div>
+      <div class="lbl" style="font-size:13px;color:var(--muted);margin-bottom:4px">关系矩阵 M<sub>R</sub></div>
+      <table class="tb" style="width:auto">
+        <tr><th></th><th>1</th><th>2</th><th>3</th></tr>
+        <tr><th>1</th><td>0</td><td class="one" style="background:#eef2ff;font-weight:700">1</td><td>0</td></tr>
+        <tr><th>2</th><td>0</td><td>0</td><td class="one" style="background:#eef2ff;font-weight:700">1</td></tr>
+        <tr><th>3</th><td>0</td><td>0</td><td>0</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="lbl" style="font-size:13px;color:var(--muted);margin-bottom:4px">关系图</div>
+      <svg width="190" height="120" viewBox="0 0 190 120" style="display:block">
+        <circle cx="40" cy="60" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="40" y="65" text-anchor="middle" font-size="13" font-weight="700">1</text>
+        <circle cx="95" cy="60" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="95" y="65" text-anchor="middle" font-size="13" font-weight="700">2</text>
+        <circle cx="150" cy="60" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="150" y="65" text-anchor="middle" font-size="13" font-weight="700">3</text>
+        <line x1="56" y1="56" x2="79" y2="56" stroke="#4f46e5" stroke-width="2"/><polygon points="79,56 71,52 71,60" fill="#4f46e5"/>
+        <line x1="111" y1="56" x2="134" y2="56" stroke="#4f46e5" stroke-width="2"/><polygon points="134,56 126,52 126,60" fill="#4f46e5"/>
+      </svg>
+    </div>
+  </div>
+  <div class="note" style="margin:12px 0 0">关系矩阵与图论的<b>邻接矩阵/有向图</b>完全同构：本章的矩阵、图技巧可直接迁移到图论。</div>
+</div>
+
+<h2 class="section" id="s2">二、关系五大性质（定义 + 判定）</h2>
+
+<div class="def">
+  <div class="dt">定义 3　五大性质（A 上关系 R）</div>
+  • <b>自反</b>：∀x∈A, xRx（每点连自己）。<br>
+  • <b>反自反</b>：∀x∈A, ¬xRx（每点都不连自己）。<br>
+  • <b>对称</b>：若 xRy 则 yRx（边成对）。<br>
+  • <b>反对称</b>：若 xRy 且 yRx，则 x=y（不同点间无双向边）。<br>
+  • <b>传递</b>：若 xRy 且 yRz，则 xRz。
+</div>
+
+<div class="card">
+  <h3>图示：自反 / 对称 / 传递 长什么样</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;align-items:flex-start">
+    <div style="text-align:center">
+      <svg width="170" height="130" viewBox="0 0 170 130">
+        <defs><marker id="ahr1" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#4f46e5"/></marker></defs>
+        <circle cx="35" cy="78" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="35" y="83" text-anchor="middle" font-size="13" font-weight="700">a</text>
+        <circle cx="85" cy="78" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="85" y="83" text-anchor="middle" font-size="13" font-weight="700">b</text>
+        <circle cx="135" cy="78" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="135" y="83" text-anchor="middle" font-size="13" font-weight="700">c</text>
+        <path d="M 29 63 C 17 38 53 38 41 63" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr1)"/>
+        <path d="M 79 63 C 67 38 103 38 91 63" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr1)"/>
+        <path d="M 129 63 C 117 38 153 38 141 63" fill="none" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr1)"/>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)"><b>自反</b>：每点都有自环</div>
+    </div>
+    <div style="text-align:center">
+      <svg width="170" height="120" viewBox="0 0 170 120">
+        <defs><marker id="ahr2" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#4f46e5"/></marker></defs>
+        <circle cx="40" cy="60" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="40" y="65" text-anchor="middle" font-size="13" font-weight="700">a</text>
+        <circle cx="130" cy="60" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="130" y="65" text-anchor="middle" font-size="13" font-weight="700">b</text>
+        <line x1="60" y1="52" x2="106" y2="52" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr2)"/>
+        <line x1="110" y1="70" x2="64" y2="70" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr2)"/>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)"><b>对称</b>：边成对（a→b 必有 b→a）</div>
+    </div>
+    <div style="text-align:center">
+      <svg width="175" height="135" viewBox="0 0 175 135">
+        <defs><marker id="ahr3" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#4f46e5"/></marker></defs>
+        <circle cx="40" cy="105" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="40" y="110" text-anchor="middle" font-size="13" font-weight="700">a</text>
+        <circle cx="85" cy="35" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="85" y="40" text-anchor="middle" font-size="13" font-weight="700">b</text>
+        <circle cx="130" cy="105" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="130" y="110" text-anchor="middle" font-size="13" font-weight="700">c</text>
+        <line x1="51" y1="88" x2="74" y2="52" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr3)"/>
+        <line x1="96" y1="52" x2="119" y2="88" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr3)"/>
+        <line x1="60" y1="112" x2="110" y2="112" stroke="#4f46e5" stroke-width="2" marker-end="url(#ahr3)"/>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)"><b>传递</b>：有 a→b、b→c 必补 a→c</div>
+    </div>
+  </div>
+  <div class="note" style="margin:12px 0 0">口诀：自反看“自环”、对称看“成对”、传递看“补齐捷径边”。缺一条就破功——只有 a→b 没 b→a 则不对称；有 a→b、b→c 却无 a→c 则不传递。</div>
+</div>
+
+<div class="rule">
+  <div class="dt" style="font-weight:800;color:var(--brand);margin-bottom:6px">一眼判定：从矩阵 / 关系图看性质</div>
+  <table class="tb">
+    <tr><th>性质</th><th>矩阵特征</th><th>关系图特征</th></tr>
+    <tr><td>自反</td><td>主对角线全 1</td><td>每个顶点有自环</td></tr>
+    <tr><td>反自反</td><td>主对角线全 0</td><td>无自环</td></tr>
+    <tr><td>对称</td><td>矩阵对称（M=Mᵀ）</td><td>边成对出现（含自环）</td></tr>
+    <tr><td>反对称</td><td>i≠j 时 mᵢⱼ、mⱼᵢ 不同时为 1</td><td>不同顶点间无双向边</td></tr>
+    <tr><td>传递</td><td>若 mᵢⱼ=mⱼₖ=1 则 mᵢₖ=1</td><td>有路径 i→j→k 则必有边 i→k</td></tr>
+  </table>
+</div>
+
+<div class="note">
+  <b>易错：</b>① 自反与反自反<b>可同时不成立</b>（如 R={(1,1),(2,3)}），但<b>不能同时成立</b>；② 对称与反对称<b>可同时成立</b>（恒等关系 I<sub>A</sub> 既对称又反对称）；③ 传递判定要查“所有两步路径”，别漏看。
+</div>
+
+<h2 class="section" id="s3">三、闭包（定义 + 公式）</h2>
+
+<div class="def">
+  <div class="dt">定义 4　闭包</div>
+  包含 R 且具有某性质、且被任何具该性质的关系包含的最小关系，称为 R 的该性质闭包：<br>
+  • <b>自反闭包 r(R)</b>：R∪I<sub>A</sub>（补上所有自环）。<br>
+  • <b>对称闭包 s(R)</b>：R∪R⁻¹（补上反向边）。<br>
+  • <b>传递闭包 t(R)</b>：R∪R²∪R³∪…（补上所有可达路径）。
+</div>
+
+<div class="thm">
+  <div class="dt">定理 2　闭包公式</div>
+  <code>r(R)=R∪I<sub>A</sub></code>，<code>s(R)=R∪R⁻¹</code>，<code>t(R)=R∪R²∪⋯∪Rⁿ</code>（|A|=n 时只需到 Rⁿ）。<br>
+  <span style="color:var(--ok)">注：计算 Rᵏ 用矩阵布尔乘法（与图论邻接矩阵 Aᵏ 数途径同源）。</span>
+</div>
+
+<h2 class="section" id="s4">四、等价关系与划分（定义 + 定理）</h2>
+
+<div class="def">
+  <div class="dt">定义 5　等价关系</div>
+  A 上关系 R 若同时满足<b>自反、对称、传递</b>，则称 R 为<b>等价关系</b>，记作 ∼。
+</div>
+
+<div class="def">
+  <div class="dt">定义 6　等价类 · 商集 · 划分</div>
+  • <b>等价类</b> [a] = { x∈A | a∼x }（与 a 等价的全体）。<br>
+  • <b>商集</b> A/∼ = { [a] | a∈A }（所有等价类组成的集合）。<br>
+  • <b>划分</b>：A 的非空子集族 π，满足两两不交且并集为 A。
+</div>
+
+<div class="thm">
+  <div class="dt">定理 3　等价关系 ↔ 划分（一一对应）</div>
+  每个等价关系唯一确定一个划分（其等价类构成划分）；每个划分也唯一确定一个等价关系（同块内等价）。即<b>等价关系与划分等价</b>。
+</div>
+
+<h2 class="section" id="s5">五、偏序关系与哈斯图（定义）</h2>
+
+<div class="def">
+  <div class="dt">定义 7　偏序关系</div>
+  A 上关系 R 若同时满足<b>自反、反对称、传递</b>，则称 R 为<b>偏序关系</b>，记作 ≤。装备偏序的集合 (A,≤) 称<b>偏序集</b>。<br>
+  <span style="color:var(--brand)">📎 此定义是「格与布尔代数」页 §一、二 的地基——格 = 任意二元都有最小上界/最大下界的偏序集。</span>
+</div>
+
+<div class="def">
+  <div class="dt">定义 8　哈斯图</div>
+  画偏序时省略自环与传递边，越往上元素越大，只画“直接覆盖”的边。是格、布尔代数最直观的图示工具（详见 <a class="inline" href="../代数系统/格与布尔代数.html">格与布尔代数</a> 中的菱形格示例）。
+</div>
+
+<div class="def">
+  <div class="dt">定义 9　偏序集的特殊元素</div>
+  设 B⊆A：<br>
+  • <b>极大元 / 极小元</b>：B 中 no 元素比它更大 / 更小（未必唯一）。<br>
+  • <b>最大元 / 最小元</b>：比 B 中每个元素都大 / 小（<b>若存在则唯一</b>）。<br>
+  • <b>上界 / 下界</b>：比 B 中每个都大 / 小的元素（可不在 B 中）。<br>
+  • <b>最小上界 lub（并 ∨）/ 最大下界 glb（交 ∧）</b>：所有上界中最小者 / 所有下界中最大者。<br>
+  <span style="color:var(--brand)">📎 “最小上界/最大下界”正是格页里 a∨b、a∧b 的来源。</span>
+</div>
+
+<h2 class="section" id="s6">六、核心定理速记</h2>
+
+<div class="thm">
+  <div class="dt">定理 1　性质判定特征</div>
+  自反↔主对角全1；反自反↔主对角全0；对称↔M=Mᵀ；反对称↔异对角不同时为1；传递↔两步路径必有直达边。
+</div>
+
+<div class="thm">
+  <div class="dt">定理 4　偏序特殊元素的存在性</div>
+  • <b>最大元 / 最小元若存在则唯一</b>；极大元 / 极小元<b>可多个</b>。<br>
+  • 有限偏序集<b>必有</b>极大元与极小元。<br>
+  • 最小上界 / 最大下界（若对所有二元对都存在）即构成格（见格页）。
+</div>
+
+<h2 class="section" id="s7">七、真题呼应</h2>
+
+<div class="ok">
+  <b>主线小结：</b>二元关系（矩阵/图）→ 五大性质（自反/对称/反对称/传递）→ 闭包（r/s/t 公式）→ 等价关系↔划分 → <b>偏序关系与哈斯图</b>（极大/极小、最大/最小、上/下界、确界）。<br>
+  高频考点：① 给矩阵/图判断性质；② 求闭包、求等价类与商集；③ 画哈斯图并找特殊元；④ 偏序与格的衔接（最小上界/最大下界）。配合 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">真题详解</a> 中“关系性质”“哈斯图”“等价划分”相关大题一起刷。
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
