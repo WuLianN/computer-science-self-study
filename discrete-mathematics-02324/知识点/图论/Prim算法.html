@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：Prim(普里姆)算法求最小生成树</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+  .lab2{font-size:13px;color:var(--muted);margin:4px 0 10px}
+  svg .edge line{stroke:#94a3b8;stroke-width:2}
+  svg .edge text{font-size:12px;fill:var(--muted);text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px}
+  svg .edge.consider line{stroke:var(--warn);stroke-width:3.5}
+  svg .edge.consider text{fill:var(--warn);font-weight:700}
+  svg .edge.accept line{stroke:var(--ok);stroke-width:3.5}
+  svg .edge.accept text{fill:var(--ok);font-weight:700}
+  svg circle.v{fill:#fff;stroke:#4f46e5;stroke-width:2}
+  svg text.v{font-size:15px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;align-items:center}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  .starts{display:flex;gap:6px;align-items:center}
+  .sbtn{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:8px;padding:4px 11px;cursor:pointer;font-size:13px;transition:.15s}
+  .sbtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .status{margin-top:10px;font-size:14px;font-weight:600;color:var(--ink);min-height:22px}
+  .log{margin-top:8px;font-size:13.5px;border-left:3px solid var(--line);padding:4px 0 4px 12px}
+  .log .ok{color:var(--ok)}
+  .ans{margin-top:10px;font-size:13.5px;color:var(--muted);display:none}
+  .ans.show{display:block}
+  .ans b{color:var(--ink)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:6px}
+  .legend i{display:inline-block;width:20px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>Prim（普里姆）算法求最小生成树 —— 从一点出发，逐步“长”出整棵树。</p>
+  <span class="pill">贪心</span><span class="pill">从一点生长</span><span class="pill">取最小跨界边</span>
+</header>
+
+<div class="rule">
+  <b>算法步骤（记三步）：</b>
+  <br>① <b>选起点</b>：任选一个顶点放入“已选树”（初始只有 1 个点）。
+  <br>② <b>取最小跨界边</b>：在“已选树 ↔ 树外”的所有边里，取权值<b>最小</b>的那条，把它的树外端点也并入树。
+  <br>③ <b>重复</b>：直到树里含全部 <code>n</code> 个顶点（即选满 <code>n-1</code> 条边）。
+  <br><b>一句话：</b>从一点开始，每次只连“最便宜的对外桥”，慢慢长满整张图。
+  <br><b>和 Kruskal 的区别：</b>Kruskal 是“全局按权排序、避圈选边”；Prim 是“从一点出发、每次接最近的邻居”。结果（最小生成树权）一定相同。
+</div>
+
+<div class="note">
+  <b>为什么容易错：</b>① 把 Prim 和 Kruskal 搞混——Prim 每步只看“树与外界之间的边”，不是全局最小；② 起点选了就忘了更新“候选边”；③ 数错顶点数，没长满 n 个点就停。
+  <br><b>判定捷径：</b>每步把“已在树里的点”圈出来，候选边就是一端在内、一端在外的那些，从中挑最便宜的。
+  <br><b>怎么用动画：</b>选起点（默认 a）→ 点“▶ 播放生长过程”，看树从一个点逐步长大，每步高亮当前接入的边，下方同步打出候选边与选择。先自己手算一遍再播放核对。
+</div>
+
+<h2 class="section">练习区（以真题第31题图为例）</h2>
+<div class="card">
+  <div class="lab2">加权图（顶点 a,b,c,d,e；边旁数字为权）：</div>
+  <svg id="graph" viewBox="0 0 400 320" width="100%" style="max-width:460px;height:auto"></svg>
+  <div class="legend">
+    <span><i style="background:#94a3b8"></i>未处理</span>
+    <span><i style="background:var(--warn)"></i>当前接入</span>
+    <span><i style="background:var(--ok)"></i>已选入</span>
+  </div>
+  <div class="ctrl">
+    <span class="lab2" style="margin:0">起点：</span>
+    <span class="starts" id="starts"></span>
+  </div>
+  <div class="ctrl">
+    <button class="btn" data-act="play">▶ 播放生长过程</button>
+    <button class="btn" data-act="next">单步(下一步)</button>
+    <button class="btn" data-act="reset">重置</button>
+  </div>
+  <div class="status" id="status">点“播放”或“单步”开始。</div>
+  <div class="log" id="log"></div>
+  <div class="ctrl" style="margin-top:12px">
+    <button class="btn" data-act="reveal">显示本题答案</button>
+  </div>
+  <div class="ans" id="ans">
+    最小生成树边集（以 a 为起点）：<b>{ a–b, b–c, a–e, c–d }</b><br>
+    最小权：<b>W = 1 + 2 + 4 + 6 = 13</b>（起点不同可能选边顺序不同，但权不变）
+  </div>
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+/* 顶点坐标（与真题第31题图一致） */
+const vertices = [
+  {id:"a", x:70,  y:160},
+  {id:"b", x:175, y:70},
+  {id:"c", x:175, y:250},
+  {id:"e", x:330, y:70},
+  {id:"d", x:330, y:250}
+];
+/* 边：u,v 为端点，w 为权 */
+const edges = [
+  {u:"a", v:"b", w:1},
+  {u:"b", v:"c", w:2},
+  {u:"a", v:"c", w:3},
+  {u:"a", v:"e", w:4},
+  {u:"c", v:"e", w:5},
+  {u:"c", v:"d", w:6},
+  {u:"e", v:"d", w:7}
+];
+const n = vertices.length;
+
+/* Prim：从 start 出发，每步取最小跨界边 */
+function prim(start){
+  const inTree=new Set([start]);
+  const steps=[]; let weight=0; const selected=[];
+  while(inTree.size < n){
+    const cands=[];
+    edges.forEach(e=>{
+      const inU=inTree.has(e.u), inV=inTree.has(e.v);
+      if(inU!==inV) cands.push(e);
+    });
+    cands.sort((p,q)=>p.w-q.w);
+    const chosen=cands[0];
+    const candStr=cands.map(e=>`(${e.u},${e.v},${e.w})`).join("、");
+    steps.push({chosen, candidates:candStr, selected:[...selected].map(x=>x.u+"-"+x.v)});
+    inTree.add(chosen.u); inTree.add(chosen.v);
+    selected.push(chosen); weight+=chosen.w;
+  }
+  return {steps, weight};
+}
+
+/* 画图 */
+const svg = document.getElementById("graph");
+const NS="http://www.w3.org/2000/svg";
+const vpos = {}; vertices.forEach(v=>vpos[v.id]=v);
+const edgeEls={};
+edges.forEach(e=>{
+  const A=vpos[e.u], B=vpos[e.v];
+  const g=document.createElementNS(NS,"g");
+  g.setAttribute("class","edge"); g.dataset.edge=e.u+"-"+e.v;
+  const line=document.createElementNS(NS,"line");
+  line.setAttribute("x1",A.x); line.setAttribute("y1",A.y);
+  line.setAttribute("x2",B.x); line.setAttribute("y2",B.y);
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("x",(A.x+B.x)/2); t.setAttribute("y",(A.y+B.y)/2-4);
+  t.textContent=e.w;
+  g.appendChild(line); g.appendChild(t);
+  svg.appendChild(g);
+  edgeEls[e.u+"-"+e.v]=g;
+});
+vertices.forEach(v=>{
+  const c=document.createElementNS(NS,"circle");
+  c.setAttribute("class","v"); c.setAttribute("cx",v.x); c.setAttribute("cy",v.y); c.setAttribute("r",15);
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("class","v"); t.setAttribute("x",v.x); t.setAttribute("y",v.y+5); t.textContent=v.id;
+  svg.appendChild(c); svg.appendChild(t);
+});
+
+/* 起点选择 */
+const startsEl=document.getElementById("starts");
+let startV="a";
+vertices.forEach(v=>{
+  const b=document.createElement("button");
+  b.className="sbtn"+(v.id===startV?" active":"");
+  b.textContent=v.id; b.dataset.v=v.id;
+  b.addEventListener("click",()=>{
+    startV=v.id;
+    startsEl.querySelectorAll(".sbtn").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    reset();
+  });
+  startsEl.appendChild(b);
+});
+
+/* 动画控制 */
+const statusEl=document.getElementById("status");
+const logEl=document.getElementById("log");
+let steps=prim(startV).steps, idx=-1, timer=null;
+
+function render(k){
+  Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
+  for(let j=0;j<=k;j++){
+    const g=edgeEls[steps[j].chosen.u+"-"+steps[j].chosen.v];
+    g.classList.add(j===k ? "consider" : "accept");
+  }
+  logEl.innerHTML = steps.slice(0,k+1).map((s,i)=>{
+    const e=s.chosen;
+    return `<div class="ok">第${i+1}步：候选 ${s.candidates}，取最小 (${e.u},${e.v},${e.w}) 加入 ✔</div>`;
+  }).join("");
+  const cur=steps[k];
+  const cnt=cur.selected.length+1;
+  statusEl.textContent = `已选 ${cnt} 条边，累计权 = ${prim(startV).weight}` + (cnt===n-1?"（已达 n-1 条，结束）":"");
+}
+function reset(){
+  if(timer) clearInterval(timer);
+  steps=prim(startV).steps; idx=-1;
+  Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
+  logEl.innerHTML=""; statusEl.textContent='点“播放”或“单步”开始。';
+}
+function next(){
+  if(idx>=steps.length-1) return;
+  idx++; render(idx);
+}
+function play(){
+  reset();
+  timer=setInterval(()=>{
+    if(idx>=steps.length-1){ clearInterval(timer); return; }
+    next();
+  }, 900);
+}
+document.querySelector('[data-act="play"]').addEventListener("click", play);
+document.querySelector('[data-act="next"]').addEventListener("click", ()=>{ if(timer) clearInterval(timer); next(); });
+document.querySelector('[data-act="reset"]').addEventListener("click", reset);
+document.querySelector('[data-act="reveal"]').addEventListener("click", ()=> document.getElementById("ans").classList.add("show"));
+</script>
+</body>
+</html>
