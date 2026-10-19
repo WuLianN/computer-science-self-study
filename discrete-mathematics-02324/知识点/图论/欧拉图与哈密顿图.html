@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：欧拉图与哈密顿图</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+  .lab2{font-size:13.5px;color:var(--muted);margin:4px 0 10px}
+  svg .edge line{stroke:#94a3b8;stroke-width:2}
+  svg .edge text{font-size:12px;fill:var(--muted);text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px}
+  svg .edge.consider line{stroke:var(--warn);stroke-width:3.5}
+  svg .edge.consider text{fill:var(--warn);font-weight:700}
+  svg .edge.accept line{stroke:var(--ok);stroke-width:3.5}
+  svg .edge.accept text{fill:var(--ok);font-weight:700}
+  svg circle.v{fill:#fff;stroke:#4f46e5;stroke-width:2;transition:fill .25s,stroke .25s}
+  svg circle.v.hot{fill:var(--brand);stroke:var(--brand)}
+  svg text.v{font-size:15px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  svg text.v.hot{fill:#fff}
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  .status{margin-top:10px;font-size:14px;font-weight:600;color:var(--ink);min-height:22px}
+  .ans{margin-top:10px;font-size:13.5px;color:var(--muted);display:none;line-height:1.9}
+  .ans.show{display:block}
+  .ans b{color:var(--ink)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:6px}
+  .legend i{display:inline-block;width:20px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>欧拉图 与 哈密顿图 —— 一个看“边”走一遍，一个看“点”走一遍，最易混的一对。</p>
+  <span class="pill">欧拉：边不重复</span><span class="pill">哈密顿：点不重复</span>
+</header>
+
+<div class="rule">
+  <b>核心区别（先记住这个）：</b>
+  <div class="th"><b>欧拉</b>：存在一条通路/回路，<b>每条边恰好走一次</b>（关心“边”）。<br><b>哈密顿</b>：存在一条通路/回路，<b>每个顶点恰好访问一次</b>（关心“点”）。</div>
+  <br><b>欧拉图判定（无向图，连通前提下）：</b>
+  <br>· <code>欧拉回路</code> ⟺ 所有顶点度数都是<b>偶数</b>。
+  <br>· <code>欧拉通路</code>（非回路）⟺ 恰有 <b>0 或 2 个奇度</b>顶点；是 2 个时，必从其中一个奇度点出发、到另一个结束。
+  <br><b>哈密顿图判定（较难，注意只是“充分/必要”而非等价）：</b>
+  <br>· <b>必要条件</b>：若有哈密顿回路，则对任意顶点子集 S，删去 S 后图的连通分支数 ω(G−S) ≤ |S|。（常用来<b>证伪</b>：找到某个 S 使 ω&gt;|S|，就无哈密顿回路。）
+  <br>· <b>充分条件（Dirac 定理）</b>：n≥3 的简单图，若最小度 δ(G) ≥ n/2，则<b>必有</b>哈密顿回路。（是充分非必要，δ 小也可能有。）
+</div>
+
+<div class="note">
+  <b>易错点：</b>① 把“欧拉”和“哈密顿”的判定混为一谈——欧拉只看<b>度数奇偶</b>，哈密顿没有这种简单等价；② 看到“所有点都连通、看起来能绕一圈”就乱判哈密顿，忘了要<b>每个点恰好一次</b>；③ 忽略 Dirac 是<b>充分条件</b>：满足 δ≥n/2 一定有，但不满足也可能有；④ 欧拉通路的两个奇度点，方向搞反（从哪个到哪个）。
+  <br><b>怎么用动画：</b>每个示例图可“欧拉走一遍 / 哈密顿走一遍”，绿=已遍历、橙=当前步，下方同步显示走过的序列。先自己判一遍再点“显示判定”核对。
+</div>
+
+<h2 class="section">练习区（三个示例，覆盖四种情形）</h2>
+<div id="examples"></div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+
+/* 三个示例图，坐标即画布位置；seq 为动画经过的边（id=u-v），path 为顶点序列 */
+const examples = [
+  {
+    name: "两个三角形共用顶点 c（蝴蝶形）",
+    vertices:[
+      {id:"a",x:120,y:70},{id:"b",x:280,y:70},{id:"c",x:200,y:150},
+      {id:"d",x:120,y:230},{id:"e",x:280,y:230}
+    ],
+    edges:[{u:"a",v:"b"},{u:"a",v:"c"},{u:"b",v:"c"},{u:"c",v:"d"},{u:"c",v:"e"},{u:"d",v:"e"}],
+    euler:{ label:"欧拉回路", seq:["a-b","b-c","c-d","d-e","e-c","a-c"], path:["a","b","c","d","e","c","a"] },
+    explain:`<b>欧拉：</b>所有顶点度数均为偶数（c 度 4，a/b/d/e 度 2），且连通 → <b>存在欧拉回路</b>。动画路径即一条欧拉回路。<br>
+      <b>哈密顿：</b><b>无哈密顿回路</b>。理由：c 是割点，删去 c 后图分成 {a,b} 与 {d,e} 两个连通分支，分支数 2 &gt; |{c}|=1，不满足必要条件 ω(G−S)≤|S|。但<b>存在哈密顿通路</b>，如 a−b−c−d−e。`
+  },
+  {
+    name: "上图去掉 a-b 边（两个奇度点 a、b）",
+    vertices:[
+      {id:"a",x:120,y:70},{id:"b",x:280,y:70},{id:"c",x:200,y:150},
+      {id:"d",x:120,y:230},{id:"e",x:280,y:230}
+    ],
+    edges:[{u:"a",v:"c"},{u:"b",v:"c"},{u:"c",v:"d"},{u:"c",v:"e"},{u:"d",v:"e"}],
+    euler:{ label:"欧拉通路", seq:["a-c","e-c","d-e","c-d","b-c"], path:["a","c","e","d","c","b"] },
+    explain:`<b>欧拉：</b>恰有两个奇度顶点 a、b（度均为 1），其余为偶度 → <b>只有欧拉通路</b>，且必从 a 到 b（或反向），<b>无欧拉回路</b>。<br>
+      <b>哈密顿：</b><b>无哈密顿回路</b>（同样因割点 c，删 c 后不连通），也无哈密顿通路能一次走完 5 点。`
+  },
+  {
+    name: "五边形加两条弦（5 个点）",
+    vertices:[
+      {id:"a",x:200,y:40},{id:"b",x:340,y:130},{id:"c",x:290,y:290},
+      {id:"d",x:110,y:290},{id:"e",x:60,y:130}
+    ],
+    edges:[{u:"a",v:"b"},{u:"b",v:"c"},{u:"c",v:"d"},{u:"d",v:"e"},{u:"e",v:"a"},{u:"a",v:"c"},{u:"b",v:"d"}],
+    ham:{ label:"哈密顿回路", seq:["a-b","b-c","c-d","d-e","e-a"], path:["a","b","c","d","e","a"] },
+    explain:`<b>欧拉：</b>有 4 个顶点度为 3（奇度），不满足“全偶度（回路）或恰 0/2 个奇度（通路）” → <b>既无欧拉回路也无欧拉通路</b>。<br>
+      <b>哈密顿：</b><b>存在哈密顿回路</b>，如 a−b−c−d−e−a，经过每个顶点恰好一次并回到起点。`
+  }
+];
+
+const wrap=document.getElementById("examples");
+examples.forEach((ex,i)=>{
+  const card=document.createElement("div");
+  card.className="card";
+  const hasEuler=!!ex.euler, hasHam=!!ex.ham;
+  card.innerHTML=`
+    <div class="lab2"><b>例${i+1}　${ex.name}</b></div>
+    <svg viewBox="0 0 400 340" width="100%" style="max-width:460px;height:auto"></svg>
+    <div class="legend">
+      <span><i style="background:#94a3b8"></i>待处理</span>
+      <span><i style="background:var(--warn)"></i>当前步</span>
+      <span><i style="background:var(--ok)"></i>已遍历</span>
+    </div>
+    <div class="ctrl">
+      ${hasEuler?'<button class="btn" data-act="euler">▶ 欧拉走一遍</button>':''}
+      ${hasHam?'<button class="btn" data-act="ham">▶ 哈密顿走一遍</button>':''}
+      <button class="btn" data-act="reset">重置</button>
+    </div>
+    <div class="status" data-status>点上方按钮开始演示。</div>
+    <div class="ctrl" style="margin-top:10px"><button class="btn" data-act="reveal">显示判定</button></div>
+    <div class="ans" data-ans>${ex.explain}</div>`;
+  wrap.appendChild(card);
+
+  const svg=card.querySelector("svg");
+  const vp={}; ex.vertices.forEach(v=>vp[v.id]=v);
+  const edgeEls={}, vertexEls={};
+
+  ex.edges.forEach(e=>{
+    const A=vp[e.u], B=vp[e.v];
+    const g=document.createElementNS(NS,"g");
+    g.setAttribute("class","edge"); g.dataset.edge=e.u+"-"+e.v;
+    const line=document.createElementNS(NS,"line");
+    line.setAttribute("x1",A.x); line.setAttribute("y1",A.y);
+    line.setAttribute("x2",B.x); line.setAttribute("y2",B.y);
+    g.appendChild(line); svg.appendChild(g);
+    edgeEls[e.u+"-"+e.v]=g;
+  });
+  ex.vertices.forEach(v=>{
+    const c=document.createElementNS(NS,"circle");
+    c.setAttribute("class","v"); c.setAttribute("cx",v.x); c.setAttribute("cy",v.y); c.setAttribute("r",16);
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("class","v"); t.setAttribute("x",v.x); t.setAttribute("y",v.y+5); t.textContent=v.id;
+    svg.appendChild(c); svg.appendChild(t);
+    vertexEls[v.id]=c;
+  });
+
+  let timer=null, k=-1, cur=null;
+  const statusEl=card.querySelector("[data-status]");
+  function draw(){
+    Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept"));
+    Object.values(vertexEls).forEach(c=>c.classList.remove("hot"));
+    for(let j=0;j<=k;j++){
+      const g=edgeEls[cur.seq[j]];
+      if(g) g.classList.add(j===k?"consider":"accept");
+    }
+    cur.path.slice(0,k+1).forEach(id=>{ if(vertexEls[id]) vertexEls[id].classList.add("hot"); });
+    statusEl.textContent = cur.label + "：" + cur.path.slice(0,k+1).join(" → ");
+  }
+  function reset(){
+    if(timer) clearInterval(timer);
+    k=-1; cur=null;
+    Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept"));
+    Object.values(vertexEls).forEach(c=>c.classList.remove("hot"));
+    statusEl.textContent="点上方按钮开始演示。";
+  }
+  function play(type){
+    reset();
+    cur = type==="euler" ? ex.euler : ex.ham;
+    timer=setInterval(()=>{
+      if(k>=cur.seq.length-1){ clearInterval(timer); return; }
+      k++; draw();
+    }, 850);
+  }
+  if(hasEuler) card.querySelector('[data-act="euler"]').onclick=()=>play("euler");
+  if(hasHam) card.querySelector('[data-act="ham"]').onclick=()=>play("ham");
+  card.querySelector('[data-act="reset"]').onclick=reset;
+  card.querySelector('[data-act="reveal"]').onclick=()=>card.querySelector("[data-ans]").classList.add("show");
+});
+</script>
+</body>
+</html>
