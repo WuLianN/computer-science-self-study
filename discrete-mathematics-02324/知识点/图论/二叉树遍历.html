@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：二叉树遍历专项练习</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .tree{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:16px 0;overflow:hidden}
+  .tree>summary{cursor:pointer;padding:14px 18px;list-style:none;font-weight:700;font-size:16px}
+  .tree>summary::-webkit-details-marker{display:none}
+  .tree>summary:hover{background:#fafbff}
+  .tree .body{padding:4px 18px 18px;border-top:1px dashed var(--line);display:flex;flex-wrap:wrap;gap:18px}
+  .viz{flex:1 1 320px;min-width:300px}
+  .drill{flex:1 1 300px;min-width:280px}
+  svg .e{stroke:#4f46e5;stroke-width:1.8}
+  svg circle{fill:#fff;stroke:#4f46e5;stroke-width:1.8}
+  svg text{font-size:14px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  svg circle, svg text{transition:fill .25s ease, stroke .25s ease}
+  svg circle.hot{fill:var(--brand);stroke:var(--brand)}
+  svg text.hot{fill:#fff}
+  .anim{background:#fafbff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+  .modes{display:flex;gap:8px;margin-bottom:10px}
+  .mbtn{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:8px;padding:5px 14px;cursor:pointer;font-size:13px;transition:.15s}
+  .mbtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .seq{margin-top:8px;font-size:14px;color:var(--ink);font-weight:600;min-height:22px}
+  .lab2{font-size:13px;color:var(--muted);margin:4px 0 8px}
+  .row{display:flex;align-items:center;gap:10px;margin:10px 0}
+  .row .lab{width:54px;font-weight:700;color:var(--brand)}
+  .row input{flex:1;padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit}
+  .row input:focus{outline:none;border-color:var(--brand)}
+  .st{font-size:13px;min-width:78px;text-align:right}
+  .st.ok{color:var(--ok)} .st.bad{color:#dc2626}
+  .btns{margin-top:6px;display:flex;gap:10px;flex-wrap:wrap}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  .ans{margin-top:10px;font-size:13.5px;color:var(--muted);display:none}
+  .ans.show{display:block}
+  .ans b{color:var(--ink)}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>二叉树三种遍历（先根 / 中根 / 后根）专项练习 —— 同一套规则，多种树形，练到不懵。</p>
+  <span class="pill">先根 DLR</span><span class="pill">中根 LDR</span><span class="pill">后根 LRD</span>
+</header>
+
+<div class="rule">
+  <b>核心规则（记一个就够）：</b>三种遍历里，<b>“左子树永远先于右子树”</b>的访问顺序不变，区别只在<b>“根”何时被访问</b>：
+  <br>· <code>先根</code>（DLR）：根 → 左 → 右
+  <br>· <code>中根</code>（LDR）：左 → 根 → 右
+  <br>· <code>后根</code>（LRD）：左 → 右 → 根
+  <br>每个节点都当成一棵“以自己为根的小树”递归地套同一条规则。
+  <div style="margin-top:8px;font-size:13.5px;color:var(--muted)">一句话区分：<b style="color:var(--brand)">根</b>在第几个被记录 —— 先根第 1 位、中根夹中间（第 2 位）、后根最后一位；左永远在右前。</div>
+</div>
+
+<div class="note">
+  <b>为什么只做一套题会懵：</b>试卷（如第 32 题）只给你一种树形，你记住的是“那棵树”的答案，不是“规则”。下面 5 棵树形覆盖
+  <b>左右均衡 / 左侧重 / 右侧重 / 退化成链 / 满二叉树</b>，用同一规则逐个走，规则才会变成肌肉记忆。
+  <br><b>易错点：</b>① 退化成链时“根”依然只输出一次，别漏；② 左重或右重的树，整棵左子树要先于整棵右子树遍历完；③ 别靠“看形状猜”，老老实实按 根/左/右 顺序标字母走。
+  <br><b>怎么用动画：</b>选一种遍历（先根/中根/后根），点“▶ 播放遍历动画”，看节点按访问顺序逐个高亮，下方同步显示序列。先自己写答案，再播放核对。
+</div>
+
+<h2 class="section">练习区（点开树，自己写出三种遍历再核对；也可看动画演示）</h2>
+<div id="trees"></div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+/* 每棵树：nodes 为节点（带坐标 x,y 与左右孩子 left/right）。遍历答案由结构实时计算，不写死 */
+const trees = [
+  {
+    name: "① 原题树（左右均衡，右子树再分叉）",
+    nodes:{
+      a:{x:200,y:30, left:"b", right:"c"},
+      b:{x:120,y:100},
+      c:{x:280,y:100, left:"d", right:"e"},
+      d:{x:235,y:170, left:"f", right:"g"},
+      e:{x:325,y:170},
+      f:{x:210,y:240},
+      g:{x:260,y:240}
+    }
+  },
+  {
+    name: "② 左侧重（左子树是一条长链）",
+    nodes:{
+      a:{x:210,y:30, left:"b", right:"e"},
+      b:{x:120,y:100, left:"c"},
+      e:{x:300,y:100},
+      c:{x:75,y:170, left:"d"},
+      d:{x:40,y:240}
+    }
+  },
+  {
+    name: "③ 右侧重（右子树是一条长链）",
+    nodes:{
+      a:{x:190,y:30, left:"b", right:"e"},
+      b:{x:100,y:100},
+      e:{x:280,y:100, right:"f"},
+      f:{x:325,y:170, right:"g"},
+      g:{x:360,y:240}
+    }
+  },
+  {
+    name: "④ 退化成右斜链（每个节点只有右孩子）",
+    nodes:{
+      a:{x:170,y:30, right:"b"},
+      b:{x:220,y:100, right:"c"},
+      c:{x:270,y:170, right:"d"},
+      d:{x:320,y:240}
+    }
+  },
+  {
+    name: "⑤ 满二叉树（三层，左右都满）",
+    nodes:{
+      a:{x:200,y:30, left:"b", right:"c"},
+      b:{x:120,y:110, left:"d", right:"e"},
+      c:{x:280,y:110, left:"f", right:"g"},
+      d:{x:70,y:190},
+      e:{x:170,y:190},
+      f:{x:230,y:190},
+      g:{x:330,y:190}
+    }
+  }
+];
+
+function findRoot(nodes){
+  const kids=new Set();
+  for(const id in nodes){
+    if(nodes[id].left) kids.add(nodes[id].left);
+    if(nodes[id].right) kids.add(nodes[id].right);
+  }
+  for(const id in nodes){ if(!kids.has(id)) return id; }
+  return Object.keys(nodes)[0];
+}
+function traverse(nodes, root, mode){
+  const out=[];
+  (function visit(id){
+    const n=nodes[id];
+    if(mode==="pre") out.push(id);
+    if(n.left) visit(n.left);
+    if(mode==="in") out.push(id);
+    if(n.right) visit(n.right);
+    if(mode==="post") out.push(id);
+  })(root);
+  return out;
+}
+
+function svgTree(t){
+  let edges="", nodesSvg="";
+  for(const id in t.nodes){
+    const n=t.nodes[id];
+    if(n.left){ const c=t.nodes[n.left]; edges+=`<line class="e" x1="${n.x}" y1="${n.y}" x2="${c.x}" y2="${c.y}"/>`; }
+    if(n.right){ const c=t.nodes[n.right]; edges+=`<line class="e" x1="${n.x}" y1="${n.y}" x2="${c.x}" y2="${c.y}"/>`; }
+  }
+  for(const id in t.nodes){
+    const n=t.nodes[id];
+    nodesSvg+=`<circle data-id="${id}" cx="${n.x}" cy="${n.y}" r="15"/><text data-id="${id}" x="${n.x}" y="${n.y+5}">${id}</text>`;
+  }
+  return `<svg viewBox="0 0 400 300" width="100%" style="max-width:380px;height:auto">${edges}${nodesSvg}</svg>`;
+}
+
+function norm(s){ return s.toLowerCase().replace(/[\s,，]+/g,""); }
+
+function render(){
+  const wrap=document.getElementById("trees");
+  trees.forEach((t,idx)=>{
+    const root=findRoot(t.nodes);
+    const ans={
+      pre:traverse(t.nodes,root,"pre"),
+      in:traverse(t.nodes,root,"in"),
+      post:traverse(t.nodes,root,"post")
+    };
+    const d=document.createElement("details");
+    d.className="tree";
+    d.open = idx===0;
+    const rows=["pre","in","post"].map(k=>{
+      const label = k==="pre"?"先根":k==="in"?"中根":"后根";
+      return `<div class="row"><span class="lab">${label}</span>
+        <input data-k="${k}" placeholder="如 a,b,c" autocomplete="off">
+        <span class="st" data-s="${k}"></span></div>`;
+    }).join("");
+    d.innerHTML=`<summary>${t.name}</summary>
+      <div class="body">
+        <div class="viz">${svgTree(t)}</div>
+        <div class="drill">
+          <div class="anim">
+            <div class="modes">
+              <button class="mbtn active" data-mode="pre">先根</button>
+              <button class="mbtn" data-mode="in">中根</button>
+              <button class="mbtn" data-mode="post">后根</button>
+            </div>
+            <div class="btns">
+              <button class="btn" data-act="play">▶ 播放遍历动画</button>
+              <button class="btn" data-act="reset">重置</button>
+            </div>
+            <div class="seq" data-seq>序列：（选一种遍历后点播放）</div>
+          </div>
+          <div class="lab2">自测：写出三种遍历，点“核对”判分</div>
+          ${rows}
+          <div class="btns">
+            <button class="btn" data-act="check">核对</button>
+            <button class="btn" data-act="reveal">显示答案</button>
+          </div>
+          <div class="ans" data-ans>
+            先根：<b>${ans.pre.join(", ")}</b><br>
+            中根：<b>${ans.in.join(", ")}</b><br>
+            后根：<b>${ans.post.join(", ")}</b>
+          </div>
+        </div>
+      </div>`;
+    wrap.appendChild(d);
+
+    const svg=d.querySelector(".viz svg");
+    const seqEl=d.querySelector("[data-seq]");
+    let mode="pre", timer=null;
+
+    function resetAll(){
+      if(timer) clearInterval(timer);
+      svg.querySelectorAll(".hot").forEach(e=>e.classList.remove("hot"));
+      seqEl.textContent="序列：（选一种遍历后点播放）";
+    }
+
+    d.querySelectorAll(".mbtn").forEach(b=>{
+      b.addEventListener("click",()=>{
+        d.querySelectorAll(".mbtn").forEach(x=>x.classList.remove("active"));
+        b.classList.add("active");
+        mode=b.dataset.mode;
+        resetAll();
+      });
+    });
+    d.querySelector('[data-act="reset"]').addEventListener("click", resetAll);
+    d.querySelector('[data-act="play"]').addEventListener("click",()=>{
+      resetAll();
+      const order=ans[mode];
+      let i=0, cur=[];
+      timer=setInterval(()=>{
+        if(i>=order.length){ clearInterval(timer); return; }
+        const id=order[i++];
+        svg.querySelectorAll(`[data-id="${id}"]`).forEach(e=>e.classList.add("hot"));
+        cur.push(id);
+        seqEl.textContent="序列："+cur.join(" → ");
+      }, 650);
+    });
+
+    d.querySelector('[data-act="check"]').addEventListener("click",()=>{
+      ["pre","in","post"].forEach(k=>{
+        const input=d.querySelector(`[data-k="${k}"]`);
+        const st=d.querySelector(`[data-s="${k}"]`);
+        const got=norm(input.value), exp=ans[k].join("");
+        if(got===""){ st.textContent=""; st.className="st"; return; }
+        st.textContent = got===exp ? "✓ 正确" : "✗ 看下方答案";
+        st.className = "st " + (got===exp ? "ok" : "bad");
+        if(got!==exp) d.querySelector("[data-ans]").classList.add("show");
+      });
+    });
+    d.querySelector('[data-act="reveal"]').addEventListener("click",()=>{
+      ["pre","in","post"].forEach(k=>{
+        d.querySelector(`[data-k="${k}"]`).value=ans[k].join(", ");
+        const st=d.querySelector(`[data-s="${k}"]`);
+        st.textContent=""; st.className="st";
+      });
+      d.querySelector("[data-ans]").classList.add("show");
+    });
+  });
+}
+render();
+</script>
+</body>
+</html>
