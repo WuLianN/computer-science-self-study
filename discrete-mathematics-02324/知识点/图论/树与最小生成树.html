@@ -29,6 +29,8 @@
   .gotos a:hover{background:#fff;color:var(--brand)}
   a.inline{color:var(--brand);font-weight:700;text-decoration:none}
   a.inline:hover{text-decoration:underline}
+  .jump{display:inline-block;border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:7px 14px;font-size:14px;text-decoration:none;font-weight:700;transition:.15s}
+  .jump:hover{background:var(--brand);color:#fff}
   .fig{text-align:center}
   .fig .cap{font-size:12.5px;color:var(--muted);margin-top:2px}
   .fig .cap b{color:var(--ink)}
@@ -111,43 +113,21 @@
   两大算法：<b>Kruskal（避圈法）</b>按“边权从小到大”贪心选，不成回路才要；<b>Prim（加点法）</b>从一个顶点出发，每次选“连接已选集合与外面”的最小权边。两者都得到最小生成树（权相同，所选边可能不同）。
 </div>
 
-<div class="card">
-  <h3 style="margin-top:0">例题（2025.10 真题第 31 题原图）</h3>
-  <div class="kr">
-    <div class="viz">
-      <svg id="krSvg" viewBox="0 0 340 260" width="340" height="260" style="max-width:100%;height:auto"></svg>
-      <div class="legend">
-        <span><i style="background:var(--warn)"></i>当前考察边</span>
-        <span><i style="background:var(--ok)"></i>已选入 MST</span>
-        <span><i style="background:var(--bad)"></i>舍弃（成回路）</span>
-      </div>
-    </div>
-    <div class="side">
-      <div class="ctrl">
-        <button class="btn" id="krStep">下一步 ▶</button>
-        <button class="btn" id="krAuto">自动播放</button>
-        <button class="btn" id="krReset">重置</button>
-      </div>
-      <div class="status" id="krStatus">点“下一步”按权从小到大考察每条边。</div>
-      <div class="log" id="krLog"></div>
-    </div>
-  </div>
-  <div class="note" style="margin-bottom:0">
-    <b>结果：</b>最小生成树边集 {<b>a–b, b–c, a–e, c–d</b>}，总权 <b>W = 1+2+4+6 = 13</b>。（与真题答案一致）
-  </div>
+<div class="rule" style="margin-top:0">
+  <b>Kruskal（避圈法）步骤：</b>① 所有边按权<b>从小到大</b>排；② 依序考察每条边，<b>不成回路就选入，成回路就舍弃</b>；③ 选满 n−1 条边即结束。
+  <div class="th">真题第31题逐步：a–b(1)✔ → b–c(2)✔ → a–c(3)✘成回路 → a–e(4)✔ → c–e(5)✘成回路 → c–d(6)✔。最终边集 {a–b, b–c, a–e, c–d}，总权 <b>W = 1+2+4+6 = 13</b>。</div>
+  <div style="margin-top:12px"><a class="jump" href="Kruskal算法.html">▶ 打开 Kruskal 算法专页（带逐步动画）</a></div>
 </div>
 
-<h2 class="section">三、Prim 算法（同一例题走一遍）</h2>
+<h2 class="section">三、Prim 算法（加点法）</h2>
 <div class="rule">
-  从顶点 a 出发，每步在“已选集合 vs 外部”的边里挑最小权；n 个顶点选 n−1 步结束。
-  <table class="t">
-    <tr><th>步</th><th>已选集合</th><th>候选边（连外部）</th><th>选入边（最小）</th></tr>
-    <tr><td>1</td><td>{a}</td><td>a–b(1), a–c(3), a–e(4)</td><td>a–b(1)</td></tr>
-    <tr><td>2</td><td>{a,b}</td><td>a–c(3), a–e(4), b–c(2)</td><td>b–c(2)</td></tr>
-    <tr><td>3</td><td>{a,b,c}</td><td>a–e(4), c–e(5), c–d(6)</td><td>a–e(4)</td></tr>
-    <tr><td>4</td><td>{a,b,c,e}</td><td>c–d(6), c–e(5), e–d(7)</td><td>c–d(6)</td></tr>
-  </table>
-  最终同样得到 {a–b, b–c, a–e, c–d}，W=13。<b>Kruskal 与 Prim 选边顺序不同，但最小总权一致</b>——这是最小生成树的“最小”保证。
+  <b>Prim 步骤：</b>任选起点放入“已选树”；每步在“已选树 ↔ 树外”的边里挑<b>权最小</b>的那条，把树外端点并入；直到含全部 n 个顶点（n−1 条边）。
+  <div class="th">同一真题：从 a 出发 → a–b(1) → b–c(2) → a–e(4) → c–d(6)，同样得到 {a–b, b–c, a–e, c–d}，W=13。选边顺序与 Kruskal 不同，但最小总权一致。</div>
+  <div style="margin-top:12px"><a class="jump" href="Prim算法.html">▶ 打开 Prim 算法专页（带逐步动画，可选起点）</a></div>
+</div>
+
+<div class="rule" style="background:#fafbff">
+  <b>Kruskal vs Prim 一句话：</b>Kruskal 是“<b>全局按权排序、避圈选边</b>”；Prim 是“<b>从一点出发、每次接最近的邻居</b>”。两者都贪心、都得最小生成树，考试任选一种即可，但<b>过程要写清</b>。
 </div>
 
 <div class="note">
@@ -156,93 +136,5 @@
 
 <footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
 </div>
-
-<script>
-const NS="http://www.w3.org/2000/svg";
-const V={ a:{x:70,y:130}, b:{x:160,y:55}, c:{x:255,y:130}, e:{x:150,y:225}, d:{x:290,y:185} };
-const E=[
-  {id:"a-b",u:"a",v:"b",w:1}, {id:"b-c",u:"b",v:"c",w:2},
-  {id:"a-c",u:"a",v:"c",w:3}, {id:"a-e",u:"a",v:"e",w:4},
-  {id:"c-e",u:"c",v:"e",w:5}, {id:"c-d",u:"c",v:"d",w:6},
-  {id:"e-d",u:"e",v:"d",w:7}
-];
-const sorted=E.slice().sort((x,y)=>x.w-y.w);
-const svg=document.getElementById("krSvg");
-const statusEl=document.getElementById("krStatus");
-const logEl=document.getElementById("krLog");
-const edgeEls={};
-
-// 画顶点与边
-Object.values(V).forEach(v=>{
-  const c=document.createElementNS(NS,"circle");
-  c.setAttribute("class","v"); c.setAttribute("cx",v.x); c.setAttribute("cy",v.y); c.setAttribute("r",17);
-  const t=document.createElementNS(NS,"text");
-  t.setAttribute("class","v"); t.setAttribute("x",v.x); t.setAttribute("y",v.y+5); t.textContent=v.id;
-  svg.appendChild(c); svg.appendChild(t);
-});
-E.forEach(e=>{
-  const A=V[e.u], B=V[e.v];
-  const g=document.createElementNS(NS,"g"); g.setAttribute("class","edge"); g.dataset.edge=e.id;
-  const line=document.createElementNS(NS,"line");
-  line.setAttribute("x1",A.x); line.setAttribute("y1",A.y); line.setAttribute("x2",B.x); line.setAttribute("y2",B.y);
-  const wt=document.createElementNS(NS,"text");
-  wt.setAttribute("x",(A.x+B.x)/2); wt.setAttribute("y",(A.y+B.y)/2-6); wt.textContent=e.w;
-  // 顶点在上层，边在下层：先 append 边组
-  svg.insertBefore(g, svg.firstChild);
-  g.appendChild(line); g.appendChild(wt);
-  edgeEls[e.id]=g;
-});
-
-let parent={}, ptr=0, accepted=[], rejected=[], timer=null, done=false;
-function initDSU(){ parent={}; Object.keys(V).forEach(k=>parent[k]=k); }
-function find(x){ while(parent[x]!==x){ parent[x]=parent[parent[x]]; x=parent[x]; } return x; }
-function union(a,b){ parent[find(a)]=find(b); }
-
-function paint(){
-  Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
-  accepted.forEach(id=>edgeEls[id].classList.add("accept"));
-  rejected.forEach(id=>edgeEls[id].classList.add("reject"));
-  if(ptr<sorted.length) edgeEls[sorted[ptr].id].classList.add("consider");
-}
-
-function step(){
-  if(ptr>=sorted.length){ done=true; if(timer)clearInterval(timer); return; }
-  const e=sorted[ptr];
-  const ru=find(e.u), rv=find(e.v);
-  if(ru===rv){
-    rejected.push(e.id);
-    logEl.innerHTML+=`<div><span class="no">✘ 舍弃</span> ${e.u}–${e.v}(${e.w})：${e.u}、${e.v} 已在同一连通块，加入会成回路。</div>`;
-    statusEl.textContent=`考察 ${e.u}–${e.v}(权${e.w})：成回路 → 舍弃`;
-  } else {
-    accepted.push(e.id); union(e.u,e.v);
-    const w=accepted.reduce((s,id)=>s+E.find(x=>x.id===id).w,0);
-    logEl.innerHTML+=`<div><span class="ok">✔ 选入</span> ${e.u}–${e.v}(${e.w}) → 当前连通块合并，累计权 ${w}。</div>`;
-    statusEl.textContent=`考察 ${e.u}–${e.v}(权${e.w})：不成回路 → 选入，累计权 ${w}`;
-  }
-  ptr++;
-  paint();
-  if(ptr>=sorted.length && !done){
-    done=true; if(timer)clearInterval(timer);
-    const w=accepted.reduce((s,id)=>s+E.find(x=>x.id===id).w,0);
-    logEl.innerHTML+=`<div style="margin-top:4px"><b>完成：MST = {${accepted.join(", ")}}，W = ${w}。</b></div>`;
-    statusEl.textContent=`完成：最小生成树边集 {${accepted.join(", ")}}，总权 W = ${w}。`;
-  }
-}
-
-function reset(){
-  if(timer)clearInterval(timer);
-  initDSU(); ptr=0; accepted=[]; rejected=[]; done=false;
-  logEl.innerHTML=""; paint();
-  statusEl.textContent="点“下一步”按权从小到大考察每条边。";
-}
-
-document.getElementById("krStep").onclick=()=>{ if(!done) step(); };
-document.getElementById("krReset").onclick=reset;
-document.getElementById("krAuto").onclick=()=>{
-  if(done){ reset(); }
-  timer=setInterval(()=>{ step(); if(done) clearInterval(timer); }, 900);
-};
-reset();
-</script>
 </body>
 </html>
