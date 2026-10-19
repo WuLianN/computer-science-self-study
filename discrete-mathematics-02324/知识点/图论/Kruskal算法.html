@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：Kruskal(克鲁斯卡尔)算法求最小生成树</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+  .lab2{font-size:13px;color:var(--muted);margin:4px 0 10px}
+  svg .edge line{stroke:#94a3b8;stroke-width:2}
+  svg .edge text{font-size:12px;fill:var(--muted);text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px}
+  svg .edge.consider line{stroke:var(--warn);stroke-width:3.5}
+  svg .edge.consider text{fill:var(--warn);font-weight:700}
+  svg .edge.accept line{stroke:var(--ok);stroke-width:3.5}
+  svg .edge.accept text{fill:var(--ok);font-weight:700}
+  svg .edge.reject line{stroke:#dc2626;stroke-width:2.5;stroke-dasharray:5 4}
+  svg .edge.reject text{fill:#dc2626}
+  svg circle.v{fill:#fff;stroke:#4f46e5;stroke-width:2}
+  svg text.v{font-size:15px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  .status{margin-top:10px;font-size:14px;font-weight:600;color:var(--ink);min-height:22px}
+  .log{margin-top:8px;font-size:13.5px;border-left:3px solid var(--line);padding:4px 0 4px 12px}
+  .log .ok{color:var(--ok)}
+  .log .bad{color:#dc2626}
+  .ans{margin-top:10px;font-size:13.5px;color:var(--muted);display:none}
+  .ans.show{display:block}
+  .ans b{color:var(--ink)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:6px}
+  .legend i{display:inline-block;width:20px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>Kruskal（克鲁斯卡尔）算法求最小生成树 —— 贪心避圈法，送分题练熟它。</p>
+  <span class="pill">贪心</span><span class="pill">按权升序</span><span class="pill">避圈法</span>
+</header>
+
+<div class="rule">
+  <b>算法步骤（记四步）：</b>
+  <br>① <b>排序</b>：把所有边按权值<b>从小到大</b>排好。
+  <br>② <b>取最小</b>：取当前权最小的边。
+  <br>③ <b>避圈</b>：若这条边加入后<b>不会与已选边构成回路</b>，就选入；否则<b>舍弃</b>。
+  <br>④ <b>重复</b>：直到选满 <code>n-1</code> 条边（n 为顶点数），此时已连通且权最小。
+  <br><b>一句话：</b>能连就连，连了成圈就扔，连够 n-1 条就收工。
+</div>
+
+<div class="note">
+  <b>为什么是送分题也容易翻车：</b>① 忘记先按权<b>排序</b>，凭感觉挑边；② “不成回路”判断错——要用<b>连通分量</b>看两端是否已在同一棵树里（已在就成圈）；③ 数错选了几条边，没到 n-1 就停了或超了。
+  <br><b>判定捷径：</b>把已选边画出来，新边两端如果已经被已选边“连成一片”，再加这条边就一定成圈。
+  <br><b>怎么用动画：</b>点“▶ 播放选边过程”，看边按权从小到大被逐条考察，绿=选入、红虚线=成圈舍弃，下方同步打出日志与累计权。先自己手算一遍，再播放核对。
+</div>
+
+<h2 class="section">练习区（以真题第31题图为例）</h2>
+<div class="card">
+  <div class="lab2">加权图（顶点 a,b,c,d,e；边旁数字为权）：</div>
+  <svg id="graph" viewBox="0 0 400 320" width="100%" style="max-width:460px;height:auto"></svg>
+  <div class="legend">
+    <span><i style="background:#94a3b8"></i>待考察</span>
+    <span><i style="background:var(--warn)"></i>当前考察</span>
+    <span><i style="background:var(--ok)"></i>选入</span>
+    <span><i style="background:#dc2626"></i>成圈舍弃</span>
+  </div>
+  <div class="ctrl">
+    <button class="btn" data-act="play">▶ 播放选边过程</button>
+    <button class="btn" data-act="next">单步(下一步)</button>
+    <button class="btn" data-act="reset">重置</button>
+  </div>
+  <div class="status" id="status">点“播放”或“单步”开始。</div>
+  <div class="log" id="log"></div>
+  <div class="ctrl" style="margin-top:12px">
+    <button class="btn" data-act="reveal">显示本题答案</button>
+  </div>
+  <div class="ans" id="ans">
+    最小生成树边集：<b>{ a–b, b–c, a–e, c–d }</b><br>
+    最小权：<b>W = 1 + 2 + 4 + 6 = 13</b>
+  </div>
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+/* 顶点坐标（与真题第31题图一致） */
+const vertices = [
+  {id:"a", x:70,  y:160},
+  {id:"b", x:175, y:70},
+  {id:"c", x:175, y:250},
+  {id:"e", x:330, y:70},
+  {id:"d", x:330, y:250}
+];
+/* 边：u,v 为端点，w 为权 */
+const edges = [
+  {u:"a", v:"b", w:1},
+  {u:"b", v:"c", w:2},
+  {u:"a", v:"c", w:3},
+  {u:"a", v:"e", w:4},
+  {u:"c", v:"e", w:5},
+  {u:"c", v:"d", w:6},
+  {u:"e", v:"d", w:7}
+];
+const n = vertices.length;
+
+/* 用并查集实时计算选边过程，保证动画与答案一致 */
+function kruskal(verts, es){
+  const parent={}; verts.forEach(v=>parent[v.id]=v.id);
+  function find(x){ while(parent[x]!==x){ parent[x]=parent[parent[x]]; x=parent[x]; } return x; }
+  const steps=[];
+  let weight=0; const selected=[];
+  [...es].sort((p,q)=>p.w-q.w).forEach(e=>{
+    const ok = find(e.u)!==find(e.v);
+    if(ok){ parent[find(e.u)]=find(e.v); weight+=e.w; selected.push(e); }
+    steps.push({edge:e, accepted:ok, weight, selected:[...selected].map(x=>x.u+"-"+x.v)});
+  });
+  return steps;
+}
+const steps = kruskal(vertices, edges);
+
+/* 画图 */
+const svg = document.getElementById("graph");
+const NS="http://www.w3.org/2000/svg";
+const vpos = {}; vertices.forEach(v=>vpos[v.id]=v);
+const edgeEls={};
+edges.forEach(e=>{
+  const A=vpos[e.u], B=vpos[e.v];
+  const g=document.createElementNS(NS,"g");
+  g.setAttribute("class","edge"); g.dataset.edge=e.u+"-"+e.v;
+  const line=document.createElementNS(NS,"line");
+  line.setAttribute("x1",A.x); line.setAttribute("y1",A.y);
+  line.setAttribute("x2",B.x); line.setAttribute("y2",B.y);
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("x",(A.x+B.x)/2); t.setAttribute("y",(A.y+B.y)/2-4);
+  t.textContent=e.w;
+  g.appendChild(line); g.appendChild(t);
+  svg.appendChild(g);
+  edgeEls[e.u+"-"+e.v]=g;
+});
+vertices.forEach(v=>{
+  const c=document.createElementNS(NS,"circle");
+  c.setAttribute("class","v"); c.setAttribute("cx",v.x); c.setAttribute("cy",v.y); c.setAttribute("r",15);
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("class","v"); t.setAttribute("x",v.x); t.setAttribute("y",v.y+5); t.textContent=v.id;
+  svg.appendChild(c); svg.appendChild(t);
+});
+
+/* 动画控制 */
+const statusEl=document.getElementById("status");
+const logEl=document.getElementById("log");
+let idx=-1, timer=null;
+
+function render(k){
+  Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
+  for(let j=0;j<=k;j++){
+    const g=edgeEls[steps[j].edge.u+"-"+steps[j].edge.v];
+    g.classList.add(j===k ? "consider" : (steps[j].accepted ? "accept" : "reject"));
+  }
+  logEl.innerHTML = steps.slice(0,k+1).map((s,i)=>{
+    const e=s.edge;
+    return `<div class="${s.accepted?'ok':'bad'}">${i+1}. 考察 (${e.u},${e.v},${e.w})：${s.accepted?'不成回路 → 选入 ✔':'已构成回路 → 舍弃 ✘'}</div>`;
+  }).join("");
+  const cur=steps[k];
+  let extra = cur.selected.length===n-1 ? "（已达 n-1 条，结束）" : "";
+  statusEl.textContent = `当前已选 ${cur.selected.length} 条边，累计权 = ${cur.weight}　${extra}`;
+}
+function reset(){
+  if(timer) clearInterval(timer);
+  idx=-1;
+  Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
+  logEl.innerHTML=""; statusEl.textContent='点“播放”或“单步”开始。';
+}
+function next(){
+  if(idx>=steps.length-1) return;
+  idx++; render(idx);
+}
+function play(){
+  reset();
+  timer=setInterval(()=>{
+    if(idx>=steps.length-1){ clearInterval(timer); return; }
+    next();
+  }, 900);
+}
+document.querySelector('[data-act="play"]').addEventListener("click", play);
+document.querySelector('[data-act="next"]').addEventListener("click", ()=>{ if(timer) clearInterval(timer); next(); });
+document.querySelector('[data-act="reset"]').addEventListener("click", reset);
+document.querySelector('[data-act="reveal"]').addEventListener("click", ()=> document.getElementById("ans").classList.add("show"));
+</script>
+</body>
+</html>
