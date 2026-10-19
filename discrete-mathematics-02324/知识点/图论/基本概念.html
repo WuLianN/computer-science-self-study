@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：基本概念</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+  .card .txt{flex:1;min-width:240px;font-size:14.5px}
+  .card .txt b{color:var(--brand)}
+  .card svg{flex:0 0 auto;background:#fafbff;border:1px solid var(--line);border-radius:10px;padding:4px}
+  .card h3{margin:0 0 6px;font-size:16.5px}
+  .code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  svg circle.v{fill:#fff;stroke:#4f46e5;stroke-width:2}
+  svg text.v{font-size:14px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  svg line.e{stroke:#94a3b8;stroke-width:2}
+  svg .hot{fill:var(--brand);stroke:var(--brand)}
+  svg line.arrow{stroke:#94a3b8;stroke-width:2}
+  svg .hi{stroke:var(--warn);stroke-width:3}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>基本概念 —— 读欧拉图 / 哈密顿图 / 二叉树遍历前，先把这几个术语吃透。</p>
+  <span class="pill">图 · 顶点 · 边</span><span class="pill">度数 · 连通</span><span class="pill">路径 · 回路</span>
+  <div class="gotos">
+    <a href="欧拉图与哈密顿图.html">→ 欧拉图与哈密顿图</a>
+    <a href="二叉树遍历.html">→ 二叉树遍历（含动画）</a>
+  </div>
+</header>
+
+<div class="note">
+  <b>怎么用这页：</b>本页只讲术语定义，配小图例。看完这里，再去上面两个链接看判定与真题考法，术语就不会卡了。
+</div>
+
+<h2 class="section">一、图、顶点、边</h2>
+<div class="card">
+  <div class="txt">
+    <h3>图 G = (V, E)</h3>
+    <b>顶点（vertex）</b>也叫点、结点；<b>边（edge）</b>连接两个顶点。顶点的集合记作 <span class="code">V</span>，边的集合记作 <span class="code">E</span>。上图：V={a,b,c,d}，E={ab,bc,cd,da}。<br>
+    <b>阶</b>：顶点个数 |V|，常记作 n。上图 n=4。
+  </div>
+  <svg width="180" height="160" viewBox="0 0 180 160">
+    <line class="e" x1="40" y1="40" x2="140" y2="40"/>
+    <line class="e" x1="140" y1="40" x2="140" y2="120"/>
+    <line class="e" x1="140" y1="120" x2="40" y2="120"/>
+    <line class="e" x1="40" y1="120" x2="40" y2="40"/>
+    <circle class="v" cx="40" cy="40" r="16"/><text class="v" x="40" y="45">a</text>
+    <circle class="v" cx="140" cy="40" r="16"/><text class="v" x="140" y="45">b</text>
+    <circle class="v" cx="140" cy="120" r="16"/><text class="v" x="140" y="125">c</text>
+    <circle class="v" cx="40" cy="120" r="16"/><text class="v" x="40" y="125">d</text>
+  </svg>
+</div>
+
+<h2 class="section">二、无向图 vs 有向图</h2>
+<div class="card">
+  <div class="txt">
+    <h3>无向 / 有向</h3>
+    <b>无向图</b>：边没有方向，ab 与 ba 是同一条边（左图，普通线段）。<br>
+    <b>有向图</b>：边有方向，称为<b>弧</b>，ab 表示从 a 到 b（右图，带箭头）。自考里<b>欧拉 / 哈密顿默认讨论无向图</b>，除非题目说明"有向"。
+  </div>
+  <svg width="170" height="150" viewBox="0 0 170 150">
+    <line class="e" x1="45" y1="40" x2="125" y2="40"/>
+    <line class="e" x1="125" y1="40" x2="85" y2="110"/>
+    <line class="e" x1="45" y1="40" x2="85" y2="110"/>
+    <circle class="v" cx="45" cy="40" r="15"/><text class="v" x="45" y="45">a</text>
+    <circle class="v" cx="125" cy="40" r="15"/><text class="v" x="125" y="45">b</text>
+    <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
+  </svg>
+  <svg width="170" height="150" viewBox="0 0 170 150">
+    <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+    <line class="arrow" x1="55" y1="40" x2="118" y2="40" marker-end="url(#ar)"/>
+    <line class="arrow" x1="120" y1="48" x2="92" y2="102" marker-end="url(#ar)"/>
+    <line class="arrow" x1="78" y1="108" x2="50" y2="48" marker-end="url(#ar)"/>
+    <circle class="v" cx="45" cy="40" r="15"/><text class="v" x="45" y="45">a</text>
+    <circle class="v" cx="125" cy="40" r="15"/><text class="v" x="125" y="45">b</text>
+    <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
+  </svg>
+</div>
+
+<h2 class="section">三、度数（奇度 / 偶度）</h2>
+<div class="card">
+  <div class="txt">
+    <h3>度数 d(v)</h3>
+    顶点 v 的<b>度数</b> = 与它相连的边数。橙点 c 连了 4 条边 → d(c)=4；a、b 各连 1 条 → d=1。<br>
+    <b>奇度</b>：度数为奇数（如 1、3）；<b>偶度</b>：度数为偶数（如 2、4）。欧拉图判定<b>只看奇度顶点个数</b>，这是全章最关键的桥。
+  </div>
+  <svg width="180" height="160" viewBox="0 0 180 160">
+    <line class="e" x1="40" y1="40" x2="110" y2="80"/>
+    <line class="e" x1="140" y1="40" x2="110" y2="80"/>
+    <line class="e" x1="110" y1="80" x2="60" y2="130"/>
+    <line class="e" x1="110" y1="80" x2="160" y2="130"/>
+    <circle class="v" cx="40" cy="40" r="15"/><text class="v" x="40" y="45">a</text>
+    <circle class="v" cx="140" cy="40" r="15"/><text class="v" x="140" y="45">b</text>
+    <circle class="hot" cx="110" cy="80" r="17"/><text class="v hot" x="110" y="85" fill="#fff">c</text>
+    <circle class="v" cx="60" cy="130" r="15"/><text class="v" x="60" y="135">d</text>
+    <circle class="v" cx="160" cy="130" r="15"/><text class="v" x="160" y="135">e</text>
+  </svg>
+</div>
+
+<h2 class="section">四、简单图 / 多重边</h2>
+<div class="card">
+  <div class="txt">
+    <h3>简单图</h3>
+    <b>简单图</b>：无环（顶点到自己不连边）、<b>无平行边</b>（两点之间至多一条边）。自考判定定理（如 Dirac）通常<b>只对简单图成立</b>。<br>
+    <b>多重图</b>：两点间可有多条平行边（右图 a–b 两条）。带环或平行边的就不是简单图。
+  </div>
+  <svg width="160" height="150" viewBox="0 0 160 150">
+    <line class="e" x1="50" y1="40" x2="120" y2="40"/>
+    <line class="e" x1="120" y1="40" x2="85" y2="110"/>
+    <line class="e" x1="50" y1="40" x2="85" y2="110"/>
+    <circle class="v" cx="50" cy="40" r="15"/><text class="v" x="50" y="45">a</text>
+    <circle class="v" cx="120" cy="40" r="15"/><text class="v" x="120" y="45">b</text>
+    <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
+  </svg>
+  <svg width="160" height="150" viewBox="0 0 160 150">
+    <line class="e" x1="50" y1="35" x2="120" y2="45"/>
+    <line class="e" x1="50" y1="55" x2="120" y2="45"/>
+    <circle class="v" cx="50" cy="45" r="15"/><text class="v" x="50" y="50">a</text>
+    <circle class="v" cx="120" cy="45" r="15"/><text class="v" x="120" y="50">b</text>
+  </svg>
+</div>
+
+<h2 class="section">五、连通 / 连通分支</h2>
+<div class="card">
+  <div class="txt">
+    <h3>连通分支 ω(G)</h3>
+    <b>连通</b>：任意两点间都有路可走。右图被分成两块、互不相连，叫<b>不连通</b>。<br>
+    <b>连通分支数 ω(G)</b> = 互相独立的不连通块数。右图 ω=2（{a,b,c} 与 {d,e} 各一块）。哈密顿"必要条件"里就用 ω(G−S) 这个量。
+  </div>
+  <svg width="170" height="150" viewBox="0 0 170 150">
+    <line class="e" x1="40" y1="40" x2="100" y2="40"/>
+    <line class="e" x1="100" y1="40" x2="70" y2="100"/>
+    <line class="e" x1="40" y1="40" x2="70" y2="100"/>
+    <circle class="v" cx="40" cy="40" r="15"/><text class="v" x="40" y="45">a</text>
+    <circle class="v" cx="100" cy="40" r="15"/><text class="v" x="100" y="45">b</text>
+    <circle class="v" cx="70" cy="100" r="15"/><text class="v" x="70" y="105">c</text>
+    <circle class="v" cx="130" cy="100" r="15"/><text class="v" x="130" y="105">d</text>
+    <circle class="v" cx="150" cy="50" r="15"/><text class="v" x="150" y="55">e</text>
+  </svg>
+</div>
+
+<h2 class="section">六、割点</h2>
+<div class="card">
+  <div class="txt">
+    <h3>割点</h3>
+    去掉某顶点（连同它的边）后，图的<b>连通分支数变多</b>，该点就是<b>割点</b>。橙点 c 一删，图裂成左右两块（ω 从 1 变 2）。<br>
+    这正是欧拉图页里"例①无哈密顿回路"的证法：删割点 c，ω(G−{c})=2 &gt; |{c}|=1，不满足必要条件。
+  </div>
+  <svg width="180" height="160" viewBox="0 0 180 160">
+    <line class="e" x1="40" y1="40" x2="110" y2="80"/>
+    <line class="e" x1="140" y1="40" x2="110" y2="80"/>
+    <line class="e" x1="110" y1="80" x2="50" y2="130"/>
+    <line class="e" x1="110" y1="80" x2="160" y2="130"/>
+    <circle class="v" cx="40" cy="40" r="15"/><text class="v" x="40" y="45">a</text>
+    <circle class="v" cx="140" cy="40" r="15"/><text class="v" x="140" y="45">b</text>
+    <circle class="hot" cx="110" cy="80" r="17"/><text class="v hot" x="110" y="85" fill="#fff">c</text>
+    <circle class="v" cx="50" cy="130" r="15"/><text class="v" x="50" y="135">d</text>
+    <circle class="v" cx="160" cy="130" r="15"/><text class="v" x="160" y="135">e</text>
+  </svg>
+</div>
+
+<h2 class="section">七、子图</h2>
+<div class="card">
+  <div class="txt">
+    <h3>子图</h3>
+    从 G 中挑出一部分顶点和边得到的图叫<b>子图</b>。哈密顿"删 S 看 ω(G−S)"就是反复取子图来判定。<br>
+    若子图含 G 的<b>全部顶点</b>，叫<b>生成子图</b>（如"生成树"）。本页不必深究，知道"挑一部分出来还是图"即可。
+  </div>
+  <svg width="170" height="150" viewBox="0 0 170 150">
+    <line class="e" x1="40" y1="40" x2="120" y2="40" stroke-dasharray="4 3"/>
+    <line class="e" x1="40" y1="40" x2="80" y2="110"/>
+    <line class="e" x1="120" y1="40" x2="80" y2="110"/>
+    <circle class="v" cx="40" cy="40" r="15"/><text class="v" x="40" y="45">a</text>
+    <circle class="v" cx="120" cy="40" r="15" style="opacity:.4"/><text class="v" x="120" y="45" style="opacity:.4">b</text>
+    <circle class="v" cx="80" cy="110" r="15"/><text class="v" x="80" y="115">c</text>
+  </svg>
+</div>
+
+<h2 class="section">八、路径 / 通路 / 回路</h2>
+<div class="card">
+  <div class="txt">
+    <h3>三种"走法"</h3>
+    <b>通路（walk）</b>：顶点、边可重复地走一遍（最宽松）。<br>
+    <b>路径（path/trail 与 path 的混用注意）</b>：自考语境下常指"<b>边不重复</b>"的走法；若还要求点不重复则称<b>初级通路</b>。<br>
+    <b>回路（circuit）</b>：起点=终点的通路。其中<b>欧拉回路</b>=边不重复且回起点；<b>哈密顿回路</b>=点不重复（除首尾）且回起点。<br>
+    一句话记：<span class="code">欧拉</span>管"边重复没"，<span class="code">哈密顿</span>管"点重复没"。
+  </div>
+  <svg width="170" height="150" viewBox="0 0 170 150">
+    <line class="hi" x1="40" y1="40" x2="120" y2="40"/>
+    <line class="hi" x1="120" y1="40" x2="80" y2="110"/>
+    <line class="hi" x1="80" y1="110" x2="40" y2="40"/>
+    <circle class="v" cx="40" cy="40" r="15"/><text class="v" x="40" y="45">a</text>
+    <circle class="v" cx="120" cy="40" r="15"/><text class="v" x="120" y="45">b</text>
+    <circle class="v" cx="80" cy="110" r="15"/><text class="v" x="80" y="115">c</text>
+  </svg>
+</div>
+
+<div class="note">
+  <b>下一步：</b>术语都齐了，去 <a class="inline" href="欧拉图与哈密顿图.html">欧拉图与哈密顿图</a> 看判定与真题，或去 <a class="inline" href="二叉树遍历.html">二叉树遍历</a> 看三种遍历动画。
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
