@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 代数系统知识点：格与布尔代数</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .card code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .lvl{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;margin-right:6px}
+  .def{background:#fafbff;border:1px solid #c7d2fe;border-left:5px solid var(--brand);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .def .dt{font-weight:800;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .thm{background:var(--ok-soft);border:1px solid #a7f3d0;border-left:5px solid var(--ok);border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .thm .dt{font-weight:800;color:var(--ok);margin-bottom:6px;font-size:15px}
+  .thm code{background:#d1fae5;color:var(--ok);border-radius:6px;padding:1px 7px;font-weight:700}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 格与布尔代数</h1>
+  <p>代数系统独立一章。一条主线：偏序集 → 格（两种等价定义）→ 特殊格（分配 / 有界 / 有补）→ 布尔代数。与群、环、域同属代数系统，但建立在<b>偏序</b>而非运算上。</p>
+  <span class="pill">偏序 / 哈斯图</span><span class="pill">格 ∧ ∨</span><span class="pill">分配格</span><span class="pill">布尔代数</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+    <a href="代数系统.html">→ 代数系统（群/环/域）</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录（定义 · 定理）</div>
+  <a href="#s1">一、偏序集（定义）</a>
+  <a href="#s2">二、格（两种等价定义）</a>
+  <a href="#s3">三、特殊格：分配 / 有界 / 有补（定义）</a>
+  <a href="#s4">四、布尔代数（定义 + 定律）</a>
+  <a href="#s5">五、核心定理速记</a>
+  <a href="#s6">六、真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、偏序集（定义）</h2>
+
+<div class="def">
+  <div class="dt">定义 1　偏序关系与偏序集</div>
+  <b>偏序关系 ≤</b>：在集合 S 上满足 <b>自反、反对称、传递</b> 的关系。<br>
+  装备偏序的集合 (S,≤) 称为<b>偏序集</b>。
+</div>
+
+<div class="def">
+  <div class="dt">定义 2　上界 / 下界 · 最小上界 / 最大下界</div>
+  • <b>上界 u</b>：比子集 A 中每个元素都大；<b>下界 d</b>：比每个都小。<br>
+  • <b>最小上界 lub</b>（并，记作 <code>a∨b</code> / sup）：所有上界中最小者。<br>
+  • <b>最大下界 glb</b>（交，记作 <code>a∧b</code> / inf）：所有下界中最大者。<br>
+  • <b>哈斯图</b>：省略自环与传递边，越往上越大，只画“直接覆盖”的边。
+</div>
+
+<h2 class="section" id="s2">二、格（两种等价定义）</h2>
+
+<div class="def">
+  <div class="dt">定义 3　格（偏序视角）</div>
+  格 (L,≤) 是“任意两个元素都有<b>最小上界</b>和<b>最大下界</b>”的偏序集。<br>
+  即 ∀a,b∈L，<code>a∨b</code>（最小上界）与 <code>a∧b</code>（最大下界）都存在。
+</div>
+
+<div class="def">
+  <div class="dt">定义 4　格（代数视角）</div>
+  (L,∧,∨) 上两运算满足三条公理：<br>
+  ① <b>交换律</b> a∧b=b∧a，a∨b=b∨a；<br>
+  ② <b>结合律</b> (a∧b)∧c=a∧(b∧c)（∨ 同理）；<br>
+  ③ <b>吸收律</b> a∧(a∨b)=a，a∨(a∧b)=a。
+</div>
+
+<div class="note">
+  <b>两种定义等价：</b>偏序视角里 lub/glb 直接给出 ∧ 与 ∨；代数视角里用 <code>a≤b ⟺ a∧b=a</code>（或 <code>a∨b=b</code>）反推偏序。其中 <code>a∨b</code> 在偏序视角是“最小上界”的<b>名字</b>（定义等式），在代数视角才是“先有运算、再证它等于最小上界”——两视角是同一件事的两种出发点。
+</div>
+
+<div class="card">
+  <h3>哈斯图直观：菱形格看 a∨b 与 a∧b</h3>
+  例 <code>{0, a, b, 1}</code>（0 最小、1 最大，a 与 b 不可比；0/1 是顶/底符号，a、b 是抽象标签，非数值）。
+  <svg width="220" height="210" viewBox="0 0 220 210" style="display:block;margin:10px auto">
+    <line x1="110" y1="40"  x2="60"  y2="105" stroke="#4f46e5" stroke-width="2"/>
+    <line x1="110" y1="40"  x2="160" y2="105" stroke="#4f46e5" stroke-width="2"/>
+    <line x1="60"  y1="105" x2="110" y2="170" stroke="#4f46e5" stroke-width="2"/>
+    <line x1="160" y1="105" x2="110" y2="170" stroke="#4f46e5" stroke-width="2"/>
+    <circle cx="110" cy="40"  r="16" fill="#4f46e5"/><text x="110" y="45"  fill="#fff" text-anchor="middle" font-size="14" font-weight="700">1</text>
+    <circle cx="60"  cy="105" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="60" y="110" fill="#1f2430" text-anchor="middle" font-size="14" font-weight="700">a</text>
+    <circle cx="160" cy="105" r="16" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="160" y="110" fill="#1f2430" text-anchor="middle" font-size="14" font-weight="700">b</text>
+    <circle cx="110" cy="170" r="16" fill="#4f46e5"/><text x="110" y="175" fill="#fff" text-anchor="middle" font-size="14" font-weight="700">0</text>
+  </svg>
+  <div class="th" style="background:#fafbff;border-left:3px solid #eef2ff;padding:8px 12px;border-radius:6px;margin-top:6px">
+    <b>a∨b（最小上界）</b>：a、b 的公共上界只有 1 → <code>a∨b = 1</code>。<br>
+    <b>a∧b（最大下界）</b>：a、b 的公共下界只有 0 → <code>a∧b = 0</code>。<br>
+    任取两元素都能唯一确定 ∨ 与 ∧ → 这正是格。
+  </div>
+</div>
+
+<div class="def">
+  <div class="dt">定义 5　幂集格（标准例子）</div>
+  取全集 U，<b>(P(U), ⊆)</b> 是格：<code>A∧B = A∩B</code>（最大下界），<code>A∨B = A∪B</code>（最小上界）。也是布尔代数（见第四节）。
+</div>
+
+<h2 class="section" id="s3">三、特殊格：分配 / 有界 / 有补（定义）</h2>
+
+<div class="def">
+  <div class="dt">定义 6　分配格 / 有界格 / 有补格</div>
+  <span class="lvl">分配格</span> 满足分配律：<code>a∧(b∨c) = (a∧b)∨(a∧c)</code>（其对偶 ∨ 对 ∧ 也成立）。<br>
+  <span class="lvl">有界格</span> 存在最大元 <b>1</b>（∀a, a∨1=a 且 a∧1=1）与最小元 <b>0</b>（∀a, a∧0=a 且 a∨0=0）。<br>
+  <span class="lvl">有补格</span> 有界，且每个 a 都有<b>补元 a'</b> 使 <code>a∨a'=1</code> 且 <code>a∧a'=0</code>。
+</div>
+
+<div class="note">
+  <b>易错：</b>① “分配”是格的<b>额外</b>性质，并非所有格都分配；② 反例 <b>钻石格 M₃</b>、<b>五角格 N₅</b> 不是分配格（判“非分配”的标准）；③ 有补格里补元<b>未必唯一</b>，只有分配格中才唯一；④ 1、0 是格的顶/底，不是群里的幺元/零元。
+</div>
+
+<h2 class="section" id="s4">四、布尔代数（定义 + 定律）</h2>
+
+<div class="def">
+  <div class="dt">定义 7　布尔代数</div>
+  <b>布尔代数 = 分配的有补格</b>（既分配又有补）。<br>
+  也可定义为带 0、1、′ 的代数系统 (B,∧,∨,′,0,1) 满足一组公理（如 Huntington 公理）。<br>
+  例：幂集格 (P(U),∩,∪,补,∅,U) 是布尔代数；|U|=n 时该代数有 <b>2ⁿ</b> 个元素。
+</div>
+
+<div class="rule">
+  <div class="dt" style="font-weight:800;color:var(--brand);margin-bottom:6px">布尔代数常用定律（记忆用）</div>
+  • 幂等 <code>a∨a=a</code>，<code>a∧a=a</code>；交换 / 结合 / 吸收 / 分配；<br>
+  • <b>互补律</b> <code>a∨a'=1</code>，<code>a∧a'=0</code>；<br>
+  • <b>同一/零律</b> <code>a∨0=a</code>，<code>a∧1=a</code>，<code>a∨1=1</code>，<code>a∧0=0</code>；<br>
+  • <b>De Morgan 律</b> <code>(a∨b)'=a'∧b'</code>，<code>(a∧b)'=a'∨b'</code>；<b>双重否定</b> <code>(a')'=a</code>。
+</div>
+
+<h2 class="section" id="s5">五、核心定理速记</h2>
+
+<div class="thm">
+  <div class="dt">定理 1　序与运算等价刻画</div>
+  <code>a≤b ⟺ a∧b=a ⟺ a∨b=b</code>（格中比较两元素大小的等价写法）。<br>
+  <b>读法：</b><code>a≤b</code> = a 在 b 下方；<code>a∧b=a</code> = 往下找 a、b 的公共下界落在 a（a 已是 b 的下界）；<code>a∨b=b</code> = 往上找公共上界落在 b（b 已是 a 的上界）。三者同真同假。<br>
+  <b>例（菱形图）：</b>(a,1) 可比较 → <code>a≤1</code>、<code>a∧1=a</code>、<code>a∨1=1</code> 全成立；(a,b) 不可比 → 三者全不成立。
+</div>
+
+<div class="thm">
+  <div class="dt">定理 2　补元唯一性</div>
+  在<b>分配格</b>中，每个元素的补元<b>唯一</b>。即若 a 有补元，则只有一个 a'。
+</div>
+
+<div class="thm">
+  <div class="dt">定理 3　分配格消去律（证明题杀手锏）</div>
+  若 <code>a∧c = b∧c</code> 且 <code>a∨c = b∨c</code>，则 <b>a = b</b>。<br>
+  证：<code>a = a∧(a∨c) = a∧(b∨c) = (a∧b)∨(a∧c) = (a∧b)∨(b∧c) = b∧(a∨c) = b∧(b∨c) = b</code>。
+</div>
+
+<div class="thm">
+  <div class="dt">定理 4　De Morgan 律与互补律</div>
+  <code>(a∨b)'=a'∧b'</code>，<code>(a∧b)'=a'∨b'</code>；<code>(a')'=a</code>；<code>a∨a'=1</code>，<code>a∧a'=0</code>。<br>
+  <span style="color:var(--ok)">注意：仅在分配格（布尔代数）环境下自由套用，普通格不适用。</span>
+</div>
+
+<h2 class="section" id="s6">六、真题呼应</h2>
+
+<div class="ok">
+  <b>主线小结：</b>偏序集（哈斯图）→ 格（任意二元有 ∨/∧，两种定义等价）→ 加性质得<b>分配 / 有界 / 有补格</b> → 分配且有补 = <b>布尔代数</b>（幂集格是标准模型）。<br>
+  高频考点两类：<b>分配格消去律</b>（证明两元素相等）、<b>De Morgan / 互补律</b>（布尔化简）。配合 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">真题详解</a> 中“分配格消去律”“布尔代数”大题一起刷。
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>

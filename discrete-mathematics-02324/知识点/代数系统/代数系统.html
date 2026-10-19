@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 代数系统知识点（半群 / 群 / 环 / 域）</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .lvl{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;margin-right:6px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 代数系统知识点</h1>
+  <p>02324 拉分大章。一条主线：半群→独异点→群 的单运算谱系，群内再攻子群 / 循环群 / 拉格朗日，最后升级到双运算的环与域。抽象但套路固定。</p>
+  <span class="pill">半群 / 独异点</span><span class="pill">群四公理</span><span class="pill">子群 / 循环群</span><span class="pill">环 / 域</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+    <a href="格与布尔代数.html">→ 格与布尔代数</a>
+    <a href="../图论/基本概念.html">→ 图论基本概念</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、代数系统与二元运算（引子）</a>
+  <a href="#s2">二、半群 · 独异点 · 群（谱系与四大公理）</a>
+  <a href="#s3">三、子群判定</a>
+  <a href="#s4">四、循环群与生成元</a>
+  <a href="#s5">五、陪集与拉格朗日定理</a>
+  <a href="#s6">六、环与域（双运算结构）</a>
+</div>
+
+<h2 class="section" id="s1">一、代数系统与二元运算（引子）</h2>
+<div class="rule">
+  一个<b>代数系统</b> = 集合 + 其上若干运算。本页只讨论一个或两个<b>二元运算 *</b>（对集合中任意两元素，* 唯一确定一个结果）。<br>
+  <div class="th"><b>封闭性</b>：∀a,b∈G，a*b∈G。这是后面所有结构（半群、群、环）的共同起点——运算结果不能“跑出”集合。</div>
+  下面从最弱的结构“半群”逐级加强条件，一直推到“群”，再扩展到“环 / 域”。
+</div>
+
+<h2 class="section" id="s2">二、半群 · 独异点 · 群（谱系与四大公理）</h2>
+<div class="rule">
+  单运算结构从弱到强逐级加条件：
+  <div class="th">
+    <span class="lvl">半群</span> 封闭 + 结合律（只需两条）；<br>
+    <span class="lvl">独异点</span> 半群 + 存在 <b>幺元 e</b>；<br>
+    <span class="lvl">群</span> 独异点 + <b>每个元素都有逆元</b>。
+  </div>
+  即 <b>半群 ⊂ 独异点 ⊂ 群</b>。群是这一谱系的最顶层，其四条公理如下：
+  <div class="th">
+    ① <b>封闭性</b>：∀a,b∈G，有 a*b∈G；<br>
+    ② <b>结合律</b>：∀a,b,c∈G，(a*b)*c = a*(b*c)；<br>
+    ③ <b>幺元 e</b>：∃e∈G，∀a∈G，e*a = a*e = a；<br>
+    ④ <b>逆元</b>：∀a∈G，∃a⁻¹∈G，使 a*a⁻¹ = a⁻¹*a = e。
+  </div>
+  若还满足 <b>交换律</b>（a*b=b*a），则称<b>阿贝尔群（交换群）</b>。自考常见群：整数加群 (Z,+)、模 n 加群 (Zₙ,+)、n 次单位根乘法群。
+</div>
+
+<div class="card">
+  <h3>例：同一谱系的三级</h3>
+  • (Z,+)：封闭、结合、幺元 0、每元有逆元 → <b>群（阿贝尔群）</b>。<br>
+  • (N,+)（N={0,1,2,…}）：封闭、结合、幺元 0，但除 0 外无加法逆元 → <b>独异点，非群</b>。<br>
+  • (正偶数,×)：封闭、结合，但无幺元（1 不在集合内）→ <b>仅是半群</b>。
+</div>
+
+<div class="ok">
+  <b>真题呼应 · 幂等元只有 e：</b>群中满足 x*x=x 的元素只有幺元 e。证明：x²=x 两边左乘 x⁻¹ 得 x=e。这条常出现在“元素性质”小题，记住即可秒答。
+</div>
+
+<div class="rule">
+  <h3>零元（吸收元）</h3>
+  <b>双边零元</b> θ：∀a∈G，<code>a*θ = θ*a = θ</code>，即任何元素和 θ 运算都被“吸收”成 θ。<br>
+  <div class="th">
+    <b>左零元</b> L：∀x，<code>L*x = L</code>；<b>右零元</b> R：∀x，<code>x*R = R</code>。左右都满足时才是双边零元。<br>
+    <b>关键性质：</b>若代数系统同时有幺元 e 与零元 θ，且 |G|>1，则 <b>e ≠ θ</b>（否则 e=θ ⇒ 任意 a = a*e = a*θ = θ，全集合塌成一点，矛盾）。所以 <b>|G|>1 的群里不存在零元</b>。
+  </div>
+  <b>例：</b>① (R,×) 中 0 是零元（a×0=0）；② 矩阵乘法中零矩阵是零元；③ (Z,+) 中<b>没有</b>零元——这里的 0 是幺元（a+0=a），并非吸收元。
+</div>
+
+<div class="note">
+  <b>真题第12题方向：</b>常考“左零元 ≠ 右零元”——左零元只要求 L*x=L，右零元只要求 x*R=R，二者一般<b>不相等</b>，审题别搞反“左 / 右”方向（见真题详解第12题）。
+</div>
+
+<h2 class="section" id="s3">三、子群判定</h2>
+<div class="rule">
+  <b>子群</b>：H⊆G，若 H 对 G 的同一运算 * 也构成群，记作 <b>H≤G</b>。
+  <div class="th">
+    <b>判定定理 1（最常用）：</b>H≤G ⟺ H≠∅ 且 ∀a,b∈H，都有 <code>a*b⁻¹∈H</code>。<br>
+    <b>判定定理 2（有限情形）：</b>若 H 是 G 的非空有限子集，且对 * <b>封闭</b>，则 H 自动是子群（有限 ⟹ 每元素阶有限 ⟹ 逆元落在 H 内）。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：整数加群 (Z,+) 的子群</h3>
+  取 H = 全体偶数。① H≠∅；② 任取 a,b∈H，a−b 仍是偶数 ∈H ⟹ 由判定定理 1，<b>H≤(Z,+)</b>。同理 n 的倍数集 nZ 都是 (Z,+) 的子群。
+</div>
+
+<ol class="steps">
+  <li><b>先证 H 非空</b>（通常含幺元 e 即可，e∈H 很好用）。</li>
+  <li><b>任取 a,b∈H</b>，算 a*b⁻¹，证明仍属于 H。</li>
+  <li><b>结论</b>：满足判定定理 1 ⟹ H≤G。若 H 有限则只需验证封闭。</li>
+</ol>
+
+<h2 class="section" id="s4">四、循环群与生成元</h2>
+<div class="rule">
+  <b>循环群</b>：存在元素 g∈G，使 G = {gᵏ | k∈Z}（乘法记法）或 G={kg|k∈Z}（加法记法），记作 <b>G=⟨g⟩</b>，g 叫<b>生成元</b>。
+  <div class="th">
+    <b>无限循环群</b>：≅ (Z,+)，生成元恰 2 个（±1，即 g 与 g⁻¹）。<br>
+    <b>n 阶循环群</b>：≅ (Zₙ,+)，生成元个数 = <b>φ(n)</b>（欧拉函数，与 n 互质的个数）。<br>
+    例：(Z₈,+) 的生成元为 1,3,5,7（φ(8)=4）。
+  </div>
+  关键性质：<b>循环群的子群仍是循环群</b>；n 阶循环群的子群与 n 的正因子一一对应。
+</div>
+
+<div class="note">
+  <b>易错：</b>生成元个数别数错——(Zₙ,+) 是 φ(n) 个而不是 n 个；无限循环群只有 2 个生成元，不是 1 个。
+</div>
+
+<h2 class="section" id="s5">五、陪集与拉格朗日定理</h2>
+<div class="rule">
+  设 H≤G，a∈G，定义 <b>左陪集</b> <code>aH = {a*h | h∈H}</code>（右陪集 Ha 同理）。
+  <div class="th">
+    <b>拉格朗日定理：</b><code>|G| = [G:H] · |H|</code>，即 <b>子群阶 |H| 整除群阶 |G|</b>，[G:H] 为 H 在 G 中的指数（陪集个数）。<br>
+    推论：① 元素的阶整除群阶，且 <code>a^|G| = e</code>；② <b>素数阶群必为循环群</b>（也是阿贝尔群）；③ p（素数）阶群只有自身与 {e} 两个子群。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：|G|=6 能有什么子群？</h3>
+  由拉格朗日，|H| 只能整除 6，即 |H|∈{1,2,3,6}。因此 G 不可能有 4 阶或 5 阶子群——用“整除性”可快速排除错误选项，是判定题的常考切入点。
+</div>
+
+<h2 class="section" id="s6">六、环与域（双运算结构）</h2>
+<div class="rule">
+  环与域都在集合上定义<b>两个</b>二元运算（通常记作 + 与 ·）。从弱到强：<b>环 → 整环 → 域</b>。
+</div>
+
+<div class="rule">
+  <h3>① 环 (R,+,·)</h3>
+  <div class="th">
+    ① (R,+) 是阿贝尔群（幺元记 0）；<br>
+    ② (R,·) 是半群（封闭、结合）；<br>
+    ③ 乘法对加法满足<b>分配律</b>：a·(b+c)=a·b+a·c，(a+b)·c=a·c+b·c。
+  </div>
+</div>
+
+<div class="rule">
+  <h3>② 整环</h3>
+  <div class="th">
+    是<b>交换幺环</b>（乘法交换、有幺元 1≠0）且<b>无零因子</b>。<br>
+    <b>零因子</b>：非零元 a 使 ∃非零 b，a·b=0；<b>无零因子 ⇔ a·b=0 ⇒ a=0 或 b=0</b>（消去律成立）。<br>
+    例：(Z,+,×) 是整环。
+  </div>
+</div>
+
+<div class="rule">
+  <h3>③ 域 (F,+,·)</h3>
+  两种<b>等价</b>定义（你书上用的是第②种）：
+  <div class="th">
+    <b>定义 A（本页）</b>：在环基础上，<b>(F\{0},·) 是阿贝尔群</b>（F\{0} = 去掉 0 的非零元集合）。<br>
+    <b>定义 B（教材常见）</b>：<b>F 是整环</b>，且 |F|≥2，且 ∀a∈F*（=F−{0}）都有 a⁻¹∈F。
+  </div>
+  <b>等价性：</b>整环已保证交换 / 幺元 / 无零因子；再加“每非零元可逆”，则 F\{0} 在乘法下自然成群（封闭由“无零因子”保证：a,b≠0 ⇒ a·b≠0）。你书上 <code>F* = F−{0}</code> 就是这里的 <code>F\{0}</code>。
+</div>
+
+<div class="note">
+  <b>为什么要求 |F|≥2？</b><code>|F|</code> 是 F 的元素个数，<code>|F|≥2</code> 即“F 至少含 2 个元素”。它用来排除只有一个元素、且 <b>0=1</b> 的<b>退化平凡环</b>——整环与域都要求 <b>0≠1</b>，所以必须 |F|≥2（F\{0} 才有意义）。
+</div>
+
+<div class="card">
+  <h3>例</h3>
+  • (Z,+,×)：是<b>整环</b>（交换、有幺元 1、无零因子），但 2 在 Z 中无乘法逆元 → <b>整环，非域</b>。<br>
+  • (Q,+,×)、(R,+,×)、(C,+,×)：加减乘皆封闭、非零元皆可逆 → <b>域</b>。<br>
+  • 有限域 GF(p)（p 为素数，模 p 运算）：也是域。
+</div>
+
+<div class="note">
+  <b>易错：</b>① <b>域必须先是个整环</b>（交换幺环且无零因子），不是任意环加逆元就成域；② 环的乘法只要求半群；③ “域”要求<b>非零元对乘法成群</b>，教材记作 <code>F* = F−{0}</code>，所以 <b>Z 不是域</b>、一般矩阵环也不是域；④ 分配律是环区别于“单纯两个半群”的关键，审题看清“对哪个运算分配”。
+</div>
+
+<div class="ok">
+  <b>本章主线小结：</b>代数系统谱系 <b>半群 → 独异点 → 群</b>（逐级加幺元、加逆元，群再满足四大公理）；群内用判定定理 1 验“是不是子群”、φ(n) 看循环群生成元、拉格朗日用“阶整除”做排除；双运算结构再升级为 <b>环</b>（加分配律）/ <b>域</b>（非零元乘法成群）。配合 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">真题详解</a> 里群论、格、零元相关大题一起刷，效果最佳。
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
