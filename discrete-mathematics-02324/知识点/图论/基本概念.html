@@ -87,23 +87,31 @@
     <b>无向图</b>：边没有方向，ab 与 ba 是同一条边（左图，普通线段）。<br>
     <b>有向图</b>：边有方向，称为<b>弧</b>，ab 表示从 a 到 b（右图，带箭头）。自考里<b>欧拉 / 哈密顿默认讨论无向图</b>，除非题目说明"有向"。
   </div>
-  <svg width="170" height="150" viewBox="0 0 170 150">
-    <line class="e" x1="45" y1="40" x2="125" y2="40"/>
-    <line class="e" x1="125" y1="40" x2="85" y2="110"/>
-    <line class="e" x1="45" y1="40" x2="85" y2="110"/>
-    <circle class="v" cx="45" cy="40" r="15"/><text class="v" x="45" y="45">a</text>
-    <circle class="v" cx="125" cy="40" r="15"/><text class="v" x="125" y="45">b</text>
-    <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
-  </svg>
-  <svg width="170" height="150" viewBox="0 0 170 150">
-    <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
-    <line class="arrow" x1="55" y1="40" x2="118" y2="40" marker-end="url(#ar)"/>
-    <line class="arrow" x1="120" y1="48" x2="92" y2="102" marker-end="url(#ar)"/>
-    <line class="arrow" x1="78" y1="108" x2="50" y2="48" marker-end="url(#ar)"/>
-    <circle class="v" cx="45" cy="40" r="15"/><text class="v" x="45" y="45">a</text>
-    <circle class="v" cx="125" cy="40" r="15"/><text class="v" x="125" y="45">b</text>
-    <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
-  </svg>
+  <div class="figs">
+  <div class="fig">
+    <svg width="170" height="150" viewBox="0 0 170 150">
+      <line class="e" x1="45" y1="40" x2="125" y2="40"/>
+      <line class="e" x1="125" y1="40" x2="85" y2="110"/>
+      <line class="e" x1="45" y1="40" x2="85" y2="110"/>
+      <circle class="v" cx="45" cy="40" r="15"/><text class="v" x="45" y="45">a</text>
+      <circle class="v" cx="125" cy="40" r="15"/><text class="v" x="125" y="45">b</text>
+      <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
+    </svg>
+    <div class="cap"><b>无向图</b>：边不带箭头，ab 与 ba 是同一条边</div>
+  </div>
+  <div class="fig">
+    <svg width="170" height="150" viewBox="0 0 170 150">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+      <line class="arrow" x1="55" y1="40" x2="118" y2="40" marker-end="url(#ar)"/>
+      <line class="arrow" x1="120" y1="48" x2="92" y2="102" marker-end="url(#ar)"/>
+      <line class="arrow" x1="78" y1="108" x2="50" y2="48" marker-end="url(#ar)"/>
+      <circle class="v" cx="45" cy="40" r="15"/><text class="v" x="45" y="45">a</text>
+      <circle class="v" cx="125" cy="40" r="15"/><text class="v" x="125" y="45">b</text>
+      <circle class="v" cx="85" cy="110" r="15"/><text class="v" x="85" y="115">c</text>
+    </svg>
+    <div class="cap"><b>有向图</b>：边带箭头（弧），a→b ≠ b→a</div>
+  </div>
+  </div>
 </div>
 
 <h2 class="section">三、度数（奇度 / 偶度）</h2>
@@ -147,8 +155,8 @@
   </div>
   <div class="fig">
     <svg width="160" height="150" viewBox="0 0 160 150">
-      <line class="e" x1="63" y1="35" x2="117" y2="35"/>
-      <path class="e" d="M63,58 Q90,84 117,58" fill="none"/>
+      <line class="e" x1="60" y1="37" x2="110" y2="37"/>
+      <path class="e" d="M58,52 Q85,90 112,52" fill="none"/>
       <circle class="v" cx="50" cy="45" r="15"/><text class="v" x="50" y="50">a</text>
       <circle class="v" cx="120" cy="45" r="15"/><text class="v" x="120" y="50">b</text>
     </svg>
