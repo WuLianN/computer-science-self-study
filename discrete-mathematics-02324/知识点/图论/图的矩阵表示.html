@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：图的矩阵表示</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .note{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:#d97706}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .fig{text-align:center}
+  .fig .cap{font-size:12.5px;color:var(--muted);margin-top:2px}
+  svg circle.v{fill:#fff;stroke:var(--brand);stroke-width:2}
+  svg text.v{font-size:15px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  svg line.am{stroke:#94a3b8;stroke-width:2}
+  table.m{border-collapse:collapse;margin:10px 0;font-size:14px}
+  table.m th,table.m td{border:1px solid var(--line);width:34px;height:34px;text-align:center;padding:0}
+  table.m th{background:var(--brand-soft);color:var(--brand)}
+  table.m td.one{background:var(--brand-soft);font-weight:700;color:var(--brand)}
+  .mtx{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .mtx .blk{flex:0 0 auto}
+  .lbl{font-size:13px;color:var(--muted);margin:4px 0 2px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>图的矩阵表示 —— 邻接矩阵与可达矩阵，02324 计算题常客，纯套路。</p>
+  <span class="pill">邻接矩阵 A</span><span class="pill">可达矩阵 P</span><span class="pill">A^k 数途径</span>
+  <div class="gotos">
+    <a href="基本概念.html">→ 基本概念</a>
+    <a href="树与最小生成树.html">→ 树与最小生成树</a>
+    <a href="欧拉图与哈密顿图.html">→ 欧拉图与哈密顿图</a>
+  </div>
+</header>
+
+<div class="note">
+  看不懂“顶点 / 有向边 / 连通”等术语？先读 <a class="inline" href="基本概念.html">图论 · 基本概念</a>。本页用有向图举例（邻接矩阵最一般的情形）。
+</div>
+
+<h2 class="section">一、邻接矩阵 A</h2>
+<div class="rule">
+  设图有 n 个顶点 v₁…vₙ，<b>邻接矩阵 A = (aᵢⱼ)ₙₓₙ</b>，其中：
+  <div class="th"><b>无向图</b>：aᵢⱼ = 1（vᵢ、vⱼ 有边）或 0；此时 <b>A 对称</b>。<br>
+  <b>有向图</b>：aᵢⱼ = 从 vᵢ 指向 vⱼ 的<b>边数</b>（简单图即 1 或 0）；一般<b>不对称</b>。<br>
+  <b>度数</b>：无向图 d(vᵢ)=A 第 i 行（或列）元素之和；有向图 出度=第 i 行和，入度=第 i 列和。</div>
+</div>
+
+<div class="card">
+  <div class="mtx">
+    <div class="fig">
+      <svg width="240" height="240" viewBox="0 0 240 240">
+        <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+        <circle class="v" cx="70" cy="90" r="17"/><text class="v" x="70" y="95">a</text>
+        <circle class="v" cx="180" cy="50" r="17"/><text class="v" x="180" y="55">b</text>
+        <circle class="v" cx="180" cy="150" r="17"/><text class="v" x="180" y="155">c</text>
+        <circle class="v" cx="60" cy="200" r="17"/><text class="v" x="60" y="205">d</text>
+        <line class="am" x1="86" y1="84" x2="165" y2="58" marker-end="url(#ar)"/>
+        <line class="am" x1="180" y1="68" x2="180" y2="132" marker-end="url(#ar)"/>
+        <line class="am" x1="165" y1="150" x2="86" y2="96" marker-end="url(#ar)"/>
+        <line class="am" x1="74" y1="183" x2="66" y2="107" marker-end="url(#ar)"/>
+      </svg>
+      <div class="cap">有向图：a→b，b→c，c→a，d→a</div>
+    </div>
+    <div class="blk">
+      <div class="lbl">邻接矩阵 A（行=起点，列=终点）</div>
+      <table class="m">
+        <tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr>
+        <tr><th>a</th><td>0</td><td class="one">1</td><td>0</td><td>0</td></tr>
+        <tr><th>b</th><td>0</td><td>0</td><td class="one">1</td><td>0</td></tr>
+        <tr><th>c</th><td class="one">1</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><th>d</th><td class="one">1</td><td>0</td><td>0</td><td>0</td></tr>
+      </table>
+      <div class="lbl" style="margin-top:10px">度数：b 出度1(a→b) / c 入度1；d 出度1、入度0</div>
+    </div>
+  </div>
+</div>
+
+<h2 class="section">二、可达矩阵 P</h2>
+<div class="rule">
+  <b>可达矩阵 P</b>：pᵢⱼ = 1 当且仅当<b>存在从 vᢢ 到 vⱼ 的通路</b>（长度 ≥0，自己到自己算可达）。<br>
+  求法：<code>P = A ∨ A² ∨ A³ ∨ … ∨ Aⁿ</code>（∨ 为布尔或，非零即 1）。嫌手算麻烦时，常用 <b>Warshall 算法</b> 直接求 P。<br>
+  注意：<b>有向图 P 一般不对称</b>——“能到”不是双向的；无向图则 P 对称。
+</div>
+
+<div class="card">
+  <div class="mtx">
+    <div class="blk">
+      <div class="lbl">A²（数长度为 2 的通路数）</div>
+      <table class="m">
+        <tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr>
+        <tr><th>a</th><td>0</td><td>0</td><td class="one">1</td><td>0</td></tr>
+        <tr><th>b</th><td class="one">1</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><th>c</th><td>0</td><td class="one">1</td><td>0</td><td>0</td></tr>
+        <tr><th>d</th><td>0</td><td class="one">1</td><td>0</td><td>0</td></tr>
+      </table>
+    </div>
+    <div class="blk">
+      <div class="lbl">可达矩阵 P = A ∨ A² ∨ A³（n=4）</div>
+      <table class="m">
+        <tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr>
+        <tr><th>a</th><td class="one">1</td><td class="one">1</td><td class="one">1</td><td>0</td></tr>
+        <tr><th>b</th><td class="one">1</td><td class="one">1</td><td class="one">1</td><td>0</td></tr>
+        <tr><th>c</th><td class="one">1</td><td class="one">1</td><td class="one">1</td><td>0</td></tr>
+        <tr><th>d</th><td class="one">1</td><td class="one">1</td><td class="one">1</td><td class="one">1</td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="note" style="margin-bottom:0">
+    <b>读 P：</b>a、b、c 三者在环上<b>互达</b>（a、b、c 列都是 1）；<b>d 能到所有人</b>（d 行全 1，经 d→a 再绕环），但<b>没人能到 d</b>（d 列全 0，没有指向 d 的边）。这就是有向图“可达”不对称的典型。
+  </div>
+</div>
+
+<h2 class="section">三、Aᵏ 的妙用</h2>
+<div class="rule">
+  不止可达性：<b>Aᵏ 中第 (i,j) 项 = 从 vᢢ 到 vⱼ 长度为 k 的通路（途径）条数</b>（计数，非布尔）。<br>
+  上例 A² 中 a 到 c = 1（a→b→c 一条），b 到 a = 1（b→c→a），印证“长度 2 的途径数”。考试若问“长度为 k 的通路有几条”，直接算 Aᵏ 即可。
+</div>
+
+<div class="note">
+  <b>易错点：</b>① 混淆<b>行/列</b>含义——邻接矩阵“行=起点、列=终点”，方向搞反 P 就全错；② 把<b>可达矩阵当对称</b>处理（有向图不是）；③ Aᵏ 算的是“长度为 k 的<b>途径数</b>”，允许重复顶点/边，别和“简单通路”混；④ 无向图记得 A 对称，可省一半计算。
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>

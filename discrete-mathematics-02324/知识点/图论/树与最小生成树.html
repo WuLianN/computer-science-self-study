@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 图论知识点：树与最小生成树</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --bad:#dc2626; --bad-soft:#fef2f2; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .fig{text-align:center}
+  .fig .cap{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .fig .cap b{color:var(--ink)}
+  /* 通用 svg 样式 */
+  svg circle.v{fill:#fff;stroke:var(--brand);stroke-width:2}
+  svg text.v{font-size:15px;text-anchor:middle;fill:var(--ink);font-weight:700}
+  svg line.e{stroke:#94a3b8;stroke-width:2}
+  svg .hot{fill:var(--brand);stroke:var(--brand)}
+  /* Kruskal 图 */
+  .kr{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+  .kr .viz{flex:0 0 auto}
+  .kr .side{flex:1;min-width:260px}
+  svg .edge line{stroke:#cbd5e1;stroke-width:2}
+  svg .edge text{font-size:12px;fill:var(--muted);text-anchor:middle;paint-order:stroke;stroke:#fff;stroke-width:3px}
+  svg .edge.consider line{stroke:var(--warn);stroke-width:3.5}
+  svg .edge.consider text{fill:var(--warn);font-weight:700}
+  svg .edge.accept line{stroke:var(--ok);stroke-width:3.5}
+  svg .edge.accept text{fill:var(--ok);font-weight:700}
+  svg .edge.reject line{stroke:var(--bad);stroke-width:2;stroke-dasharray:5 4}
+  svg .edge.reject text{fill:var(--bad);font-weight:700}
+  .ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  .status{margin-top:10px;font-size:14px;font-weight:600;color:var(--ink);min-height:22px}
+  .log{margin-top:8px;font-size:13.5px;color:var(--muted);max-height:230px;overflow:auto;line-height:1.7}
+  .log .ok{color:var(--ok);font-weight:700}
+  .log .no{color:var(--bad);font-weight:700}
+  table.t{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+  table.t th,table.t td{border:1px solid var(--line);padding:6px 9px;text-align:center}
+  table.t th{background:var(--brand-soft);color:var(--brand)}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}
+  .legend i{display:inline-block;width:22px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 图论知识点</h1>
+  <p>树 与 最小生成树（Kruskal / Prim）—— 真题第 31 题就是它，送分题务必熟练。</p>
+  <span class="pill">树=连通无环</span><span class="pill">Kruskal 避圈法</span><span class="pill">Prim 加点法</span>
+  <div class="gotos">
+    <a href="基本概念.html">→ 基本概念</a>
+    <a href="欧拉图与哈密顿图.html">→ 欧拉图与哈密顿图</a>
+    <a href="二叉树遍历.html">→ 二叉树遍历</a>
+    <a href="../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题第31题详解</a>
+  </div>
+</header>
+
+<div class="note">
+  看不懂“连通 / 度数 / 子图”等术语？先读 <a class="inline" href="基本概念.html">图论 · 基本概念</a>。本页例题完全复刻 2025 年 10 月真题第 31 题。
+</div>
+
+<h2 class="section">一、树的基本性质</h2>
+<div class="rule">
+  <b>树（无向树）</b>：<b>连通</b>且<b>无回路</b>的无向图。等价判定（n 个顶点、m 条边）：
+  <div class="th">① 连通且无回路；② 无回路且 <code>m = n−1</code>；③ 连通且 <code>m = n−1</code>；④ 任意两点间<b>恰有一条</b>通路；⑤ 连通但删去任一边就不连通（边是“桥”）。<br>以上五条互为充要条件，记住任一条即可。</div>
+  推论：有 n 个顶点的树必有 <b>n−1 条边</b>；树中<b>度数为 1 的叶子</b>至少 2 个。<br>
+  <b>生成树</b>：包含图 G 全部 n 个顶点、且为树的子图，恰有 n−1 条边。一个连通图可以有<b>多棵</b>生成树。
+</div>
+<div class="card">
+  <div class="fig">
+    <svg width="200" height="150" viewBox="0 0 200 150">
+      <line class="e" x1="100" y1="40" x2="50" y2="100"/>
+      <line class="e" x1="100" y1="40" x2="150" y2="100"/>
+      <line class="e" x1="100" y1="40" x2="100" y2="100"/>
+      <circle class="v" cx="100" cy="40" r="15"/><text class="v" x="100" y="45">r</text>
+      <circle class="v" cx="50" cy="100" r="15"/><text class="v" x="50" y="105">a</text>
+      <circle class="v" cx="150" cy="100" r="15"/><text class="v" x="150" y="105">b</text>
+      <circle class="v" cx="100" cy="100" r="15"/><text class="v" x="100" y="105">c</text>
+    </svg>
+    <div class="cap">一棵 4 顶点 3 边（n−1）的树，r 为根</div>
+  </div>
+</div>
+
+<h2 class="section">二、最小生成树（MST）</h2>
+<div class="rule">
+  <b>最小生成树</b>：在<b>带权连通图</b>中，权值和最小的生成树。顶点、边数固定（n−1 条边），只是<b>挑哪些边</b>使总权最小。<br>
+  两大算法：<b>Kruskal（避圈法）</b>按“边权从小到大”贪心选，不成回路才要；<b>Prim（加点法）</b>从一个顶点出发，每次选“连接已选集合与外面”的最小权边。两者都得到最小生成树（权相同，所选边可能不同）。
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">例题（2025.10 真题第 31 题原图）</h3>
+  <div class="kr">
+    <div class="viz">
+      <svg id="krSvg" viewBox="0 0 340 260" width="340" height="260" style="max-width:100%;height:auto"></svg>
+      <div class="legend">
+        <span><i style="background:var(--warn)"></i>当前考察边</span>
+        <span><i style="background:var(--ok)"></i>已选入 MST</span>
+        <span><i style="background:var(--bad)"></i>舍弃（成回路）</span>
+      </div>
+    </div>
+    <div class="side">
+      <div class="ctrl">
+        <button class="btn" id="krStep">下一步 ▶</button>
+        <button class="btn" id="krAuto">自动播放</button>
+        <button class="btn" id="krReset">重置</button>
+      </div>
+      <div class="status" id="krStatus">点“下一步”按权从小到大考察每条边。</div>
+      <div class="log" id="krLog"></div>
+    </div>
+  </div>
+  <div class="note" style="margin-bottom:0">
+    <b>结果：</b>最小生成树边集 {<b>a–b, b–c, a–e, c–d</b>}，总权 <b>W = 1+2+4+6 = 13</b>。（与真题答案一致）
+  </div>
+</div>
+
+<h2 class="section">三、Prim 算法（同一例题走一遍）</h2>
+<div class="rule">
+  从顶点 a 出发，每步在“已选集合 vs 外部”的边里挑最小权；n 个顶点选 n−1 步结束。
+  <table class="t">
+    <tr><th>步</th><th>已选集合</th><th>候选边（连外部）</th><th>选入边（最小）</th></tr>
+    <tr><td>1</td><td>{a}</td><td>a–b(1), a–c(3), a–e(4)</td><td>a–b(1)</td></tr>
+    <tr><td>2</td><td>{a,b}</td><td>a–c(3), a–e(4), b–c(2)</td><td>b–c(2)</td></tr>
+    <tr><td>3</td><td>{a,b,c}</td><td>a–e(4), c–e(5), c–d(6)</td><td>a–e(4)</td></tr>
+    <tr><td>4</td><td>{a,b,c,e}</td><td>c–d(6), c–e(5), e–d(7)</td><td>c–d(6)</td></tr>
+  </table>
+  最终同样得到 {a–b, b–c, a–e, c–d}，W=13。<b>Kruskal 与 Prim 选边顺序不同，但最小总权一致</b>——这是最小生成树的“最小”保证。
+</div>
+
+<div class="note">
+  <b>易错点：</b>① 把“最小生成树”和“最短路径”混为一谈——MST 要的是<b>全体边权和最小</b>，不要求任两点间路径最短；② Kruskal 忘判“是否成回路”就乱选；③ 算权时把<b>舍弃边</b>也算进去；④ 生成树边数一定是 n−1，数错就说明回路没避干净。
+</div>
+
+<footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+const V={ a:{x:70,y:130}, b:{x:160,y:55}, c:{x:255,y:130}, e:{x:150,y:225}, d:{x:290,y:185} };
+const E=[
+  {id:"a-b",u:"a",v:"b",w:1}, {id:"b-c",u:"b",v:"c",w:2},
+  {id:"a-c",u:"a",v:"c",w:3}, {id:"a-e",u:"a",v:"e",w:4},
+  {id:"c-e",u:"c",v:"e",w:5}, {id:"c-d",u:"c",v:"d",w:6},
+  {id:"e-d",u:"e",v:"d",w:7}
+];
+const sorted=E.slice().sort((x,y)=>x.w-y.w);
+const svg=document.getElementById("krSvg");
+const statusEl=document.getElementById("krStatus");
+const logEl=document.getElementById("krLog");
+const edgeEls={};
+
+// 画顶点与边
+Object.values(V).forEach(v=>{
+  const c=document.createElementNS(NS,"circle");
+  c.setAttribute("class","v"); c.setAttribute("cx",v.x); c.setAttribute("cy",v.y); c.setAttribute("r",17);
+  const t=document.createElementNS(NS,"text");
+  t.setAttribute("class","v"); t.setAttribute("x",v.x); t.setAttribute("y",v.y+5); t.textContent=v.id;
+  svg.appendChild(c); svg.appendChild(t);
+});
+E.forEach(e=>{
+  const A=V[e.u], B=V[e.v];
+  const g=document.createElementNS(NS,"g"); g.setAttribute("class","edge"); g.dataset.edge=e.id;
+  const line=document.createElementNS(NS,"line");
+  line.setAttribute("x1",A.x); line.setAttribute("y1",A.y); line.setAttribute("x2",B.x); line.setAttribute("y2",B.y);
+  const wt=document.createElementNS(NS,"text");
+  wt.setAttribute("x",(A.x+B.x)/2); wt.setAttribute("y",(A.y+B.y)/2-6); wt.textContent=e.w;
+  // 顶点在上层，边在下层：先 append 边组
+  svg.insertBefore(g, svg.firstChild);
+  g.appendChild(line); g.appendChild(wt);
+  edgeEls[e.id]=g;
+});
+
+let parent={}, ptr=0, accepted=[], rejected=[], timer=null, done=false;
+function initDSU(){ parent={}; Object.keys(V).forEach(k=>parent[k]=k); }
+function find(x){ while(parent[x]!==x){ parent[x]=parent[parent[x]]; x=parent[x]; } return x; }
+function union(a,b){ parent[find(a)]=find(b); }
+
+function paint(){
+  Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept","reject"));
+  accepted.forEach(id=>edgeEls[id].classList.add("accept"));
+  rejected.forEach(id=>edgeEls[id].classList.add("reject"));
+  if(ptr<sorted.length) edgeEls[sorted[ptr].id].classList.add("consider");
+}
+
+function step(){
+  if(ptr>=sorted.length){ done=true; if(timer)clearInterval(timer); return; }
+  const e=sorted[ptr];
+  const ru=find(e.u), rv=find(e.v);
+  if(ru===rv){
+    rejected.push(e.id);
+    logEl.innerHTML+=`<div><span class="no">✘ 舍弃</span> ${e.u}–${e.v}(${e.w})：${e.u}、${e.v} 已在同一连通块，加入会成回路。</div>`;
+    statusEl.textContent=`考察 ${e.u}–${e.v}(权${e.w})：成回路 → 舍弃`;
+  } else {
+    accepted.push(e.id); union(e.u,e.v);
+    const w=accepted.reduce((s,id)=>s+E.find(x=>x.id===id).w,0);
+    logEl.innerHTML+=`<div><span class="ok">✔ 选入</span> ${e.u}–${e.v}(${e.w}) → 当前连通块合并，累计权 ${w}。</div>`;
+    statusEl.textContent=`考察 ${e.u}–${e.v}(权${e.w})：不成回路 → 选入，累计权 ${w}`;
+  }
+  ptr++;
+  paint();
+  if(ptr>=sorted.length && !done){
+    done=true; if(timer)clearInterval(timer);
+    const w=accepted.reduce((s,id)=>s+E.find(x=>x.id===id).w,0);
+    logEl.innerHTML+=`<div style="margin-top:4px"><b>完成：MST = {${accepted.join(", ")}}，W = ${w}。</b></div>`;
+    statusEl.textContent=`完成：最小生成树边集 {${accepted.join(", ")}}，总权 W = ${w}。`;
+  }
+}
+
+function reset(){
+  if(timer)clearInterval(timer);
+  initDSU(); ptr=0; accepted=[]; rejected=[]; done=false;
+  logEl.innerHTML=""; paint();
+  statusEl.textContent="点“下一步”按权从小到大考察每条边。";
+}
+
+document.getElementById("krStep").onclick=()=>{ if(!done) step(); };
+document.getElementById("krReset").onclick=reset;
+document.getElementById("krAuto").onclick=()=>{
+  if(done){ reset(); }
+  timer=setInterval(()=>{ step(); if(done) clearInterval(timer); }, 900);
+};
+reset();
+</script>
+</body>
+</html>
