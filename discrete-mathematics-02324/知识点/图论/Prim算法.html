@@ -206,7 +206,8 @@ function render(k){
   }).join("");
   const cur=steps[k];
   const cnt=cur.selected.length+1;
-  statusEl.textContent = `已选 ${cnt} 条边，累计权 = ${prim(startV).weight}` + (cnt===n-1?"（已达 n-1 条，结束）":"");
+  const w=steps.slice(0,k+1).reduce((s,st)=>s+st.chosen.w,0);
+  statusEl.textContent = `已选 ${cnt} 条边，累计权 = ${w}` + (cnt===n-1?"（已达 n-1 条，结束）":"");
 }
 function reset(){
   if(timer) clearInterval(timer);
