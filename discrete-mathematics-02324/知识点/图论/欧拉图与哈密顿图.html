@@ -31,6 +31,8 @@
   svg .edge.consider text{fill:var(--warn);font-weight:700}
   svg .edge.accept line{stroke:var(--ok);stroke-width:3.5}
   svg .edge.accept text{fill:var(--ok);font-weight:700}
+  svg .edge .ord{font-size:12px;font-weight:700;text-anchor:middle;fill:#1f2430;opacity:0;paint-order:stroke;stroke:#fff;stroke-width:3.5px;pointer-events:none}
+  svg .edge.accept .ord, svg .edge.consider .ord{opacity:1}
   svg circle.v{fill:#fff;stroke:#4f46e5;stroke-width:2;transition:fill .25s,stroke .25s}
   svg circle.v.hot{fill:var(--brand);stroke:var(--brand)}
   svg text.v{font-size:15px;text-anchor:middle;fill:var(--ink);font-weight:700}
@@ -69,7 +71,7 @@
 
 <div class="note">
   <b>易错点：</b>① 把“欧拉”和“哈密顿”的判定混为一谈——欧拉只看<b>度数奇偶</b>，哈密顿没有这种简单等价；② 看到“所有点都连通、看起来能绕一圈”就乱判哈密顿，忘了要<b>每个点恰好一次</b>；③ 忽略 Dirac 是<b>充分条件</b>：满足 δ≥n/2 一定有，但不满足也可能有；④ 欧拉通路的两个奇度点，方向搞反（从哪个到哪个）。
-  <br><b>怎么用动画：</b>每个示例图可“欧拉走一遍 / 哈密顿走一遍”，绿=已遍历、橙=当前步，下方同步显示走过的序列。先自己判一遍再点“显示判定”核对。
+  <br><b>怎么用动画：</b>每个示例图可“欧拉走一遍 / 哈密顿走一遍”，绿=已遍历、橙=当前步，<b>边上的数字=经过的先后次序（1 起）</b>，下方同步显示走过的序列。先自己判一遍再点“显示判定”核对。
 </div>
 
 <h2 class="section">练习区（三个示例，覆盖四种情形）</h2>
@@ -130,6 +132,7 @@ examples.forEach((ex,i)=>{
       <span><i style="background:#94a3b8"></i>待处理</span>
       <span><i style="background:var(--warn)"></i>当前步</span>
       <span><i style="background:var(--ok)"></i>已遍历</span>
+      <span>边上的数字=经过次序（1、2、3…）</span>
     </div>
     <div class="ctrl">
       ${hasEuler?'<button class="btn" data-act="euler">▶ 欧拉走一遍</button>':''}
@@ -152,7 +155,11 @@ examples.forEach((ex,i)=>{
     const line=document.createElementNS(NS,"line");
     line.setAttribute("x1",A.x); line.setAttribute("y1",A.y);
     line.setAttribute("x2",B.x); line.setAttribute("y2",B.y);
-    g.appendChild(line); svg.appendChild(g);
+    const ord=document.createElementNS(NS,"text");
+    ord.setAttribute("class","ord");
+    ord.setAttribute("x",(A.x+B.x)/2); ord.setAttribute("y",(A.y+B.y)/2-4);
+    ord.textContent="";
+    g.appendChild(line); g.appendChild(ord); svg.appendChild(g);
     edgeEls[e.u+"-"+e.v]=g;
   });
   ex.vertices.forEach(v=>{
@@ -171,15 +178,18 @@ examples.forEach((ex,i)=>{
     Object.values(vertexEls).forEach(c=>c.classList.remove("hot"));
     for(let j=0;j<=k;j++){
       const g=edgeEls[cur.seq[j]];
-      if(g) g.classList.add((j===k && k < cur.seq.length-1)?"consider":"accept");
+      if(g){
+        g.classList.add((j===k && k < cur.seq.length-1)?"consider":"accept");
+        const o=g.querySelector(".ord"); if(o) o.textContent=j+1;
+      }
     }
     cur.path.slice(0,k+1).forEach(id=>{ if(vertexEls[id]) vertexEls[id].classList.add("hot"); });
-    statusEl.textContent = cur.label + "：" + cur.path.slice(0,k+1).join(" → ");
+    statusEl.textContent = cur.label + "：" + cur.path.slice(0,k+1).join(" → ") + (k>=0?`（边序 ${cur.seq.slice(0,k+1).join(" → ")}）`:"");
   }
   function reset(){
     if(timer) clearInterval(timer);
     k=-1; cur=null;
-    Object.values(edgeEls).forEach(g=>g.classList.remove("consider","accept"));
+    Object.values(edgeEls).forEach(g=>{ g.classList.remove("consider","accept"); const o=g.querySelector(".ord"); if(o) o.textContent=""; });
     Object.values(vertexEls).forEach(c=>c.classList.remove("hot"));
     statusEl.textContent="点上方按钮开始演示。";
   }
