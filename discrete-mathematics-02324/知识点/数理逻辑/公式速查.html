@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 数理逻辑公式速查（等值式 / 推理定律 / 谓词等值与蕴含）</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📑</text></svg>">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .m sub{font-size:11px}
+  .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+  .law th{background:var(--brand-soft);color:var(--brand)}
+  .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+  .law td.nm{white-space:nowrap;font-weight:700}
+  .law td.eq{font-family:"Cambria Math",Cambria,Georgia,serif}
+  .tag{display:inline-block;font-size:11.5px;font-weight:700;border-radius:6px;padding:0 7px;margin-left:6px;vertical-align:1px}
+  .tag.std{background:var(--brand-soft);color:var(--brand)}
+  .tag.hot{background:#fee2e2;color:#dc2626}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  @media print{
+    body{background:#fff}
+    .wrap{max-width:none;padding:0}
+    header.hero,.toc,.gotos{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .rule,.card,.note,.ok{break-inside:avoid;box-shadow:none}
+    a{text-decoration:none;color:inherit}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 数理逻辑公式速查</h1>
+  <p>把散在命题逻辑、谓词逻辑两页里的公式集中成一张可打印的总表：<b>命题等值式 · 推理定律 · 谓词等值式 · 谓词蕴含式</b>。只列公式与名称，推导和例题回两张概念页看。</p>
+  <span class="pill">≡ 等值（双向）</span><span class="pill">⇒ 蕴含/推理（单向）</span><span class="pill">考前默写</span><span class="pill">🖨 可打印</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="命题逻辑.html">→ 命题逻辑</a>
+    <a href="谓词逻辑.html">→ 谓词逻辑</a>
+    <a href="../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">速查目录</div>
+  <a href="#s1">一、命题等值式（A ≡ B）</a>
+  <a href="#s2">二、推理定律（前提 ⇒ 结论）</a>
+  <a href="#s3">三、谓词等值式（量词 ≡ ）</a>
+  <a href="#s4">四、谓词蕴含式（量词 ⇒ ，易错单向）</a>
+  <a href="#s5">五、符号约定与用法</a>
+</div>
+
+<h2 class="section" id="s1">一、命题等值式（A ≡ B）</h2>
+<div class="rule">
+  <span class="m">A ≡ B</span> 指 <span class="m">A↔B</span> 为重言式，可在公式里互相替换（等值代换）。化简时先用<b>蕴含等值式</b>消去 →、↔，再用<b>德摩根</b>把 ¬ 压到变元上，最后分配 / 吸收合并。
+  <table class="law">
+    <tr><th>名称</th><th>等值式</th></tr>
+    <tr><td class="nm">双重否定律</td><td class="eq"><span class="m">¬¬A ≡ A</span></td></tr>
+    <tr><td class="nm">对合（幂等）律</td><td class="eq"><span class="m">A∧A ≡ A</span>；<span class="m">A∨A ≡ A</span></td></tr>
+    <tr><td class="nm">交换律</td><td class="eq"><span class="m">A∧B ≡ B∧A</span>；<span class="m">A∨B ≡ B∨A</span></td></tr>
+    <tr><td class="nm">结合律</td><td class="eq"><span class="m">(A∧B)∧C ≡ A∧(B∧C)</span>；∨ 同理</td></tr>
+    <tr><td class="nm">分配律<span class="tag hot">高频</span></td><td class="eq"><span class="m">A∧(B∨C) ≡ (A∧B)∨(A∧C)</span>；<span class="m">A∨(B∧C) &#x2261; (A∨B)&#x2227;(A∨C)</span></td></tr>
+    <tr><td class="nm">德摩根律<span class="tag hot">高频</span></td><td class="eq"><span class="m">¬(A∧B) ≡ ¬A∨¬B</span>；<span class="m">¬(A∨B) ≡ ¬A∧¬B</span></td></tr>
+    <tr><td class="nm">吸收律</td><td class="eq"><span class="m">A∧(A∨B) ≡ A</span>；<span class="m">A∨(A∧B) ≡ A</span></td></tr>
+    <tr><td class="nm">同一律</td><td class="eq"><span class="m">A∧1 ≡ A</span>；<span class="m">A∨0 ≡ A</span></td></tr>
+    <tr><td class="nm">否定 / 支配律</td><td class="eq"><span class="m">A∧¬A ≡ 0</span>；<span class="m">A∨¬A ≡ 1</span>；<span class="m">A∧0 ≡ 0</span>；<span class="m">A∨1 ≡ 1</span></td></tr>
+    <tr><td class="nm">蕴含等值式<span class="tag hot">高频</span></td><td class="eq"><span class="m">A→B ≡ ¬A∨B</span>（去蕴含的关键）</td></tr>
+    <tr><td class="nm">逆否律</td><td class="eq"><span class="m">A→B ≡ ¬B→¬A</span></td></tr>
+    <tr><td class="nm">蕴含的否定</td><td class="eq"><span class="m">¬(A→B) ≡ A∧¬B</span>（前真后假才为假）</td></tr>
+    <tr><td class="nm">等价等值式</td><td class="eq"><span class="m">A↔B ≡ (A→B)∧(B→A) ≡ (A∧B)∨(¬A∧¬B)</span></td></tr>
+    <tr><td class="nm">输出律（消去）</td><td class="eq"><span class="m">A∨(¬A∧B) ≡ A∨B</span>；<span class="m">A∧(¬A∨B) ≡ A∧B</span></td></tr>
+    <tr><td class="nm">前件结合</td><td class="eq"><span class="m">A→(B→C) ≡ (A∧B)→C</span></td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s2">二、推理定律（前提 ⇒ 结论）</h2>
+<div class="rule">
+  每条都是<b>有效推理</b>：当前提全真时结论必真（等价于"各前提合取 → 结论"是重言式）。构造证明时用<b>规则 P</b>（引入前提）、<b>规则 T</b>（用下表定律或等值式引入）、<b>规则 CP</b>（结论是蕴含式时把前件作附加前提）。
+  <table class="law">
+    <tr><th>名称</th><th>形式</th></tr>
+    <tr><td class="nm">化简律</td><td class="eq"><span class="m">A∧B ⇒ A</span></td></tr>
+    <tr><td class="nm">附加律</td><td class="eq"><span class="m">A ⇒ A∨B</span></td></tr>
+    <tr><td class="nm">合取引入</td><td class="eq"><span class="m">A, B ⇒ A∧B</span></td></tr>
+    <tr><td class="nm">假言推理 MP<span class="tag hot">高频</span></td><td class="eq"><span class="m">A, A→B ⇒ B</span></td></tr>
+    <tr><td class="nm">拒取式 MT<span class="tag hot">高频</span></td><td class="eq"><span class="m">¬B, A→B ⇒ ¬A</span></td></tr>
+    <tr><td class="nm">析取三段论</td><td class="eq"><span class="m">A∨B, ¬A ⇒ B</span></td></tr>
+    <tr><td class="nm">假言三段论</td><td class="eq"><span class="m">A→B, B→C ⇒ A→C</span></td></tr>
+    <tr><td class="nm">等价三段论</td><td class="eq"><span class="m">A↔B, B↔C ⇒ A↔C</span></td></tr>
+    <tr><td class="nm">构造性二难</td><td class="eq"><span class="m">A→B, C→D, A∨C ⇒ B∨D</span></td></tr>
+    <tr><td class="nm">破坏性二难</td><td class="eq"><span class="m">A→B, C→D, ¬B∨¬D ⇒ ¬A∨¬C</span></td></tr>
+    <tr><td class="nm">归谬律（反证）</td><td class="eq"><span class="m">¬A→(B∧¬B) ⇒ A</span></td></tr>
+  </table>
+</div>
+<div class="note">
+  <b>别踩谬误：</b>MP 是"有 A、A→B 得 B"；<b>肯定后件</b>（有 B、A→B 推不出 A）与<b>否定前件</b>（有 ¬A、A→B 推不出 ¬B）都是无效式。MT 才是"否定后件得否定前件"。
+</div>
+
+<h2 class="section" id="s3">三、谓词等值式（量词 ≡ ）</h2>
+<div class="rule">
+  下面 <span class="m">B</span> 均<b>不含自由变元 x</b>（故可进出量词辖域）。
+  <table class="law">
+    <tr><th>名称</th><th>等值式</th></tr>
+    <tr><td class="nm">量词否定律<span class="tag hot">高频</span></td><td class="eq"><span class="m">¬∀xA(x) ≡ ∃x¬A(x)</span>；<span class="m">¬∃xA(x) ≡ ∀x¬A(x)</span></td></tr>
+    <tr><td class="nm">量词双否</td><td class="eq"><span class="m">∀xA(x) ≡ ¬∃x¬A(x)</span>；<span class="m">∃xA(x) ≡ ¬∀x¬A(x)</span></td></tr>
+    <tr><td class="nm">∀ 对 ∧ 分配</td><td class="eq"><span class="m">∀x(A(x)∧B(x)) ≡ ∀xA(x)∧∀xB(x)</span></td></tr>
+    <tr><td class="nm">∃ 对 &#x2228; 分配</td><td class="eq"><span class="m">∃x(A(x)∨B(x)) ≡ ∃xA(x)∨∃xB(x)</span></td></tr>
+    <tr><td class="nm">辖域扩张（∀）</td><td class="eq"><span class="m">∀x(A(x)∧B) ≡ ∀xA(x)∧B</span>；<span class="m">∀x(A(x)∨B) ≡ ∀xA(x)∨B</span></td></tr>
+    <tr><td class="nm">辖域扩张（∃）</td><td class="eq"><span class="m">∃x(A(x)∧B) ≡ ∃xA(x)∧B</span>；<span class="m">∃x(A(x)∨B) &#x2261; ∃xA(x)∨B</span></td></tr>
+    <tr><td class="nm">∃ 提蕴含</td><td class="eq"><span class="m">∃x(A(x)→B(x)) ≡ ∀xA(x)→∃xB(x)</span></td></tr>
+    <tr><td class="nm">同类量词换序</td><td class="eq"><span class="m">∀x∀yA(x,y) ≡ ∀y∀xA(x,y)</span>；<span class="m">∃x∃yA ≡ ∃y∃xA</span></td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s4">四、谓词蕴含式（量词 ⇒ ，易错单向）</h2>
+<div class="rule">
+  这几条<b>只有单向</b>，反向一般不成立——是判断"下列等值式是否正确"选择题的头号陷阱。
+  <table class="law">
+    <tr><th>蕴含式</th><th>说明 / 反例</th></tr>
+    <tr><td class="eq"><span class="m">∀xA(x)∨∀xB(x) ⇒ ∀x(A(x)∨B(x))</span></td><td>反向不成立：x=偶时 A 真、x=奇时 B 真，则右恒真但左两个"所有"都不成立</td></tr>
+    <tr><td class="eq"><span class="m">∃x(A(x)∧B(x)) ⇒ ∃xA(x)∧∃xB(x)</span></td><td>反向不成立：A、B 可能被不同见证元满足</td></tr>
+    <tr><td class="eq"><span class="m">∀x(A(x)→B(x)) ⇒ (∀xA(x)→∀xB(x))</span></td><td>∀ 对 → 只能这样"分配"，非等值</td></tr>
+    <tr><td class="eq"><span class="m">∀x(A(x)→B(x)) ⇒ (∃xA(x)→∃xB(x))</span></td><td>由"每个 A 都是 B"得"有 A 则有 B"</td></tr>
+    <tr><td class="eq"><span class="m">∃y∀xA(x,y) ⇒ ∀x∃yA(x,y)</span></td><td>异类量词换序只能"强推弱"，反向不成立</td></tr>
+    <tr><td class="eq"><span class="m">∀xA(x) ⇒ ∃xA(x)</span></td><td>依赖论域非空（自考默认非空）</td></tr>
+  </table>
+</div>
+<div class="note">
+  <b>记忆口诀：</b>"<b>∀ 配 ∧、∃ 配 ∨</b>"可拆成等值（第三张表）；<b>∀ 配 ∨、∃ 配 ∧</b> 只能单向蕴含（本表前两行）。<b>∀∀ / ∃∃ 能换序，∀∃ 换序只能强推弱</b>。
+</div>
+
+<h2 class="section" id="s5">五、符号约定与用法</h2>
+<div class="ok">
+  <b>符号：</b><span class="m">¬</span> 非、<span class="m">∧</span> 合取(与)、<span class="m">∨</span> 析取(或)、<span class="m">→</span> 蕴含、<span class="m">↔</span> 等价；<span class="m">∀</span> 全称量词、<span class="m">∃</span> 存在量词。<br>
+  <b>≡ 与 ⇒ 的区别：</b><span class="m">A ≡ B</span> 是<b>双向永真</b>（两式可互相代换、真值永远相同）；<span class="m">A ⇒ B</span> 是<b>单向</b>（A 真则 B 必真，即 <span class="m">A→B</span> 为重言式，但 B 真不保证 A 真）。<br><br>
+  本页为速查总表，<b>推导过程、真值表与例题</b>见 <a class="inline" href="命题逻辑.html">命题逻辑</a>（等值演算第四节、推理第六节）与 <a class="inline" href="谓词逻辑.html">谓词逻辑</a>（量词等值第四节）。考前可 <code>⌘/Ctrl + P</code> 打印本页集中默写。
+</div>
+
+<footer>离散数学知识点补充 · 数理逻辑公式速查 · 配合命题逻辑 / 谓词逻辑与真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
