@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 群论深化（元素的阶 / Cayley表 / 置换群 / 正规子群与商群 / 同态）</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .m sub{font-size:11px}
+  .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+  .law th{background:var(--brand-soft);color:var(--brand)}
+  .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  .law td.nm{white-space:nowrap;font-weight:700}
+  table.cayley{border-collapse:collapse;font-size:14px;margin:8px auto}
+  table.cayley th,table.cayley td{border:1px solid var(--line);padding:5px 12px;text-align:center}
+  table.cayley th{background:var(--brand-soft);color:var(--brand)}
+  .figrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 6px 6px;text-align:center}
+  .fig svg{display:block;margin:0 auto}
+  .fig .cap{font-size:13px;color:var(--ink);margin-top:4px;font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 群论深化</h1>
+  <p>本篇是 <a class="inline" style="color:#fff;text-decoration:underline" href="代数系统.html">代数系统</a> 中"群"部分的进阶与做题工具包。基础四公理、子群判定、循环群、拉格朗日请先看代数系统页；这里专攻：元素的阶、Cayley 表、置换群 Sₙ、正规子群与商群、群同态。</p>
+  <span class="pill">元素的阶 |aᵏ|=n/gcd</span><span class="pill">Cayley表</span><span class="pill">置换群/循环分解</span><span class="pill">正规子群/商群</span><span class="pill">群同态与核</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="代数系统.html">→ 代数系统（基础）</a>
+    <a href="格与布尔代数.html">→ 格与布尔代数</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、群的阶与元素的阶</a>
+  <a href="#s2">二、Cayley 表（有限群的运算表）</a>
+  <a href="#s3">三、置换群 Sₙ 与循环分解</a>
+  <a href="#s4">四、陪集 · 正规子群 · 商群</a>
+  <a href="#s5">五、群同态与同构</a>
+  <a href="#s6">六、常见小群速查</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、群的阶与元素的阶</h2>
+<div class="rule">
+  <b>群的阶 |G|</b>：群中元素个数。<b>元素的阶 ord(a)</b>：使 <span class="m">aᵏ = e</span> 成立的<b>最小正整数</b> k；若不存在则称 a 的阶为无穷。
+  <div class="th">
+    核心公式：<span class="m">ord(a) = n ⇒ ord(aᵏ) = n / gcd(n, k)</span>。<br>
+    推论：<span class="m">aᵐ = e ⟺ ord(a) | m</span>；由拉格朗日，<b>元素的阶整除群阶</b>，且 <span class="m">a^|G| = e</span>。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：求元素的阶</h3>
+  在 <span class="m">(Z₁₂, +)</span> 中（幺元 0，"aᵏ"即 ka）：元素 3 的阶 = 使 3k≡0(mod12) 的最小 k = <b>4</b>。一般 <span class="m">ord(x)=12/gcd(12,x)</span>。<br>
+  在 6 阶循环群 <span class="m">G=⟨a⟩</span> 中：ord(a²)=6/gcd(6,2)=<b>3</b>，ord(a³)=6/3=<b>2</b>，ord(a⁴)=6/2=<b>3</b>，ord(a⁵)=6/gcd(6,5)=<b>6</b>（故 a⁵ 也是生成元）。
+</div>
+
+<div class="note">
+  <b>真题呼应：</b>"n 阶循环群生成元个数 = φ(n)"就是 ord(aᵏ)=n 的个数（需 gcd(n,k)=1）。6 阶循环群生成元 = φ(6)=2 个（a、a⁵）。这类计算几乎每年一道。
+</div>
+
+<h2 class="section" id="s2">二、Cayley 表（有限群的运算表）</h2>
+<div class="rule">
+  把有限群 G 的运算列成 <span class="m">|G|×|G|</span> 的表，行头、列头为元素，格内为乘积。
+  <div class="th">
+    <b>拉丁方性质</b>：每行、每列都是 G 中元素的<b>一个排列</b>（不重不漏）——这是判断"给定表是否为群"、以及填表的关键。<br>
+    群表还可读结构：幺元所在行/列与表头同序；每行恰有一个 e（该行元素即该列元素的逆）。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：Klein 四元群 V₄ 的 Cayley 表</h3>
+  <table class="cayley">
+    <tr><th>·</th><th>e</th><th>a</th><th>b</th><th>c</th></tr>
+    <tr><th>e</th><td>e</td><td>a</td><td>b</td><td>c</td></tr>
+    <tr><th>a</th><td>a</td><td>e</td><td>c</td><td>b</td></tr>
+    <tr><th>b</th><td>b</td><td>c</td><td>e</td><td>a</td></tr>
+    <tr><th>c</th><td>c</th><td>b</td><td>a</td><td>e</td></tr>
+  </table>
+  每个非单位元自逆（a²=b²=c²=e），故有 <b>3 个 2 阶元</b>；它是交换群但<b>不是</b> 4 阶循环群（无 4 阶元）——4 阶群恰好这两种：Z₄ 与 V₄。
+</div>
+
+<h2 class="section" id="s3">三、置换群 Sₙ 与循环分解</h2>
+<div class="rule">
+  <b>置换</b>：集合到自身的双射。<b>对称群 Sₙ</b>：{1,…,n} 上全部置换关于"复合"成群，<span class="m">|Sₙ| = n!</span>，幺元是恒等置换，运算一般<b>不交换</b>（n≥3）。
+  <div class="th">
+    任一置换可唯一分解为<b>不相交循环</b>之积；<b>置换的阶 = 各循环长度的最小公倍数 lcm</b>。<br>
+    对换（2-循环）：任何置换可写成对换之积；对换个数的奇偶性决定<b>奇/偶置换</b>；全体偶置换成 <b>交错群 Aₙ</b>，<span class="m">|Aₙ| = n!/2</span>。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：求置换的阶</h3>
+  置换 <span class="m">(1 2 3)(4 5)</span>（一个 3-循环、一个 2-循环，不相交）的阶 = lcm(3,2) = <b>6</b>。S₃ 中：恒等阶 1、三个对换阶 2、两个 3-循环阶 3，与"阶整除 |S₃|=6"吻合。
+</div>
+
+<div class="card">
+  <h3>置换的循环图：看元素怎么“转圈”</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 260 150" width="250" height="144"><defs><marker id="mkP" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#4f46e5"/></marker></defs><g stroke="#4f46e5" stroke-width="1.5" fill="none" marker-end="url(#mkP)"><line x1="73" y1="40" x2="116" y2="40"/><line x1="124" y1="51" x2="102" y2="93"/><line x1="88" y1="93" x2="66" y2="51"/><path d="M205,58 Q238,77 205,96"/><path d="M195,96 Q162,77 195,58"/></g><g><circle cx="60" cy="40" r="13" fill="#eef2ff" stroke="#4f46e5"/><circle cx="130" cy="40" r="13" fill="#eef2ff" stroke="#4f46e5"/><circle cx="95" cy="105" r="13" fill="#eef2ff" stroke="#4f46e5"/><circle cx="200" cy="45" r="13" fill="#ecfdf5" stroke="#059669"/><circle cx="200" cy="110" r="13" fill="#ecfdf5" stroke="#059669"/></g><g font-size="13" text-anchor="middle" fill="#1f2430"><text x="60" y="45">1</text><text x="130" y="45">2</text><text x="95" y="110">3</text><text x="200" y="50">4</text><text x="200" y="115">5</text></g></svg><div class="cap">(1 2 3)(4 5)<small>蓝圈 3-循环、绿圈对换；阶 = lcm(3,2) = 6</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、陪集 · 正规子群 · 商群</h2>
+<div class="rule">
+  设 H≤G，a∈G。<b>左陪集</b> <span class="m">aH={ah|h∈H}</span>。陪集把 G 划分成等大小块，<b>拉格朗日定理</b> <span class="m">|G|=[G:H]·|H|</span>（[G:H] 为陪集个数，称指数）。
+  <div class="th">
+    <b>正规子群</b> <span class="m">N ◁ G</span>：∀a∈G，<span class="m">aN = Na</span>（左右陪集相等）。<b>交换群的每个子群都正规</b>；指数为 2 的子群必正规。<br>
+    <b>商群 G/N</b>：以 N 的所有陪集为元素、运算 <span class="m">(aN)(bN)=(ab)N</span> 构成的群，<span class="m">|G/N|=[G:N]</span>。
+  </div>
+</div>
+
+<div class="note">
+  <b>为什么要"正规"？</b>只有 N 正规，陪集乘法 <span class="m">(aN)(bN)=(ab)N</span> 才与代表元选取无关（运算良好定义），G/N 才能成群。判断商群是否成立，先问 N 是否正规。
+</div>
+
+<div class="card">
+  <h3>陪集把群划分成等大的块 & 子群格</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 300 150" width="290" height="145"><rect x="8" y="10" width="284" height="112" rx="10" fill="#fff" stroke="#94a3b8"/><text x="16" y="28" font-size="13" fill="#3730a3">G = (Z&#8326;,+) = {0,1,2,3,4,5}</text><rect x="20" y="40" width="80" height="70" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="30" y="60" font-size="12" fill="#4f46e5">H</text><text x="30" y="82" font-size="13" fill="#1f2430">{0, 3}</text><rect x="110" y="40" width="80" height="70" rx="8" fill="#ecfdf5" stroke="#059669"/><text x="120" y="60" font-size="12" fill="#059669">1+H</text><text x="120" y="82" font-size="13" fill="#1f2430">{1, 4}</text><rect x="200" y="40" width="80" height="70" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="210" y="60" font-size="12" fill="#d97706">2+H</text><text x="210" y="82" font-size="13" fill="#1f2430">{2, 5}</text></svg><div class="cap">拉格朗日：|G| = [G:H]·|H| = 3×2 = 6<small>三个陪集不重不漏地拼成整个 G</small></div></div>
+    <div class="fig"><svg viewBox="0 0 250 180" width="240" height="173"><g stroke="#94a3b8" stroke-width="1.4"><line x1="125" y1="30" x2="50" y2="90"/><line x1="125" y1="30" x2="125" y2="90"/><line x1="125" y1="30" x2="200" y2="90"/><line x1="50" y1="105" x2="125" y2="155"/><line x1="125" y1="105" x2="125" y2="155"/><line x1="200" y1="105" x2="125" y2="155"/></g><g font-size="12.5" text-anchor="middle"><rect x="95" y="14" width="60" height="24" rx="6" fill="#eef2ff" stroke="#4f46e5"/><text x="125" y="30" fill="#3730a3">V&#8324;</text><rect x="20" y="84" width="60" height="24" rx="6" fill="#fff" stroke="#94a3b8"/><text x="50" y="100">{e,a}</text><rect x="95" y="84" width="60" height="24" rx="6" fill="#fff" stroke="#94a3b8"/><text x="125" y="100">{e,b}</text><rect x="170" y="84" width="60" height="24" rx="6" fill="#fff" stroke="#94a3b8"/><text x="200" y="100">{e,c}</text><rect x="95" y="152" width="60" height="24" rx="6" fill="#fff" stroke="#94a3b8"/><text x="125" y="168">{e}</text></g></svg><div class="cap">V&#8324; 的子群格（哈斯图）<small>顶层 G、中层 3 个 2 阶子群、底层 {e}</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、群同态与同构</h2>
+<div class="rule">
+  <b>同态</b> <span class="m">φ:G→G′</span>：保持运算，<span class="m">φ(a*b) = φ(a)∘φ(b)</span>。特别地 <span class="m">φ(e)=e′</span>、<span class="m">φ(a⁻¹)=φ(a)⁻¹</span>。<br>
+  <div class="th">
+    <b>单同态</b>= injective、<b>满同态</b>= surjective、<b>双同态</b>= <b>同构</b>（记 G≅G′，结构完全相同）。<br>
+    <b>核</b> <span class="m">ker φ={a∈G | φ(a)=e′}</span> 必是 G 的<b>正规子群</b>；<b>像</b> φ(G) 是 G′ 的子群。
+  </div>
+  分类：<b>无限循环群 ≅ (Z,+)</b>；<b>n 阶循环群 ≅ (Zₙ,+)</b>。判断两群是否同构，先看阶、再看是否交换、元素阶的分布是否一致。
+</div>
+
+<div class="card">
+  <h3>例：不同构的判定</h3>
+  <span class="m">(Z₄,+)</span> 与 <span class="m">V₄</span> 都是 4 阶交换群，但 Z₄ 有 4 阶元（生成元），V₄ 元素阶只到 2 → 二者<b>不同构</b>。"元素阶的分布"是同构判断题的常用切入点。
+</div>
+
+<h2 class="section" id="s6">六、常见小群速查</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>群</th><th>阶</th><th>是否交换</th><th>要点</th></tr>
+    <tr><td class="nm">(Z,+) / (Zₙ,+)</td><td>∞ / n</td><td>是</td><td>循环群；Zₙ 生成元 φ(n) 个</td></tr>
+    <tr><td class="nm">(Zₚ*, ×)，p 素数</td><td>p−1</td><td>是</td><td>p−1 阶循环群，每非零元有乘法逆</td></tr>
+    <tr><td class="nm">V₄（Klein）</td><td>4</td><td>是</td><td>3 个 2 阶元，非循环</td></tr>
+    <tr><td class="nm">S₃ / A₃</td><td>6 / 3</td><td>否 / 是</td><td>最小的非交换群是 S₃</td></tr>
+    <tr><td class="nm">Dₙ（二面体）</td><td>2n</td><td>否(n≥3)</td><td>正 n 边形对称群</td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>做题主线：</b>算元素的阶用 <span class="m">ord(aᵏ)=n/gcd(n,k)</span>；看有限群结构画 <b>Cayley 表</b>（记拉丁方）；置换的阶＝循环长度 <b>lcm</b>；能否作商群看子群<b>是否正规</b>；判同构先比<b>阶与元素阶分布</b>。<br><br>
+  基础概念（半群→独异点→群、子群判定、循环群、拉格朗日）见 <a class="inline" href="代数系统.html">代数系统</a>；配合 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">2025年10月</a>、<a class="inline" href="../../../全国2025年4月自考02324《离散数学》真题/真题详解.html">2025年4月</a>、<a class="inline" href="../../../全国2026年4月自考02324《离散数学》真题/真题详解.html">2026年4月</a> 真题里的群论小题（生成元个数、元素阶、Klein 群、模逆元）一起刷。
+</div>
+
+<footer>离散数学知识点补充 · 群论深化 · 配合代数系统页与真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>

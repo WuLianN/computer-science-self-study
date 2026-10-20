@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 集合与函数知识点（集合运算 / 幂集 / 笛卡尔积 / 容斥 / 映射计数）</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#0891b2,#059669);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+  .law th{background:var(--brand-soft);color:var(--brand)}
+  .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  .law td.nm{white-space:nowrap;font-weight:700}
+  .figrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 6px 6px;text-align:center}
+  .fig svg{display:block;margin:0 auto}
+  .fig .cap{font-size:13px;color:var(--ink);margin-top:4px;font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 集合与函数知识点</h1>
+  <p>整套离散数学的地基：关系、代数系统、图论都建立在集合之上。抓住三件事——集合的表示与运算、幂集/笛卡尔积这类"造新集合"的工具、以及函数（映射）的单/满/双射与计数。</p>
+  <span class="pill">∈ / ⊆ / ∅</span><span class="pill">并交差补对称差</span><span class="pill">幂集 2ⁿ</span><span class="pill">笛卡尔积</span><span class="pill">容斥原理</span><span class="pill">单/满/双射与计数</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="../关系/关系.html">→ 关系</a>
+    <a href="../数理逻辑/命题逻辑.html">→ 命题逻辑</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、集合的概念与表示</a>
+  <a href="#s2">二、特殊集合：空集 / 子集 / 幂集</a>
+  <a href="#s3">三、集合运算与运算律</a>
+  <a href="#s4">四、笛卡尔积</a>
+  <a href="#s5">五、有限集合的计数（容斥原理）</a>
+  <a href="#s6">六、函数（映射）：单 / 满 / 双射</a>
+  <a href="#s7">七、函数的复合与逆；映射个数</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、集合的概念与表示</h2>
+<div class="rule">
+  集合是"确定的、互不相同的一些对象"构成的整体，元素与集合是<b>属于</b>关系 <span class="m">∈</span> / <span class="m">∉</span>。三种表示法：
+  <div class="th">
+    <b>列举法</b>：把元素一一列出，如 <span class="m">{1,2,3}</span>；<br>
+    <b>描述法（谓词法）</b>：<span class="m">{x | P(x)}</span>，满足性质 P 的 x 全体；<br>
+    <b>文氏图</b>：用封闭曲线直观表示集合及其关系。
+  </div>
+  集合三特性：<b>确定性</b>（元素是否属于非此即彼）、<b>互异性</b>（无重复元素）、<b>无序性</b>（<span class="m">{1,2}={2,1}</span>）。
+</div>
+
+<h2 class="section" id="s2">二、特殊集合：空集 / 子集 / 幂集</h2>
+<div class="rule">
+  <div class="th">
+    <b>空集 ∅</b>：不含任何元素，<span class="m">∅ &#x2286; A</span> 对任意 A 成立，且 ∅ 是<b>唯一</b>的。<br>
+    <b>子集</b> <span class="m">A ⊆ B</span> ⟺ <span class="m">∀x(x∈A→x∈B)</span>；<b>真子集</b> <span class="m">A ⊂ B</span>：A⊆B 且 A≠B。<br>
+    <b>相等</b>：A⊆B 且 B⊆A &#x21D4; A=B（双向包含是证等集的通法）。
+  </div>
+  <b>幂集</b> <span class="m">P(A)</span>（也记 <span class="m">2^A</span>）：A 的<b>全部子集</b>构成的集合。若 <span class="m">|A|=n</span>，则 <span class="m">|P(A)|=2ⁿ</span>。
+</div>
+
+<div class="card">
+  <h3>例：幂集</h3>
+  <span class="m">A={a,b}</span> → <span class="m">P(A)={∅,{a},{b},{a,b}}</span>，共 2²=4 个元素。<br>
+  注意 <span class="m">∅∈P(∅)</span> 且 <span class="m">P(∅)={∅}</span>（1 个元素）；<span class="m">a∈A</span> 与 <span class="m">{a}⊆A</span> 是<b>不同</b>层次（元素 vs 子集），是最常考的区分点。
+</div>
+
+<h2 class="section" id="s3">三、集合运算与运算律</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>运算</th><th>定义</th></tr>
+    <tr><td class="nm">并 A∪B</td><td><span class="m">{x | x∈A ∨ x∈B}</span></td></tr>
+    <tr><td class="nm">交 A∩B</td><td><span class="m">{x | x∈A ∧ x∈B}</span></td></tr>
+    <tr><td class="nm">差 A−B</td><td><span class="m">{x | x∈A ∧ x∉B}</span>（属于 A 但不属于 B）</td></tr>
+    <tr><td class="nm">补 Ā（相对补）</td><td>全集 U 中不属于 A 者，<span class="m">Ā=U−A</span></td></tr>
+    <tr><td class="nm">对称差 A⊕B</td><td><span class="m">(A−B)∪(B−A) = (A∪B)−(A∩B)</span></td></tr>
+  </table>
+  运算律与命题逻辑等值式一一对应：交换、结合、分配（∪∩ 互相分配）、<b>德摩根</b> <span class="m">(A&#x222A;B)的补 = &#x0100;&#x2229;B&#x0304;</span>、<span class="m">(A&#x2229;B)的补 = &#x0100;&#x222A;B&#x0304;</span>、吸收 <span class="m">A∪(A∩B)=A</span>。
+</div>
+
+<div class="card">
+  <h3>文氏图：五种运算的着色区域</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 150 110" width="150" height="110"><rect x="4" y="4" width="142" height="102" rx="8" fill="#fff" stroke="#94a3b8"/><circle cx="58" cy="55" r="38" fill="#818cf8" fill-opacity="0.35" stroke="#4f46e5"/><circle cx="92" cy="55" r="38" fill="#818cf8" fill-opacity="0.35" stroke="#4f46e5"/><text x="10" y="17" font-size="11" fill="#64748b">U</text><text x="32" y="60" font-size="13" fill="#3730a3">A</text><text x="112" y="60" font-size="13" fill="#3730a3">B</text></svg><div class="cap">A∪B<small>两圆全部</small></div></div>
+    <div class="fig"><svg viewBox="0 0 150 110" width="150" height="110"><defs><clipPath id="ivInt"><circle cx="92" cy="55" r="38"/></clipPath></defs><rect x="4" y="4" width="142" height="102" rx="8" fill="#fff" stroke="#94a3b8"/><circle cx="58" cy="55" r="38" fill="#818cf8" fill-opacity="0.55" clip-path="url(#ivInt)"/><circle cx="58" cy="55" r="38" fill="none" stroke="#4f46e5"/><circle cx="92" cy="55" r="38" fill="none" stroke="#4f46e5"/><text x="10" y="17" font-size="11" fill="#64748b">U</text><text x="32" y="60" font-size="13" fill="#3730a3">A</text><text x="112" y="60" font-size="13" fill="#3730a3">B</text></svg><div class="cap">A∩B<small>中间重叠</small></div></div>
+    <div class="fig"><svg viewBox="0 0 150 110" width="150" height="110"><rect x="4" y="4" width="142" height="102" rx="8" fill="#fff" stroke="#94a3b8"/><circle cx="58" cy="55" r="38" fill="#818cf8" fill-opacity="0.5"/><circle cx="92" cy="55" r="38" fill="#fff"/><circle cx="58" cy="55" r="38" fill="none" stroke="#4f46e5"/><circle cx="92" cy="55" r="38" fill="none" stroke="#4f46e5"/><text x="10" y="17" font-size="11" fill="#64748b">U</text><text x="32" y="60" font-size="13" fill="#3730a3">A</text><text x="112" y="60" font-size="13" fill="#3730a3">B</text></svg><div class="cap">A−B<small>只留 A 去掉重叠</small></div></div>
+    <div class="fig"><svg viewBox="0 0 150 110" width="150" height="110"><rect x="4" y="4" width="142" height="102" rx="8" fill="#818cf8" fill-opacity="0.5" stroke="#94a3b8"/><circle cx="58" cy="55" r="38" fill="#fff" stroke="#4f46e5"/><circle cx="92" cy="55" r="38" fill="none" stroke="#4f46e5"/><text x="10" y="17" font-size="11" fill="#3730a3">U</text><text x="32" y="60" font-size="13" fill="#3730a3">A</text><text x="112" y="60" font-size="13" fill="#3730a3">B</text></svg><div class="cap">A&#772;<small>A 以外全阴影</small></div></div>
+    <div class="fig"><svg viewBox="0 0 150 110" width="150" height="110"><defs><clipPath id="ivSym"><circle cx="92" cy="55" r="38"/></clipPath></defs><rect x="4" y="4" width="142" height="102" rx="8" fill="#fff" stroke="#94a3b8"/><circle cx="58" cy="55" r="38" fill="#818cf8" fill-opacity="0.5"/><circle cx="92" cy="55" r="38" fill="#818cf8" fill-opacity="0.5"/><circle cx="58" cy="55" r="38" fill="#fff" clip-path="url(#ivSym)"/><circle cx="58" cy="55" r="38" fill="none" stroke="#4f46e5"/><circle cx="92" cy="55" r="38" fill="none" stroke="#4f46e5"/><text x="10" y="17" font-size="11" fill="#64748b">U</text><text x="32" y="60" font-size="13" fill="#3730a3">A</text><text x="112" y="60" font-size="13" fill="#3730a3">B</text></svg><div class="cap">A⊕B<small>去掉中间，只留两侧</small></div></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>真题呼应：</b>对称差 A⊕B 的元素 = "只属于其一"者。求 A⊕B 可先并后交再差：<span class="m">(A∪B)−(A∩B)</span> 最快。德摩根律考"补的并＝交的补"，别把 ∪∩ 写反。
+</div>
+
+<h2 class="section" id="s4">四、笛卡尔积</h2>
+<div class="rule">
+  <b>有序对</b> <span class="m">&lt;a,b&gt;</span>：a 为第一分量、b 为第二分量，<span class="m">&lt;a,b&gt;=&lt;c,d&gt; ⟺ a=c 且 b=d</span>（有序！）。<br>
+  <b>笛卡尔积</b> <span class="m">A×B = {&lt;a,b&gt; | a∈A ∧ b∈B}</span>。若 <span class="m">|A|=m, |B|=n</span>，则 <span class="m">|A×B|=m·n</span>。
+  <div class="th">
+    性质：一般 <span class="m">A×B ≠ B×A</span>（<b>不交换</b>）；<span class="m">(A×B)×C ≠ A×(B×C)</span>（不结合）；对∪、∩满足<b>分配律</b>：<span class="m">A×(B∪C)=(A×B)∪(A×C)</span>。
+  </div>
+  二元关系就是 <span class="m">A×B</span> 的子集——这正是<a class="inline" href="../关系/关系.html">关系</a>一章的出发点。
+</div>
+
+<div class="card">
+  <h3>笛卡尔积 A×B：每个 a 配每个 b</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 240 160" width="240" height="160"><ellipse cx="40" cy="80" rx="30" ry="58" fill="#eef2ff" stroke="#4f46e5"/><ellipse cx="200" cy="80" rx="30" ry="70" fill="#ecfdf5" stroke="#059669"/><g stroke="#94a3b8" stroke-width="1"><line x1="40" y1="50" x2="200" y2="30"/><line x1="40" y1="50" x2="200" y2="80"/><line x1="40" y1="50" x2="200" y2="130"/><line x1="40" y1="110" x2="200" y2="30"/><line x1="40" y1="110" x2="200" y2="80"/><line x1="40" y1="110" x2="200" y2="130"/></g><g fill="#4f46e5"><circle cx="40" cy="50" r="3"/><circle cx="40" cy="110" r="3"/></g><g fill="#059669"><circle cx="200" cy="30" r="3"/><circle cx="200" cy="80" r="3"/><circle cx="200" cy="130" r="3"/></g><g font-size="13" fill="#1f2430"><text x="16" y="54">a</text><text x="16" y="114">b</text><text x="212" y="34">1</text><text x="212" y="84">2</text><text x="212" y="134">3</text></g></svg><div class="cap">A×B = {&lt;a,1&gt;,&lt;a,2&gt;,&lt;a,3&gt;,&lt;b,1&gt;,&lt;b,2&gt;,&lt;b,3&gt;}<small>2×3=6 条连线＝6 个有序对</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、有限集合的计数（容斥原理）</h2>
+<div class="rule">
+  两集合：<span class="m">|A∪B| = |A| + |B| − |A∩B|</span>。<br>
+  三集合：
+  <div class="th">
+    <span class="m">|A∪B∪C| = |A|+|B|+|C| − |A∩B| − |A∩C| − |B∩C| + |A∩B∩C|</span>
+  </div>
+  口诀：<b>单加、双减、三重加</b>，交替进行。若讨论"至少属于其一"用并；"都不属于"用 <span class="m">|U| − |A∪B∪C|</span>。
+</div>
+
+<div class="card">
+  <h3>例</h3>
+  30 人中会英语 18、日语 15、德语 12，英日 7、英德 6、日德 5、三语都会 3。至少会一门 = 18+15+12 −7−6−5 +3 = <b>30</b>，故一门都不会 = 30−30 = 0 人。
+</div>
+
+<div class="card">
+  <h3>容斥原理：三圆重叠的加减层次</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 200 170" width="200" height="170"><g fill="#818cf8" fill-opacity="0.28" stroke="#4f46e5"><circle cx="80" cy="65" r="48"/><circle cx="120" cy="65" r="48"/><circle cx="100" cy="105" r="48"/></g><g font-size="14" fill="#3730a3"><text x="50" y="45">A</text><text x="142" y="45">B</text><text x="96" y="145">C</text></g></svg><div class="cap">|A∪B∪C| = 单加 − 双减 + 三重加<small>颜色越深＝被重复算得越多，需逐层修正</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、函数（映射）：单 / 满 / 双射</h2>
+<div class="rule">
+  <b>函数</b> <span class="m">f: A→B</span>：对 A 中<b>每个</b>元素，按 f 在 B 中<b>唯一</b>确定一个像。A 叫定义域 dom f，像的集合叫值域 ran f（⊆B）。
+  <div class="th">
+    <b>单射（一对一）</b>：不同原像→不同像，<span class="m">x₁≠x₂ ⇒ f(x₁)≠f(x₂)</span>；<br>
+    <b>满射</b>：值域＝陪域，<span class="m">ran f = B</span>（B 中每个元素都有原像）；<br>
+    <b>双射（一一对应）</b>：既单且满。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：判断单/满</h3>
+  <span class="m">f:{1,2,3}→{1,2,4}</span>，f=&lt;1,1&gt;,&lt;2,2&gt;,&lt;3,4&gt;：三个像 1,2,4 互不相同→<b>单射</b>；值域{1,2,4}=陪域→<b>满射</b>，故为<b>双射</b>。判断满射看"值域是否等于陪域"，判断单射看"有无两个原像撞同一个像"。
+</div>
+
+<div class="card">
+  <h3>单射 / 满射 / 双射：看箭头怎么连</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 210 150" width="200" height="143"><defs><marker id="mkA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs><ellipse cx="35" cy="75" rx="26" ry="55" fill="#eef2ff" stroke="#4f46e5"/><ellipse cx="175" cy="75" rx="26" ry="62" fill="#ecfdf5" stroke="#059669"/><g stroke="#4f46e5" stroke-width="1.4" marker-end="url(#mkA)"><line x1="55" y1="45" x2="150" y2="30"/><line x1="55" y1="75" x2="150" y2="60"/><line x1="55" y1="105" x2="150" y2="90"/></g><g fill="#4f46e5"><circle cx="35" cy="45" r="3"/><circle cx="35" cy="75" r="3"/><circle cx="35" cy="105" r="3"/></g><g fill="#059669"><circle cx="175" cy="30" r="3"/><circle cx="175" cy="60" r="3"/><circle cx="175" cy="90" r="3"/><circle cx="175" cy="120" r="3"/></g><g font-size="12" fill="#1f2430"><text x="18" y="49">1</text><text x="18" y="79">2</text><text x="18" y="109">3</text><text x="184" y="34">a</text><text x="184" y="64">b</text><text x="184" y="94">c</text><text x="184" y="124">d</text></g></svg><div class="cap">单射非满<small>无人撞像，但 d 无原像</small></div></div>
+    <div class="fig"><svg viewBox="0 0 210 150" width="200" height="143"><defs><marker id="mkB" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs><ellipse cx="35" cy="75" rx="26" ry="55" fill="#eef2ff" stroke="#4f46e5"/><ellipse cx="175" cy="75" rx="26" ry="45" fill="#ecfdf5" stroke="#059669"/><g stroke="#4f46e5" stroke-width="1.4" marker-end="url(#mkB)"><line x1="55" y1="45" x2="150" y2="55"/><line x1="55" y1="75" x2="150" y2="55"/><line x1="55" y1="105" x2="150" y2="95"/></g><g fill="#4f46e5"><circle cx="35" cy="45" r="3"/><circle cx="35" cy="75" r="3"/><circle cx="35" cy="105" r="3"/></g><g fill="#059669"><circle cx="175" cy="55" r="3"/><circle cx="175" cy="95" r="3"/></g><g font-size="12" fill="#1f2430"><text x="18" y="49">1</text><text x="18" y="79">2</text><text x="18" y="109">3</text><text x="184" y="59">a</text><text x="184" y="99">b</text></g></svg><div class="cap">满射非单<small>1、2 撞向 a，但 a、b 都有原像</small></div></div>
+    <div class="fig"><svg viewBox="0 0 210 150" width="200" height="143"><defs><marker id="mkC" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs><ellipse cx="35" cy="75" rx="26" ry="55" fill="#eef2ff" stroke="#4f46e5"/><ellipse cx="175" cy="75" rx="26" ry="55" fill="#ecfdf5" stroke="#059669"/><g stroke="#4f46e5" stroke-width="1.4" marker-end="url(#mkC)"><line x1="55" y1="45" x2="150" y2="45"/><line x1="55" y1="75" x2="150" y2="75"/><line x1="55" y1="105" x2="150" y2="105"/></g><g fill="#4f46e5"><circle cx="35" cy="45" r="3"/><circle cx="35" cy="75" r="3"/><circle cx="35" cy="105" r="3"/></g><g fill="#059669"><circle cx="175" cy="45" r="3"/><circle cx="175" cy="75" r="3"/><circle cx="175" cy="105" r="3"/></g><g font-size="12" fill="#1f2430"><text x="18" y="49">1</text><text x="18" y="79">2</text><text x="18" y="109">3</text><text x="184" y="49">a</text><text x="184" y="79">b</text><text x="184" y="109">c</text></g></svg><div class="cap">双射<small>不撞像、无剩余，一一对应</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s7">七、函数的复合与逆；映射个数</h2>
+<div class="rule">
+  <b>复合</b> <span class="m">g∘f</span>：先做 f 再做 g，<span class="m">(g∘f)(x)=g(f(x))</span>。复合仍为函数，但一般 <span class="m">f∘g ≠ g∘f</span>。<br>
+  <b>逆函数</b> <span class="m">f⁻¹</span>：<b>当且仅当 f 是双射</b>时存在，满足 <span class="m">f⁻¹∘f = I<sub>A</sub></span>。单射保证"可逆不歧义"，满射保证"处处有定义"。
+</div>
+
+<div class="rule">
+  <b>映射计数</b>（|A|=m，|B|=n）——选择/填空高频：
+  <table class="law">
+    <tr><td class="nm">全体函数 A→B</td><td><span class="m">nᵐ</span>（每个 A 元素独立选 B 中像）</td></tr>
+    <tr><td class="nm">单射个数</td><td><span class="m">A(n,m)=n!/(n−m)!</span>（要求 n≥m，否则为 0）</td></tr>
+    <tr><td class="nm">双射个数</td><td><span class="m">m=n</span> 时为 <span class="m">n!</span>，否则 0</td></tr>
+    <tr><td class="nm">满射个数</td><td><span class="m">n!·S(m,n)</span>，S(m,n) 为第二类 Stirling 数</td></tr>
+  </table>
+</div>
+
+<div class="note">
+  <b>易错：</b>① 函数要求 A 中<b>每个</b>元素都有<b>唯一</b>像——"一个原像对应多个像"不是函数；② 单射/满射判定要对着<b>具体陪域</b>看，换陪域结论可能变；③ 满射公式含 Stirling 数，小题常给小数字让你枚举或用容斥验证，别死记。
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一句话主线：</b>表示（∈ 与 ⊆ 分清元素/子集）→ 造集合（幂集 2ⁿ、笛卡尔积 m·n）→ 做运算（并交差补对称差 + 德摩根）→ 数元素（容斥"单加双减三重加"）→ 讲映射（单/满/双射定义）→ 复合与逆（双射才可逆）→ 算个数（nᵐ、A(n,m)、n!、n!·S(m,n)）。<br><br>
+  集合是关系与代数结构的地基，学完本页直接衔接 <a class="inline" href="../关系/关系.html">关系</a>（A×B 的子集）与 <a class="inline" href="../代数系统/代数系统.html">代数系统</a>（集合 + 运算）。映射计数、幂集元素数、对称差、容斥几乎每卷都有 1–2 道小题，见 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">真题详解</a>。
+</div>
+
+<footer>离散数学知识点补充 · 集合与函数 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>

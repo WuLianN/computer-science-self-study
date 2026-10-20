@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 谓词逻辑知识点（量词 / 符号化 / 前束范式 / 推理）</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .lvl{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;margin-right:6px}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .m sub{font-size:11px}
+  .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+  .law th{background:var(--brand-soft);color:var(--brand)}
+  .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  .law td.nm{white-space:nowrap;font-weight:700}
+  .figrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 6px 6px;text-align:center}
+  .fig svg{display:block;margin:0 auto}
+  .fig .cap{font-size:13px;color:var(--ink);margin-top:4px;font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 谓词逻辑知识点</h1>
+  <p>命题逻辑的升级：把原子命题拆成"个体 + 谓词 + 量词"，从而刻画"所有 / 存在"这类量化关系。核心三件事——正确符号化、化成前束范式、用量词推理规则做证明。</p>
+  <span class="pill">个体/谓词/量词</span><span class="pill">约束与自由变元</span><span class="pill">符号化</span><span class="pill">前束范式</span><span class="pill">量词推理 UI/UG/EI/EG</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="命题逻辑.html">→ 命题逻辑</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+    <a href="../关系/关系.html">→ 关系</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、个体、谓词与量词</a>
+  <a href="#s2">二、谓词公式：辖域、约束变元与自由变元</a>
+  <a href="#s3">三、自然语言符号化（含"所有/存在/唯一"）</a>
+  <a href="#s4">四、量词的等值演算与否定</a>
+  <a href="#s5">五、前束范式</a>
+  <a href="#s6">六、谓词推理理论（四条量词规则）</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、个体、谓词与量词</h2>
+<div class="rule">
+  <div class="th">
+    <b>个体</b>：被讨论的对象。具体个体（常量，如"张三"）与个体变元（变量 x、y）。<br>
+    <b>谓词</b>：刻画个体的性质或个体间的关系。一元谓词 <span class="m">F(x)</span> 表性质，二元谓词 <span class="m">G(x,y)</span> 表关系。<br>
+    <b>个体域（论域）</b>：个体变元的取值范围。全总个体域 = 宇宙一切对象；限定论域需加"特性谓词"。
+  </div>
+  两个量词：
+  <table class="law">
+    <tr><th>符号</th><th>名称</th><th>含义</th><th>等价直观（有限域）</th></tr>
+    <tr><td class="nm"><span class="m">∀x</span></td><td>全称量词</td><td>对论域中<b>每一个</b> x</td><td>像合取 F(a)∧F(b)∧…</td></tr>
+    <tr><td class="nm"><span class="m">∃x</span></td><td>存在量词</td><td>论域中<b>至少存在一个</b> x</td><td>像析取 F(a)∨F(b)∨…</td></tr>
+  </table>
+  还有<b>存在唯一量词</b> <span class="m">∃!x</span>：恰有一个 x 满足。
+</div>
+
+<h2 class="section" id="s2">二、谓词公式：辖域、约束变元与自由变元</h2>
+<div class="rule">
+  <b>量词的辖域</b>：紧跟量词后面的最短公式（无括号时只盖住下一个原子式；有括号 <span class="m">(∀x)</span> 则盖住括号内全部）。<br>
+  <div class="th">
+    <b>约束变元</b>：出现在某量词辖域内、且被该量词限定的变元（如 <span class="m">∀x P(x)</span> 里的 x）。<br>
+    <b>自由变元</b>：不被任何量词约束的变元（如 <span class="m">∀x P(x,y)</span> 里的 y）。公式含自由变元时其真假依赖赋值，本质是"开语句"。
+  </div>
+  <b>改名规则</b>：约束变元可一致地换成新名（<span class="m">∀x P(x) ≡ ∀z P(z)</span>），自由变元不可改名。
+</div>
+
+<div class="note">
+  <b>真题呼应：</b>"下列公式中 x 是自由变元的是" —— 逐项看 x 是否落在某个 ∀x / ∃x 的辖域内。只要有一处 x 未被约束，它就是自由出现。别把辖域看窄/看宽。
+</div>
+
+<div class="card">
+  <h3>量词的辖域：嵌套的方框</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 260 120" width="260" height="120"><text x="6" y="40" font-size="17" fill="#1f2430">∀x</text><text x="44" y="40" font-size="17" fill="#1f2430">P(x)</text><text x="96" y="40" font-size="17" fill="#1f2430">→</text><text x="120" y="40" font-size="17" fill="#1f2430">∃y</text><text x="160" y="40" font-size="17" fill="#1f2430">Q(x,y)</text><rect x="40" y="22" width="152" height="26" rx="6" fill="none" stroke="#4f46e5" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="156" y="22" width="60" height="26" rx="6" fill="none" stroke="#059669" stroke-width="1.6" stroke-dasharray="4 3"/><text x="40" y="64" font-size="12" fill="#4f46e5">∀x 的辖域（约束整段 P(x)→∃y Q）</text><text x="150" y="84" font-size="12" fill="#059669">∃y 的辖域（仅 Q(x,y)）</text></svg><div class="cap">无括号时量词只管“下一个原子式”<small>加括号才能拓宽辖域；内层被外层嵌套</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s3">三、自然语言符号化（含"所有/存在/唯一"）</h2>
+<div class="rule">
+  限定论域（非全总域）时的<b>黄金搭配</b>：
+  <div class="th">
+    "<b>所有 A 都是 B</b>" → <span class="m">∀x(A(x)→B(x))</span>　（全称配 <b>→</b>，绝不用 ∧）<br>
+    "<b>存在 A 是 B</b>" → <span class="m">∃x(A(x)∧B(x))</span>　（存在配 <b>∧</b>，绝不用 →）<br>
+    "<b>没有 A 是 B</b>" → <span class="m">¬∃x(A(x)∧B(x)) ≡ ∀x(A(x)→¬B(x))</span><br>
+    "<b>恰有一个 A</b>" → <span class="m">∃x(A(x)∧∀y(A(y)→y=x))</span>
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：经典翻译</h3>
+  设 F(x)：x 是自然数，G(x)：x 是整数，论域为实数。<br>
+  • "所有自然数都是整数" → <span class="m">∀x(F(x)→G(x))</span><br>
+  • "有的实数是有理数" → <span class="m">∃x(R(x)∧Q(x))</span><br>
+  • "不存在最大的自然数" → <span class="m">∀x(N(x)→∃y(N(y)∧y&gt;x))</span>（每个自然数都有比它更大的）
+</div>
+
+<div class="note">
+  <b>最易错：</b>把"所有 A 是 B"写成 <span class="m">∀x(A(x)∧B(x))</span>（错！这断言了论域全是 A 且全是 B）；把"存在 A 是 B"写成 <span class="m">∃x(A(x)→B(x))</span>（错！只要有一个非 A 就自动为真）。牢记<b>全称→、存在∧</b>。
+</div>
+
+<h2 class="section" id="s4">四、量词的等值演算与否定</h2>
+<div class="rule">
+  <b>量词否定律（德摩根推广）：</b>
+  <div class="th">
+    <span class="m">¬∀x P(x) ≡ ∃x ¬P(x)</span>　（"并非所有"＝"存在不"）<br>
+    <span class="m">¬∃x P(x) ≡ ∀x ¬P(x)</span>　（"不存在"＝"所有都不"）
+  </div>
+  <b>辖域收缩 / 扩张</b>（当公式某部分不含被约束变元时）：
+  <table class="law">
+    <tr><td class="nm">∀ 分配 ∧</td><td><span class="m">∀x(P(x)∧Q) ≡ ∀x P(x)∧Q</span>（Q 无自由 x）</td></tr>
+    <tr><td class="nm">∃ 分配 ∨</td><td><span class="m">∃x(P(x)∨Q) ≡ ∃x P(x)∨Q</span></td></tr>
+    <tr><td class="nm">量词对 →</td><td><span class="m">∀x(P(x)→Q) ≡ ∃x P(x)→Q</span>；<span class="m">∃x(P(x)→Q) ≡ ∀x P(x)→Q</span></td></tr>
+  </table>
+  <b>同类量词可换序</b>（∀x∀y ≡ ∀y∀x、∃x∃y ≡ ∃y∃x）；<b>异类量词不可换序</b>（∀x∃y &#x2262; ∃y∀x）。
+</div>
+
+<div class="card">
+  <h3>例：否定并前移</h3>
+  <span class="m">¬∀x(P(x)→∃y Q(y)) ≡ ∃x ¬(P(x)→∃y Q(y)) ≡ ∃x(P(x)∧∀y ¬Q(y))</span>。先把 → 化 ¬∨，再逐层用否定律把 ¬ 推进辖域。
+</div>
+
+<div class="card">
+  <h3>量词对当方阵（Square of Opposition）</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 320 250" width="320" height="250"><g stroke="#64748b" stroke-width="1.4"><line x1="126" y1="48" x2="194" y2="48"/><line x1="126" y1="198" x2="194" y2="198"/><line x1="67" y1="66" x2="67" y2="180"/><line x1="253" y1="66" x2="253" y2="180"/></g><g stroke="#dc2626" stroke-width="1.4" stroke-dasharray="5 3"><line x1="110" y1="64" x2="215" y2="182"/><line x1="210" y1="64" x2="105" y2="182"/></g><g font-size="11.5" fill="#64748b"><text x="132" y="42">反对</text><text x="126" y="216">下反对</text><text x="40" y="128">差等↓</text><text x="256" y="128">差等↓</text></g><text x="145" y="118" font-size="11.5" fill="#dc2626">矛盾</text><g><rect x="8" y="30" width="118" height="36" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="20" y="53" font-size="15" fill="#3730a3">∀x P(x)</text><rect x="194" y="30" width="118" height="36" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="206" y="53" font-size="15" fill="#3730a3">∀x ¬P(x)</text><rect x="8" y="180" width="118" height="36" rx="8" fill="#ecfdf5" stroke="#059669"/><text x="20" y="203" font-size="15" fill="#065f46">∃x P(x)</text><rect x="194" y="180" width="118" height="36" rx="8" fill="#ecfdf5" stroke="#059669"/><text x="206" y="203" font-size="15" fill="#065f46">∃x ¬P(x)</text></g></svg><div class="cap">四角关系一图记全<small>红虚线＝矛盾(一真一假)；上边＝反对(不同真)；下边＝下反对(不同假)；左右竖线＝差等(上真⇒下真)</small></div></div>
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、前束范式</h2>
+<div class="rule">
+  <b>前束范式</b>：所有量词都集中在公式<b>最前面</b>，其后是不含量词的母式，形如 <span class="m">Q₁x₁Q₂x₂…M(x₁,x₂,…)</span>，其中每个 Qᵢ ∈ {∀,∃}。
+  <ol class="steps">
+    <li>用<b>蕴含等值式</b>消去 →、↔（<span class="m">A→B ≡ ¬A∨B</span>）。</li>
+    <li>把 <b>¬ 内推</b>到各原子谓词前（用量词否定律、德摩根）。</li>
+    <li>若约束变元重名，用<b>改名规则</b>换成不同变元。</li>
+    <li>用辖域扩张把<b>所有量词提到最左</b>，保持原有先后顺序，得到前束范式。</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>例</h3>
+  求 <span class="m">∀x P(x)→∃y Q(y)</span> 的前束范式：<br>
+  ① 消 →：<span class="m">¬∀x P(x)∨∃y Q(y)</span>　② 内推 ¬：<span class="m">∃x ¬P(x)∨∃y Q(y)</span>　③ 提前量词：<span class="m">∃x∃y(¬P(x)∨Q(y))</span> ∎（母式 ¬P(x)∨Q(y)）
+</div>
+
+<div class="note">
+  <b>易错：</b>前提取量词时，若量词在<b>蕴含前件</b>里被 ¬ 覆盖，提出来要<b>变号</b>（∀↔∃）。这是前束范式题的最大失分点。
+</div>
+
+<h2 class="section" id="s6">六、谓词推理理论（四条量词规则）</h2>
+<div class="rule">
+  在命题逻辑推理规则（MP、MT、析取三段论…）之外，增加四条量词规则：
+  <table class="law">
+    <tr><th>简称</th><th>名称</th><th>形式</th></tr>
+    <tr><td class="nm">US / UI</td><td>全称量词消去</td><td><span class="m">∀x A(x) ⟹ A(c)</span>（c 为论域中任意特定个体）</td></tr>
+    <tr><td class="nm">UG</td><td>全称量词引入</td><td><span class="m">A(c)（c 任意）⟹ ∀x A(x)</span></td></tr>
+    <tr><td class="nm">ES / EI</td><td>存在量词消去</td><td><span class="m">∃x A(x) ⟹ A(c)</span>（c 是<b>新</b>常元，之前未出现过）</td></tr>
+    <tr><td class="nm">EG</td><td>存在量词引入</td><td><span class="m">A(c) ⟹ ∃x A(x)</span></td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>例：构造有效论证</h3>
+  前提：<span class="m">∀x(F(x)→G(x))</span>，<span class="m">∃x F(x)</span>；结论：<span class="m">∃x G(x)</span>。
+  <ol class="steps">
+    <li>∃x F(x)　（前提引入 P）</li>
+    <li>F(c)　（2 存在消去 ES，c 为新常元）</li>
+    <li>∀x(F(x)→G(x))　（前提引入 P）</li>
+    <li>F(c)→G(c)　（4 全称消去 US）</li>
+    <li>G(c)　（3、5 假言推理 MP）</li>
+    <li>∃x G(x)　（6 存在引入 EG）∎</li>
+  </ol>
+</div>
+
+<div class="note">
+  <b>使用顺序与限制：</b>先<b>消存在量词 ES</b>（引入新常元）再消全称量词，避免常元冲突；UG 引入全称时该常元必须是"任意"而非 ES 引入的特定常元。每步注明规则与依据，同命题逻辑。
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一句话主线：</b>拆结构（个体+谓词+量词）→ 定辖域（分约束/自由变元）→ 符号化（全称配→、存在配∧）→ 会否定（¬∀≡∃¬、¬∃≡∀¬）→ 化前束范式（消→、内推¬、改名、提量词）→ 用四条量词规则（US/UG/ES/EG）串命题推理做证明。<br><br>
+  配合 <a class="inline" href="命题逻辑.html">命题逻辑</a> 一起复习：谓词公式的母式部分就是命题逻辑的等值演算。真题里"符号化""自由变元""前束范式""推理证明"四类小题几乎每卷必出，见 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">2025年10月</a>、<a class="inline" href="../../../全国2025年4月自考02324《离散数学》真题/真题详解.html">2025年4月</a>、<a class="inline" href="../../../全国2026年4月自考02324《离散数学》真题/真题详解.html">2026年4月</a> 真题详解。
+</div>
+
+<footer>离散数学知识点补充 · 谓词逻辑 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>

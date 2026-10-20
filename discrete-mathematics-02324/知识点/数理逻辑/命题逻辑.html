@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 · 命题逻辑知识点（联结词 / 真值表 / 等值演算 / 主范式 / 推理）</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+  .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#0891b2);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+  .card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+  .rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+  .rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+  .rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  a.inline{color:var(--brand);font-weight:700;text-decoration:none}
+  a.inline:hover{text-decoration:underline}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .m sub{font-size:11px}
+  table.vt{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;text-align:center}
+  table.vt th{background:var(--brand-soft)}
+  table.vt th,table.vt td{border:1px solid var(--line);padding:5px 6px}
+  table.vt td.hot{background:#fef3c7;font-weight:700}
+  .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+  .law th{background:var(--brand-soft);color:var(--brand)}
+  .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+  .law td.nm{white-space:nowrap;font-weight:700}
+  .figrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 6px 6px;text-align:center}
+  .fig svg{display:block;margin:0 auto}
+  .fig .cap{font-size:13px;color:var(--ink);margin-top:4px;font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 · 命题逻辑知识点</h1>
+  <p>02324 第一大章，也是谓词逻辑与推理的基础。一条主线：把自然语言翻译成公式 → 用真值表判类型 → 用等值演算化简 → 化成唯一的"主范式" → 最后用推理规则做有效论证。</p>
+  <span class="pill">联结词与翻译</span><span class="pill">真值表</span><span class="pill">等值演算</span><span class="pill">主析取/主合取范式</span><span class="pill">推理理论 CP</span>
+  <div class="gotos">
+    <a href="../../../index.html">← 返回首页</a>
+    <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
+    <a href="../关系/关系.html">→ 关系</a>
+    <a href="../代数系统/代数系统.html">→ 代数系统</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、命题与联结词（含自然语言翻译）</a>
+  <a href="#s2">二、命题公式与真值表</a>
+  <a href="#s3">三、公式分类：重言式 / 矛盾式 / 可满足式</a>
+  <a href="#s4">四、等值演算（核心等值式速查）</a>
+  <a href="#s5">五、主范式（小项 / 大项 / 主析取 / 主合取）</a>
+  <a href="#s6">六、推理理论（P / T / CP 规则）</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、命题与联结词（含自然语言翻译）</h2>
+<div class="rule">
+  <b>命题</b>：能判断真假的<b>陈述句</b>，真值只能是 真(1/T) 或 假(0/F)。疑问句、祈使句、感叹句、含未定变元的开语句都不是命题。<br>
+  <div class="th">
+    <b>原子命题</b>：不能再拆分的命题，用大写字母 P、Q、R 表示。<br>
+    <b>复合命题</b>：由原子命题 + 联结词构成。
+  </div>
+  五个基本联结词（务必牢记对应的中文句式）：
+  <table class="law">
+    <tr><th>符号</th><th>名称</th><th>读法 / 自然语言</th><th>真值要点</th></tr>
+    <tr><td class="nm"><span class="m">¬P</span></td><td>否定</td><td>非 P、P 的否定</td><td>与 P 相反</td></tr>
+    <tr><td class="nm"><span class="m">P∧Q</span></td><td>合取</td><td>P 并且 Q、P 而且 Q</td><td>全真才真</td></tr>
+    <tr><td class="nm"><span class="m">P∨Q</span></td><td>析取</td><td>P 或者 Q（可兼或）</td><td>全假才假</td></tr>
+    <tr><td class="nm"><span class="m">P→Q</span></td><td>蕴含</td><td>如果 P 那么 Q；P 仅当 Q</td><td>唯一假：前真后假(1→0)</td></tr>
+    <tr><td class="nm"><span class="m">P↔Q</span></td><td>等价</td><td>P 当且仅当 Q</td><td>两者相同才真</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>四联结词的真值“地图”</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 240 165" width="230" height="158"><text x="46" y="30" font-size="12" fill="#64748b">P＼Q</text><text x="108" y="30" font-size="12" fill="#374151">Q=1</text><text x="178" y="30" font-size="12" fill="#374151">Q=0</text><text x="46" y="72" font-size="12" fill="#374151">P=1</text><text x="46" y="122" font-size="12" fill="#374151">P=0</text><rect x="88" y="42" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="74" font-size="22" fill="#059669">1</text><rect x="158" y="42" width="60" height="50" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/><text x="182" y="74" font-size="22" fill="#dc2626">0</text><rect x="88" y="96" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="128" font-size="22" fill="#059669">1</text><rect x="158" y="96" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="182" y="128" font-size="22" fill="#059669">1</text><text x="88" y="160" font-size="11" fill="#dc2626">⚠ 仅“前真后假”一格为 0</text></svg><div class="cap">P→Q（蕴含）<small>只怕“P真而Q假”，其余全真</small></div></div>
+    <div class="fig"><svg viewBox="0 0 240 165" width="230" height="158"><text x="46" y="30" font-size="12" fill="#64748b">P＼Q</text><text x="108" y="30" font-size="12" fill="#374151">Q=1</text><text x="178" y="30" font-size="12" fill="#374151">Q=0</text><text x="46" y="72" font-size="12" fill="#374151">P=1</text><text x="46" y="122" font-size="12" fill="#374151">P=0</text><rect x="88" y="42" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="74" font-size="22" fill="#059669">1</text><rect x="158" y="42" width="60" height="50" fill="#fee2e2" stroke="#94a3b8"/><text x="182" y="74" font-size="22" fill="#dc2626">0</text><rect x="88" y="96" width="60" height="50" fill="#fee2e2" stroke="#94a3b8"/><text x="112" y="128" font-size="22" fill="#dc2626">0</text><rect x="158" y="96" width="60" height="50" fill="#fee2e2" stroke="#94a3b8"/><text x="182" y="128" font-size="22" fill="#dc2626">0</text><text x="88" y="160" font-size="11" fill="#059669">只有 P、Q 都真（左上）才为 1</text></svg><div class="cap">P∧Q（合取）<small>全真才真，其余三格皆 0</small></div></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>翻译三大易错句：</b><br>
+  ① "<b>只要</b> P 就 Q" = P→Q（充分条件，P 在前）；"<b>只有</b> P 才 Q" = Q→P（必要条件，Q 在前）。口诀：<b>只要→前件，只有→后件</b>。<br>
+  ② "P <b>仅当</b> Q" = P→Q；"P <b>除非</b> Q" 常译为 P→Q 或 ¬Q→¬P 视语境。<br>
+  ③ "P 是 Q 的充分条件" = P→Q；"P 是 Q 的必要条件" = Q→P。
+</div>
+
+<div class="card">
+  <h3>例：把句子符号化</h3>
+  设 P：今天下雨，Q：我去登山。<br>
+  • "如果今天不下雨，我就去登山" → <span class="m">¬P→Q</span><br>
+  • "只有今天下雨，我才不去登山" → 去登山→下雨，即 <span class="m">Q→P</span>（"只有…才…"把后件放前面）<br>
+  • "我今天既下雨又去登山" → <span class="m">P∧Q</span>
+</div>
+
+<h2 class="section" id="s2">二、命题公式与真值表</h2>
+<div class="rule">
+  把命题变元、联结词与括号按规则组合即得<b>命题公式</b>。联结词优先级（高→低）：<br>
+  <div class="th"><span class="m">¬</span> ＞ <span class="m">∧</span> ＞ <span class="m">∨</span> ＞ <span class="m">→</span> ＞ <span class="m">↔</span>；括号内最先。相同优先级从左到右。</div>
+  <b>真值表</b>：n 个变元有 <span class="m">2ⁿ</span> 行赋值。约定按二进制顺序枚举（P 为最高位），例如 3 变元 8 行依次为 000,001,…,111。
+</div>
+
+<div class="card">
+  <h3>例：三变元公式的真值表片段</h3>
+  对 <span class="m">(P→Q)∧(Q→R)</span>，逐行算 P→Q、Q→R 再合取。列表时先固定 P 的 4 个 0、4 个 1，再让 Q 两个 0 两个 1 交替，R 逐个 0/1 交替——这是最不易乱的填表顺序。
+</div>
+
+<div class="ok">
+  <b>成真的赋值 vs 成假的赋值：</b>使公式为 1 的赋值叫<b>成真赋值</b>，为 0 的叫<b>成假赋值</b>。它们正是第五章写<b>主析取范式</b>（取成真行）与<b>主合取范式</b>（取成假行）的依据，别记反。
+</div>
+
+<h2 class="section" id="s3">三、公式分类：重言式 / 矛盾式 / 可满足式</h2>
+<div class="rule">
+  按真值表结果列（最后一列）分类：
+  <div class="th">
+    <span class="lvl">重言式（永真式）</span> 全部为 1；<br>
+    <span class="lvl">矛盾式（永假式）</span> 全部为 0；<br>
+    <span class="lvl">可满足式</span> 至少有一个 1（重言式是可满足的特例；<b>非重言的可满足式</b>指既有 1 又有 0）。
+  </div>
+  三者关系：矛盾式 ⊂ 可满足式；重言式 ⊂ 可满足式。<b>判定方法</b>：算真值表看最后一列，或等值演算化到 <span class="m">1</span> / <span class="m">0</span> / 其它。
+</div>
+
+<div class="note">
+  <b>真题呼应：</b>判定 "(P∧Q)→Q" 是重言式（化简得 ¬P∨1≡1）；"(P→Q)∧P∧¬Q" 是矛盾式（含 P∧¬Q 必为 0）；"既非永真又非永假"就是可满足式——这类 2 分选择题几乎每卷必考。
+</div>
+
+<h2 class="section" id="s4">四、等值演算（核心等值式速查）</h2>
+<div class="rule">
+  若 <span class="m">A↔B</span> 为重言式，则 A 与 B 等值，记 <span class="m">A≡B</span>。等值演算就是用下表逐代换化简公式。
+  <table class="law">
+    <tr><th>名称</th><th>等值式</th></tr>
+    <tr><td class="nm">双重否定</td><td><span class="m">¬¬A ≡ A</span></td></tr>
+    <tr><td class="nm">交换律</td><td><span class="m">A∧B ≡ B∧A</span>；<span class="m">A∨B &#x2261; B∨A</span></td></tr>
+    <tr><td class="nm">结合律</td><td><span class="m">(A∧B)∧C ≡ A∧(B∧C)</span>；∨ 同理</td></tr>
+    <tr><td class="nm">分配律</td><td><span class="m">A∧(B∨C) ≡ (A∧B)∨(A∧C)</span>；<span class="m">A∨(B∧C) ≡ (A∨B)∧(A∨C)</span></td></tr>
+    <tr><td class="nm">德摩根律</td><td><span class="m">¬(A∧B) ≡ ¬A∨¬B</span>；<span class="m">¬(A∨B) ≡ ¬A∧¬B</span></td></tr>
+    <tr><td class="nm">吸收律</td><td><span class="m">A∧(A∨B) ≡ A</span>；<span class="m">A∨(A&#x2227;B) ≡ A</span></td></tr>
+    <tr><td class="nm">幂等律</td><td><span class="m">A∧A ≡ A</span>；<span class="m">A∨A ≡ A</span></td></tr>
+    <tr><td class="nm">同一律</td><td><span class="m">A∧1 ≡ A</span>；<span class="m">A∨0 &#x2261; A</span></td></tr>
+    <tr><td class="nm">否定/支配律</td><td><span class="m">A∧¬A &#x2261; 0</span>；<span class="m">A∨¬A ≡ 1</span>；<span class="m">A∧0≡0</span>；<span class="m">A∨1≡1</span></td></tr>
+    <tr><td class="nm">蕴含等值式</td><td><span class="m">A→B ≡ ¬A∨B</span>（去蕴含的关键！）</td></tr>
+    <tr><td class="nm">逆否等值式</td><td><span class="m">A→B ≡ ¬B→¬A</span></td></tr>
+    <tr><td class="nm">等价等值式</td><td><span class="m">A↔B ≡ (A→B)∧(B→A) ≡ (A∧B)∨(¬A∧¬B)</span></td></tr>
+  </table>
+</div>
+
+<div class="note">
+  <b>化简套路：</b>先用<b>蕴含等值式</b>把 →、↔ 全变成 ¬ 与 ∧∨，再用<b>德摩根</b>把 ¬ 压到变元上，最后用<b>分配 / 吸收 / 互补</b>合并。例：<span class="m">(P→Q)→Q ≡ ¬(¬P∨Q)∨Q ≡ (P∧¬Q)∨Q ≡ P∨Q</span>（吸收）。
+</div>
+
+<h2 class="section" id="s5">五、主范式（小项 / 大项 / 主析取 / 主合取）</h2>
+<div class="rule">
+  <b>小项（极小项 m）</b>：n 个变元各出现一次的<b>合取式</b>；n 变元共 <span class="m">2ⁿ</span> 个小项，每个恰在<b>唯一一组赋值下为 1</b>。<br>
+  <b>大项（极大项 M）</b>：n 个变元各出现一次的<b>析取式</b>；共 <span class="m">2ⁿ</span> 个，每个恰在<b>唯一一组赋值下为 0</b>。
+  <div class="th">
+    <b>编号规则（下标怎么来）：</b>把赋值看成二进制。<br>
+    · 小项 <span class="m">m<sub>i</sub></span>：变元取 <b>1 写原变量</b>、取 <b>0 加否定</b>。如赋值 P=0,Q=1,R=0（即 010=2）→ <span class="m">m<sub>2</sub>=¬P∧Q∧¬R</span>。<br>
+    · 大项 <span class="m">M<sub>i</sub></span>：恰好相反，变元取 <b>0 写原变量</b>、取 <b>1 加否定</b>。如 010=2 → <span class="m">M<sub>2</sub>=P∨¬Q∨R</span>。
+  </div>
+</div>
+
+<div class="card">
+  <h3>主范式下标怎么来：010 的二进制读法</h3>
+  <div class="figrow">
+    <div class="fig"><svg viewBox="0 0 380 185" width="370" height="180"><g font-size="14"><rect x="15" y="18" width="52" height="30" rx="6" fill="#fee2e2" stroke="#dc2626"/><text x="26" y="38">P=0</text><rect x="75" y="18" width="52" height="30" rx="6" fill="#dcfce7" stroke="#059669"/><text x="86" y="38">Q=1</text><rect x="135" y="18" width="52" height="30" rx="6" fill="#fee2e2" stroke="#dc2626"/><text x="146" y="38">R=0</text></g><text x="15" y="72" font-size="13" fill="#64748b">按 PQR 顺序读作二进制 0 1 0 ＝ 下标 2</text><rect x="15" y="86" width="230" height="38" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="26" y="110" font-size="14" fill="#3730a3">小项 m<tspan font-size="10" dy="3">2</tspan><tspan dy="-3"> = &#x00AC;P &#x2227; Q &#x2227; &#x00AC;R</tspan></text><rect x="15" y="132" width="230" height="38" rx="8" fill="#ecfdf5" stroke="#059669"/><text x="26" y="156" font-size="14" fill="#065f46">大项 M<tspan font-size="10" dy="3">2</tspan><tspan dy="-3"> = P &#x2228; &#x00AC;Q &#x2228; R</tspan></text><g font-size="12"><text x="258" y="104" fill="#4f46e5">小项：1→原变量</text><text x="258" y="120" fill="#dc2626">　　　0→加 &#x00AC;</text><text x="258" y="150" fill="#059669">大项：0→原变量</text><text x="258" y="166" fill="#dc2626">　　　1→加 &#x00AC;</text></g></svg><div class="cap">小项与大项的下标相同、取反规则相反<small>同一行：小项取“1原/0否”，大项取“0原/1否”</small></div></div>
+  </div>
+</div>
+
+<div class="rule">
+  <b>主范式求法（真值表法，最稳）：</b>
+  <ol class="steps">
+    <li>列出公式的完整真值表，标出每一行结果（0 或 1）。</li>
+    <li><b>主析取范式</b>：取所有<b>结果为 1</b> 的行，写出对应<b>小项</b>，用 <span class="m">∨</span> 连接，记 <span class="m">Σ(下标…)</span>。</li>
+    <li><b>主合取范式</b>：取所有<b>结果为 0</b> 的行，写出对应<b>大项</b>，用 <span class="m">∧</span> 连接，记 <span class="m">Π(下标…)</span>。</li>
+    <li>两式的下标<b>互补</b>（合起来正好是 0…2ⁿ−1 全体），可互相校验。</li>
+  </ol>
+</div>
+
+<div class="card">
+  <h3>例：求 (P→Q)→(Q→R) 的主合取范式</h3>
+  公式为 0 当且仅当"前件真、后件假"：后件 Q→R=0 需 Q=1,R=0；此时前件 P→Q=P→1=1 恒成立，P 可 0 可 1。<br>
+  故成假赋值为 010(=2)、110(=6) → 主合取范式 = <span class="m">M<sub>2</sub>∧M<sub>6</sub> = (P∨¬Q&#x2228;R)∧(¬P∨¬Q∨R)</span>。<br>
+  验证：先化简原式得 <span class="m">¬Q∨R</span>，再补变元 P 即得同式。
+</div>
+
+<div class="note">
+  <b>性质对照（常考）：</b>不同<b>小项</b>之<b>合取</b>恒为 0（矛盾式）；不同<b>大项</b>之<b>析取</b>恒为 1（重言式）。<b>重言式</b>主析取取满 2ⁿ 个小项、主合取为空；<b>矛盾式</b>主合取取满 2ⁿ 个大项、主析取为空。
+</div>
+
+<h2 class="section" id="s6">六、推理理论（P / T / CP 规则）</h2>
+<div class="rule">
+  <b>有效推理</b>：前提全真时结论必真（即 <span class="m">(前提合取)→结论</span> 为重言式）。构造证明用三条基本规则：
+  <div class="th">
+    <b>规则 P（前提引入）</b>：证明过程中可随时引入任一前提。<br>
+    <b>规则 T（结论引入）</b>：由前面已有公式，用等值式或推理规则得到的公式可引入。<br>
+    <b>规则 CP（附加前提）</b>：当结论是 <span class="m">A→B</span> 形时，把 <b>A</b> 当附加前提，只要推出 <b>B</b>，即完成证明。
+  </div>
+  常用推理规则（配合规则 T 使用）：
+  <table class="law">
+    <tr><th>名称</th><th>形式</th></tr>
+    <tr><td class="nm">假言推理 MP</td><td><span class="m">A, A→B ⟹ B</span></td></tr>
+    <tr><td class="nm">拒取式 MT</td><td><span class="m">¬B, A→B ⟹ ¬A</span></td></tr>
+    <tr><td class="nm">析取三段论</td><td><span class="m">A∨B, ¬A ⟹ B</span></td></tr>
+    <tr><td class="nm">假言三段论</td><td><span class="m">A→B, B→C ⟹ A→C</span></td></tr>
+    <tr><td class="nm">化简</td><td><span class="m">A∧B ⟹ A</span></td></tr>
+    <tr><td class="nm">附加</td><td><span class="m">A ⟹ A∨B</span></td></tr>
+    <tr><td class="nm">合取引入</td><td><span class="m">A, B ⟹ A∧B</span></td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>例：CP 规则证明（真题 35 题型）</h3>
+  前提：<span class="m">P∨Q</span>，<span class="m">¬P∨¬R</span>，<span class="m">Q→S</span>；结论：<span class="m">R→S</span>。<br>
+  结论是蕴含式 → 用 CP，把 R 作附加前提：
+  <ol class="steps">
+    <li>R　（附加前提，CP）</li>
+    <li>¬P∨¬R　（前提引入 P）</li>
+    <li>¬P　（1、2 析取三段论：R 使 ¬R 假）</li>
+    <li>P∨Q　（前提引入 P）</li>
+    <li>Q　（3、4 析取三段论）</li>
+    <li>Q→S　（前提引入 P）</li>
+    <li>S　（5、6 假言推理 MP）</li>
+    <li>R→S　（1、7 CP 规则）∎</li>
+  </ol>
+</div>
+
+<div class="note">
+  <b>易错：</b>① 每一步都要在括号里注明<b>依据</b>（哪两条 + 哪条规则），这是给分点；② CP 只在结论是<b>蕴含式</b>时用，把前件搬到前提位；③ 别把 MP（有 A、A→B 得 B）与"肯定后件"谬误（有 B、A→B 推不出 A）搞混。
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一句话主线：</b>翻译（找联结词、分清"只要/只有"）→ 真值表（2ⁿ 行、成真/成假）→ 判类型（永真/永假/可满足）→ 等值演算（先消 →↔，再德摩根，后分配吸收）→ 主范式（成真行配小项写 Σ、成假行配大项写 Π，下标互补）→ 推理（P/T/CP，结论是蕴含式就 CP）。<br><br>
+  配合 <a class="inline" href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">2025年10月真题详解</a>、<a class="inline" href="../../../全国2025年4月自考02324《离散数学》真题/真题详解.html">2025年4月</a>、<a class="inline" href="../../../全国2026年4月自考02324《离散数学》真题/真题详解.html">2026年4月</a> 里的符号化、主范式、推理大题一起刷：几乎每卷的 1–5 选择、填空与简答首题都落在本章。
+</div>
+
+<footer>离散数学知识点补充 · 命题逻辑 · 配合真题详解使用 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
