@@ -3,147 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自考本科试卷库</title>
+<title>自考 CS 学习笔记 · 离散数学 02324</title>
+<meta name="description" content="计算机科学与技术专业自学笔记：《离散数学 02324》13 页知识点详解 + 3 套全国历年真题详解，全站内嵌 SVG 图示与算法动画，静态托管 GitHub Pages，免登录开放共享。">
+<meta property="og:title" content="自考 CS 学习笔记 · 离散数学 02324">
+<meta property="og:description" content="13 页知识点 · 3 套真题详解 · 100+ SVG 图示与算法动画 · GitHub Pages 静态托管">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
 <style>
   :root{
-    --bg:#f6f7fb; --card:#fff; --text:#1f2937; --muted:#6b7280;
-    --primary:#4f46e5; --primary-soft:#eef2ff; --border:#e5e7eb;
+    --bg:#f4f5fb; --card:#fff; --text:#111827; --muted:#6b7280;
+    --primary:#4f46e5; --primary-deep:#4338ca; --primary-soft:#eef2ff;
+    --accent:#0891b2; --accent-soft:#ecfeff;
+    --border:#e5e7eb;
+    --shadow:0 1px 3px rgba(15,23,42,.04), 0 1px 2px rgba(15,23,42,.06);
+    --shadow-md:0 10px 30px -12px rgba(79,70,229,.25), 0 3px 8px rgba(15,23,42,.05);
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
-    background:var(--bg);color:var(--text);line-height:1.6;
-    padding:0 16px 64px;
+    background:var(--bg);color:var(--text);line-height:1.65;
+    padding:0 16px 60px;-webkit-font-smoothing:antialiased;
   }
-  header{
-    max-width:960px;margin:0 auto;padding:48px 0 32px;text-align:center;
-  }
-  header h1{font-size:2rem;letter-spacing:.5px}
-  header p{color:var(--muted);margin-top:8px;font-size:.95rem}
-  main{max-width:960px;margin:0 auto}
-  .subject{
-    background:var(--card);border:1px solid var(--border);border-radius:14px;
-    padding:24px;margin-bottom:20px;box-shadow:0 1px 3px rgba(0,0,0,.04);
-  }
+  .hero{max-width:960px;margin:0 auto;padding:36px 0 20px}
+  .hero-card{background:linear-gradient(135deg,#4c1d95 0%,#4338ca 45%,#0891b2 100%);color:#fff;border-radius:22px;padding:36px 30px 30px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+  .hero-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 0%,rgba(255,255,255,.20) 0%,transparent 45%),radial-gradient(circle at 90% 100%,rgba(255,255,255,.10) 0%,transparent 45%);pointer-events:none}
+  .hero-card > *{position:relative}
+  .hero h1{font-size:2.05rem;letter-spacing:.4px;margin-bottom:6px;font-weight:800}
+  .hero .tagline{font-size:.98rem;opacity:.92;margin-bottom:16px}
+  .hero .stats{display:flex;gap:8px;flex-wrap:wrap}
+  .hero .stats span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:4px 12px;font-size:.8rem;backdrop-filter:blur(6px)}
+  .tip{max-width:960px;margin:18px auto 0;background:#fff;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:12px;padding:14px 20px;font-size:.9rem;color:var(--muted);box-shadow:var(--shadow)}
+  .tip b{color:var(--text)}
+  .tip code{background:var(--primary-soft);color:var(--primary-deep);border-radius:5px;padding:1px 7px;font-size:.85em;font-family:"SFMono-Regular",Consolas,monospace}
+  main{max-width:960px;margin:0 auto;padding-top:22px}
+  .subject{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:20px;box-shadow:var(--shadow)}
   .subject-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-  .code{
-    background:var(--primary-soft);color:var(--primary);font-weight:600;
-    padding:4px 10px;border-radius:999px;font-size:.85rem;
+  .code{background:linear-gradient(135deg,var(--primary-soft),#dbeafe);color:var(--primary-deep);font-weight:700;padding:4px 12px;border-radius:999px;font-size:.82rem;letter-spacing:.5px}
+  .subject h2{font-size:1.32rem;color:var(--text)}
+  .subject .desc{color:var(--muted);font-size:.9rem;margin:6px 0 18px}
+  .entries{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+  .entry{display:flex;align-items:flex-start;gap:14px;text-decoration:none;color:var(--text);border:1px solid var(--border);border-radius:14px;padding:20px 22px;background:linear-gradient(135deg,#fff,#fafbff);transition:.18s}
+  .entry:hover{border-color:var(--primary);background:linear-gradient(135deg,#eef2ff,#fff);transform:translateY(-3px);box-shadow:0 12px 24px -10px rgba(79,70,229,.28)}
+  .entry .icon{font-size:1.9rem;line-height:1;color:var(--primary);flex-shrink:0}
+  .entry .txt{flex:1}
+  .entry .txt .t{font-size:1.08rem;font-weight:700;color:var(--primary-deep);margin-bottom:4px}
+  .entry .txt .d{font-size:.9rem;color:var(--text);line-height:1.55}
+  .entry .txt .m{font-size:.78rem;color:var(--muted);margin-top:6px}
+  footer{max-width:960px;margin:36px auto 0;text-align:center;color:var(--muted);font-size:.85rem;line-height:1.9}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  footer .fl a{color:var(--primary-deep);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:.82rem;transition:.15s}
+  footer .fl a:hover{border-color:var(--primary);background:var(--primary-soft);transform:translateY(-1px)}
+  footer .copy{margin-top:12px;font-size:.76rem;color:var(--muted);opacity:.85}
+  @media (max-width:640px){
+    .hero{padding:24px 0 12px}
+    .hero-card{padding:26px 20px 22px;border-radius:18px}
+    .hero h1{font-size:1.55rem}
+    .entries{grid-template-columns:1fr}
+    .subject{padding:20px}
   }
-  .subject h2{font-size:1.25rem}
-  .subject .desc{color:var(--muted);font-size:.9rem;margin:6px 0 16px}
-  .papers{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-  .paper{
-    display:block;text-decoration:none;color:var(--text);
-    border:1px solid var(--border);border-radius:10px;padding:14px 16px;
-    background:#fafbff;transition:.15s;font-size:.95rem;
-  }
-  .paper:hover{border-color:var(--primary);background:var(--primary-soft);transform:translateY(-2px)}
-  .paper .pdf{font-size:.78rem;color:var(--muted);margin-top:4px}
-  footer{max-width:960px;margin:40px auto 0;text-align:center;color:var(--muted);font-size:.85rem}
-  footer a{color:var(--primary);text-decoration:none}
 </style>
 </head>
 <body>
-<header>
-  <h1>自考本科试卷库</h1>
-  <p>计算机科学与技术专业 · 历年真题与详解</p>
-</header>
+
+<section class="hero">
+  <div class="hero-card">
+    <h1>🎓 自考 CS 学习笔记</h1>
+    <p class="tagline">计算机科学与技术专业 · 知识点详解 + 历年真题 + 图示动画</p>
+    <div class="stats">
+      <span>📚 13 页知识点</span>
+      <span>📝 3 套全国卷</span>
+      <span>🎨 100+ SVG 图示</span>
+      <span>▶ 4 页算法动画</span>
+      <span>🔍 逐题复核</span>
+    </div>
+  </div>
+</section>
+
+<div class="tip">
+  <b>怎么用：</b>先按<b>知识点导航</b>学一章 → 到<b>历年真题</b>做对应大题 → 错题再回知识点页复习。全部静态、免登录，直接分享给同学即可打开。<code>⌘/Ctrl + P</code> 支持打印或另存 PDF。
+</div>
+
 <main id="app"></main>
+
 <footer>
-  本站为静态资源站点，托管于 GitHub Pages。
+  <div>本站为个人整理的学习资源，托管于 GitHub Pages · 内容仅供学习交流参考</div>
+  <div class="fl">
+    <a href="discrete-mathematics-02324/知识点/index.html">📚 知识点导航</a>
+    <a href="discrete-mathematics-02324/真题/index.html">📝 历年真题</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div class="copy">Last updated · 2026-10 &nbsp;|&nbsp; 建议学习顺序：数理逻辑 → 集合论·关系 → 代数系统 → 图论</div>
 </footer>
 
 <script>
 /* ============================================================
-   新增学科 / 试卷：只需在下面这个数组里追加数据即可。
-   注意 url 使用“相对于本页(仓库根目录)的路径”，不要加开头的斜杠。
+   首页只展示“学科 → 大入口”这一层；具体知识点/真题列表交给中间导航页。
+   新增学科：向 subjects 数组追加一项，entries 内每个对象就是一张大卡片。
    ============================================================ */
 const subjects = [
   {
     code: "02324",
     name: "离散数学",
-    desc: "全国自考本科《离散数学》历年真题详解",
-    papers: [
+    desc: "全国自考本科《离散数学》· 知识点详解与历年真题",
+    entries: [
       {
-        title: "2026年4月《离散数学》真题详解",
-        url: "discrete-mathematics-02324/全国2026年4月自考02324《离散数学》真题/真题详解.html"
+        icon: "📚",
+        title: "知识点导航",
+        desc: "数理逻辑 / 集合论与关系 / 代数系统 / 图论 四大板块 · 13 页详解",
+        meta: "优先图示化 · 内嵌 SVG 与算法动画",
+        url: "discrete-mathematics-02324/知识点/index.html"
       },
       {
-        title: "2026年4月《离散数学》真题原卷",
-        url: "discrete-mathematics-02324/全国2026年4月自考02324《离散数学》真题/试卷.html"
-      },
-      {
-        title: "2025年10月《离散数学》真题详解",
-        url: "discrete-mathematics-02324/全国2025年10月自考02324《离散数学》真题/真题详解.html"
-      },
-      {
-        title: "2025年10月《离散数学》真题原卷",
-        url: "discrete-mathematics-02324/全国2025年10月自考02324《离散数学》真题/试卷.html"
-      },
-      {
-        title: "2025年4月《离散数学》真题详解",
-        url: "discrete-mathematics-02324/全国2025年4月自考02324《离散数学》真题/真题详解.html"
-      },
-      {
-        title: "2025年4月《离散数学》真题原卷",
-        url: "discrete-mathematics-02324/全国2025年4月自考02324《离散数学》真题/试卷.html"
-      },
-      {
-        title: "知识点 · 命题逻辑（联结词/真值表/等值演算/主范式/推理）",
-        url: "discrete-mathematics-02324/知识点/数理逻辑/命题逻辑.html"
-      },
-      {
-        title: "知识点 · 谓词逻辑（量词/符号化/前束范式/推理）",
-        url: "discrete-mathematics-02324/知识点/数理逻辑/谓词逻辑.html"
-      },
-      {
-        title: "知识点 · 集合与函数（集合运算/幂集/笛卡尔积/容斥/映射计数）",
-        url: "discrete-mathematics-02324/知识点/集合论/集合与函数.html"
-      },
-      {
-        title: "知识点 · 图论基本概念（概念中枢）",
-        url: "discrete-mathematics-02324/知识点/图论/基本概念.html"
-      },
-      {
-        title: "知识点 · 图的矩阵表示（邻接/可达/关联矩阵）",
-        url: "discrete-mathematics-02324/知识点/图论/图的矩阵表示.html"
-      },
-      {
-        title: "知识点 · 欧拉图与哈密顿图（含走查动画）",
-        url: "discrete-mathematics-02324/知识点/图论/欧拉图与哈密顿图.html"
-      },
-      {
-        title: "知识点 · 树与最小生成树（含Kruskal/Prim跳转）",
-        url: "discrete-mathematics-02324/知识点/图论/树与最小生成树.html"
-      },
-      {
-        title: "知识点 · Kruskal算法求最小生成树（含选边动画）",
-        url: "discrete-mathematics-02324/知识点/图论/Kruskal算法.html"
-      },
-      {
-        title: "知识点 · Prim算法求最小生成树（含生长动画）",
-        url: "discrete-mathematics-02324/知识点/图论/Prim算法.html"
-      },
-      {
-        title: "知识点 · 二叉树遍历（含遍历动画）",
-        url: "discrete-mathematics-02324/知识点/图论/二叉树遍历.html"
-      },
-      {
-        title: "知识点 · 代数系统（半群→群→环/域）",
-        url: "discrete-mathematics-02324/知识点/代数系统/代数系统.html"
-      },
-      {
-        title: "知识点 · 格与布尔代数（偏序/格/布尔代数）",
-        url: "discrete-mathematics-02324/知识点/代数系统/格与布尔代数.html"
-      },
-      {
-        title: "知识点 · 群论深化（元素的阶/Cayley表/置换群/正规子群与商群/同态）",
-        url: "discrete-mathematics-02324/知识点/代数系统/群论.html"
-      },
-      {
-        title: "知识点 · 关系（二元关系/五大性质/闭包/等价划分/偏序哈斯图）",
-        url: "discrete-mathematics-02324/知识点/关系/关系.html"
+        icon: "📝",
+        title: "历年真题",
+        desc: "3 套全国卷 · 每套含【真题详解】与【原卷扫描件】两个入口",
+        meta: "2026.4 / 2025.10 / 2025.4 · 逐题复核",
+        url: "discrete-mathematics-02324/真题/index.html"
       }
     ]
   }
@@ -153,8 +130,9 @@ const subjects = [
     code: "02325",
     name: "计算机系统结构",
     desc: "……",
-    papers: [
-      { title: "2025年4月真题详解", url: "computer-system-architecture-02325/2025年4月/真题详解.html" }
+    entries: [
+      { icon: "📚", title: "知识点导航", desc: "……", url: "computer-system-architecture-02325/知识点/index.html" },
+      { icon: "📝", title: "历年真题", desc: "……", url: "computer-system-architecture-02325/真题/index.html" }
     ]
   }
   */
@@ -178,12 +156,12 @@ subjects.forEach(s => {
   }
 
   const grid = document.createElement("div");
-  grid.className = "papers";
-  s.papers.forEach(p => {
+  grid.className = "entries";
+  (s.entries || []).forEach(e => {
     const a = document.createElement("a");
-    a.className = "paper";
-    a.href = p.url;
-    a.innerHTML = `<div>${p.title}</div>`;
+    a.className = "entry";
+    a.href = e.url;
+    a.innerHTML = `<div class="icon">${e.icon || "📄"}</div><div class="txt"><div class="t">${e.title}</div><div class="d">${e.desc || ""}</div>${e.meta ? `<div class="m">${e.meta}</div>` : ""}</div>`;
     grid.appendChild(a);
   });
   sec.appendChild(grid);

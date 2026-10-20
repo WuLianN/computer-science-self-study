@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 02324 · 知识点导航</title>
+<meta name="description" content="离散数学 02324 知识点导航：数理逻辑 / 集合论与关系 / 代数系统 / 图论 四大板块，13 页详解，优先图示化，内嵌 SVG 与算法动画。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75}
+  .wrap{max-width:960px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  h2.section{margin:32px 0 8px;font-size:19px;border-left:5px solid var(--brand);padding-left:12px}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:0 0 6px}
+  .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:106px}
+  .pcard:hover{border-color:var(--brand);background:#fafbff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(79,70,229,.08)}
+  .pcard .t{font-weight:700;color:var(--brand);margin-bottom:4px;font-size:15px}
+  .pcard .t .ico{margin-right:6px}
+  .pcard .d{font-size:13px;color:var(--muted);line-height:1.65}
+  .pcard .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 8px;font-size:11.5px;font-weight:700;margin-right:6px;margin-top:6px}
+  .pcard .badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .pcard .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 20px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .jump .lbl{font-size:12.5px;color:var(--muted);margin-right:4px}
+  .jump a{font-size:13px;padding:4px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-weight:600;transition:.15s}
+  .jump a:hover{background:var(--brand);color:#fff}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px;transition:.15s}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>离散数学 02324 · 知识点导航</h1>
+  <p>按考纲四大板块组织 13 页详解，全部内嵌 SVG 图示与动画；建议学习顺序：数理逻辑 → 集合论·关系 → 代数系统 → 图论。</p>
+  <span class="pill">13 页知识点</span><span class="pill">优先图示化</span><span class="pill">配套 3 套真题</span>
+  <div class="gotos">
+    <a href="../../index.html">🏠 首页</a>
+    <a href="../真题/index.html">📝 历年真题导航</a>
+  </div>
+</header>
+
+<nav class="jump">
+  <span class="lbl">📍 板块快速跳转：</span>
+  <a href="#sec-logic">一、数理逻辑</a>
+  <a href="#sec-set">二、集合论与关系</a>
+  <a href="#sec-algebra">三、代数系统</a>
+  <a href="#sec-graph">四、图论</a>
+</nav>
+
+<h2 class="section" id="sec-logic">一、数理逻辑</h2>
+<p class="section-sub">02324 第一章，也是全卷符号基础。重点在联结词、等值演算、主范式与推理证明。</p>
+<div class="pgrid">
+  <a class="pcard" href="数理逻辑/命题逻辑.html">
+    <div class="t"><span class="ico">🔤</span>命题逻辑</div>
+    <div class="d">五大联结词、真值表、12 组等值式、主析取/主合取范式、构造性二难与 CP 法证明</div>
+    <span class="badge">3 图示</span><span class="badge">真题 35 型</span>
+  </a>
+  <a class="pcard" href="数理逻辑/谓词逻辑.html">
+    <div class="t"><span class="ico">∀</span>谓词逻辑</div>
+    <div class="d">量词、符号化、辖域与约束变元换名、量词否定律、前束范式四步、US/UG/ES/EG 推理</div>
+    <span class="badge">对当方阵图</span><span class="badge">辖域嵌套图</span>
+  </a>
+</div>
+
+<h2 class="section" id="sec-set">二、集合论与关系</h2>
+<p class="section-sub">集合运算与函数打地基，"关系"章把二元关系性质、闭包、等价划分、偏序哈斯图串起来。</p>
+<div class="pgrid">
+  <a class="pcard" href="集合论/集合与函数.html">
+    <div class="t"><span class="ico">🧺</span>集合与函数</div>
+    <div class="d">幂集 2ⁿ、德摩根、笛卡尔积 m·n、容斥原理、单/满/双射、映射计数 nᵐ 与 A(n,m)</div>
+    <span class="badge">10 图示</span><span class="badge">文氏图 5 式</span>
+  </a>
+  <a class="pcard" href="关系/关系.html">
+    <div class="t"><span class="ico">↦</span>关系（二元关系）</div>
+    <div class="d">五大性质（自反/对称/传递/反自反/反对称）、r/s/t 三种闭包、Warshall、等价划分、偏序哈斯图</div>
+    <span class="badge">11 图示</span><span class="badge">特殊元示意图</span>
+  </a>
+</div>
+
+<h2 class="section" id="sec-algebra">三、代数系统</h2>
+<p class="section-sub">从"集合+运算"起，逐级加公理推到群/环/域；格与布尔代数则建在偏序上。</p>
+<div class="pgrid">
+  <a class="pcard" href="代数系统/代数系统.html">
+    <div class="t"><span class="ico">⚗️</span>代数系统（半群→群→环/域）</div>
+    <div class="d">单/双运算结构谱系、四大群公理、子群判定、循环群 φ(n)、拉格朗日、零元、环→整环→域</div>
+    <span class="badge">2 谱系阶梯图</span>
+  </a>
+  <a class="pcard" href="代数系统/群论.html">
+    <div class="t"><span class="ico">🌀</span>群论深化</div>
+    <div class="d">元素的阶 ord(aᵏ)=n/gcd、Cayley 表与拉丁方、置换循环分解、陪集/正规子群/商群、群同态与核</div>
+    <span class="badge">置换循环图</span><span class="badge">陪集划分</span><span class="badge">V₄ 子群格</span>
+  </a>
+  <a class="pcard" href="代数系统/格与布尔代数.html">
+    <div class="t"><span class="ico">💎</span>格与布尔代数</div>
+    <div class="d">偏序 → 格（两种等价定义）→ 分配/有界/有补 → 布尔代数；M₃、N₅ 非分配反例；消去律证明</div>
+    <span class="badge">4 哈斯图</span><span class="badge">真题呼应</span>
+  </a>
+</div>
+
+<h2 class="section" id="sec-graph">四、图论</h2>
+<p class="section-sub">02324 拉分大题集中区（第 31/32 题）。先读"基本概念"这张中枢页，再按需钻具体算法/矩阵/遍历。</p>
+<div class="pgrid">
+  <a class="pcard" href="图论/基本概念.html">
+    <div class="t"><span class="ico">🕸️</span>图论 · 基本概念（中枢）</div>
+    <div class="d">顶/边/度、握手定理、路径/回路、连通/割点/桥、简单通路 vs 初级通路、平面图与欧拉公式</div>
+    <span class="badge">10 图示</span><span class="badge ok">必读</span>
+  </a>
+  <a class="pcard" href="图论/图的矩阵表示.html">
+    <div class="t"><span class="ico">🧮</span>图的矩阵表示</div>
+    <div class="d">邻接矩阵 A、可达矩阵 P（Warshall）、关联矩阵 M（±1 列）、Aᵏ 数长度 k 通路</div>
+    <span class="badge">边编号图</span><span class="badge">A² 路径高亮</span>
+  </a>
+  <a class="pcard" href="图论/欧拉图与哈密顿图.html">
+    <div class="t"><span class="ico">🚚</span>欧拉图与哈密顿图</div>
+    <div class="d">度数判欧拉（全偶/恰 2 奇）vs 必要条件 ω(G−S)≤|S|、Dirac δ≥n/2；三示例带动画演示</div>
+    <span class="badge ok">走查动画</span><span class="badge">3 示例</span>
+  </a>
+  <a class="pcard" href="图论/树与最小生成树.html">
+    <div class="t"><span class="ico">🌳</span>树与最小生成树</div>
+    <div class="d">树的五条等价定义、生成树不唯一、MST 概念、Kruskal/Prim 一句话对照</div>
+    <span class="badge">生成树对照图</span>
+  </a>
+  <a class="pcard" href="图论/Kruskal算法.html">
+    <div class="t"><span class="ico">🧾</span>Kruskal 算法（避圈法）</div>
+    <div class="d">按边权全局排序 → 不成回路就选 → 满 n−1 条停；带真题第 31 题图的逐步动画</div>
+    <span class="badge ok">选边动画</span><span class="badge">可单步</span>
+  </a>
+  <a class="pcard" href="图论/Prim算法.html">
+    <div class="t"><span class="ico">🌱</span>Prim 算法（加点法）</div>
+    <div class="d">从任一起点扩树，每步挑"树↔树外"最小割边并入；带同题动画、可选起点</div>
+    <span class="badge ok">生长动画</span><span class="badge">可换起点</span>
+  </a>
+  <a class="pcard" href="图论/二叉树遍历.html">
+    <div class="t"><span class="ico">🌴</span>二叉树遍历</div>
+    <div class="d">前序/中序/后序三种顺序，配动画演示；例题给树写三种遍历序列并核对</div>
+    <span class="badge ok">遍历动画</span>
+  </a>
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../../index.html">🏠 返回首页</a>
+    <a href="../真题/index.html">📝 历年真题导航</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>建议学习顺序：数理逻辑 → 集合论·关系 → 代数系统 → 图论 · 每学完一板块就回到真题里找对应大题练手</div>
+</footer>
+</div>
+</body>
+</html>

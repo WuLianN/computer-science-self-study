@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 图论知识点：图的矩阵表示</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <style>
   :root{
     --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
@@ -51,6 +52,8 @@
   <p>图的矩阵表示 —— 邻接矩阵与可达矩阵，02324 计算题常客，纯套路。</p>
   <span class="pill">邻接矩阵 A</span><span class="pill">可达矩阵 P</span><span class="pill">A^k 数途径</span><span class="pill">关联矩阵 M</span>
   <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
     <a href="基本概念.html">→ 基本概念</a>
     <a href="树与最小生成树.html">→ 树与最小生成树</a>
     <a href="欧拉图与哈密顿图.html">→ 欧拉图与哈密顿图</a>
@@ -144,6 +147,24 @@
 
 <div class="card">
   <div class="lbl">沿用上例（a→b，b→c，c→a，d→a；边记为 e₁e₂e₃e₄）</div>
+  <div style="text-align:center;margin:8px 0 12px">
+    <svg width="240" height="230" viewBox="0 0 240 230" style="display:inline-block" role="img" aria-label="边编号与关联矩阵列一一对应">
+      <defs><marker id="arm" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+      <line x1="86" y1="84" x2="165" y2="58" stroke="#94a3b8" stroke-width="1.8" marker-end="url(#arm)"/>
+      <line x1="180" y1="68" x2="180" y2="132" stroke="#94a3b8" stroke-width="1.8" marker-end="url(#arm)"/>
+      <line x1="165" y1="150" x2="86" y2="96" stroke="#94a3b8" stroke-width="1.8" marker-end="url(#arm)"/>
+      <line x1="74" y1="183" x2="66" y2="107" stroke="#94a3b8" stroke-width="1.8" marker-end="url(#arm)"/>
+      <circle cx="70"  cy="90"  r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="70"  y="95"  text-anchor="middle" font-size="14" font-weight="700">a</text>
+      <circle cx="180" cy="50"  r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="180" y="55"  text-anchor="middle" font-size="14" font-weight="700">b</text>
+      <circle cx="180" cy="150" r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="180" y="155" text-anchor="middle" font-size="14" font-weight="700">c</text>
+      <circle cx="60"  cy="200" r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="60"  y="205" text-anchor="middle" font-size="14" font-weight="700">d</text>
+      <text x="122" y="60"  text-anchor="middle" font-size="12" fill="#d97706" font-weight="700">e&#8321;</text>
+      <text x="196" y="103" text-anchor="start" font-size="12" fill="#d97706" font-weight="700">e&#8322;</text>
+      <text x="122" y="140" text-anchor="middle" font-size="12" fill="#d97706" font-weight="700">e&#8323;</text>
+      <text x="42"  y="150" text-anchor="end"  font-size="12" fill="#d97706" font-weight="700">e&#8324;</text>
+    </svg>
+    <div style="font-size:12.5px;color:var(--muted);margin-top:2px"><b>e&#8321;=a→b、e&#8322;=b→c、e&#8323;=c→a、e&#8324;=d→a</b>——矩阵每列对应一个编号边的“+1 起点 / −1 终点”</div>
+  </div>
   <div class="mtx">
     <div class="blk">
       <div class="lbl">有向关联矩阵 M（行=顶点，列=边）</div>
@@ -175,6 +196,41 @@
 <div class="rule">
   不止可达性：<b>Aᵏ 中第 (i,j) 项 = 从 vᢢ 到 vⱼ 长度为 k 的通路（途径）条数</b>（计数，非布尔）。<br>
   上例 A² 中 a 到 c = 1（a→b→c 一条），b 到 a = 1（b→c→a），印证“长度 2 的途径数”。考试若问“长度为 k 的通路有几条”，直接算 Aᵏ 即可。
+</div>
+
+<div class="card">
+  <h3>图示：A² 中一个“1” ↔ 图上一条长度 2 的路径</h3>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:flex-start">
+    <div class="fig">
+      <svg width="230" height="230" viewBox="0 0 240 230">
+        <defs><marker id="akg1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#d97706"/></marker><marker id="akg1g" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#cbd5e1"/></marker></defs>
+        <line x1="165" y1="150" x2="86" y2="96" stroke="#cbd5e1" stroke-width="1.4" marker-end="url(#akg1g)"/>
+        <line x1="74" y1="183" x2="66" y2="107" stroke="#cbd5e1" stroke-width="1.4" marker-end="url(#akg1g)"/>
+        <line x1="86"  y1="84"  x2="165" y2="58"  stroke="#d97706" stroke-width="2.6" marker-end="url(#akg1)"/>
+        <line x1="180" y1="68"  x2="180" y2="132" stroke="#d97706" stroke-width="2.6" marker-end="url(#akg1)"/>
+        <circle cx="70"  cy="90"  r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="70"  y="95"  text-anchor="middle" font-size="14" font-weight="700">a</text>
+        <circle cx="180" cy="50"  r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="180" y="55"  text-anchor="middle" font-size="14" font-weight="700">b</text>
+        <circle cx="180" cy="150" r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="180" y="155" text-anchor="middle" font-size="14" font-weight="700">c</text>
+        <circle cx="60"  cy="200" r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="60"  y="205" text-anchor="middle" font-size="14" font-weight="700">d</text>
+      </svg>
+      <div class="cap"><b>A²[a][c] = 1</b>：唯一长度 2 路径 a→b→c</div>
+    </div>
+    <div class="fig">
+      <svg width="230" height="230" viewBox="0 0 240 230">
+        <defs><marker id="akg2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#059669"/></marker><marker id="akg2g" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#cbd5e1"/></marker></defs>
+        <line x1="86"  y1="84"  x2="165" y2="58"  stroke="#cbd5e1" stroke-width="1.4" marker-end="url(#akg2g)"/>
+        <line x1="74"  y1="183" x2="66"  y2="107" stroke="#cbd5e1" stroke-width="1.4" marker-end="url(#akg2g)"/>
+        <line x1="180" y1="68"  x2="180" y2="132" stroke="#059669" stroke-width="2.6" marker-end="url(#akg2)"/>
+        <line x1="165" y1="150" x2="86"  y2="96"  stroke="#059669" stroke-width="2.6" marker-end="url(#akg2)"/>
+        <circle cx="70"  cy="90"  r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="70"  y="95"  text-anchor="middle" font-size="14" font-weight="700">a</text>
+        <circle cx="180" cy="50"  r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="180" y="55"  text-anchor="middle" font-size="14" font-weight="700">b</text>
+        <circle cx="180" cy="150" r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="180" y="155" text-anchor="middle" font-size="14" font-weight="700">c</text>
+        <circle cx="60"  cy="200" r="17" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="60"  y="205" text-anchor="middle" font-size="14" font-weight="700">d</text>
+      </svg>
+      <div class="cap"><b>A²[b][a] = 1</b>：唯一长度 2 路径 b→c→a</div>
+    </div>
+  </div>
+  <div class="note" style="margin:10px 0 0"><b>一句话记忆：</b>A 里 1 的位置是“直接一步能到”，A² 里 1 的位置是“需两步才能到”，A³ 里 1 是“三步”……可达矩阵 P 就是把 A¹到 Aⁿ 里“任意一步能到的”拉成 1。</div>
 </div>
 
 <div class="note">

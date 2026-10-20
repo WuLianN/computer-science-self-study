@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 关系知识点</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <style>
   :root{
     --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
@@ -59,7 +60,8 @@
   <p>关系章是图论、代数系统（尤其格）的共同地基。一条主线：二元关系 → 五大性质 → 闭包 → 等价关系与划分 → <b>偏序关系与哈斯图</b>（后者直接通向「格与布尔代数」）。与图论同用矩阵/有向图表示。</p>
   <span class="pill">二元关系</span><span class="pill">五大性质</span><span class="pill">闭包</span><span class="pill">等价关系</span><span class="pill">偏序 / 哈斯图</span>
   <div class="gotos">
-    <a href="../../../index.html">← 返回首页</a>
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
     <a href="../../../全国2025年10月自考02324《离散数学》真题/真题详解.html">→ 真题详解</a>
     <a href="../代数系统/格与布尔代数.html">→ 格与布尔代数（偏序/哈斯图延伸）</a>
   </div>
@@ -360,6 +362,37 @@
   • <b>上界 / 下界</b>：比 B 中每个都大 / 小的元素（可不在 B 中）。<br>
   • <b>最小上界 lub（并 ∨）/ 最大下界 glb（交 ∧）</b>：所有上界中最小者 / 所有下界中最大者。<br>
   <span style="color:var(--brand)">📎 “最小上界/最大下界”正是格页里 a∨b、a∧b 的来源。</span>
+</div>
+
+<div class="card">
+  <h3>图示：哈斯图上认清“极大/极小、最大/最小、上/下界、lub/glb”</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;align-items:flex-start">
+    <div style="text-align:center">
+      <svg width="280" height="220" viewBox="0 0 280 220" style="display:block;margin:0 auto" role="img" aria-label="偏序集特殊元素示意">
+        <line x1="110" y1="180" x2="140" y2="115" stroke="#4f46e5" stroke-width="1.6"/>
+        <line x1="170" y1="180" x2="140" y2="115" stroke="#4f46e5" stroke-width="1.6"/>
+        <line x1="140" y1="115" x2="110" y2="50"  stroke="#4f46e5" stroke-width="1.6"/>
+        <line x1="140" y1="115" x2="170" y2="50"  stroke="#4f46e5" stroke-width="1.6"/>
+        <circle cx="110" cy="190" r="16" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="110" y="195" text-anchor="middle" font-size="14" font-weight="700">a</text>
+        <circle cx="170" cy="190" r="16" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="170" y="195" text-anchor="middle" font-size="14" font-weight="700">b</text>
+        <circle cx="140" cy="115" r="17" fill="#059669"/><text x="140" y="120" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">c</text>
+        <circle cx="110" cy="40"  r="16" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="110" y="45" text-anchor="middle" font-size="14" font-weight="700">d</text>
+        <circle cx="170" cy="40"  r="16" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="170" y="45" text-anchor="middle" font-size="14" font-weight="700">e</text>
+        <text x="20" y="195" font-size="11.5" fill="#d97706" font-weight="700">极小元：a、b</text>
+        <text x="20" y="45"  font-size="11.5" fill="#d97706" font-weight="700">极大元：d、e</text>
+        <text x="175" y="120" font-size="11.5" fill="#059669" font-weight="700">lub{a,b}=glb{d,e}=c</text>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)">偏序集 (A,≤)，A={a,b,c,d,e}，覆盖关系 a≺c、b≺c、c≺d、c≺e</div>
+    </div>
+  </div>
+  <div class="note" style="margin:8px 0 0">
+    <b>逐条对照定义 9 读本图：</b><br>
+    • <b>极小元</b>=a、b（下方没元素），<b>极大元</b>=d、e（上方没元素）。<br>
+    • <b>最小元/最大元不存在</b>：因为 a、b 不可比 → 没“同一个”元素排在所有人下方；同理 d、e。<br>
+    • 取子集 B={a,b}：上界是 c、d、e（都 ≥a 且 ≥b），<b>最小上界 lub(B)=c</b>；下界为空，glb 不存在。<br>
+    • 取子集 B={d,e}：下界是 c（及传递下来的 a、b），<b>最大下界 glb(B)=c</b>。<br>
+    • 本图 c 这个绿点就是“lub 与 glb 集中到同一处”的直观体现，也是格页里 ∨ / ∧ 两种写法在同一元素上的交汇。
+  </div>
 </div>
 
 <h2 class="section" id="s6">六、核心定理速记</h2>

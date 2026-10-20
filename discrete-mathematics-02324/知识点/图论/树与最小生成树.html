@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 图论知识点：树与最小生成树</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
 <style>
   :root{
     --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
@@ -74,6 +75,8 @@
   <p>树 与 最小生成树（Kruskal / Prim）—— 真题第 31 题就是它，送分题务必熟练。</p>
   <span class="pill">树=连通无环</span><span class="pill">Kruskal 避圈法</span><span class="pill">Prim 加点法</span>
   <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
     <a href="基本概念.html">→ 基本概念</a>
     <a href="欧拉图与哈密顿图.html">→ 欧拉图与哈密顿图</a>
     <a href="二叉树遍历.html">→ 二叉树遍历</a>
@@ -105,6 +108,51 @@
     </svg>
     <div class="cap">一棵 4 顶点 3 边（n−1）的树，r 为根</div>
   </div>
+</div>
+
+<div class="card">
+  <h3>图示：同一图的【两棵不同生成树】——含全部顶点、无回路、恰好 n−1 条边</h3>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;align-items:flex-start">
+    <div class="fig">
+      <svg width="190" height="170" viewBox="0 0 190 170">
+        <line x1="45"  y1="40"  x2="145" y2="40"  stroke="#4f46e5" stroke-width="1.8"/>
+        <line x1="145" y1="40"  x2="145" y2="130" stroke="#4f46e5" stroke-width="1.8"/>
+        <line x1="145" y1="130" x2="45"  y2="130" stroke="#4f46e5" stroke-width="1.8"/>
+        <line x1="45"  y1="130" x2="45"  y2="40"  stroke="#4f46e5" stroke-width="1.8"/>
+        <line x1="45"  y1="40"  x2="145" y2="130" stroke="#d97706" stroke-width="1.8" stroke-dasharray="5 3"/>
+        <circle cx="45"  cy="40"  r="15" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="45"  y="45" text-anchor="middle" font-size="13" font-weight="700">a</text>
+        <circle cx="145" cy="40"  r="15" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="145" y="45" text-anchor="middle" font-size="13" font-weight="700">b</text>
+        <circle cx="145" cy="130" r="15" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="145" y="135" text-anchor="middle" font-size="13" font-weight="700">c</text>
+        <circle cx="45"  cy="130" r="15" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="45"  y="135" text-anchor="middle" font-size="13" font-weight="700">d</text>
+      </svg>
+      <div class="cap"><b>原图 G</b>（4 顶点·5 边·含圈）</div>
+    </div>
+    <div class="fig">
+      <svg width="190" height="170" viewBox="0 0 190 170">
+        <line x1="45"  y1="40"  x2="145" y2="40"  stroke="#059669" stroke-width="2.2"/>
+        <line x1="145" y1="130" x2="45"  y2="130" stroke="#059669" stroke-width="2.2"/>
+        <line x1="45"  y1="130" x2="45"  y2="40"  stroke="#059669" stroke-width="2.2"/>
+        <circle cx="45"  cy="40"  r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="45"  y="45" text-anchor="middle" font-size="13" font-weight="700">a</text>
+        <circle cx="145" cy="40"  r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="145" y="45" text-anchor="middle" font-size="13" font-weight="700">b</text>
+        <circle cx="145" cy="130" r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="145" y="135" text-anchor="middle" font-size="13" font-weight="700">c</text>
+        <circle cx="45"  cy="130" r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="45"  y="135" text-anchor="middle" font-size="13" font-weight="700">d</text>
+      </svg>
+      <div class="cap"><b>生成树 T₁</b>：去掉 b–c、a–c，边集 {a–b、c–d、d–a}（3 = n−1）</div>
+    </div>
+    <div class="fig">
+      <svg width="190" height="170" viewBox="0 0 190 170">
+        <line x1="45"  y1="40"  x2="145" y2="40"  stroke="#059669" stroke-width="2.2"/>
+        <line x1="145" y1="40"  x2="145" y2="130" stroke="#059669" stroke-width="2.2"/>
+        <line x1="145" y1="130" x2="45"  y2="130" stroke="#059669" stroke-width="2.2"/>
+        <circle cx="45"  cy="40"  r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="45"  y="45" text-anchor="middle" font-size="13" font-weight="700">a</text>
+        <circle cx="145" cy="40"  r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="145" y="45" text-anchor="middle" font-size="13" font-weight="700">b</text>
+        <circle cx="145" cy="130" r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="145" y="135" text-anchor="middle" font-size="13" font-weight="700">c</text>
+        <circle cx="45"  cy="130" r="15" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="45"  y="135" text-anchor="middle" font-size="13" font-weight="700">d</text>
+      </svg>
+      <div class="cap"><b>生成树 T₂</b>：去掉 d–a、a–c，剩“链”{a–b、b–c、c–d}</div>
+    </div>
+  </div>
+  <div class="note" style="margin:10px 0 0"><b>同一张图的生成树不唯一</b>。最小生成树（MST）是在带权图上从这些生成树里选“总权最小”的那一棵；Kruskal / Prim 就是两种贪心选边方案（下面二、三节展开）。</div>
 </div>
 
 <h2 class="section">二、最小生成树（MST）</h2>
