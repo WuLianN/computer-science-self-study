@@ -231,6 +231,53 @@
 </div>
 
 <div class="card">
+  <h3>图示：三种闭包分别在图上“补”什么（基于 R={(1,2),(2,3)}）</h3>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:space-around;align-items:flex-start">
+    <div style="text-align:center">
+      <svg width="210" height="120" viewBox="0 0 210 120">
+        <defs><marker id="cb1" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#4f46e5"/></marker><marker id="cb1w" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker></defs>
+        <line x1="60" y1="72" x2="88" y2="72" stroke="#4f46e5" stroke-width="2" marker-end="url(#cb1)"/>
+        <line x1="120" y1="72" x2="148" y2="72" stroke="#4f46e5" stroke-width="2" marker-end="url(#cb1)"/>
+        <path d="M 40 58 C 28 34 62 34 50 58" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#cb1w)"/>
+        <path d="M 100 58 C 88 34 122 34 110 58" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#cb1w)"/>
+        <path d="M 160 58 C 148 34 182 34 170 58" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#cb1w)"/>
+        <circle cx="45" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="45" y="80" text-anchor="middle" font-size="13" font-weight="700">1</text>
+        <circle cx="105" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="105" y="80" text-anchor="middle" font-size="13" font-weight="700">2</text>
+        <circle cx="165" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="165" y="80" text-anchor="middle" font-size="13" font-weight="700">3</text>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)"><b>r(R) 自反闭包</b>：给每个点补自环（R∪Iₐ）</div>
+    </div>
+    <div style="text-align:center">
+      <svg width="210" height="120" viewBox="0 0 210 120">
+        <defs><marker id="cb2" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#4f46e5"/></marker><marker id="cb2w" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker></defs>
+        <line x1="60" y1="68" x2="88" y2="68" stroke="#4f46e5" stroke-width="2" marker-end="url(#cb2)"/>
+        <line x1="120" y1="68" x2="148" y2="68" stroke="#4f46e5" stroke-width="2" marker-end="url(#cb2)"/>
+        <line x1="88" y1="85" x2="60" y2="85" stroke="#d97706" stroke-width="2" marker-end="url(#cb2w)"/>
+        <line x1="148" y1="85" x2="120" y2="85" stroke="#d97706" stroke-width="2" marker-end="url(#cb2w)"/>
+        <circle cx="45" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="45" y="80" text-anchor="middle" font-size="13" font-weight="700">1</text>
+        <circle cx="105" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="105" y="80" text-anchor="middle" font-size="13" font-weight="700">2</text>
+        <circle cx="165" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="165" y="80" text-anchor="middle" font-size="13" font-weight="700">3</text>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)"><b>s(R) 对称闭包</b>：每条边补反向边（R∪R⁻¹）</div>
+    </div>
+    <div style="text-align:center">
+      <svg width="210" height="120" viewBox="0 0 210 120">
+        <defs><marker id="cb3" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#4f46e5"/></marker><marker id="cb3w" markerWidth="6" markerHeight="6" refX="5" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d97706"/></marker></defs>
+        <line x1="60" y1="72" x2="88" y2="72" stroke="#4f46e5" stroke-width="2" marker-end="url(#cb3)"/>
+        <line x1="120" y1="72" x2="148" y2="72" stroke="#4f46e5" stroke-width="2" marker-end="url(#cb3)"/>
+        <path d="M 48 60 C 90 18 120 18 162 60" fill="none" stroke="#d97706" stroke-width="2" marker-end="url(#cb3w)"/>
+        <circle cx="45" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="45" y="80" text-anchor="middle" font-size="13" font-weight="700">1</text>
+        <circle cx="105" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="105" y="80" text-anchor="middle" font-size="13" font-weight="700">2</text>
+        <circle cx="165" cy="75" r="15" fill="#fff" stroke="#4f46e5" stroke-width="2"/><text x="165" y="80" text-anchor="middle" font-size="13" font-weight="700">3</text>
+        <text x="105" y="28" text-anchor="middle" font-size="11" fill="#d97706" font-weight="700">1→3（经 2 中转）</text>
+      </svg>
+      <div class="lbl" style="font-size:13px;color:var(--muted)"><b>t(R) 传递闭包</b>：有路径就补直连边（R∪R²∪…）</div>
+    </div>
+  </div>
+  <div class="note" style="margin:12px 0 0"><b>蓝边</b>是原关系 R，<b style="color:var(--warn)">橙边</b>是闭包新补的边——“最小”即只补到刚好满足性质为止，不多补。</div>
+</div>
+
+<div class="card">
   <h3>Warshall 算法：高效求传递闭包 t(R)（O(n³)）</h3>
   <div class="th">
     令 W⁽⁰⁾ = M_R；对 k=1,2,…,n 逐层更新：<br>
@@ -268,6 +315,28 @@
 <div class="thm">
   <div class="dt">定理 3　等价关系 ↔ 划分（一一对应）</div>
   每个等价关系唯一确定一个划分（其等价类构成划分）；每个划分也唯一确定一个等价关系（同块内等价）。即<b>等价关系与划分等价</b>。
+</div>
+
+<div class="card">
+  <h3>图示：一个划分 = 若干互不相交的块（同一块内两两等价）</h3>
+  <svg width="400" height="210" viewBox="0 0 400 210" style="display:block;margin:8px auto" role="img" aria-label="划分与等价类">
+    <rect x="8" y="26" width="384" height="170" rx="10" fill="none" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="20" y="20" font-size="13" font-weight="700" fill="#6b7280">A = {1,2,3,4,5,6}</text>
+    <ellipse cx="78" cy="112" rx="50" ry="62" fill="#eef2ff" stroke="#818cf8" stroke-width="1.5"/>
+    <ellipse cx="210" cy="112" rx="62" ry="66" fill="#ecfdf5" stroke="#34d399" stroke-width="1.5"/>
+    <ellipse cx="335" cy="112" rx="42" ry="52" fill="#fffbeb" stroke="#fbbf24" stroke-width="1.5"/>
+    <line x1="62" y1="92" x2="94" y2="132" stroke="#818cf8" stroke-width="1.4"/>
+    <line x1="182" y1="82" x2="245" y2="92" stroke="#34d399" stroke-width="1.4"/>
+    <line x1="182" y1="82" x2="208" y2="150" stroke="#34d399" stroke-width="1.4"/>
+    <line x1="245" y1="92" x2="208" y2="150" stroke="#34d399" stroke-width="1.4"/>
+    <circle cx="62" cy="92" r="13" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="62" y="97" text-anchor="middle" font-size="13" font-weight="700">1</text>
+    <circle cx="94" cy="132" r="13" fill="#fff" stroke="#4f46e5" stroke-width="1.8"/><text x="94" y="137" text-anchor="middle" font-size="13" font-weight="700">2</text>
+    <circle cx="182" cy="82" r="13" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="182" y="87" text-anchor="middle" font-size="13" font-weight="700">3</text>
+    <circle cx="245" cy="92" r="13" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="245" y="97" text-anchor="middle" font-size="13" font-weight="700">4</text>
+    <circle cx="208" cy="150" r="13" fill="#fff" stroke="#059669" stroke-width="1.8"/><text x="208" y="155" text-anchor="middle" font-size="13" font-weight="700">5</text>
+    <circle cx="335" cy="112" r="13" fill="#fff" stroke="#d97706" stroke-width="1.8"/><text x="335" y="117" text-anchor="middle" font-size="13" font-weight="700">6</text>
+  </svg>
+  <div class="note" style="margin:6px 0 0"><b>读图：</b>同一椭圆内的元素用细线相连，表示它们两两等价（∼）；不同椭圆间无任何连线。三块<b>非空 · 两两不交 · 并为 A</b> → 恰好是一个划分。此图的商集 <code>A/∼ = {{1,2},{3,4,5},{6}}</code>。</div>
 </div>
 
 <h2 class="section" id="s5">五、偏序关系与哈斯图（定义）</h2>

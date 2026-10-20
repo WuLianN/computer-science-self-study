@@ -42,6 +42,11 @@
   .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
   .lvl{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;margin-right:6px}
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  .figrow{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 10px 6px;text-align:center;max-width:100%}
+  .fig svg{display:block;margin:0 auto;max-width:100%;height:auto}
+  .fig .cap{margin-top:4px;font-size:13px;color:var(--ink);font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
 </style>
 </head>
 <body>
@@ -92,6 +97,34 @@
     ④ <b>逆元</b>：∀a∈G，∃a⁻¹∈G，使 a*a⁻¹ = a⁻¹*a = e。
   </div>
   若还满足 <b>交换律</b>（a*b=b*a），则称<b>阿贝尔群（交换群）</b>。自考常见群：整数加群 (Z,+)、模 n 加群 (Zₙ,+)、n 次单位根乘法群。
+</div>
+
+<div class="figrow">
+  <div class="fig">
+    <svg width="648" height="150" viewBox="0 0 648 150" role="img" aria-label="单运算结构谱系">
+      <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#6b7280"/></marker></defs>
+      <rect x="4" y="56" width="112" height="64" rx="10" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
+      <text x="60" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">代数系统</text>
+      <text x="60" y="104" text-anchor="middle" font-size="11.5" fill="#6b7280">集合+运算·封闭</text>
+      <rect x="136" y="56" width="112" height="64" rx="10" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1.5"/>
+      <text x="192" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">半群</text>
+      <text x="192" y="104" text-anchor="middle" font-size="11.5" fill="#6b7280">+ 结合律</text>
+      <rect x="268" y="56" width="112" height="64" rx="10" fill="#e0e7ff" stroke="#818cf8" stroke-width="1.5"/>
+      <text x="324" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">独异点</text>
+      <text x="324" y="104" text-anchor="middle" font-size="11.5" fill="#6b7280">+ 幺元 e</text>
+      <rect x="400" y="56" width="112" height="64" rx="10" fill="#4f46e5" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="456" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">群</text>
+      <text x="456" y="104" text-anchor="middle" font-size="11.5" fill="#e0e7ff">+ 每元逆元</text>
+      <rect x="532" y="56" width="112" height="64" rx="10" fill="#7c3aed" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="588" y="82" text-anchor="middle" font-size="13.5" font-weight="700" fill="#fff">阿贝尔群</text>
+      <text x="588" y="104" text-anchor="middle" font-size="11.5" fill="#ede9fe">+ 交换律</text>
+      <line x1="118" y1="88" x2="134" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar1)"/>
+      <line x1="250" y1="88" x2="266" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar1)"/>
+      <line x1="382" y1="88" x2="398" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar1)"/>
+      <line x1="514" y1="88" x2="530" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar1)"/>
+    </svg>
+    <div class="cap">单运算谱系（逐级加条件）<small>半群 ⊂ 独异点 ⊂ 群 ⊂ 阿贝尔群，每往右多一条公理</small></div>
+  </div>
 </div>
 
 <div class="card">
@@ -171,6 +204,30 @@
 <h2 class="section" id="s6">六、环与域（双运算结构）</h2>
 <div class="rule">
   环与域都在集合上定义<b>两个</b>二元运算（通常记作 + 与 ·）。从弱到强：<b>环 → 整环 → 域</b>。
+</div>
+
+<div class="figrow">
+  <div class="fig">
+    <svg width="680" height="150" viewBox="0 0 680 150" role="img" aria-label="双运算结构谱系">
+      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#6b7280"/></marker></defs>
+      <rect x="6" y="56" width="150" height="64" rx="10" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1.5"/>
+      <text x="81" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">环</text>
+      <text x="81" y="104" text-anchor="middle" font-size="11" fill="#6b7280">加群·乘半群·分配律</text>
+      <rect x="178" y="56" width="150" height="64" rx="10" fill="#e0e7ff" stroke="#818cf8" stroke-width="1.5"/>
+      <text x="253" y="82" text-anchor="middle" font-size="13.5" font-weight="700" fill="#1f2430">交换幺环</text>
+      <text x="253" y="104" text-anchor="middle" font-size="11" fill="#6b7280">乘交换·幺元1≠0</text>
+      <rect x="350" y="56" width="150" height="64" rx="10" fill="#4f46e5" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="425" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">整环</text>
+      <text x="425" y="104" text-anchor="middle" font-size="11" fill="#e0e7ff">无零因子</text>
+      <rect x="522" y="56" width="150" height="64" rx="10" fill="#7c3aed" stroke="#7c3aed" stroke-width="1.5"/>
+      <text x="597" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#fff">域</text>
+      <text x="597" y="104" text-anchor="middle" font-size="11" fill="#ede9fe">非零元皆可逆</text>
+      <line x1="158" y1="88" x2="176" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar2)"/>
+      <line x1="330" y1="88" x2="348" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar2)"/>
+      <line x1="502" y1="88" x2="520" y2="88" stroke="#6b7280" stroke-width="1.6" marker-end="url(#ar2)"/>
+    </svg>
+    <div class="cap">双运算谱系（环 → 域）<small>环 ⊂ 交换幺环 ⊂ 整环 ⊂ 域；Z 只到整环（非零元无乘逆），Q/R/C 是域</small></div>
+  </div>
 </div>
 
 <div class="rule">

@@ -45,6 +45,11 @@
   .thm .dt{font-weight:800;color:var(--ok);margin-bottom:6px;font-size:15px}
   .thm code{background:#d1fae5;color:var(--ok);border-radius:6px;padding:1px 7px;font-weight:700}
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  .figrow{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 10px 6px;text-align:center;max-width:100%}
+  .fig svg{display:block;margin:0 auto;max-width:100%;height:auto}
+  .fig .cap{margin-top:4px;font-size:13px;color:var(--ink);font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
 </style>
 </head>
 <body>
@@ -148,6 +153,24 @@
   取全集 U，<b>(P(U), ⊆)</b> 是格：<code>A∧B = A∩B</code>（最大下界），<code>A∨B = A∪B</code>（最小上界）。也是布尔代数（见第四节）。
 </div>
 
+<div class="figrow">
+  <div class="fig">
+    <svg width="260" height="215" viewBox="0 0 260 215" role="img" aria-label="幂集格哈斯图">
+      <line x1="130" y1="40" x2="60" y2="110" stroke="#4f46e5" stroke-width="1.5"/>
+      <line x1="130" y1="40" x2="200" y2="110" stroke="#4f46e5" stroke-width="1.5"/>
+      <line x1="60" y1="110" x2="130" y2="180" stroke="#4f46e5" stroke-width="1.5"/>
+      <line x1="200" y1="110" x2="130" y2="180" stroke="#4f46e5" stroke-width="1.5"/>
+      <circle cx="130" cy="40" r="16" fill="#4f46e5"/><text x="130" y="45" fill="#fff" text-anchor="middle" font-size="12" font-weight="700">{a,b}</text>
+      <circle cx="60" cy="110" r="16" fill="#fff" stroke="#4f46e5" stroke-width="1.5"/><text x="60" y="115" fill="#1f2430" text-anchor="middle" font-size="12" font-weight="700">{a}</text>
+      <circle cx="200" cy="110" r="16" fill="#fff" stroke="#4f46e5" stroke-width="1.5"/><text x="200" y="115" fill="#1f2430" text-anchor="middle" font-size="12" font-weight="700">{b}</text>
+      <circle cx="130" cy="180" r="16" fill="#4f46e5"/><text x="130" y="185" fill="#fff" text-anchor="middle" font-size="14" font-weight="700">&#x2205;</text>
+      <text x="130" y="22" text-anchor="middle" font-size="11" fill="#059669" font-weight="700">{a}&#x2228;{b}={a,b}（即 &#x222A;）</text>
+      <text x="130" y="208" text-anchor="middle" font-size="11" fill="#d97706" font-weight="700">{a}&#x2227;{b}=&#x2205;（即 &#x2229;）</text>
+    </svg>
+    <div class="cap">幂集格 (P({a,b}), ⊆)<small>越往上“包含越多”；{a}、{b} 不可比，上确界为并、下确界为交</small></div>
+  </div>
+</div>
+
 <h2 class="section" id="s3">三、特殊格：分配 / 有界 / 有补（定义）</h2>
 
 <div class="def">
@@ -159,6 +182,40 @@
 
 <div class="note">
   <b>易错：</b>① “分配”是格的<b>额外</b>性质，并非所有格都分配；② 反例 <b>钻石格 M₃</b>、<b>五角格 N₅</b> 不是分配格（判“非分配”的标准）；③ 有补格里补元<b>未必唯一</b>，只有分配格中才唯一；④ 1、0 是格的顶/底，不是群里的幺元/零元。
+</div>
+
+<div class="figrow">
+  <div class="fig">
+    <svg width="220" height="205" viewBox="0 0 220 205" role="img" aria-label="钻石格 M3">
+      <line x1="110" y1="35" x2="40" y2="105" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="110" y1="35" x2="110" y2="105" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="110" y1="35" x2="180" y2="105" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="40" y1="105" x2="110" y2="175" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="110" y1="105" x2="110" y2="175" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="180" y1="105" x2="110" y2="175" stroke="#d97706" stroke-width="1.5"/>
+      <circle cx="110" cy="35" r="13" fill="#4f46e5"/><text x="110" y="40" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">1</text>
+      <circle cx="40" cy="105" r="13" fill="#fff" stroke="#d97706" stroke-width="1.5"/><text x="40" y="110" text-anchor="middle" font-size="13" font-weight="700">a</text>
+      <circle cx="110" cy="105" r="13" fill="#fff" stroke="#d97706" stroke-width="1.5"/><text x="110" y="110" text-anchor="middle" font-size="13" font-weight="700">b</text>
+      <circle cx="180" cy="105" r="13" fill="#fff" stroke="#d97706" stroke-width="1.5"/><text x="180" y="110" text-anchor="middle" font-size="13" font-weight="700">c</text>
+      <circle cx="110" cy="175" r="13" fill="#4f46e5"/><text x="110" y="180" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">0</text>
+    </svg>
+    <div class="cap">钻石格 M&#8323;<small>三个原子 a、b、c 两两不可比 → 非分配</small></div>
+  </div>
+  <div class="fig">
+    <svg width="220" height="205" viewBox="0 0 220 205" role="img" aria-label="五角格 N5">
+      <line x1="80" y1="35" x2="80" y2="90" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="80" y1="90" x2="80" y2="145" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="80" y1="145" x2="80" y2="185" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="80" y1="35" x2="170" y2="115" stroke="#d97706" stroke-width="1.5"/>
+      <line x1="170" y1="115" x2="80" y2="185" stroke="#d97706" stroke-width="1.5"/>
+      <circle cx="80" cy="35" r="13" fill="#4f46e5"/><text x="80" y="40" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">1</text>
+      <circle cx="80" cy="90" r="13" fill="#fff" stroke="#d97706" stroke-width="1.5"/><text x="80" y="95" text-anchor="middle" font-size="13" font-weight="700">b</text>
+      <circle cx="80" cy="145" r="13" fill="#fff" stroke="#d97706" stroke-width="1.5"/><text x="80" y="150" text-anchor="middle" font-size="13" font-weight="700">a</text>
+      <circle cx="170" cy="115" r="13" fill="#fff" stroke="#d97706" stroke-width="1.5"/><text x="170" y="120" text-anchor="middle" font-size="13" font-weight="700">c</text>
+      <circle cx="80" cy="185" r="13" fill="#4f46e5"/><text x="80" y="190" fill="#fff" text-anchor="middle" font-size="13" font-weight="700">0</text>
+    </svg>
+    <div class="cap">五角格 N&#8325;<small>链 0&lt;a&lt;b&lt;1 旁支 c（与 a、b 不可比）→ 非分配</small></div>
+  </div>
 </div>
 
 <h2 class="section" id="s4">四、布尔代数（定义 + 定律）</h2>
