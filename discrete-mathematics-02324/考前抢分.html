@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>离散数学 02324 · 考前抢分一页纸（目标 60+）</title>
+<meta name="description" content="基于 2025.4 / 2025.10 / 2026.4 三套全国真题逐题统计的核心考点频率表、每套必考模板、3.5 天抢分计划与考场答题策略，专为考前及格 60+ 冲刺设计。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#dc2626; --brand-soft:#fef2f2; --deep:#b91c1c;
+    --ok:#059669; --ok-soft:#ecfdf5; --warn:#d97706; --warn-soft:#fffbeb;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 16px 70px}
+  header.hero{background:linear-gradient(135deg,#b91c1c,#ea580c);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:16px;position:relative;overflow:hidden}
+  header.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 0,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  header.hero h1{margin:0 0 6px;font-size:24px;position:relative}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;position:relative}
+  .pill{display:inline-block;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 12px;font-size:13px;margin:8px 8px 0 0;position:relative}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;position:relative}
+  .gotos a{text-decoration:none;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--deep)}
+  .toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--deep);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;font-weight:600}
+  .btn:hover{background:var(--brand);color:#fff}
+  h2.sec{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px 18px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--brand-soft);color:var(--deep);font-weight:700}
+  td.c,th.c{text-align:center}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}
+  .tag.hot{background:var(--brand);color:#fff}
+  .tag.mid{background:var(--warn-soft);color:var(--warn)}
+  .tag.score{background:var(--ok-soft);color:var(--ok)}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .ok b{color:var(--ok)}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;background:#fff}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--deep)}
+  .card h3 .n{display:inline-block;background:var(--brand);color:#fff;border-radius:7px;width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;margin-right:8px}
+  .tpl{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:10px 13px;font-size:14px;margin:8px 0}
+  .tpl b{color:var(--deep)}
+  .ex{background:var(--brand-soft);border-left:4px solid var(--brand);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13.6px;margin:8px 0}
+  .ex .h{font-weight:700;color:var(--deep)}
+  code,.mono{font-family:"SFMono-Regular",Consolas,monospace;background:#eef2ff;color:#4338ca;border-radius:4px;padding:1px 6px;font-size:.9em}
+  .steps{margin:6px 0 0;padding-left:22px;font-size:13.6px}
+  .steps li{margin:3px 0}
+  ol.plan{padding-left:0;counter-reset:p;list-style:none}
+  ol.plan > li{background:#fff;border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:10px;padding:12px 16px;margin:10px 0;counter-increment:p}
+  ol.plan > li::before{content:"D" counter(p);font-weight:800;color:var(--brand);margin-right:10px}
+  ol.plan b{color:var(--ink)}
+  ol.plan .day{font-size:12.5px;color:var(--muted)}
+  ul.tips{padding-left:20px;font-size:14px}
+  ul.tips li{margin:5px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:620px){.grid2{grid-template-columns:1fr}th,td{padding:7px 8px;font-size:13px}}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.gotos,footer .fl{display:none}
+    header.hero{border-radius:0}
+    .card,.note,.ok,table{box-shadow:none;break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🔥 离散数学 02324 · 考前抢分一页纸</h1>
+  <p>基于 <b>2025.4 / 2025.10 / 2026.4 三套全国真题</b>逐题统计 · 唯一目标：<b>及格 60+</b> · 没时间从头学也能过</p>
+  <span class="pill">8 个每套必考点</span><span class="pill">6 个可默写模板</span><span class="pill">简答 35 分是基本盘</span>
+  <div class="gotos">
+    <a href="../index.html">🏠 首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="真题/index.html">📝 历年真题</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存 PDF</button>
+  <button class="btn" onclick="document.querySelectorAll('details.ans').forEach(d=>d.open=!d.open)">👁 展开 / 收起答案</button>
+</div>
+
+<div class="ok"><b>一句话策略：</b>别去系统啃知识点。<b>简答区 35 分几乎每年照抄同一批题型</b>，把 6 类模板练到闭眼能写 = 稳拿约 30 分；再拿下 50 分选填的一半（约 25 分）就已 <b>55+</b>；证明题只攻 2 类保底，总分冲 <b>65–70</b>。</div>
+
+<h2 class="sec">一、分数结构与及格路线</h2>
+<div class="sub">总分 100，及格 60。按"性价比"从高到低投入时间。</div>
+<table>
+  <tr><th>题型</th><th class="c">题量×分</th><th class="c">合计</th><th>抢分定位</th></tr>
+  <tr><td>简答题 26–32</td><td class="c">7×5</td><td class="c"><span class="tag hot">35 分</span></td><td>⭐⭐⭐ 最模板化，<b>优先攻克，是及格基本盘</b></td></tr>
+  <tr><td>选择题 1–15</td><td class="c">15×2</td><td class="c">30 分</td><td>⭐⭐ 靠"见过套路"，记概念即可，目标 18+</td></tr>
+  <tr><td>填空题 16–25</td><td class="c">10×2</td><td class="c">20 分</td><td>⭐⭐ 与选择题同源，重复率高，目标 12+</td></tr>
+  <tr><td>证明题 33–35</td><td class="c">3×5</td><td class="c">15 分</td><td>⭐ 只攻 CP 推理 + 图论证明，保底 6–10</td></tr>
+</table>
+
+<h2 class="sec">二、🔴 每套必考（三套全中）——先背这 8 个</h2>
+<div class="sub">下面每一个都在三套卷里都出现，是"不背就亏分"的硬通货。</div>
+<table>
+  <tr><th>核心考点</th><th>常出现在</th><th class="c">约分值</th><th>去哪页看（都有图/动画）</th></tr>
+  <tr><td><b>Kruskal 求最小生成树</b></td><td>简答 <b>第31题</b>（三套全是它）</td><td class="c"><span class="tag score">5</span></td><td><a href="知识点/图论/Kruskal算法.html">图论·Kruskal（选边动画）</a></td></tr>
+  <tr><td><b>主析取 / 主合取范式</b></td><td>简答 26/27 + 单选"小项大项个数"</td><td class="c"><span class="tag score">5+</span></td><td><a href="知识点/数理逻辑/命题逻辑.html">命题逻辑·主范式</a></td></tr>
+  <tr><td><b>求闭包 r(R)/s(R)/t(R) / 关系矩阵</b></td><td>简答（25.10-26、26.4-29、25.4-28）</td><td class="c"><span class="tag score">5</span></td><td><a href="知识点/关系/关系.html">关系·三种闭包</a></td></tr>
+  <tr><td><b>二元关系性质判断</b>（自反/对称/传递/反对称）</td><td>单选 + 填空（每套 1–2 题）</td><td class="c"><span class="tag score">4+</span></td><td><a href="知识点/关系/关系.html">关系·五大性质</a></td></tr>
+  <tr><td><b>量词符号化 / 消量词 / 自由变元</b></td><td>单选 + 填空</td><td class="c"><span class="tag score">4+</span></td><td><a href="知识点/数理逻辑/谓词逻辑.html">谓词逻辑</a></td></tr>
+  <tr><td><b>握手定理 / 度数序列判图</b></td><td>单选（每套 2–3 题）</td><td class="c"><span class="tag score">6+</span></td><td><a href="知识点/图论/基本概念.html">图论·基本概念</a></td></tr>
+  <tr><td><b>重言式 / 矛盾式判定</b></td><td>单选 <b>第2题</b>（三套同款）</td><td class="c"><span class="tag score">4</span></td><td><a href="知识点/数理逻辑/命题逻辑.html">命题逻辑·等值演算</a></td></tr>
+  <tr><td><b>集合基本运算</b>（并交差/幂集/笛卡尔积/对称差）</td><td>单选+填空+简答</td><td class="c"><span class="tag score">6+</span></td><td><a href="知识点/集合论/集合与函数.html">集合与函数</a></td></tr>
+</table>
+
+<h2 class="sec">三、🟡 高频（2/3 套出现）——有余力再抓</h2>
+<div class="sub">这些不是每年必考，但近三套出现两次，投入产出比高。</div>
+<div class="grid2">
+  <div class="card"><h3>🌴 二叉树三种遍历</h3><div class="tpl">先根<b>根左右</b> / 中根<b>左根右</b> / 后根<b>左右根</b>——"根"在第几位就是第几种。出现：25.10-32、26.4-32。<a href="知识点/图论/二叉树遍历.html">▶ 遍历动画</a></div></div>
+  <div class="card"><h3>💎 哈斯图 + 极大/极小元</h3><div class="tpl">最爱考"整除关系"。画分层图，<b>最上=极大、最下=极小</b>；子集 B 的极大极小在 B 内看。出现：25.10-30、26.4-28。</div></div>
+  <div class="card"><h3>🧮 映射计数</h3><div class="tpl">A→B 函数 <span class="mono">|B|^|A|</span>；单射 <span class="mono">A(n,m)=m!/(m−n)!</span>；双射 <span class="mono">n!</span>；A 上二元关系 <span class="mono">2^(n²)</span>；等价关系数=划分数(Bell)。出现：26.4-8、25.4-11。</div></div>
+  <div class="card"><h3>🌀 循环群元素的阶</h3><div class="tpl"><span class="mono">|aᵏ| = n / gcd(n,k)</span>；<span class="mono">aᵏ</span> 是生成元 ⇔ gcd(n,k)=1；生成元个数 <span class="mono">φ(n)</span>。出现：26.4-12、25.4-21。</div></div>
+  <div class="card"><h3>🕸 完全图 / 生成树计数</h3><div class="tpl">Kₙ 边数 <span class="mono">n(n−1)/2</span>；Kₙ 生成树数 <span class="mono">n^(n−2)</span>(Cayley)；K₃,₃ 边数 <span class="mono">3×3=9</span>。出现：26.4-15/25、25.4-8。</div></div>
+  <div class="card"><h3>🚚 欧拉图充要条件</h3><div class="tpl">欧拉图 ⇔ <b>连通 + 所有顶点次数为偶</b>；半欧拉(有欧拉通路) ⇔ 恰 2 个奇点。出现：填空 25.4-23、26.4-23。</div></div>
+</div>
+
+<h2 class="sec">四、📌 6 个"闭眼默写"模板（配三套真题实解）</h2>
+<div class="sub">每类给"套路 + 一道真考过的题 + 可照抄的步骤"。练熟这 6 个 ≈ 30 分到手。</div>
+
+<div class="card">
+  <h3><span class="n">1</span>主析取 / 主合取范式</h3>
+  <div class="tpl"><b>套路：</b>主析取取真值表<b>为 1 的行</b>→写<b>极小项</b>(变量=1 记原形、=0 记否定，用 ∧ 连)→行间用 ∨；主合取取<b>为 0 的行</b>→写<b>大项</b>(变量=0 记原形、=1 记否定，用 ∨ 连)→行间用 ∧。</div>
+  <div class="ex"><span class="h">真题 2026.4 第26题：</span>求 (P&rarr;Q)&rarr;(Q&rarr;R) 的<b>主合取范式</b>。</div>
+  <details class="ans"><summary style="cursor:pointer;color:var(--brand);font-size:13px">▼ 展开可抄步骤</summary>
+    <ol class="steps">
+      <li>A&rarr;B 为 0 ⟺ A=1 且 B=0。要整体为 0：需 Q&rarr;R=0 ⟺ Q=1,R=0；此时 P&rarr;Q=P&rarr;1=1 恒成立，P 任取。</li>
+      <li>为 0 的赋值：<code>010</code>(=M₂)、<code>110</code>(=M₆)。</li>
+      <li>大项（0 写原形、1 写否定）：M₂=P&or;¬Q&or;R，M₆=¬P&or;¬Q&or;R。</li>
+      <li>主合取范式 = <b>(P&or;¬Q&or;R) &and; (¬P&or;¬Q&or;R)</b>。</li>
+    </ol>
+  </details>
+</div>
+
+<div class="card">
+  <h3><span class="n">2</span>Kruskal 最小生成树（第31题·年年考）</h3>
+  <div class="tpl"><b>套路：</b>① 边按<b>权升序</b>排 → ② 从最小开始，<b>不构成回路就选</b> → ③ 选满 <b>n−1 条</b>停 → ④ 报权之和 W。<a href="知识点/图论/Kruskal算法.html">▶ 看动画</a></div>
+  <div class="ex"><span class="h">真题 2025.10 第31题：</span>边权 (a,b)=1,(b,c)=2,(a,c)=3,(a,e)=4,(c,e)=5,(c,d)=6,(e,d)=7，求最小生成树的权。</div>
+  <details class="ans"><summary style="cursor:pointer;color:var(--brand);font-size:13px">▼ 展开可抄步骤</summary>
+    <ol class="steps">
+      <li>排序后依次试：1 选 a–b ✔；2 选 b–c ✔；3 (a,c) 与 a–b–c 成圈 ✘；4 选 a–e ✔；5 (c,e) 成圈 ✘；6 选 c–d ✔（5 点已 4 边，结束）。</li>
+      <li>边集 {a–b, b–c, a–e, c–d}，<b>W = 1+2+4+6 = 13</b>。</li>
+    </ol>
+    <div class="note">💡 判圈口诀：若新边两端<b>已在同一棵连通块</b>里就成圈、舍弃；否则合并两块、入选。</div>
+  </details>
+</div>
+
+<div class="card">
+  <h3><span class="n">3</span>三种闭包 r / s / t（关系大题）</h3>
+  <div class="tpl"><b>公式：</b>自反 <span class="mono">r(R)=R&cup;I<sub>A</sub></span>（补所有自环）；对称 <span class="mono">s(R)=R&cup;R⁻¹</span>（补所有反向边）；传递 <span class="mono">t(R)=R&cup;R²&cup;&hellip;&cup;Rⁿ</span>（n=|A|，走两步能到的补上）。</div>
+  <div class="ex"><span class="h">真题 2025.10 第26题：</span>A={1,2,3}，R={&lang;1,1&rang;,&lang;1,3&rang;,&lang;2,2&rang;,&lang;3,2&rang;}，求 r,s,t。</div>
+  <details class="ans"><summary style="cursor:pointer;color:var(--brand);font-size:13px">▼ 展开可抄步骤</summary>
+    <ol class="steps">
+      <li>r(R)：补 I<sub>A</sub>={&lang;1,1&rang;,&lang;2,2&rang;,&lang;3,3&rang;} → 结果多 &lang;3,3&rang;。</li>
+      <li>s(R)：R⁻¹={&lang;1,1&rang;,&lang;3,1&rang;,&lang;2,2&rang;,&lang;2,3&rang;} → 并入即补 &lang;3,1&rang;,&lang;2,3&rang;。</li>
+      <li>传递：1&rarr;3&rarr;2 得 &lang;1,2&rang;；R²={&lang;1,1&rang;,&lang;1,2&rang;,&lang;1,3&rang;,&lang;2,2&rang;,&lang;3,2&rang;}，已闭合 → t(R)=该集合。</li>
+    </ol>
+  </details>
+</div>
+
+<div class="card">
+  <h3><span class="n">4</span>握手定理 / 度数序列（选择题送分）</h3>
+  <div class="tpl"><b>核心：</b><span class="mono">&sum;deg(v) = 2|E|</span>（度和必为偶数）→ 反推边数或顶点数。<b>判度数序列能否成图：</b>度和为偶数才行（奇数个数必为偶数个）。6 阶简单图最大度 = 5。</div>
+  <div class="ex"><span class="h">典型：</span>"每个顶点度数为 2、共 7 个顶点"→ &sum;=14 → |E|=7。"12 条边"→ &sum;=24。</div>
+</div>
+
+<div class="card">
+  <h3><span class="n">5</span>循环群元素的阶（填空/单选）</h3>
+  <div class="tpl"><b>公式：</b><span class="mono">|aᵏ| = n / gcd(n,k)</span>；aᵏ 是生成元 ⇔ gcd(n,k)=1；n 阶循环群生成元个数 = φ(n)。</div>
+  <div class="ex"><span class="h">真题 2026.4 第12题：</span>10 阶循环群，a 为生成元，求 |a⁴|。</div>
+  <details class="ans"><summary style="cursor:pointer;color:var(--brand);font-size:13px">▼ 展开可抄步骤</summary>
+    <ol class="steps"><li>|a⁴| = 10 / gcd(10,4) = 10 / 2 = <b>5</b>（选 C）。</li></ol>
+  </details>
+</div>
+
+<div class="card">
+  <h3><span class="n">6</span>CP 规则推理证明（证明第35题套路）</h3>
+  <div class="tpl"><b>套路：</b>结论是"蕴含式 R&rarr;S"时，把 <b>R 当附加前提</b>，只用它推出 S，最后写"由 CP 得 R&rarr;S"。</div>
+  <div class="ex"><span class="h">真题 2026.4 第35题：</span>前提 P&rarr;¬Q、P&and;R、Q&or;S；结论 R&rarr;S。</div>
+  <details class="ans"><summary style="cursor:pointer;color:var(--brand);font-size:13px">▼ 展开可抄步骤</summary>
+    <table style="margin-top:6px;font-size:13px"><tr><th class="c">序</th><th>公式</th><th>根据</th></tr>
+      <tr><td class="c">1</td><td>R</td><td>附加前提（CP）</td></tr>
+      <tr><td class="c">2</td><td>P&and;R</td><td>前提引入</td></tr>
+      <tr><td class="c">3</td><td>P</td><td>2 化简律</td></tr>
+      <tr><td class="c">4</td><td>P&rarr;¬Q</td><td>前提引入</td></tr>
+      <tr><td class="c">5</td><td>¬Q</td><td>3,4 假言推理 MP</td></tr>
+      <tr><td class="c">6</td><td>Q&or;S</td><td>前提引入</td></tr>
+      <tr><td class="c">7</td><td>S</td><td>5,6 析取三段论</td></tr>
+      <tr><td class="c">8</td><td>R&rarr;S</td><td>1,7 CP 规则 ∎</td></tr>
+    </table>
+  </details>
+</div>
+
+<h2 class="sec">五、🎯 考场抢分策略（会做先放，不会做会蒙）</h2>
+<ul class="tips">
+  <li><b>先扫简答 26–32</b>：Kruskal、主范式、闭包、二叉树遍历几乎必出现且最稳，先把这 30 分捞到手再回头做选填。</li>
+  <li><b>大题写步骤分</b>：即使最终结果算错，"排序/取真值/补边"的<b>过程写全</b>也能拿大部分分，别空着。</li>
+  <li><b>选择题蒙法</b>：关系性质、重言矛盾式、握手定理是纯概念，先排除明显错的；实在不会，"个数型"优先想 <span class="mono">2^n / n^m / n(n−1)/2</span> 这几个公式套。</li>
+  <li><b>证明不会也别空</b>：写出"前提引入 → 某律 → 结论"三五行框架，判卷按步给分。</li>
+  <li><b>时间分配</b>：选填 ≤35 分钟，简答 40 分钟，证明 20 分钟，留 15 分钟检查简答。</li>
+  <li><b>目标管理</b>：简答 30 + 选填 25 + 证明框架 6–10 ≈ <b>61–65</b>，够及格，不必追求高分题。</li>
+</ul>
+
+<footer>
+  <div class="fl">
+    <a href="../index.html">🏠 返回首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="真题/index.html">📝 历年真题</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>统计基于三套全国卷逐题核对 · 仅供考前冲刺参考 · 打印或 ⌘/Ctrl+P 存 PDF 带走</div>
+</footer>
+
+</div>
+</body>
+</html>
