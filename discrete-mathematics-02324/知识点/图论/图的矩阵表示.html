@@ -97,15 +97,15 @@
         <tr><th>c</th><td class="one">1</td><td>0</td><td>0</td><td>0</td></tr>
         <tr><th>d</th><td class="one">1</td><td>0</td><td>0</td><td>0</td></tr>
       </table>
-      <div class="lbl" style="margin-top:10px">度数：b 出度1(a→b) / c 入度1；d 出度1、入度0</div>
+      <div class="lbl" style="margin-top:10px">度数：b 出度1(b→c)、入度1(a→b)；d 出度1(d→a)、入度0</div>
     </div>
   </div>
 </div>
 
 <h2 class="section">二、可达矩阵 P</h2>
 <div class="rule">
-  <b>可达矩阵 P</b>：pᵢⱼ = 1 当且仅当<b>存在从 vᢢ 到 vⱼ 的通路</b>（长度 ≥0，自己到自己算可达）。<br>
-  求法：<code>P = A ∨ A² ∨ A³ ∨ … ∨ Aⁿ</code>（∨ 为布尔或，非零即 1）。嫌手算麻烦时，常用 <b>Warshall 算法</b> 直接求 P。<br>
+  <b>可达矩阵 P</b>：pᵢⱼ = 1 当且仅当<b>存在从 vᵢ 到 vⱼ 的通路</b>（长度 ≥0，自己到自己算可达）。<br>
+  求法：<code>P = I ∨ A ∨ A² ∨ A³ ∨ … ∨ Aⁿ</code>（I 为单位阵，对应“长度 ≥0”里的自身可达；∨ 为布尔或，非零即 1）。嫌手算麻烦时，常用 <b>Warshall 算法</b> 直接求 P。<br>
   注意：<b>有向图 P 一般不对称</b>——“能到”不是双向的；无向图则 P 对称。
 </div>
 
@@ -122,7 +122,7 @@
       </table>
     </div>
     <div class="blk">
-      <div class="lbl">可达矩阵 P = A ∨ A² ∨ A³（n=4）</div>
+      <div class="lbl">可达矩阵 P = I ∨ A ∨ A² ∨ A³（n=4）</div>
       <table class="m">
         <tr><th></th><th>a</th><th>b</th><th>c</th><th>d</th></tr>
         <tr><th>a</th><td class="one">1</td><td class="one">1</td><td class="one">1</td><td>0</td></tr>
@@ -133,7 +133,7 @@
     </div>
   </div>
   <div class="note" style="margin-bottom:0">
-    <b>读 P：</b>a、b、c 三者在环上<b>互达</b>（a、b、c 列都是 1）；<b>d 能到所有人</b>（d 行全 1，经 d→a 再绕环），但<b>没人能到 d</b>（d 列全 0，没有指向 d 的边）。这就是有向图“可达”不对称的典型。
+    <b>读 P：</b>a、b、c 三者在环上<b>互达</b>（a、b、c 列都是 1）；<b>d 能到所有人</b>（d 行全 1，经 d→a 再绕环），但<b>没人能到 d</b>（除对角线自身外，d 列全 0，没有指向 d 的边）。这就是有向图“可达”不对称的典型。
   </div>
 </div>
 
@@ -194,7 +194,7 @@
 
 <h2 class="section">四、Aᵏ 的妙用</h2>
 <div class="rule">
-  不止可达性：<b>Aᵏ 中第 (i,j) 项 = 从 vᢢ 到 vⱼ 长度为 k 的通路（途径）条数</b>（计数，非布尔）。<br>
+  不止可达性：<b>Aᵏ 中第 (i,j) 项 = 从 vᵢ 到 vⱼ 长度为 k 的通路（途径）条数</b>（计数，非布尔）。<br>
   上例 A² 中 a 到 c = 1（a→b→c 一条），b 到 a = 1（b→c→a），印证“长度 2 的途径数”。考试若问“长度为 k 的通路有几条”，直接算 Aᵏ 即可。
 </div>
 
