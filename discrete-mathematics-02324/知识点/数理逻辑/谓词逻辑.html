@@ -116,7 +116,7 @@
 <div class="card">
   <h3>量词的辖域：嵌套的方框</h3>
   <div class="figrow">
-    <div class="fig"><svg viewBox="0 0 260 120" width="260" height="120"><text x="6" y="40" font-size="17" fill="#1f2430">∀x</text><text x="44" y="40" font-size="17" fill="#1f2430">P(x)</text><text x="96" y="40" font-size="17" fill="#1f2430">→</text><text x="120" y="40" font-size="17" fill="#1f2430">∃y</text><text x="160" y="40" font-size="17" fill="#1f2430">Q(x,y)</text><rect x="40" y="22" width="152" height="26" rx="6" fill="none" stroke="#4f46e5" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="156" y="22" width="60" height="26" rx="6" fill="none" stroke="#059669" stroke-width="1.6" stroke-dasharray="4 3"/><text x="40" y="64" font-size="12" fill="#4f46e5">∀x 的辖域（约束整段 P(x)→∃y Q）</text><text x="150" y="84" font-size="12" fill="#059669">∃y 的辖域（仅 Q(x,y)）</text></svg><div class="cap">无括号时量词只管“下一个原子式”<small>加括号才能拓宽辖域；内层被外层嵌套</small></div></div>
+    <div class="fig"><svg viewBox="0 0 320 110" width="320" height="110"><text x="6" y="40" font-size="17" fill="#1f2430">∀x</text><text x="34" y="40" font-size="17" fill="#4f46e5">(</text><text x="44" y="40" font-size="17" fill="#1f2430">P(x)</text><text x="88" y="40" font-size="17" fill="#1f2430">→</text><text x="110" y="40" font-size="17" fill="#1f2430">∃y</text><text x="136" y="40" font-size="17" fill="#059669">(</text><text x="144" y="40" font-size="17" fill="#1f2430">Q(x,y)</text><text x="202" y="40" font-size="17" fill="#059669">)</text><text x="214" y="40" font-size="17" fill="#4f46e5">)</text><rect x="30" y="22" width="194" height="26" rx="6" fill="none" stroke="#4f46e5" stroke-width="1.6" stroke-dasharray="4 3"/><rect x="132" y="22" width="76" height="26" rx="6" fill="none" stroke="#059669" stroke-width="1.6" stroke-dasharray="4 3"/><text x="10" y="66" font-size="12" fill="#4f46e5">∀x 辖域＝整段（加括号才覆盖 →）</text><text x="150" y="88" font-size="12" fill="#059669">∃y 辖域＝(Q(x,y))，嵌于内层</text></svg><div class="cap">加括号规定辖域，内外形成嵌套<small>无括号时 ∀x 只辖 P(x)，其后出现的 x 就成了自由变元</small></div></div>
   </div>
 </div>
 
@@ -133,10 +133,11 @@
 
 <div class="card">
   <h3>例：经典翻译</h3>
-  设 F(x)：x 是自然数，G(x)：x 是整数，论域为实数。<br>
-  • "所有自然数都是整数" → <span class="m">∀x(F(x)→G(x))</span><br>
-  • "有的实数是有理数" → <span class="m">∃x(R(x)∧Q(x))</span><br>
-  • "不存在最大的自然数" → <span class="m">∀x(N(x)→∃y(N(y)∧y&gt;x))</span>（每个自然数都有比它更大的）
+  设论域为实数集。谓词：<span class="m">N(x)</span>：x 是自然数；<span class="m">Z(x)</span>：x 是整数；<span class="m">Q(x)</span>：x 是有理数。<br>
+  • "所有自然数都是整数"（所有 A 是 B）→ <span class="m">∀x(N(x)→Z(x))</span>　<b>全称配 →</b><br>
+  • "有的有理数是整数"（存在 A 是 B）→ <span class="m">∃x(Q(x)∧Z(x))</span>　<b>存在配 ∧</b><br>
+  • "不存在最大的自然数" → <span class="m">∀x(N(x)→∃y(N(y)∧y&gt;x))</span>（每个自然数 x 都能找到比它更大的自然数 y）。<br>
+  <span style="color:var(--muted)">注：各条都是独立的闭公式，约束变元名可各自重用 x；第 3 条的 <span class="m">∀x</span> 与 <span class="m">∃y</span> 分别约束自己的变元，y 不能换回 x。</span>
 </div>
 
 <div class="note">
@@ -209,11 +210,11 @@
   前提：<span class="m">∀x(F(x)→G(x))</span>，<span class="m">∃x F(x)</span>；结论：<span class="m">∃x G(x)</span>。
   <ol class="steps">
     <li>∃x F(x)　（前提引入 P）</li>
-    <li>F(c)　（2 存在消去 ES，c 为新常元）</li>
+    <li>F(c)　（由 1，ES 存在消去，c 为新常元）</li>
     <li>∀x(F(x)→G(x))　（前提引入 P）</li>
-    <li>F(c)→G(c)　（4 全称消去 US）</li>
-    <li>G(c)　（3、5 假言推理 MP）</li>
-    <li>∃x G(x)　（6 存在引入 EG）∎</li>
+    <li>F(c)→G(c)　（由 3，US 全称消去）</li>
+    <li>G(c)　（由 2、4，MP 假言推理）</li>
+    <li>∃x G(x)　（由 5，EG 存在引入）∎</li>
   </ol>
 </div>
 
