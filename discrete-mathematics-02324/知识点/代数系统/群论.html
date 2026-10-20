@@ -53,6 +53,15 @@
   .fig .cap{font-size:13px;color:var(--ink);margin-top:4px;font-weight:700}
   .fig .cap small{display:block;color:var(--muted);font-weight:400}
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  /* 🌱 超纲·选学 */
+  .extbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:2px 0 16px}
+  .extbar button{cursor:pointer;border:1px solid var(--warn);background:var(--warn-soft);color:var(--warn);border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
+  .extbar button:hover{background:var(--warn);color:#fff}
+  .extbar .tip{font-size:13px;color:var(--muted)}
+  .ext{position:relative;border:1px dashed #f0b429;background:#fffdf6;border-radius:14px;padding:20px 16px 6px;margin:26px 0}
+  .ext::before{content:"🌱 超纲 · 选学";position:absolute;top:-12px;left:16px;background:#f59e0b;color:#fff;font-size:12px;font-weight:700;padding:2px 12px;border-radius:999px;letter-spacing:.5px}
+  .ext .section{margin-top:4px}
+  body.hide-ext .ext{display:none}
 </style>
 </head>
 <body>
@@ -61,7 +70,7 @@
 <header class="hero">
   <h1>离散数学 · 群论深化</h1>
   <p>本篇是 <a class="inline" style="color:#fff;text-decoration:underline" href="代数系统.html">代数系统</a> 中"群"部分的进阶与做题工具包。基础四公理、子群判定、循环群、拉格朗日请先看代数系统页；这里专攻：元素的阶、Cayley 表、置换群 Sₙ、正规子群与商群、群同态。</p>
-  <span class="pill">元素的阶 |aᵏ|=n/gcd</span><span class="pill">Cayley表</span><span class="pill">置换群/循环分解</span><span class="pill">正规子群/商群</span><span class="pill">群同态与核</span>
+  <span class="pill">元素的阶 |aᵏ|=n/gcd</span><span class="pill">Cayley表</span><span class="pill">🌱置换群/循环分解</span><span class="pill">🌱正规子群/商群</span><span class="pill">🌱群同态与核</span>
   <div class="gotos">
     <a href="../../../index.html">🏠 首页</a>
     <a href="../index.html">📚 知识点导航</a>
@@ -71,13 +80,18 @@
   </div>
 </header>
 
+<div class="extbar">
+  <button id="extToggle" type="button">🌱 显示超纲·选学内容</button>
+  <span class="tip" id="extTip">下方标🌱的内容（置换群、陪集/商群、群同态）超出辛运帏教材目录与三套真题范围，默认已隐藏；有余力再点开。</span>
+</div>
+
 <div class="toc">
   <div class="toc-h">本章目录</div>
   <a href="#s1">一、群的阶与元素的阶</a>
   <a href="#s2">二、Cayley 表（有限群的运算表）</a>
-  <a href="#s3">三、置换群 Sₙ 与循环分解</a>
-  <a href="#s4">四、陪集 · 正规子群 · 商群</a>
-  <a href="#s5">五、群同态与同构</a>
+  <a href="#s3">三、置换群 Sₙ 与循环分解 <span style="color:#f59e0b;font-size:12px">🌱超纲</span></a>
+  <a href="#s4">四、陪集 · 正规子群 · 商群 <span style="color:#f59e0b;font-size:12px">🌱超纲</span></a>
+  <a href="#s5">五、群同态与同构 <span style="color:#f59e0b;font-size:12px">🌱超纲</span></a>
   <a href="#s6">六、常见小群速查</a>
   <a href="#s7">七、本章小结与真题呼应</a>
 </div>
@@ -122,6 +136,7 @@
   每个非单位元自逆（a²=b²=c²=e），故有 <b>3 个 2 阶元</b>；它是交换群但<b>不是</b> 4 阶循环群（无 4 阶元）——4 阶群恰好这两种：Z₄ 与 V₄。
 </div>
 
+<div class="ext">
 <h2 class="section" id="s3">三、置换群 Sₙ 与循环分解</h2>
 <div class="rule">
   <b>置换</b>：集合到自身的双射。<b>对称群 Sₙ</b>：{1,…,n} 上全部置换关于"复合"成群，<span class="m">|Sₙ| = n!</span>，幺元是恒等置换，运算一般<b>不交换</b>（n≥3）。
@@ -179,6 +194,8 @@
   <span class="m">(Z₄,+)</span> 与 <span class="m">V₄</span> 都是 4 阶交换群，但 Z₄ 有 4 阶元（生成元），V₄ 元素阶只到 2 → 二者<b>不同构</b>。"元素阶的分布"是同构判断题的常用切入点。
 </div>
 
+</div>
+
 <h2 class="section" id="s6">六、常见小群速查</h2>
 <div class="rule">
   <table class="law">
@@ -199,5 +216,19 @@
 
 <footer>离散数学知识点补充 · 群论深化 · 配合代数系统页与真题详解使用 · 仅供学习交流参考</footer>
 </div>
+<script>
+(function(){
+  var KEY='dm02324-hide-ext';
+  var body=document.body, btn=document.getElementById('extToggle'), tip=document.getElementById('extTip');
+  if(!btn) return;
+  function apply(h){ body.classList.toggle('hide-ext',h); btn.textContent=h?'🌱 显示超纲·选学内容':'🙈 隐藏超纲·选学内容'; if(tip) tip.style.display=h?'':'none'; }
+  var raw; try{raw=localStorage.getItem(KEY);}catch(e){raw=null;}
+  var h=(raw===null)?true:(raw==='1');
+  apply(h);
+  btn.addEventListener('click',function(){ h=!h; try{localStorage.setItem(KEY,h?'1':'0');}catch(e){} apply(h); });
+  function openHash(){ var id=location.hash; if(!id) return; var t=document.querySelector(id); if(t&&t.closest&&t.closest('.ext')&&h){ h=false; try{localStorage.setItem(KEY,'0');}catch(e){} apply(false); if(t.scrollIntoView){ setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'});},60);} } }
+  openHash(); window.addEventListener('hashchange',openHash);
+})();
+</script>
 </body>
 </html>

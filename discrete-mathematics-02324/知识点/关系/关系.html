@@ -50,6 +50,14 @@
   table.tb th,table.tb td{border:1px solid var(--line);padding:5px 9px;text-align:center}
   table.tb th{background:var(--brand-soft);color:var(--brand)}
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  /* 🌱 超纲·选学 */
+  .extbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:2px 0 16px}
+  .extbar button{cursor:pointer;border:1px solid var(--warn);background:var(--warn-soft);color:var(--warn);border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
+  .extbar button:hover{background:var(--warn);color:#fff}
+  .extbar .tip{font-size:13px;color:var(--muted)}
+  .ext{position:relative;border:1px dashed #f0b429;background:#fffdf6;border-radius:14px;padding:20px 16px 6px;margin:26px 0}
+  .ext::before{content:"🌱 超纲 · 选学";position:absolute;top:-12px;left:16px;background:#f59e0b;color:#fff;font-size:12px;font-weight:700;padding:2px 12px;border-radius:999px;letter-spacing:.5px}
+  body.hide-ext .ext{display:none}
 </style>
 </head>
 <body>
@@ -66,6 +74,11 @@
     <a href="../代数系统/格与布尔代数.html">→ 格与布尔代数（偏序/哈斯图延伸）</a>
   </div>
 </header>
+
+<div class="extbar">
+  <button id="extToggle" type="button">🌱 显示超纲·选学内容</button>
+  <span class="tip" id="extTip">“Warshall 算法”三套真题从未考（传递闭包用 R∪R²∪… 定义法即可），默认已隐藏；其余关系性质/闭包/划分均属考纲。</span>
+</div>
 
 <div class="toc">
   <div class="toc-h">本章目录（定义 · 定理）</div>
@@ -281,6 +294,7 @@
   <div class="note" style="margin:12px 0 0"><b>蓝边</b>是原关系 R，<b style="color:var(--warn)">橙边</b>是闭包新补的边——“最小”即只补到刚好满足性质为止，不多补。</div>
 </div>
 
+<div class="ext">
 <div class="card">
   <h3>Warshall 算法：高效求传递闭包 t(R)（O(n³)）</h3>
   <div class="th">
@@ -300,6 +314,8 @@
   <b>递推要点：</b>k=1 时第 1 列全 0 → 无变化；k=2 时因 <code>1→2</code> 且 <code>2→3</code> 推出 <b>1→3</b>（W[1][3] 置 1）；k=3 时无新路径。<br>
   最终 t(R) = R ∪ {(1,3)}，矩阵为 M_R 再加一个 (1,3) 处的 1。
   <div class="note" style="margin:10px 0 0">Warshall 本质是逐步允许"以第 k 个点为中转"来补传递边，比直接算 R∪R²∪⋯ 更快，是传递闭包计算题的标准解法。</div>
+</div>
+
 </div>
 
 <h2 class="section" id="s4">四、等价关系与划分（定义 + 定理）</h2>
@@ -420,5 +436,19 @@
 
 <footer>离散数学知识点补充 · 配合真题详解使用 · 仅供学习交流参考</footer>
 </div>
+<script>
+(function(){
+  var KEY='dm02324-hide-ext';
+  var body=document.body, btn=document.getElementById('extToggle'), tip=document.getElementById('extTip');
+  if(!btn) return;
+  function apply(h){ body.classList.toggle('hide-ext',h); btn.textContent=h?'🌱 显示超纲·选学内容':'🙈 隐藏超纲·选学内容'; if(tip) tip.style.display=h?'':'none'; }
+  var raw; try{raw=localStorage.getItem(KEY);}catch(e){raw=null;}
+  var h=(raw===null)?true:(raw==='1');
+  apply(h);
+  btn.addEventListener('click',function(){ h=!h; try{localStorage.setItem(KEY,h?'1':'0');}catch(e){} apply(h); });
+  function openHash(){ var id=location.hash; if(!id) return; var t=document.querySelector(id); if(t&&t.closest&&t.closest('.ext')&&h){ h=false; try{localStorage.setItem(KEY,'0');}catch(e){} apply(false); if(t.scrollIntoView){ setTimeout(function(){t.scrollIntoView({behavior:'smooth',block:'start'});},60);} } }
+  openHash(); window.addEventListener('hashchange',openHash);
+})();
+</script>
 </body>
 </html>

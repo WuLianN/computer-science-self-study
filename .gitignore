@@ -1,2 +1,5 @@
 .DS_Store
 **/.DS_Store
+
+# 临时验证截图产物（浏览器自测生成，勿提交）
+/_verify_*.png
