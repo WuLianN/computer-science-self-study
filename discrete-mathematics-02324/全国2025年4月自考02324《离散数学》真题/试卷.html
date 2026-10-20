@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025年4月自考 02324《离散数学》真题 · 原卷</title>
+<style>
+  :root{
+    --bg:#eef1f6; --paper:#ffffff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .topbar{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 16px}
+  .topbar .inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .topbar h1{font-size:16px;margin:0;flex:1 1 auto;min-width:200px}
+  .topbar a,.topbar button{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:13px;text-decoration:none;transition:.15s}
+  .topbar a:hover,.topbar button:hover{background:var(--brand);color:#fff}
+  .wrap{max-width:860px;margin:0 auto;padding:22px 16px 80px}
+  .sheet{background:var(--paper);border:1px solid var(--line);border-radius:10px;box-shadow:0 4px 18px rgba(15,23,42,.08);margin:18px 0;overflow:hidden}
+  .sheet .cap{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--line);background:#fafbff;font-size:14px;color:var(--muted)}
+  .sheet .cap b{color:var(--brand);font-size:15px}
+  .sheet img{display:block;width:100%;height:auto;background:#fff;cursor:zoom-in}
+  .tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:8px 0 4px;font-size:14px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  /* 灯箱 */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:96%;max-height:92%;border-radius:6px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+  .lightbox .close{position:absolute;top:18px;right:24px;color:#fff;font-size:34px;cursor:pointer;line-height:1;user-select:none}
+  @media print{
+    body{background:#fff}
+    .topbar,.lightbox,.tip{display:none!important}
+    .wrap{max-width:none;padding:0}
+    .sheet{border:none;box-shadow:none;border-radius:0;margin:0;page-break-after:always}
+    .sheet .cap{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="inner">
+    <h1>2025年4月自考 02324《离散数学》真题 · 原卷（共3页）</h1>
+    <a href="真题详解.html">📝 查看详解</a>
+    <button onclick="window.print()">🖨️ 打印 / 存 PDF</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tip">
+    这是试卷的原始扫描件，供直接对照阅读、自测。<b>点击任意一页可放大查看</b>；需要纸质手感可点右上角"打印 / 存 PDF"（每页自动分页）。做完后点"查看详解"核对答案与解析。
+  </div>
+
+  <section class="sheet">
+    <div class="cap"><b>第 1 页</b><span>第一部分 选择题 · 单选 1–7 题</span></div>
+    <img src="1.png" alt="2025年4月离散数学真题 第1页">
+  </section>
+
+  <section class="sheet">
+    <div class="cap"><b>第 2 页</b><span>单选 8–15 题 · 第二部分 填空题 16–22 题</span></div>
+    <img src="2.png" alt="2025年4月离散数学真题 第2页">
+  </section>
+
+  <section class="sheet">
+    <div class="cap"><b>第 3 页</b><span>填空 23–25 题 · 第三部分 简答题 26–32 题 · 第四部分 证明题 33–35 题</span></div>
+    <img src="3.png" alt="2025年4月离散数学真题 第3页">
+  </section>
+
+  <footer>2025年4月高等教育自学考试全国统一命题考试 · 离散数学（02324）原卷 · 仅供学习交流参考</footer>
+</div>
+
+<div class="lightbox" id="lb" onclick="this.classList.remove('show')">
+  <span class="close">&times;</span>
+  <img id="lbimg" src="" alt="放大查看">
+</div>
+
+<script>
+  document.querySelectorAll('.sheet img').forEach(function(img){
+    img.addEventListener('click', function(){
+      document.getElementById('lbimg').src = this.src;
+      document.getElementById('lb').classList.add('show');
+    });
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') document.getElementById('lb').classList.remove('show');
+  });
+</script>
+</body>
+</html>

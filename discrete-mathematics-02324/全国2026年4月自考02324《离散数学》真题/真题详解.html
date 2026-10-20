@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年4月自考 02324《离散数学》真题详解</title>
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+  .wrap{max-width:940px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5);color:#fff;border-radius:16px;padding:28px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:25px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  .links{margin-top:12px}
+  .links a{display:inline-block;background:#fff;color:var(--brand);border-radius:8px;padding:4px 12px;font-size:13px;text-decoration:none;margin-right:8px}
+  h2.section{margin:34px 0 14px;font-size:21px;border-left:5px solid var(--brand);padding-left:12px}
+  .toolbar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}
+  details.q>summary{cursor:pointer;padding:14px 18px;list-style:none;display:block}
+  details.q>summary::-webkit-details-marker{display:none}
+  details.q>summary:hover{background:#fafbff}
+  .qno{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:8px;font-size:13px;font-weight:700;padding:2px 10px;margin-right:8px;vertical-align:middle}
+  .stem{display:inline;font-weight:600;vertical-align:middle}
+  .toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
+  details.q[open]>summary .toggle::after{content:" ▴"}
+  details.q:not([open])>summary .toggle::after{content:" ▾"}
+  .opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
+  .opts span{font-size:15px;color:#374151}
+  .body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
+  .answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
+  .sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
+  .sol .lab{font-weight:700;color:var(--brand)}
+  .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px}
+  table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center}
+  table.anskey th{background:var(--brand-soft);color:var(--brand)}
+  table.anskey td b{color:var(--ok)}
+  table.vt{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;text-align:center}
+  table.vt th{background:var(--brand-soft)}
+  table.vt th,table.vt td{border:1px solid var(--line);padding:5px 6px}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  svg text{font-family:inherit}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+  .fillblank .blank{color:var(--brand);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>2026年4月高等教育自学考试 · 离散数学（02324）真题详解</h1>
+  <p>题干与选项默认显示，<b>点开才能看到答案与解析</b>，先自测再核对。</p>
+  <span class="pill">单选 15×2 = 30分</span><span class="pill">填空 10×2 = 20分</span><span class="pill">简答 7×5 = 35分</span><span class="pill">证明 3×5 = 15分</span>
+  <div class="links"><a href="试卷.html">📄 原卷扫描件（网页版）</a><a href="../全国2025年10月自考02324《离散数学》真题/真题详解.html">2025年10月真题详解</a></div>
+</header>
+
+<div class="toolbar">
+  <button class="btn" onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">全部展开（看答案）</button>
+  <button class="btn" onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">全部收起（自测模式）</button>
+  <span style="color:var(--muted);font-size:13px">提示：建议先只做题干，逐个点开核对。</span>
+</div>
+
+<h2 class="section">一、单项选择题（每小题2分，共30分）</h2>
+
+<details class="q"><summary>
+  <span class="qno">第1题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 P：0.4 是有理数，Q：0.4 可写成分数。命题"0.4 是有理数当且仅当 0.4 可写成分数"可符号化为</div>
+  <div class="opts"><span>A. P→Q</span><span>B. P↔Q</span><span>C. Q→P</span><span>D. P∧Q</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B&nbsp; P↔Q</div>
+  <div class="sol"><span class="lab">解析：</span>"当且仅当"是<b>双条件（等价）</b>联结词的标准中文对应词，符号化为 <span class="m">P↔Q</span>。<br>
+    对照记忆：若P则Q → P→Q；只有P才Q → Q→P；P且Q → P∧Q；P或Q → P∨Q。</div>
+  <span class="tag">考点：联结词与自然语言对应</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第2题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列命题公式是重言式的是</div>
+  <div class="opts"><span>A. P∧¬P</span><span>B. (P∨Q)→Q</span><span>C. (P∧Q)→Q</span><span>D. P∧¬Q</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>重言式 = 永真式（任何赋值下真值都为 1）。<br>
+    A：P∧¬P ≡ 0，是<b>矛盾式</b>。<br>
+    B：P=1、Q=0 时 (1∨0)→0 = 0，非永真。<br>
+    <b>C：(P∧Q)→Q = ¬(P∧Q)∨Q = ¬P∨¬Q∨Q = ¬P∨1 ≡ 1</b>，重言式（前件为真时 Q 必为真，属"化简律"）。<br>
+    D：P=0 时为 0，非永真。</div>
+  <span class="tag">考点：重言式判定</span><span class="tag">等值演算</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第3题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设命题公式 A 为矛盾式且含有 4 个命题变元，则 A 的主合取范式含大项的个数为</div>
+  <div class="opts"><span>A. 2</span><span>B. 4</span><span>C. 8</span><span>D. 16</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D&nbsp; 16</div>
+  <div class="sol"><span class="lab">解析：</span>n 个变元共 2ⁿ 个大项（极大项）；<b>主合取范式由"使公式为 0 的赋值"对应的大项合取而成</b>。<br>
+    A 为矛盾式 ⇒ 全部 2⁴ = <b>16</b> 组赋值都使 A 为 0 ⇒ 主合取范式含 16 个大项。<br>
+    <b>对照记：</b>矛盾式 → 主合取范式取满（2ⁿ 个大项）、主析取范式为空；重言式 → 主析取范式取满（2ⁿ 个小项）、主合取范式为空。</div>
+  <span class="tag">考点：主合取范式</span><span class="tag">n 变元共 2ⁿ 个大项/小项</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第4题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设论域为正整数集，真值为假的命题是</div>
+  <div class="opts"><span>A. ∀x∀y(y&gt;x²)</span><span>B. ∀x∃y(y=x²)</span><span>C. ∃x∃y(x²+y²=13)</span><span>D. ∃x∀y(x²⩽y)</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>论域 = 正整数 {1,2,3,…}，逐项判断：<br>
+    <b>A（假）✔：</b>取 x=2、y=1，y&gt;x² 即 1&gt;4 不成立 → 全称命题有反例即为假。<br>
+    B（真）：对每个 x 取 y=x² 即可。<br>
+    C（真）：取 x=2、y=3，4+9=13。<br>
+    D（真）：取 x=1，则 x²=1 ⩽ 一切正整数 y。<br>
+    <span style="color:var(--muted);font-size:13px">💡 全称命题只需<b>一个反例</b>即为假；存在命题只需<b>举出一个例子</b>即为真。</span></div>
+  <span class="tag">考点：谓词命题真值</span><span class="tag">量词含义</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第5题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 R(x)：x 是有理数，L(x,y)：x 大于 y。命题"没有最小的有理数"可符号化为</div>
+  <div class="opts"><span>A. ∀x(R(x)→(∃y)(R(y)∧L(x,y)))</span><span>B. ∃x(R(x)→(∀y)(R(y)∧L(x,y)))</span><span>C. ∀x(R(x)∧(∃y)(R(y)∧L(x,y)))</span><span>D. ∃x(R(x)→(∃y)(R(y)→L(x,y)))</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>
+    <b>直译原命题：</b>"没有最小的有理数" = ¬∃x(R(x)∧∀y(R(y)→(y&gt;x ∨ y=x)))。<br>
+    等价的正面说法：<b>任意一个有理数 x，都存在比它更小的有理数 y</b>，即 ¬∃ 化 ∀ 后得 <span class="m">∀x(R(x)→∃y(R(y)∧¬L(y,x)))</span>；由实数<b>三分律</b>（x≠y 时 ¬(y&gt;x) ⇔ x&gt;y）得 <span class="m">∀x(R(x)→∃y(R(y)∧L(x,y)))</span> = 选项 A。<br><br>
+    <b>排除法更快：</b>"没有最小的"是对<b>每个</b>有理数的全称陈述，主量词必须是 ∀x 且"是有理数"作前件用 →，只可能形如 ∀x(R(x)→…) → 仅 A 符合。<br>
+    C 写成 ∀x(R(x)∧…) 意为"宇宙万物都是有理数"，错；B、D 以 ∃x 开头，只说"存在某个有理数…"，语气太弱。</div>
+  <span class="tag">考点：命题的谓词符号化</span><span class="tag">全称配 →、存在配 ∧</span><span class="tag">三分律</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第6题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 X={a,b,c}，R={&lt;a,a&gt;,&lt;c,c&gt;,&lt;b,b&gt;,&lt;b,c&gt;}，则关系 R 在 X 上不是</div>
+  <div class="opts"><span>A. 自反的</span><span>B. 反对称的</span><span>C. 传递的</span><span>D. 对称的</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D（不对称）</div>
+  <div class="sol"><span class="lab">解析：</span>逐条检验（R 的有序对：a→a、c→c、b→b、b→c）<br>
+    <b>自反？✔</b>需含 &lt;a,a&gt;、&lt;b,b&gt;、&lt;c,c&gt; —— 三者齐全 → 自反成立。<br>
+    <b>反对称？✔</b>唯一的非对角对是 &lt;b,c&gt;，其反向 &lt;c,b&gt;∉R，无违反 → 反对称成立。<br>
+    <b>传递？✔</b>需检验"两跳能否短路"：&lt;b,c&gt; 与 &lt;c,c&gt; 得 &lt;b,c&gt;∈R；&lt;b,b&gt; 与 &lt;b,c&gt; 得 &lt;b,c&gt;∈R；其余都是对角元素参与，均无违反 → 传递成立。<br>
+    <b>对称？✘</b>&lt;b,c&gt;∈R 但 &lt;c,b&gt;∉R → <b>不对称</b>。<br><br>
+    故 R 满足自反、反对称、传递（事实上是一个偏序关系），唯独<b>不满足对称性</b> → 选 <b>D</b>。</div>
+  <span class="tag">考点：关系性质判定</span><span class="tag">对称：&lt;x,y&gt;∈R ⇒ &lt;y,x&gt;∈R</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第7题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 A={1,2,3}，B={a,b}，f={&lt;1,a&gt;,&lt;2,a&gt;,&lt;3,b&gt;}，则下列选项正确的是</div>
+  <div class="opts"><span>A. f 是满射函数</span><span>B. f 的逆是 B 到 A 的函数</span><span>C. f 是单射函数</span><span>D. f 不是 A 到 B 的函数</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>f(1)=a、f(2)=a、f(3)=b，A 中每个元素都有唯一像 → 是 A 到 B 的函数（排除 D）。<br>
+    <b>满射？</b>B 中每个元素都有原像：a 的原像 {1,2}，b 的原像 {3} → <b>是满射</b> ✔<br>
+    <b>单射？</b>1≠2 但 f(1)=f(2)=a → 不是单射（排除 C）<br>
+    <b>逆是函数？</b>f⁻¹={&lt;a,1&gt;,&lt;a,2&gt;,&lt;b,3&gt;}，a 对应两个值 → 不是函数（排除 B）<br>
+    <span style="color:var(--muted);font-size:13px">💡 逆关系是函数 ⇔ 原函数是双射；本题 f 只满不单，故逆不是函数。</span></div>
+  <span class="tag">考点：单射/满射/双射</span>
+</div></details>
+<details class="q"><summary>
+  <span class="qno">第8题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 X={1,2,3}，Y={1,2,4}，则 X 到 Y 的单射函数的个数为</div>
+  <div class="opts"><span>A. 2</span><span>B. 4</span><span>C. 6</span><span>D. 27</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C&nbsp; 6</div>
+  <div class="sol"><span class="lab">解析：</span>
+    <b>注意 X、Y 都是 3 元集</b>（|X|=|Y|=3）。单射要求 X 中不同元素映到 Y 中<b>不同</b>元素，逐个安排：<br>
+    &nbsp;&nbsp;· 1 的像：Y 中任选 → 3 种；&nbsp;· 2 的像：不与前者相同 → 2 种；&nbsp;· 3 的像 → 1 种<br>
+    共 <span class="m">3×2×1 = 3! = 6</span> 种，即排列数 A(3,3)。<br>
+    <span style="color:var(--muted);font-size:13px">（当 |X|=|Y| 时，单射⇔满射⇔双射，故也等于双射个数 3! = 6。选项 D 的 27 = 3³ 是 X到Y 的<b>全部函数</b>个数，不是单射。）</span><br><br>
+    <b>通用公式（务必记）：</b>|X|=m、|Y|=n 时<br>
+    &nbsp;&nbsp;· 函数总数 nᵐ；&nbsp;· 单射总数（m⩽n）A(n,m) = n!/(n−m)!，m&gt;n 时为 0<br>
+    &nbsp;&nbsp;· 满射总数（m⩾n）n!·S(m,n)（容斥），m&lt;n 时为 0；&nbsp;· 双射总数：m=n 时 m!，否则 0</div>
+  <span class="tag">考点：特殊函数计数</span><span class="tag">单射数 = A(n,m)</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第9题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">若 R 是定义在集合 A 上的一个偏序关系，则 R 不满足</div>
+  <div class="opts"><span>A. 对称性</span><span>B. 传递性</span><span>C. 自反性</span><span>D. 反对称性</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>偏序关系的定义 = <b>自反 + 反对称 + 传递</b>，三条都写进定义，唯独不要求对称性。<br>
+    实例：整除关系是偏序，2|4 成立而 4|2 不成立 → 不对称。<br>
+    <b>对比记忆：</b>等价关系 = 自反+<b>对称</b>+传递；偏序关系 = 自反+<b>反对称</b>+传递；严格偏序（如 &lt;）= <b>反自反</b>+反对称+传递。</div>
+  <span class="tag">考点：偏序关系定义</span><span class="tag">等价关系 vs 偏序关系</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第10题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设集合 A,B,C 满足 |A|=2，|B|=3，|C|=5，则 A×B×C 的元素个数是</div>
+  <div class="opts"><span>A. 10</span><span>B. 11</span><span>C. 30</span><span>D. 60</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C&nbsp; 30</div>
+  <div class="sol"><span class="lab">解析：</span>笛卡尔积元素个数 = 各集合基数<b>相乘</b>：|A×B×C| = 2×3×5 = <b>30</b>。<br>
+    元素形如 &lt;a,b,c&gt;：第一位 2 种、第二位 3 种、第三位 5 种（乘法原理）。A 的 10 = |B|×|C| 只是两两之积。</div>
+  <span class="tag">考点：笛卡尔积基数</span><span class="tag">乘法原理</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在自然数集 N 上，下列运算中满足结合律的是</div>
+  <div class="opts"><span>A. x*y=2x</span><span>B. x*y=y</span><span>C. x*y=|x−y|+1</span><span>D. x*y=2x+y</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>结合律要求 (x*y)*z = x*(y*z) 对一切 x,y,z 成立，逐个把两边展开：<br>
+    <b>A（x*y=2x）✘：</b>此运算的意思是"结果 = 第一个量的 2 倍"。<br>
+    &nbsp;&nbsp;(x*y)*z = 2·(x*y) = 2·(2x) = <b>4x</b>；&nbsp;&nbsp;x*(y*z) = <b>2x</b>（左量是 x）。两者不等（x≠0 时）→ 不结合。<br>
+    <b>B（x*y=y）✔：</b>此运算"结果 = 第二个量"。<br>
+    &nbsp;&nbsp;(x*y)*z = y*z = <b>z</b>；&nbsp;&nbsp;x*(y*z) = x*z = <b>z</b>。两边恒等 → 满足结合律。<br>
+    <b>C（x*y=|x−y|+1）✘：</b>取 x=0,y=2,z=5：(0*2)*5 = 3*5 = |3−5|+1 = 3；0*(2*5) = 0*4 = |0−4|+1 = 5，不等 → 不结合。<br>
+    <b>D（x*y=2x+y）✘：</b>(x*y)*z = 2(2x+y)+z = 4x+2y+z；x*(y*z) = 2x+(2y+z) = 2x+2y+z，x≠0 时不等 → 不结合。<br><br>
+    <span style="color:var(--muted);font-size:13px">💡 为什么 B 一定结合？x*y=y 叫"右投影"运算，(x*y)*z 与 x*(y*z) 都等于最右的 z。这类题只需把"两括号位置"分别代入定义式，看是否恒等。</span></div>
+  <span class="tag">考点：运算结合律验证</span><span class="tag">套路：分别展开 (x*y)*z 与 x*(y*z)</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第12题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">已知 &lt;G,*&gt; 是 10 阶循环群，a 是群 G 的生成元，则元素 a⁴ 的阶是</div>
+  <div class="opts"><span>A. 2</span><span>B. 4</span><span>C. 5</span><span>D. 10</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C&nbsp; 5</div>
+  <div class="sol"><span class="lab">解析：</span><b>公式：</b>n 阶循环群中 |aᵏ| = <span class="m">n / gcd(n,k)</span>。<br>
+    本题 |a⁴| = 10 / gcd(10,4) = 10 / 2 = <b>5</b>。<br>
+    <b>验证：</b>(a⁴)⁵ = a²⁰ = (a¹⁰)² = e；而 (a⁴)¹=a⁴、(a⁴)²=a⁸、(a⁴)³=a¹²=a²、(a⁴)⁴=a¹⁶=a⁶ 均不为 e → 最小正整数确为 5。<br>
+    <span style="color:var(--muted);font-size:13px">💡 连带结论：aᵏ 是生成元 ⇔ gcd(n,k)=1；10 阶循环群有 φ(10)=4 个生成元。</span></div>
+  <span class="tag">考点：循环群元素的阶</span><span class="tag">|aᵏ| = n/gcd(n,k)</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 A 是由所有被 6 整除的整数组成的集合，则 A 在普通整数加法和普通整数乘法运算下构成的代数系统是</div>
+  <div class="opts"><span>A. 偏序集</span><span>B. 域</span><span>C. 整环</span><span>D. 环</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D&nbsp; 环</div>
+  <div class="sol"><span class="lab">解析：</span>A = 6Z = {…, −6, 0, 6, 12, …}。<br>
+    <b>是环：</b>加法封闭（6m+6n=6(m+n)）、加法交换群（零元 0、负元 −6m 都在 A 中）、乘法封闭（6m·6n=6·(6mn)∈A）、乘法对加法分配 → 满足环的全部公理 ✔<br>
+    <b>不是整环：</b>整环要求"交换环 + <b>有乘法单位元</b> e≠0 + 无零因子"。A 中<b>没有单位元</b>（单位元应是 1，而 1∉6Z）→ 排除 C。<br>
+    <b>不是域：</b>域要求每个非零元有乘法逆元，6 的逆元 1/6 不是整数 → 排除 B。<br>
+    <b>偏序集</b>只涉及集合与一个偏序关系，与两种运算无关 → 排除 A。<br>
+    <span style="color:var(--muted);font-size:13px">💡 层级链：半群 → 幺半群 → 群 → 环 → 整环（交换、含幺、无零因子）→ 除环 → 域（交换除环），每往上多一条要求。</span></div>
+  <span class="tag">考点：环/整环/域判定</span><span class="tag">6Z 无单位元，故只是环</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列度数序列中，能构成简单连通无向图的是</div>
+  <div class="opts"><span>A. {1,1,2,2,3}</span><span>B. {1,1,2,2,4}</span><span>C. {1,1,3,4,5}</span><span>D. {0,1,2,3,4}</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>三重检验：① 度数和为偶数（握手定理）；② 每个度数 ⩽ n−1（简单图无环无重边）；③ 无孤立点且 m ⩾ n−1（才可能连通）。<br>
+    <b>A：</b>和 = 9 为<b>奇数</b> → 连无向图都不存在，排除。<br>
+    <b>C：</b>含度数 5，而 n=5 时最大度只能是 4 → 不是简单图，排除。<br>
+    <b>D：</b>含 0 度点（孤立点）→ 不可能连通，排除。<br>
+    <b>B ✔：</b>和 = 10（偶数）→ m = 5 ⩾ n−1 = 4；最大度 4 = n−1 合法。构造：设 v₅ 度为 4，与其余 4 点各连一条边（此时序列变为 4,1,1,1,1），再在其余点中取两点补一条边 → 度数序列 {4,2,2,1,1} 即 B，且 v₅ 与所有点相邻故连通。</div>
+  <span class="tag">考点：度数序列可图化</span><span class="tag">握手定理 + 最大度 n−1 + 连通条件</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第15题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">完全图 K₆ 通过删边得到一棵 6 阶树，需要删去的边数为</div>
+  <div class="opts"><span>A. 6</span><span>B. 10</span><span>C. 11</span><span>D. 12</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B&nbsp; 10</div>
+  <div class="sol"><span class="lab">解析：</span>K₆ 边数 = C(6,2) = 6×5/2 = <b>15</b>；6 阶树边数 = n−1 = <b>5</b> → 需删去 15−5 = <b>10</b> 条。<br>
+    <span style="color:var(--muted);font-size:13px">💡 一般公式：n 阶完全图取其生成树需删 C(n,2)−(n−1) = (n−1)(n−2)/2 条边；n=6 时 5×4/2 = 10。</span></div>
+  <span class="tag">考点：完全图边数</span><span class="tag">树的边数 = n−1</span>
+</div></details>
+
+<h2 class="section">二、填空题（每小题2分，共20分）</h2>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第16题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">命题公式 (P∧(P→Q))→¬Q 是 <span class="blank">____</span> 式。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：可满足式（非永真也非永假）</div>
+  <div class="sol"><span class="lab">解析：</span>先化简前件：<br>
+    P∧(P→Q) = P∧(¬P∨Q) = (P∧¬P)∨(P∧Q) = <b>P∧Q</b>（这就是"假言推理"有效式）<br>
+    故原式 = (P∧Q)→¬Q = ¬(P∧Q)∨¬Q = ¬P∨¬Q∨¬Q = <b>¬P∨¬Q = ¬(P∧Q)</b><br>
+    赋值 P=0,Q=0 时为 1；赋值 P=1,Q=1 时为 0 → 既非永真也非永假，是<b>可满足式</b>。<br>
+    <span style="color:var(--muted);font-size:13px">💡 填空答题词三选一：重言式（永真式）／矛盾式（永假式）／可满足式。</span></div>
+  <span class="tag">考点：公式类型判定</span><span class="tag">等值演算化简</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第17题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">任意两个不同大项的析取式为 <span class="blank">____</span> 式。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：重言式（永真式）</div>
+  <div class="sol"><span class="lab">解析：</span>
+    <b>大项（极大项）Mᵢ 的性质：</b>n 个变元共 2ⁿ 个大项，每个大项<b>恰在唯一一组赋值下为 0</b>，其余赋值下都为 1；不同大项对应不同的那组"为 0"的赋值。<br>
+    取 Mᵢ、Mⱼ（i≠j）：使 Mᵢ=0 的那组赋值必使 Mⱼ=1，反之亦真 → <b>任何赋值下二者至少一个为 1</b> → Mᵢ∨Mⱼ 恒为 1，是<b>重言式</b>。<br>
+    <b>对偶记：</b>任意两个<b>不同小项</b>的<b>合取</b>式为<b>矛盾式</b>（小项只在唯一赋值下为 1，两个不同小项不可能同时为 1）。</div>
+  <span class="tag">考点：大项/小项性质</span><span class="tag">不同大项之析取=永真</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第18题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 N(x) 表示"x 是自然数"，Q(x) 表示"x 是有理数"，命题"所有自然数都是有理数"使用量词可符号化为 <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：∀x(N(x)→Q(x))</div>
+  <div class="sol"><span class="lab">解析：</span>"所有 A 都是 B" = 全称量词 + <b>蕴含</b>：<span class="m">∀x(N(x)→Q(x))</span>，读作"对任意 x，若 x 是自然数，则 x 是有理数"。<br>
+    <b>易错：</b>写成 ∀x(N(x)∧Q(x)) 就变成"宇宙中一切东西既是自然数又是有理数"，显然不对。<br>
+    <b>口诀：</b><b>全称搭 →（蕴含），存在搭 ∧（合取）</b>。如"有些自然数是偶数" → ∃x(N(x)∧E(x))。</div>
+  <span class="tag">考点：谓词符号化</span><span class="tag">∀用→、∃用∧</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第19题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">已知 S={n|1⩽n⩽100, n∈Z}，A={n|n−1 为 5 的倍数, n∈S}，则 |A| = <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：20</div>
+  <div class="sol"><span class="lab">解析：</span>n−1 是 5 的倍数 ⇔ n ≡ 1 (mod 5) ⇔ n = 5k+1。<br>
+    由 1 ⩽ 5k+1 ⩽ 100 得 0 ⩽ k ⩽ 19.8 → k = 0,1,2,…,19，共 <b>20</b> 个。<br>
+    列出验证：A = {1, 6, 11, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66, 71, 76, 81, 86, 91, 96} 共 20 个（下一个 101 已超出 S）。<br>
+    <span style="color:var(--muted);font-size:13px">💡 注意 1 本身符合条件（1−1=0 是 5 的倍数），别漏；项数 = ⌊(末项−首项)/公差⌋+1 = ⌊(96−1)/5⌋+1 = 20。</span></div>
+  <span class="tag">考点：集合描述法与计数</span><span class="tag">同余类计数</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第20题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设集合 A={1,2,3,4}，B={a,b,c}，C={x,y}，从 A 到 B 的关系 R₁ 与从 B 到 C 的关系 R₂ 分别为 R₁={&lt;1,a&gt;,&lt;2,a&gt;,&lt;3,c&gt;,&lt;4,b&gt;}，R₂={&lt;a,x&gt;,&lt;a,y&gt;,&lt;b,y&gt;}，则 R₁∘R₂ = <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：{&lt;1,x&gt;,&lt;1,y&gt;,&lt;2,x&gt;,&lt;2,y&gt;,&lt;4,y&gt;}（共 5 个有序对，3 无像）</div>
+  <div class="sol"><span class="lab">解析：</span>因 R₁⊆A×B、R₂⊆B×C，此处记号表示<b>右复合</b>（先走 R₁ 再走 R₂）：<br>
+    <span class="m">R₁∘R₂ = {&lt;a,c&gt; | ∃b(&lt;a,b&gt;∈R₁ ∧ &lt;b,c&gt;∈R₂)}</span><br>
+    逐个起点"走两步"（R₁：1→a、2→a、3→c、4→b；R₂：a→x、a→y、b→y）：<br>
+    &nbsp;&nbsp;· 1→a→x ⇒ &lt;1,x&gt;；1→a→y ⇒ &lt;1,y&gt;<br>
+    &nbsp;&nbsp;· 2→a→x ⇒ &lt;2,x&gt;；2→a→y ⇒ &lt;2,y&gt;<br>
+    &nbsp;&nbsp;· 3→c，而 c 在 R₂ 中<b>无出边</b> ⇒ 3 不产生任何有序对<br>
+    &nbsp;&nbsp;· 4→b→y ⇒ &lt;4,y&gt;<br>
+    <span style="color:var(--muted);font-size:13px">💡 画箭头图、"从每个起点走两步"是最不易错的方法。</span></div>
+  <span class="tag">考点：关系的复合</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第21题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 A={0,1}，则 A² = <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：{&lt;0,0&gt;,&lt;0,1&gt;,&lt;1,0&gt;,&lt;1,1&gt;}（即 A×A）</div>
+  <div class="sol"><span class="lab">解析：</span>A² 是笛卡尔积 A×A 的简写，元素是<b>有序对</b>（不是集合的集合）：<span class="m">A² = {&lt;0,0&gt;, &lt;0,1&gt;, &lt;1,0&gt;, &lt;1,1&gt;}</span>，|A²| = 2² = 4。<br>
+    <b>三个易混概念：</b>A² = A×A（4 个有序对）；幂集 P(A) = {∅,{0},{1},{0,1}}（4 个元素，但元素是集合）；A 上的<b>二元关系</b>共有 2⁴ = 16 个（即 P(A×A) 的子集个数）。</div>
+  <span class="tag">考点：笛卡尔积</span><span class="tag">A² 与幂集 P(A) 别混</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第22题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">已知 &lt;G,*&gt; 是群，且 a,b∈G，a*x = b，则 x = <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：a⁻¹*b</div>
+  <div class="sol"><span class="lab">解析：</span>群中每个元素都有唯一逆元。在等式<b>左</b>边乘 a⁻¹：<br>
+    a⁻¹*(a*x) = a⁻¹*b ⇒ (a⁻¹*a)*x = a⁻¹*b（结合律）⇒ e*x = a⁻¹*b ⇒ <span class="m">x = a⁻¹*b</span><br>
+    <b>方向别搞反：</b>若方程是 x*a = b，则应<b>右</b>乘 a⁻¹，解为 x = b*a⁻¹。群不必交换，a⁻¹*b 与 b*a⁻¹ 一般不等。<br>
+    这正是群中"消去律/除法唯一可解"：a*x=b 与 x*a=b 都有唯一解。</div>
+  <span class="tag">考点：群中方程求解</span><span class="tag">左乘逆元解 a*x=b</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第23题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">无向图 G 是欧拉图的充分必要条件是 G 是 <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：连通的且所有结点度数均为偶数</div>
+  <div class="sol"><span class="lab">解析：</span>
+    <b>欧拉图</b>（存在经过每条边恰好一次且回到起点的<b>欧拉回路</b>）的充要条件：G 连通 ∧ 每个结点度数为偶数。<br>
+    <b>对比：欧拉通路</b>（不要求回起点）充要条件：G 连通 ∧ 奇度结点个数为 0 或 2（恰为 2 时，起点与终点就是这两个奇度点）。<br>
+    <b>必要性直觉：</b>回路每"经过"一个结点一次就消耗一进一出两条边 → 度数必为偶。<br>
+    <b>充分性构造：</b>从某点不断走未走过的边，因度数均偶必能回到起点；若未覆盖全部边，由连通性可找到与已走回路共点的另一子回路，"环套环"拼接即可扩大。</div>
+  <span class="tag">考点：欧拉图判定定理</span><span class="tag">连通 + 全偶度</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第24题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 G 是 n 阶连通图，则 G 的顶点度数之和至少是 <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：2(n−1)</div>
+  <div class="sol"><span class="lab">解析：</span>由<b>握手定理</b>：度数之和 = 2×边数。<br>
+    n 阶连通图至少含 n−1 条边（恰为 n−1 条时是一棵树），故 <span class="m">Σdeg(v) = 2m ⩾ 2(n−1)</span>，等号当且仅当 G 为树时成立。<br>
+    <span style="color:var(--muted);font-size:13px">💡 另一个角度：n⩾2 时每个结点度数 ⩾1，故和 ⩾ n；但真正的下界是 2(n−1)（边数下限更紧）。n=1 时和为 0。</span></div>
+  <span class="tag">考点：握手定理</span><span class="tag">连通图边数 ⩾ n−1</span>
+</div></details>
+
+<details class="q fillblank"><summary>
+  <span class="qno">第25题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">K₃,₃ 的边数是 <span class="blank">____</span> 。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：9</div>
+  <div class="sol"><span class="lab">解析：</span>完全二分图 Kₘ,ₙ 的边数 = m×n（两部分之间每对点都连边，内部无边）。K₃,₃ 有 3×3 = <b>9</b> 条边、6 个结点。<br>
+    <span style="color:var(--warn)">📌 连带高频考点：</span>K₃,₃ 与 K₅ 都是<b>非平面图</b>。用平面图边数上界检验 K₃,₃：二分图不含三角形，故有更强限制 m ⩽ 2n−4 = 2×6−4 = 8，而 K₃,₃ 的 m=9 &gt; 8 → 矛盾 → 非平面。</div>
+  <span class="tag">考点：完全二分图</span><span class="tag">K₃,₃ 非平面判定</span>
+</div></details>
+
+<h2 class="section">三、简答题（每小题5分，共35分）</h2>
+
+<details class="q"><summary>
+  <span class="qno">第26题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">求命题公式 (P→Q)→(Q→R) 的主合取范式。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：(P∨¬Q∨R) ∧ (¬P∨¬Q∨R)，即 M₂ ∧ M₆</div>
+  <div class="sol"><span class="lab">解答（找"为 0"的赋值）：</span>公式 A→B 为 0 当且仅当 A=1 且 B=0。<br>
+    要使 (P→Q)→(Q→R) 为 0：需后件 Q→R = 0 ⇔ <b>Q=1 且 R=0</b>；此时前件 P→Q = P→1 = 1 恒成立，P 可取 0 或 1。<br>
+    故使公式为 0 的赋值（P,Q,R 顺序，下标取二进制）：<br>
+    &nbsp;&nbsp;· 010 (=2) → 大项 <b>P∨¬Q∨R</b>（变量为0写原形、为1写否定）<br>
+    &nbsp;&nbsp;· 110 (=6) → 大项 <b>¬P∨¬Q∨R</b><br>
+    主合取范式 = <span class="m">(P∨¬Q∨R) ∧ (¬P∨¬Q∨R) = M₂ ∧ M₆</span><br><br>
+    <b>等值演算验证：</b>(P→Q)→(Q→R) = ¬(¬P∨Q)∨(¬Q∨R) = (P∧¬Q)∨¬Q∨R = <b>¬Q∨R</b>（吸收律），再补变元 P：¬Q∨R = (P∨¬Q∨R)∧(¬P∨¬Q∨R)。✓</div>
+  <span class="tag">考点：主合取范式</span><span class="tag">合取连"为0"的赋值</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第27题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">用真值表法判定命题公式 (P∧Q)∨(P→¬R) 的类型。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：可满足式（非重言式的可满足式）</div>
+  <div class="sol"><span class="lab">解答：</span>列真值表（P→¬R 仅在 P=1 且 R=1 时为 0）：<br>
+    <table class="vt" border="1">
+      <tr><th>P</th><th>Q</th><th>R</th><th>P∧Q</th><th>¬R</th><th>P→¬R</th><th>(P∧Q)∨(P→¬R)</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr style="background:#fef3c7"><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td><b>0</b></td></tr>
+      <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+    </table>
+    结果列<b>既有 1 又有 0</b>（仅 P=1,Q=0,R=1 一组为 0）→ 既非永真也非永假，是<b>可满足式</b>。<br>
+    <span style="color:var(--muted);font-size:13px">💡 技巧：析取式要为 0，两支必须同时为 0。P→¬R=0 需 P=1,R=1；此时 P∧Q=0 需 Q=0 → 唯一使整式为 0 的赋值就是 (1,0,1)。</span></div>
+  <span class="tag">考点：真值表法判定公式类型</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第28题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">画出集合 A={n|n 是 20 的正因数} 上整除关系的哈斯图，并求出 B={2,4,10} 的极大元与极小元。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B 的极大元为 4 和 10，极小元为 2</div>
+  <div class="sol"><span class="lab">解答：</span>A = {1, 2, 4, 5, 10, 20}（20 的全部正因数）。整除关系 a⪯b  a|b，盖住关系（去掉自反与传递可得的边）：<br>
+    1 盖住 2、5；2 盖住 4、10；5 盖住 10；4 盖住 20；10 盖住 20。哈斯图（下小上大）：<br>
+    <svg viewBox="0 0 300 290" width="300" height="290">
+      <g stroke="#4f46e5" stroke-width="1.6">
+        <line x1="150" y1="260" x2="90"  y2="185"/><line x1="150" y1="260" x2="210" y2="185"/>
+        <line x1="90"  y1="185" x2="90"  y2="110"/><line x1="90" y1="185" x2="210" y2="110"/>
+        <line x1="210" y1="185" x2="210" y2="110"/>
+        <line x1="90"  y1="110" x2="150" y2="35"/><line x1="210" y1="110" x2="150" y2="35"/>
+      </g>
+      <g fill="#fff" stroke="#4f46e5" stroke-width="1.6">
+        <circle cx="150" cy="260" r="14"/><circle cx="90" cy="185" r="14"/><circle cx="210" cy="185" r="14"/>
+        <circle cx="90" cy="110" r="14"/><circle cx="210" cy="110" r="14"/><circle cx="150" cy="35" r="14"/>
+      </g>
+      <g font-size="14" text-anchor="middle" fill="#1f2430">
+        <text x="150" y="265">1</text><text x="90" y="190">2</text><text x="210" y="190">5</text>
+        <text x="90" y="115">4</text><text x="210" y="115">10</text><text x="150" y="40">20</text>
+      </g>
+    </svg><br>
+    在子集 B = {2,4,10} 中（只看 B 内部元素比较，2|4、2|10，而 4 与 10 不可比）：<br>
+    <b>极大元 = {4, 10}</b>（B 中没有比 4、10 更大的元素；2 不是极大元，因 2|4）。<br>
+    <b>极小元 = {2}</b>（B 中没有比 2 更小的元素；4、10 都不是极小元，因 2|4、2|10）。<br>
+    <span style="color:var(--warn);font-size:13px">📌 提醒：极大/极小元是在子集 B 内比较，不是全集合 A；且极大/极小元可以不唯一。</span></div>
+  <span class="tag">考点：哈斯图</span><span class="tag">极大元/极小元</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第29题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">已知集合 A={x,y,z} 上的二元关系 R₁ 和 R₂ 的关系矩阵分别为 M_{R₁}=⎛⎝1 0 0 / 1 0 1 / 0 1 1⎞⎠，M_{R₂}=⎛⎝0 1 0 / 1 0 0 / 1 0 1⎞⎠，求 R₁∪R₂ 的集合表达式以及自反闭包 r(R₁∪R₂) 的关系矩阵。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：R₁∪R₂={&lt;x,x&gt;,&lt;x,y&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,x&gt;,&lt;z,y&gt;,&lt;z,z&gt;}；r 矩阵为⎛⎝1 1 0 / 1 1 1 / 1 1 1⎞⎠</div>
+  <div class="sol"><span class="lab">解答（行/列顺序均为 x,y,z）：</span><br>
+    由矩阵读出关系（第 i 行第 j 列为1 ⇔ &lt;第i个,第j个&gt;∈R）：<br>
+    R₁ = {&lt;x,x&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,y&gt;,&lt;z,z&gt;}<br>
+    R₂ = {&lt;x,y&gt;,&lt;y,x&gt;,&lt;z,x&gt;,&lt;z,z&gt;}<br>
+    <b>R₁∪R₂</b> = {&lt;x,x&gt;,&lt;x,y&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,x&gt;,&lt;z,y&gt;,&lt;z,z&gt;}（共 7 个）<br>
+    并集矩阵 = 对应元素取 max：⎛⎝1 1 0 / 1 0 1 / 1 1 1⎞⎠<br>
+    <b>自反闭包 r(R₁∪R₂)</b> = (R₁∪R₂) ∪ I_A，即把主对角线全补为 1（仅缺 &lt;y,y&gt;）：<br>
+    M_{r(R₁∪R₂)} = <span class="m">⎛⎝1 1 0 / 1 1 1 / 1 1 1⎞⎠</span><br>
+    <span style="color:var(--muted);font-size:13px">💡 并/交关系矩阵：对应元素取布尔加/乘；自反闭包矩阵 = 原矩阵 ⊕ 单位矩阵（对角线全置 1）。</span></div>
+  <span class="tag">考点：关系矩阵运算</span><span class="tag">自反闭包 = 对角线补 1</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第30题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设集合 S={n|0&lt;n&lt;11, n 为整数}，A={x|x+2 是质数, x∈S}，B={x|2x−1 是质数, x∈S}，求 A、B 和 A⊕B。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A={1,3,5,9}，B={2,3,4,6,7,9,10}，A⊕B={1,2,4,5,6,7,10}</div>
+  <div class="sol"><span class="lab">解答：</span>S = {1,2,3,4,5,6,7,8,9,10}。<br>
+    <b>A：</b>x+2 为质数 → x=1(3✓),3(5✓),5(7✓),9(11✓)；其余 x+2=4,6,8,9,10,12 非质 → A = {1,3,5,9}<br>
+    <b>B：</b>2x−1 为质数 → x=2(3✓),3(5✓),4(7✓),6(11✓),7(13✓),9(17✓),10(19✓)；x=1→1 非质、5→9、8→15 非质 → B = {2,3,4,6,7,9,10}<br>
+    <b>A⊕B（对称差）</b> = (A−B)∪(B−A) = 属于 A 或 B 但不同时属于两者的元素。A∩B={3,9}，剔除后：<br>
+    A⊕B = {1,2,4,5,6,7,10}<br>
+    <span style="color:var(--muted);font-size:13px">💡 对称差 A⊕B = (A∪B)−(A∩B)；注意 1 不是质数，所以 x=1（使 2x−1=1）不属于 B。</span></div>
+  <span class="tag">考点：集合运算</span><span class="tag">对称差 ⊕</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第31题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">依据带权图题31图，使用 Kruskal（克鲁斯卡尔）算法画出对应的最小生成树，请写出详细选边过程，并求最小生成树的权。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：最小生成树的权 W = 11</div>
+  <div class="sol"><span class="lab">解答：</span>题31图的边及权：(a,b)=1，(d,e)=1，(e,f)=2，(a,f)=3，(b,f)=4，(c,f)=4，(f,d)=5，(b,c)=8，(c,d)=8。按 Kruskal（边按权从小到大，不成回路才选）：<br>
+    ① 选 (a,b,1) ✔<br>
+    ② 选 (d,e,1) ✔<br>
+    ③ 选 (e,f,2) ✔ → {d,e,f}<br>
+    ④ 选 (a,f,3) ✔ → 合并为 {a,b,d,e,f}<br>
+    ⑤ (b,f,4) ✘ b、f 已在同一连通块，构成回路，舍弃<br>
+    ⑥ 选 (c,f,4) ✔ → 加入 c，6 个结点全连通（已选 5 条边，结束）<br>
+    <span style="color:var(--muted);font-size:13px">（后面的 (f,d,5)、(b,c,8)、(c,d,8) 都会成回路，无需再考）</span><br><br>
+    最小生成树边集 = {<b>a–b, d–e, e–f, a–f, c–f</b>}，权 W = 1+1+2+3+4 = <b>11</b>。
+    <div style="margin:10px 0"><img src="题31图.png" alt="题31图" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
+    <span style="color:var(--muted);font-size:13px">（最小生成树即上方选取的 5 条边；舍弃的 b–f 及未取的 f–d、b–c、c–d 均为冗余边。）</span></div>
+  <span class="tag">考点：Kruskal 算法</span><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第32题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">用二叉树表示算术表达式 z÷(x−u)−y*v，并给出该树的中序和后序遍历序列。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：中序 z ÷ x − u − y * v；后序 z x u − ÷ y v * −</div>
+  <div class="sol"><span class="lab">解答：</span>主运算符是中间的减号“−”（优先级最低），作根；左子树 z÷(x−u)，右子树 y*v：<br>
+    <svg viewBox="0 0 340 230" width="340" height="230">
+      <g stroke="#4f46e5" stroke-width="1.6">
+        <line x1="170" y1="30" x2="90"  y2="95"/><line x1="170" y1="30" x2="250" y2="95"/>
+        <line x1="90"  y1="95" x2="50"  y2="160"/><line x1="90" y1="95" x2="130" y2="160"/>
+        <line x1="250" y1="95" x2="215" y2="160"/><line x1="250" y1="95" x2="290" y2="160"/>
+        <line x1="130" y1="160" x2="105" y2="215"/><line x1="130" y1="160" x2="155" y2="215"/>
+      </g>
+      <g font-size="15" text-anchor="middle" fill="#1f2430" font-weight="700">
+        <text x="170" y="35">−</text><text x="90" y="100">÷</text><text x="250" y="100">*</text>
+        <text x="50" y="165">z</text><text x="130" y="165">−</text><text x="215" y="165">y</text><text x="290" y="165">v</text>
+        <text x="105" y="220">x</text><text x="155" y="220">u</text>
+      </g>
+    </svg><br>
+    <b>中序（左—根—右）：</b>z, ÷, x, −, u, −, y, *, v　（即还原为 z÷(x−u)−y*v）<br>
+    <b>后序（左—右—根）：</b>z, x, u, −, ÷, y, v, *, －　（后缀式 zxu−÷yv*−）<br>
+    <span style="color:var(--muted);font-size:13px">💡 算术表达式的后序遍历就是后缀（逆波兰）式，中序遍历加括号后就是原中缀式。</span></div>
+  <span class="tag">考点：表达式二叉树</span><span class="tag">中序/后序遍历</span>
+</div></details>
+
+<h2 class="section">四、证明题（每小题5分，共15分）</h2>
+
+<details class="q"><summary>
+  <span class="qno">第33题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 G 为连通简单平面图，G 的顶点数为 n，边数为 m，且 G 的每个面至少由 3 条边围成。证明：m ⩽ 3n−6。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：用欧拉公式 + 面的次数关系证明</div>
+  <div class="sol"><span class="lab">证明：</span>设 G 有 f 个面（包括一个无界面）。<br>
+    ① <b>每个面至少由 3 条边围成</b>，故一切面的次数之和 ⩾ 3f；又平面图中<b>每条边至多被 2 个面共用</b>（割边只计 1 次），故面的次数之和 = 2m。因此<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;3f ⩽ 2m　⟹　f ⩽ 2m/3<br>
+    ② 由 <b>欧拉公式</b>（连通平面图）：n − m + f = 2 ⟹ f = 2 − n + m。<br>
+    代入①：2 − n + m ⩽ 2m/3，两边乘 3：<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;6 − 3n + 3m ⩽ 2m　⟹　<b>m ⩽ 3n − 6</b>。∎<br>
+    <span style="color:var(--muted);font-size:13px">💡 应用：此不等式是平面图的必要条件，常用反证法判非平面图。如 K₅：n=5、m=10，而 3n−6=9，10&gt;9 → 非平面。</span></div>
+  <span class="tag">考点：平面图欧拉公式</span><span class="tag">m⩽3n−6</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第34题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 f 是从集合 A 到集合 B 的一个函数，定义 A 上的关系 R：&lt;a,b&gt;∈R 当且仅当 f(a)=f(b)。证明：R 是 A 上的一个等价关系。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：自反 + 对称 + 传递，三条逐一证明</div>
+  <div class="sol"><span class="lab">证明：</span>需证 R 同时满足自反、对称、传递（注意 f 是函数，每个 a 的像 f(a) 唯一）。<br>
+    <b>自反：</b>对任意 a∈A，f(a)=f(a) 恒成立 ⟹ &lt;a,a&gt;∈R。✔<br>
+    <b>对称：</b>若 &lt;a,b&gt;∈R，则 f(a)=f(b)，等式对称得 f(b)=f(a) ⟹ &lt;b,a&gt;∈R。✔<br>
+    <b>传递：</b>若 &lt;a,b&gt;∈R 且 &lt;b,c&gt;∈R，则 f(a)=f(b) 且 f(b)=f(c)，由等式传递性 f(a)=f(c) ⟹ &lt;a,c&gt;∈R。✔<br>
+    三条均满足，故 R 是 A 上的等价关系。∎<br>
+    <span style="color:var(--muted);font-size:13px">💡 这个 R 就是“同像关系”：把 f 值相同的元素归为一类，恰好构成 A 的一个划分（等价类 = f 在各像上的原像）。</span></div>
+  <span class="tag">考点：等价关系判定</span><span class="tag">由函数导出等价关系</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第35题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">用 CP 规则证明下面有效推理。前提：P→¬Q，P∧R，Q∨S；结论：R→S。</div>
+</summary>
+<div class="body">
+  <div class="answer">答案：将 R 作附加前提（CP），推出 S 即可</div>
+  <div class="sol"><span class="lab">证明（CP = 条件证明规则）：</span>要证结论为蕴含式 R→S，把前件 <b>R 作为附加前提</b>，只要从它推出 S：<br>
+    <table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0" border="1">
+      <tr style="background:#eef2ff"><th>序号</th><th>公式</th><th>根据</th></tr>
+      <tr><td>1</td><td>R</td><td>附加前提（CP）</td></tr>
+      <tr><td>2</td><td>P∧R</td><td>前提引入</td></tr>
+      <tr><td>3</td><td>P</td><td>2 化简律（合取消除）</td></tr>
+      <tr><td>4</td><td>P→¬Q</td><td>前提引入</td></tr>
+      <tr><td>5</td><td>¬Q</td><td>3、4 假言推理（MP）</td></tr>
+      <tr><td>6</td><td>Q∨S</td><td>前提引入</td></tr>
+      <tr><td>7</td><td>S</td><td>5、6 析取三段论</td></tr>
+      <tr><td>8</td><td><b>R→S</b></td><td>1、7 CP 规则</td></tr>
+    </table>
+    由 CP 规则，从 R 能推出 S，故 R→S 成立。∎<br>
+    <span style="color:var(--muted);font-size:13px">💡 CP 规则：若把 X 作附加前提能推出 Y，则 X→Y 必为结论。当结论是蕴含式时首选 CP。</span></div>
+  <span class="tag">考点：CP 规则</span><span class="tag">自然推理系统</span>
+</div></details>
+
+<h2 class="section">附：选择题答案速查表</h2>
+<table class="anskey">
+  <tr><th>题号</th><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+  <tr><th>答案</th><td><b>B</b></td><td><b>C</b></td><td><b>D</b></td><td><b>A</b></td><td><b>A</b></td><td><b>D</b></td><td><b>A</b></td><td><b>C</b></td><td><b>A</b></td><td><b>C</b></td><td><b>B</b></td><td><b>C</b></td><td><b>D</b></td><td><b>B</b></td><td><b>B</b></td></tr>
+</table>
+
+<div class="note">
+  <b>本卷高频考点与易错点：</b><br>
+  ① 主合取/主析取范式：先化简（如第26题吸收到 ¬Q∨R），再按"为0赋值→大项、为1赋值→小项"展开；n 变元共 2ⁿ 个。<br>
+  ② 大项/小项性质：不同大项之<b>析取</b>=永真；不同小项之<b>合取</b>=永假（第17题）。<br>
+  ③ 群/环/域层级：|aᵏ|=n/gcd(n,k)（第12题）；6Z 无单位元只是环非整环（第13题）；a*x=b 的解 x=a⁻¹*b（第22题）。<br>
+  ④ 图论三定理：欧拉图⇔连通+全偶度（第23题）；握手定理 Σdeg=2m（第24题）；平面图 m⩽3n−6（第33题）；K₃,₃ 非平面（第25题）。<br>
+  ⑤ 易错点：笛卡尔积元素是<b>有序对</b>（第21题）；关系复合要"走两步"、c 无出边则不产生对（第20题）；量词符号化"全称搭→、存在搭∧"（第18题）；第11题“只依赖首元”的运算 x*y=2x 并不结合（(x*y)*z=4x 而 x*(y*z)=2x），只有右投影 x*y=y 才结合。
+</div>
+
+<footer>2026年4月自考 02324《离散数学》真题详解 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
