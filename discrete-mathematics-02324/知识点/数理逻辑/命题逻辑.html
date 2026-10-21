@@ -100,15 +100,25 @@
     <tr><td class="nm"><span class="m">¬P</span></td><td>否定</td><td>非 P、P 的否定</td><td>与 P 相反</td></tr>
     <tr><td class="nm"><span class="m">P∧Q</span></td><td>合取</td><td>P 并且 Q、P 而且 Q</td><td>全真才真</td></tr>
     <tr><td class="nm"><span class="m">P∨Q</span></td><td>析取</td><td>P 或者 Q（可兼或）</td><td>全假才假</td></tr>
-    <tr><td class="nm"><span class="m">P→Q</span></td><td>蕴含</td><td>如果 P 那么 Q；P 仅当 Q</td><td>唯一假：前真后假(1→0)</td></tr>
+    <tr><td class="nm"><span class="m">P→Q</span></td><td>条件</td><td>如果 P 那么 Q；P 仅当 Q</td><td>唯一假：前真后假(1→0)</td></tr>
     <tr><td class="nm"><span class="m">P↔Q</span></td><td>等价</td><td>P 当且仅当 Q</td><td>两者相同才真</td></tr>
+  </table>
+</div>
+
+<div class="ok">
+  <b>三个“条件 / 蕴含”别混：</b>
+  <table class="law">
+    <tr><th>对象</th><th>名称</th><th>一句话</th></tr>
+    <tr><td class="eq"><span class="m">→</span>（符号）</td><td class="nm">条件联结词</td><td>造公式的运算本身</td></tr>
+    <tr><td class="eq"><span class="m">A→B</span>（公式）</td><td class="nm">蕴含式</td><td>一个公式，可列真值表；CP 针对它</td></tr>
+    <tr><td class="eq"><span class="m">A→B ≡ ¬A∨B</span>（定律）</td><td class="nm">蕴含等值式</td><td>消去 <span class="m">→</span> 的等值律</td></tr>
   </table>
 </div>
 
 <div class="card">
   <h3>四联结词的真值“地图”</h3>
   <div class="figrow">
-    <div class="fig"><svg viewBox="0 0 240 165" width="230" height="158"><text x="46" y="30" font-size="12" fill="#64748b">P＼Q</text><text x="108" y="30" font-size="12" fill="#374151">Q=1</text><text x="178" y="30" font-size="12" fill="#374151">Q=0</text><text x="46" y="72" font-size="12" fill="#374151">P=1</text><text x="46" y="122" font-size="12" fill="#374151">P=0</text><rect x="88" y="42" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="74" font-size="22" fill="#059669">1</text><rect x="158" y="42" width="60" height="50" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/><text x="182" y="74" font-size="22" fill="#dc2626">0</text><rect x="88" y="96" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="128" font-size="22" fill="#059669">1</text><rect x="158" y="96" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="182" y="128" font-size="22" fill="#059669">1</text><text x="88" y="160" font-size="11" fill="#dc2626">⚠ 仅“前真后假”一格为 0</text></svg><div class="cap">P→Q（蕴含）<small>只怕“P真而Q假”，其余全真</small></div></div>
+    <div class="fig"><svg viewBox="0 0 240 165" width="230" height="158"><text x="46" y="30" font-size="12" fill="#64748b">P＼Q</text><text x="108" y="30" font-size="12" fill="#374151">Q=1</text><text x="178" y="30" font-size="12" fill="#374151">Q=0</text><text x="46" y="72" font-size="12" fill="#374151">P=1</text><text x="46" y="122" font-size="12" fill="#374151">P=0</text><rect x="88" y="42" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="74" font-size="22" fill="#059669">1</text><rect x="158" y="42" width="60" height="50" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/><text x="182" y="74" font-size="22" fill="#dc2626">0</text><rect x="88" y="96" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="128" font-size="22" fill="#059669">1</text><rect x="158" y="96" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="182" y="128" font-size="22" fill="#059669">1</text><text x="88" y="160" font-size="11" fill="#dc2626">⚠ 仅“前真后假”一格为 0</text></svg><div class="cap">P→Q（蕴含式）<small>只怕“P真而Q假”，其余全真</small></div></div>
     <div class="fig"><svg viewBox="0 0 240 165" width="230" height="158"><text x="46" y="30" font-size="12" fill="#64748b">P＼Q</text><text x="108" y="30" font-size="12" fill="#374151">Q=1</text><text x="178" y="30" font-size="12" fill="#374151">Q=0</text><text x="46" y="72" font-size="12" fill="#374151">P=1</text><text x="46" y="122" font-size="12" fill="#374151">P=0</text><rect x="88" y="42" width="60" height="50" fill="#dcfce7" stroke="#94a3b8"/><text x="112" y="74" font-size="22" fill="#059669">1</text><rect x="158" y="42" width="60" height="50" fill="#fee2e2" stroke="#94a3b8"/><text x="182" y="74" font-size="22" fill="#dc2626">0</text><rect x="88" y="96" width="60" height="50" fill="#fee2e2" stroke="#94a3b8"/><text x="112" y="128" font-size="22" fill="#dc2626">0</text><rect x="158" y="96" width="60" height="50" fill="#fee2e2" stroke="#94a3b8"/><text x="182" y="128" font-size="22" fill="#dc2626">0</text><text x="88" y="160" font-size="11" fill="#059669">只有 P、Q 都真（左上）才为 1</text></svg><div class="cap">P∧Q（合取）<small>全真才真，其余三格皆 0</small></div></div>
   </div>
 </div>
