@@ -497,7 +497,10 @@
 </summary>
 <div class="body">
   <div class="answer">答案：B 的极大元为 4 和 10，极小元为 2</div>
-  <div class="sol"><span class="lab">解答：</span>A = {1, 2, 4, 5, 10, 20}（20 的全部正因数）。整除关系 a⪯b  a|b，盖住关系（去掉自反与传递可得的边）：<br>
+  <div class="sol"><span class="lab">先补概念：正因数是什么？</span><br>
+    <b>正因数（又叫正约数）</b> = 能<b>整除</b>这个数的<b>正整数</b>。即 a 是 20 的正因数 ⇔ 存正整数 k 使 20 = a×k（20 ÷ a 刚好除尽、无余数），且 a &gt; 0。<br>
+    比如 20 ÷ 4 = 5 除尽 → 4 是 20 的正因数；20 ÷ 6 有余 → 6 不是。<span style="color:var(--muted)">（只取正的，不含负因数 −1、−2…；且 1 和它本身 20 都算因数。）</span><br>
+    <span class="lab">解答：</span>A = {1, 2, 4, 5, 10, 20}（20 的全部正因数）。整除关系 a⪯b  a|b，盖住关系（去掉自反与传递可得的边）：<br>
     1 盖住 2、5；2 盖住 4、10；5 盖住 10；4 盖住 20；10 盖住 20。哈斯图（下小上大）：<br>
     <svg viewBox="0 0 300 290" width="300" height="290">
       <g stroke="#4f46e5" stroke-width="1.6">
