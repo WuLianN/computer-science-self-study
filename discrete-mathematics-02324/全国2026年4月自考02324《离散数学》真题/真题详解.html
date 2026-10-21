@@ -187,8 +187,11 @@
     共 <span class="m">3×2×1 = 3! = 6</span> 种，即排列数 A(3,3)。<br>
     <span style="color:var(--muted);font-size:13px">（当 |X|=|Y| 时，单射⇔满射⇔双射，故也等于双射个数 3! = 6。选项 D 的 27 = 3³ 是 X到Y 的<b>全部函数</b>个数，不是单射。）</span><br><br>
     <b>通用公式（务必记）：</b>|X|=m、|Y|=n 时<br>
-    &nbsp;&nbsp;· 函数总数 nᵐ；&nbsp;· 单射总数（m⩽n）A(n,m) = n!/(n−m)!，m&gt;n 时为 0<br>
-    &nbsp;&nbsp;· 满射总数（m⩾n）n!·S(m,n)（容斥），m&lt;n 时为 0；&nbsp;· 双射总数：m=n 时 m!，否则 0</div>
+    &nbsp;&nbsp;· 函数总数： nᵐ；&nbsp;<br>
+    &nbsp;&nbsp;· 单射总数：（m⩽n）A(n,m) = n!/(n−m)!，m&gt;n 时为 0<br>
+    &nbsp;&nbsp;· 满射总数：（m⩾n）n!·S(m,n)（容斥），m&lt;n 时为 0；&nbsp;<br>
+    &nbsp;&nbsp;· 双射总数：m=n 时 m!，否则 0
+  </div>
   <span class="tag">考点：特殊函数计数</span><span class="tag">单射数 = A(n,m)</span>
 </div></details>
 
@@ -419,9 +422,9 @@
 </summary>
 <div class="body">
   <div class="answer">答案：9</div>
-  <div class="sol"><span class="lab">解析：</span>完全二分图 Kₘ,ₙ 的边数 = m×n（两部分之间每对点都连边，内部无边）。K₃,₃ 有 3×3 = <b>9</b> 条边、6 个结点。<br>
-    <span style="color:var(--warn)">📌 连带高频考点：</span>K₃,₃ 与 K₅ 都是<b>非平面图</b>。用平面图边数上界检验 K₃,₃：二分图不含三角形，故有更强限制 m ⩽ 2n−4 = 2×6−4 = 8，而 K₃,₃ 的 m=9 &gt; 8 → 矛盾 → 非平面。</div>
-  <span class="tag">考点：完全二分图</span><span class="tag">K₃,₃ 非平面判定</span>
+  <div class="sol"><span class="lab">解析：</span>完全二部图 Kₘ,ₙ 的边数 = m×n（两部分之间每对点都连边，内部无边）。K₃,₃ 有 3×3 = <b>9</b> 条边、6 个结点。<br>
+    <span style="color:var(--warn)">📌 连带高频考点：</span>K₃,₃ 与 K₅ 都是<b>非平面图</b>。用平面图边数上界检验 K₃,₃：二部图不含三角形，故有更强限制 m ⩽ 2n−4 = 2×6−4 = 8，而 K₃,₃ 的 m=9 &gt; 8 → 矛盾 → 非平面。</div>
+  <span class="tag">考点：完全二部图</span><span class="tag">K₃,₃ 非平面判定</span>
 </div></details>
 
 <h2 class="section">三、简答题（每小题5分，共35分）</h2>

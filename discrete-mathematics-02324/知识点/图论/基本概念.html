@@ -42,6 +42,11 @@
   svg .hot{fill:var(--warn);stroke:var(--warn)}
   svg line.arrow{stroke:#94a3b8;stroke-width:2}
   svg .hi{stroke:var(--warn);stroke-width:3}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+  .toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+  .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+  .toc a:last-child{border-bottom:none}
+  .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </style>
 </head>
@@ -51,7 +56,7 @@
 <header class="hero">
   <h1>离散数学 · 图论知识点</h1>
   <p>基本概念 —— 读欧拉图 / 哈密顿图 / 二叉树遍历前，先把这几个术语吃透。</p>
-  <span class="pill">图 · 顶点 · 边</span><span class="pill">度数 · 连通</span><span class="pill">路径 · 回路</span>
+  <span class="pill">图 · 顶点 · 边</span><span class="pill">度数 · 连通</span><span class="pill">路径 · 回路</span><span class="pill">完全图 · 二部图</span>
   <div class="gotos">
     <a href="../../../index.html">🏠 首页</a>
     <a href="../index.html">📚 知识点导航</a>
@@ -66,7 +71,20 @@
   <b>怎么用这页：</b>本页只讲术语定义，配小图例。看完这里，再去上面两个链接看判定与真题考法，术语就不会卡了。
 </div>
 
-<h2 class="section">一、图、顶点、边</h2>
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、图、顶点、边</a>
+  <a href="#s2">二、无向图 vs 有向图</a>
+  <a href="#s3">三、度数（奇度 / 偶度）</a>
+  <a href="#s4">四、简单图 / 多重边</a>
+  <a href="#s5">五、连通 / 连通分支</a>
+  <a href="#s6">六、割点</a>
+  <a href="#s7">七、子图</a>
+  <a href="#s8">八、路径 / 通路 / 回路</a>
+  <a href="#s9">九、特殊图：完全图 Kₙ 与完全二部图 Kₘ,ₙ</a>
+</div>
+
+<h2 class="section" id="s1">一、图、顶点、边</h2>
 <div class="card">
   <div class="txt">
     <h3>图 G = (V, E)</h3>
@@ -85,7 +103,7 @@
   </svg>
 </div>
 
-<h2 class="section">二、无向图 vs 有向图</h2>
+<h2 class="section" id="s2">二、无向图 vs 有向图</h2>
 <div class="card">
   <div class="txt">
     <h3>无向 / 有向</h3>
@@ -119,7 +137,7 @@
   </div>
 </div>
 
-<h2 class="section">三、度数（奇度 / 偶度）</h2>
+<h2 class="section" id="s3">三、度数（奇度 / 偶度）</h2>
 <div class="card">
   <div class="txt">
     <h3>度数 d(v)</h3>
@@ -155,7 +173,7 @@
   A {1,1,3,4} 和=9、C {1,2,1,3} 和=7、D {1,1,1,2} 和=5 均为奇数 → 排除；仅 B {1,1,1,1} 和=4 偶数，且可构造两条独立边 (v₁v₂)、(v₃v₄) → 选 B。
 </div>
 
-<h2 class="section">四、简单图 / 多重边</h2>
+<h2 class="section" id="s4">四、简单图 / 多重边</h2>
 <div class="card">
   <div class="txt">
     <h3>简单图</h3>
@@ -186,7 +204,7 @@
   </div>
 </div>
 
-<h2 class="section">五、连通 / 连通分支</h2>
+<h2 class="section" id="s5">五、连通 / 连通分支</h2>
 <div class="card">
   <div class="txt">
     <h3>连通分支 ω(G)</h3>
@@ -206,7 +224,7 @@
   </svg>
 </div>
 
-<h2 class="section">六、割点</h2>
+<h2 class="section" id="s6">六、割点</h2>
 <div class="card">
   <div class="txt">
     <h3>割点</h3>
@@ -228,7 +246,7 @@
   </svg>
 </div>
 
-<h2 class="section">七、子图</h2>
+<h2 class="section" id="s7">七、子图</h2>
 <div class="card">
   <div class="txt">
     <h3>子图</h3>
@@ -245,7 +263,7 @@
   </svg>
 </div>
 
-<h2 class="section">八、路径 / 通路 / 回路</h2>
+<h2 class="section" id="s8">八、路径 / 通路 / 回路</h2>
 <div class="card">
   <div class="txt">
     <h3>三种"走法"</h3>
@@ -263,6 +281,75 @@
     <circle class="v" cx="120" cy="40" r="15"/><text class="v" x="120" y="45">b</text>
     <circle class="v" cx="80" cy="110" r="15"/><text class="v" x="80" y="115">c</text>
   </svg>
+</div>
+
+<h2 class="section" id="s9">九、特殊图：完全图 Kₙ 与完全二部图 Kₘ,ₙ</h2>
+<div class="card">
+  <div class="txt">
+    <h3>完全图 Kₙ</h3>
+    <b>完全图</b>：n 个顶点的<b>简单图</b>，<b>任意两个点都恰好连一条边</b>（“两两全连”，一个都不落）。<br>
+    <b>边数 = C(n,2) = n(n−1)/2</b>：每个点连其余 n−1 个点，共 n(n−1) 次“连线”，但每条边被两端各数一次（a–b 与 b–a 是同一条）→ 再 ÷2。<br>
+    每个顶点的<b>度数都 = n−1</b>。常见：<span class="code">K₃</span>=三角形(3边)、<span class="code">K₄</span>=方块加两对角线(6边)、<span class="code">K₆</span>=6×5/2=<b>15 边</b>。
+  </div>
+  <div class="figs">
+  <div class="fig">
+    <svg width="160" height="150" viewBox="0 0 170 160">
+      <line class="e" x1="40" y1="40" x2="130" y2="40"/>
+      <line class="e" x1="130" y1="40" x2="130" y2="120"/>
+      <line class="e" x1="130" y1="120" x2="40" y2="120"/>
+      <line class="e" x1="40" y1="120" x2="40" y2="40"/>
+      <line class="e" x1="40" y1="40" x2="130" y2="120"/>
+      <line class="e" x1="130" y1="40" x2="40" y2="120"/>
+      <circle class="v" cx="40" cy="40" r="14"/><text class="v" x="40" y="45">a</text>
+      <circle class="v" cx="130" cy="40" r="14"/><text class="v" x="130" y="45">b</text>
+      <circle class="v" cx="130" cy="120" r="14"/><text class="v" x="130" y="125">c</text>
+      <circle class="v" cx="40" cy="120" r="14"/><text class="v" x="40" y="125">d</text>
+    </svg>
+    <div class="cap"><b>完全图 K₄</b>：4 点两两全连<br>边数 = 4×3/2 = <b>6</b>，每点度 3</div>
+  </div>
+  <div class="fig">
+    <svg width="160" height="150" viewBox="0 0 170 160">
+      <line class="e" x1="40" y1="120" x2="40" y2="40" stroke-dasharray="4 3" opacity=".3"/>
+      <line class="e" x1="40" y1="40" x2="130" y2="120" stroke-dasharray="4 3" opacity=".3"/>
+      <line class="e" x1="130" y1="40" x2="40" y2="120" stroke-dasharray="4 3" opacity=".3"/>
+      <line class="hi" x1="40" y1="40" x2="130" y2="40"/>
+      <line class="hi" x1="130" y1="40" x2="130" y2="120"/>
+      <line class="hi" x1="130" y1="120" x2="40" y2="120"/>
+      <circle class="v" cx="40" cy="40" r="14"/><text class="v" x="40" y="45">a</text>
+      <circle class="v" cx="130" cy="40" r="14"/><text class="v" x="130" y="45">b</text>
+      <circle class="v" cx="130" cy="120" r="14"/><text class="v" x="130" y="125">c</text>
+      <circle class="v" cx="40" cy="120" r="14"/><text class="v" x="40" y="125">d</text>
+    </svg>
+    <div class="cap"><b>K₄ 删边成生成树</b>：橙色留 <b>3 条</b>（n−1）<br>虚线是删掉的 <b>3 条</b>（=6−3）</div>
+  </div>
+  <div class="fig">
+    <svg width="160" height="150" viewBox="0 0 170 160">
+      <line class="e" x1="40" y1="30" x2="130" y2="30"/>
+      <line class="e" x1="40" y1="30" x2="130" y2="80"/>
+      <line class="e" x1="40" y1="30" x2="130" y2="130"/>
+      <line class="e" x1="40" y1="80" x2="130" y2="30"/>
+      <line class="e" x1="40" y1="80" x2="130" y2="80"/>
+      <line class="e" x1="40" y1="80" x2="130" y2="130"/>
+      <line class="e" x1="40" y1="130" x2="130" y2="30"/>
+      <line class="e" x1="40" y1="130" x2="130" y2="80"/>
+      <line class="e" x1="40" y1="130" x2="130" y2="130"/>
+      <circle class="v" cx="40" cy="30" r="13"/><text class="v" x="40" y="35">a</text>
+      <circle class="v" cx="40" cy="80" r="13"/><text class="v" x="40" y="85">b</text>
+      <circle class="v" cx="40" cy="130" r="13"/><text class="v" x="40" y="135">c</text>
+      <circle class="v" cx="130" cy="30" r="13"/><text class="v" x="130" y="35">d</text>
+      <circle class="v" cx="130" cy="80" r="13"/><text class="v" x="130" y="85">e</text>
+      <circle class="v" cx="130" cy="130" r="13"/><text class="v" x="130" y="135">f</text>
+    </svg>
+    <div class="cap"><b>完全二部图 K₃,₃</b>：分两拨、同拨不连<br>跨拨全连，边数 = 3×3 = <b>9</b></div>
+  </div>
+  </div>
+</div>
+
+<div class="note">
+  <b>完全二部图 Kₘ,ₙ：</b>把点分成<b>两组</b>（m 个 + n 个），<b>同组内互不连、跨组两点全连</b>；边数 = <b>m×n</b>。<span class="code">K₃,₃</span>（9 边）与 <span class="code">K₅</span>（10 边）是“非平面图”的两个经典例子，平面图那节会用到。<br>
+  <b>“删边成树”通用公式：</b>从 Kₙ 删边得到一棵含全部 n 点的<b>生成树</b>（树只有 n−1 条边），需删去 <span class="code">C(n,2) − (n−1) = (n−1)(n−2)/2</span> 条。<br>
+  <b>真题（2026.4 第15题）：</b>K₆ 边数 = 6×5/2 = 15，6 阶树边数 = 6−1 = 5 → 删去 15−5 = <b>10</b>（选 B）。<br>
+  <b>真题（2026.4 第25题填空）：</b>K₃,₃ 的边数 = 3×3 = <b>9</b>（跨组全连、组内无边）——顺带它也是<b>非平面图</b>的经典例子（与上方 K₃,₃ 图对应）。
 </div>
 
 <div class="note">
