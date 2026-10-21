@@ -76,6 +76,7 @@
   <a href="#s1">一、图、顶点、边</a>
   <a href="#s2">二、无向图 vs 有向图</a>
   <a href="#s3">三、度数（奇度 / 偶度）</a>
+  <a href="#handshake" style="padding-left:16px;color:var(--muted);font-size:13.5px">↳ 握手定理（奇度点必成对）</a>
   <a href="#s4">四、简单图 / 多重边</a>
   <a href="#s5">五、连通 / 连通分支</a>
   <a href="#s6">六、割点</a>
@@ -158,7 +159,7 @@
 </div>
 
 <div class="rule">
-  <h3>握手定理（总度数必为偶数）</h3>
+  <h3 id="handshake">握手定理（总度数必为偶数）</h3>
   任意无向图：<b>所有顶点度数之和 = 2 × 边数</b>，因此<b>总度数一定是偶数</b>。<br>
   直觉：每条边连着两个顶点，给这两点"各 +1 度"，所以每条边对总度数的贡献都是 2。
   <div class="th"><b>推论 1（奇度顶点定理）：</b>奇度顶点的个数必为偶数（总度数偶，若奇数个奇度点会使总和变奇，矛盾）。<br>
@@ -273,14 +274,72 @@
     两个特例：<b>欧拉回路</b>＝过所有<b>边</b>的简单回路（边不重复）；<b>哈密顿回路</b>＝过所有<b>点</b>的初级回路（点不重复）。<br>
     一句话记：<span class="code">欧拉</span>管"边重复没"，<span class="code">哈密顿</span>管"点重复没"。
   </div>
-  <svg width="170" height="150" viewBox="0 0 170 150">
-    <line class="hi" x1="40" y1="40" x2="120" y2="40"/>
-    <line class="hi" x1="120" y1="40" x2="80" y2="110"/>
-    <line class="hi" x1="80" y1="110" x2="40" y2="40"/>
-    <circle class="v" cx="40" cy="40" r="15"/><text class="v" x="40" y="45">a</text>
-    <circle class="v" cx="120" cy="40" r="15"/><text class="v" x="120" y="45">b</text>
-    <circle class="v" cx="80" cy="110" r="15"/><text class="v" x="80" y="115">c</text>
-  </svg>
+  <div class="figs">
+  <div class="fig">
+    <svg width="150" height="140" viewBox="0 0 180 165">
+      <line class="e" x1="90" y1="80" x2="40" y2="40"/>
+      <line class="hi" x1="40" y1="40" x2="40" y2="120"/>
+      <line class="hi" x1="40" y1="120" x2="90" y2="80"/>
+      <line class="hi" x1="90" y1="80" x2="140" y2="40"/>
+      <line class="hi" x1="140" y1="40" x2="140" y2="120"/>
+      <line class="hi" x1="140" y1="120" x2="90" y2="80"/>
+      <circle class="v" cx="40" cy="40" r="13"/><text class="v" x="40" y="44">a</text>
+      <circle class="v" cx="40" cy="120" r="13"/><text class="v" x="40" y="124">b</text>
+      <circle class="hot" cx="90" cy="80" r="15"/><text class="v hot" x="90" y="84" fill="#fff">c</text>
+      <circle class="v" cx="140" cy="40" r="13"/><text class="v" x="140" y="44">d</text>
+      <circle class="v" cx="140" cy="120" r="13"/><text class="v" x="140" y="124">e</text>
+    </svg>
+    <div class="cap"><b>简单通路（迹）</b> a→b→c→d→e→c<br>边不重复，但<b>点 c 走了两次</b>（橙实心）→ 不是路径</div>
+  </div>
+  <div class="fig">
+    <svg width="150" height="140" viewBox="0 0 180 165">
+      <line class="hi" x1="40" y1="40" x2="40" y2="120"/>
+      <line class="hi" x1="40" y1="120" x2="90" y2="80"/>
+      <line class="hi" x1="90" y1="80" x2="40" y2="40"/>
+      <line class="hi" x1="90" y1="80" x2="140" y2="40"/>
+      <line class="hi" x1="140" y1="40" x2="140" y2="120"/>
+      <line class="hi" x1="140" y1="120" x2="90" y2="80"/>
+      <circle class="v" cx="40" cy="40" r="13"/><text class="v" x="40" y="44">a</text>
+      <circle class="v" cx="40" cy="120" r="13"/><text class="v" x="40" y="124">b</text>
+      <circle class="hot" cx="90" cy="80" r="15"/><text class="v hot" x="90" y="84" fill="#fff">c</text>
+      <circle class="v" cx="140" cy="40" r="13"/><text class="v" x="140" y="44">d</text>
+      <circle class="v" cx="140" cy="120" r="13"/><text class="v" x="140" y="124">e</text>
+    </svg>
+    <div class="cap"><b>简单回路</b> 六条边各走一次回到起点<br>边不重复、闭口（<b>欧拉回路</b>就这种），c 重复→非初级回路</div>
+  </div>
+  <div class="fig">
+    <svg width="150" height="140" viewBox="0 0 180 165">
+      <line class="e" x1="90" y1="80" x2="40" y2="40"/>
+      <line class="e" x1="140" y1="120" x2="90" y2="80"/>
+      <line class="hi" x1="40" y1="40" x2="40" y2="120"/>
+      <line class="hi" x1="40" y1="120" x2="90" y2="80"/>
+      <line class="hi" x1="90" y1="80" x2="140" y2="40"/>
+      <line class="hi" x1="140" y1="40" x2="140" y2="120"/>
+      <circle class="v" cx="40" cy="40" r="13"/><text class="v" x="40" y="44">a</text>
+      <circle class="v" cx="40" cy="120" r="13"/><text class="v" x="40" y="124">b</text>
+      <circle class="v" cx="90" cy="80" r="13"/><text class="v" x="90" y="84">c</text>
+      <circle class="v" cx="140" cy="40" r="13"/><text class="v" x="140" y="44">d</text>
+      <circle class="v" cx="140" cy="120" r="13"/><text class="v" x="140" y="124">e</text>
+    </svg>
+    <div class="cap"><b>初级通路（路径）</b> a→b→c→d→e<br><b>点、边都不重复</b>（最严格）；比左图少最后一步 e→c</div>
+  </div>
+  <div class="fig">
+    <svg width="150" height="140" viewBox="0 0 180 165">
+      <line class="e" x1="90" y1="80" x2="140" y2="40"/>
+      <line class="e" x1="140" y1="40" x2="140" y2="120"/>
+      <line class="e" x1="140" y1="120" x2="90" y2="80"/>
+      <line class="hi" x1="40" y1="40" x2="40" y2="120"/>
+      <line class="hi" x1="40" y1="120" x2="90" y2="80"/>
+      <line class="hi" x1="90" y1="80" x2="40" y2="40"/>
+      <circle class="v" cx="40" cy="40" r="13"/><text class="v" x="40" y="44">a</text>
+      <circle class="v" cx="40" cy="120" r="13"/><text class="v" x="40" y="124">b</text>
+      <circle class="v" cx="90" cy="80" r="13"/><text class="v" x="90" y="84">c</text>
+      <circle class="v" cx="140" cy="40" r="13"/><text class="v" x="140" y="44">d</text>
+      <circle class="v" cx="140" cy="120" r="13"/><text class="v" x="140" y="124">e</text>
+    </svg>
+    <div class="cap"><b>初级回路（圈）</b> a→b→c→a<br>除首尾 a 外<b>点不重复</b>的闭走法</div>
+  </div>
+  </div>
 </div>
 
 <h2 class="section" id="s9">九、特殊图：完全图 Kₙ 与完全二部图 Kₘ,ₙ</h2>

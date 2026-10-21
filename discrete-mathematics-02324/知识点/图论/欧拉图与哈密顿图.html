@@ -80,6 +80,50 @@
   <br>· <b>充分条件（Dirac 定理）</b>：n≥3 的简单图，若最小度 δ(G) ≥ n/2，则<b>必有</b>哈密顿回路。（是充分非必要，δ 小也可能有。）
 </div>
 
+<div class="card">
+  <div class="lab2"><b>图解：为什么欧拉判定只看“奇度顶点是 0 个还是 2 个”</b></div>
+  <p style="margin:2px 0 10px;font-size:14.5px">
+    <b>度数</b>＝一个顶点连出去的边数；<b>奇度顶点</b>＝度数是奇数的点。<br>
+    把“走欧拉路线”想成<b>一笔连续描、每条边只描一次</b>：每当你<b>穿过</b>一个顶点（既不是出发点也不是落脚点的“途中点”），都必须<b>一进一出</b>配成一对地用掉 2 条边 → 途中点度数必为<b>偶数</b>。只有<b>起点</b>和<b>终点</b>可以各多出一条、成了奇数。于是奇度点只可能是这两种情况：
+  </p>
+  <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:stretch">
+    <div style="flex:1;min-width:260px">
+      <div style="font-weight:700;color:var(--ok);text-align:center;margin-bottom:6px">0 个奇度点（全偶）→ 欧拉<u>回路</u></div>
+      <svg viewBox="0 0 300 230" width="100%" style="max-width:320px;height:auto">
+        <g class="edge accept"><line x1="70" y1="60" x2="210" y2="60"/><text class="ord" x="140" y="52">1</text></g>
+        <g class="edge accept"><line x1="210" y1="60" x2="210" y2="170"/><text class="ord" x="226" y="120">2</text></g>
+        <g class="edge accept"><line x1="210" y1="170" x2="70" y2="170"/><text class="ord" x="140" y="162">3</text></g>
+        <g class="edge accept"><line x1="70" y1="170" x2="70" y2="60"/><text class="ord" x="54" y="120">4</text></g>
+        <circle class="v" cx="70" cy="60" r="16"/><text class="v" x="70" y="65">a</text><text x="70" y="34" style="font-size:12.5px;fill:var(--ok);text-anchor:middle;font-weight:700">度2</text>
+        <circle class="v" cx="210" cy="60" r="16"/><text class="v" x="210" y="65">b</text><text x="210" y="34" style="font-size:12.5px;fill:var(--ok);text-anchor:middle;font-weight:700">度2</text>
+        <circle class="v" cx="210" cy="170" r="16"/><text class="v" x="210" y="175">c</text><text x="210" y="204" style="font-size:12.5px;fill:var(--ok);text-anchor:middle;font-weight:700">度2</text>
+        <circle class="v" cx="70" cy="170" r="16"/><text class="v" x="70" y="175">d</text><text x="70" y="204" style="font-size:12.5px;fill:var(--ok);text-anchor:middle;font-weight:700">度2</text>
+      </svg>
+      <div style="font-size:13.5px;color:var(--muted);text-align:center">沿 1→2→3→4 走一圈<b>回到起点 a</b>（第 4 步 d→a 正好合口）</div>
+    </div>
+    <div style="flex:1;min-width:260px">
+      <div style="font-weight:700;color:var(--warn);text-align:center;margin-bottom:6px">恰 2 个奇度点 → 欧拉<u>通路</u></div>
+      <svg viewBox="0 0 300 230" width="100%" style="max-width:320px;height:auto">
+        <g class="edge accept"><line x1="70" y1="60" x2="210" y2="60"/><text class="ord" x="140" y="52">1</text></g>
+        <g class="edge accept"><line x1="210" y1="60" x2="210" y2="170"/><text class="ord" x="226" y="120">2</text></g>
+        <g class="edge accept"><line x1="210" y1="170" x2="70" y2="170"/><text class="ord" x="140" y="162">3</text></g>
+        <g class="edge accept"><line x1="70" y1="170" x2="70" y2="60"/><text class="ord" x="54" y="120">4</text></g>
+        <g class="edge accept"><line x1="70" y1="60" x2="210" y2="170"/><text class="ord" x="152" y="103">5</text></g>
+        <circle class="v" cx="70" cy="60" r="16" style="fill:#fff7ed;stroke:var(--warn);stroke-width:3"/><text class="v" x="70" y="65">a</text><text x="70" y="34" style="font-size:12.5px;fill:var(--warn);text-anchor:middle;font-weight:700">度3 奇</text>
+        <circle class="v" cx="210" cy="60" r="16"/><text class="v" x="210" y="65">b</text><text x="210" y="34" style="font-size:12.5px;fill:var(--ok);text-anchor:middle;font-weight:700">度2</text>
+        <circle class="v" cx="210" cy="170" r="16" style="fill:#fff7ed;stroke:var(--warn);stroke-width:3"/><text class="v" x="210" y="175">c</text><text x="210" y="204" style="font-size:12.5px;fill:var(--warn);text-anchor:middle;font-weight:700">度3 奇</text>
+        <circle class="v" cx="70" cy="170" r="16"/><text class="v" x="70" y="175">d</text><text x="70" y="204" style="font-size:12.5px;fill:var(--ok);text-anchor:middle;font-weight:700">度2</text>
+      </svg>
+      <div style="font-size:13.5px;color:var(--muted);text-align:center">比左图多一条斜边 a–c → a、c 变奇度。走 1→2→3→4→5 只能<b>从奇度点 a 出发、在奇度点 c 结束</b>，回不到起点</div>
+    </div>
+  </div>
+  <p style="margin:12px 0 2px;font-size:14.5px">
+    <b>一句话记住：</b>全偶度＝能绕一圈回到起点（回路）；恰 2 个奇度＝只能从<b>一个</b>奇度点走到<b>另一个</b>奇度点（通路，开口不闭合）。<br>
+    <b>为什么不会是 1 个或 3 个奇度点？</b>因为“握手定理”：所有顶点度数之和＝边数×2（必为偶数），奇度点必须成对出现，所以奇度点个数永远是偶数——欧拉相关只可能是 0 或 2（详见 <a class="inline" href="基本概念.html#handshake">图论·基本概念 · 握手定理</a>）。<br>
+    👉 下方练习区 <b>例1</b> 点「▶ 欧拉走一遍」可看<b>欧拉回路</b>动画，<b>例2</b> 看<b>欧拉通路</b>动画，边上数字就是走的先后顺序。
+  </p>
+</div>
+
 <div class="note">
   <b>易错点：</b>① 把“欧拉”和“哈密顿”的判定混为一谈——欧拉只看<b>度数奇偶</b>，哈密顿没有这种简单等价；② 看到“所有点都连通、看起来能绕一圈”就乱判哈密顿，忘了要<b>每个点恰好一次</b>；③ 忽略 Dirac 是<b>充分条件</b>：满足 δ≥n/2 一定有，但不满足也可能有；④ 欧拉通路的两个奇度点，方向搞反（从哪个到哪个）。
   <br><b>怎么用动画：</b>每个示例图可“欧拉走一遍 / 哈密顿走一遍”，绿=已遍历、橙=当前步，<b>边上的数字=经过的先后次序（1 起）</b>，下方同步显示走过的序列。先自己判一遍再点“显示判定”核对。
