@@ -45,6 +45,14 @@
   .matwrap .par{font-size:3.1em;font-weight:300;line-height:0;color:#475569}
   .mat{display:inline-grid;grid-template-columns:repeat(3,1.5em);gap:1px 6px;text-align:center;line-height:1.5}
   .mat i{font-style:normal}
+  .steps{margin:8px 0;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .steps .row{display:flex;gap:12px;padding:6px 12px;align-items:baseline;border-bottom:1px dashed var(--line)}
+  .steps .row:last-child{border-bottom:none}
+  .steps .row:nth-child(odd){background:#fafafa}
+  .steps .why{flex:0 0 170px;color:var(--muted);font-size:13px}
+  .steps .eq{font-family:"Cambria Math",Cambria,Georgia,serif}
+  .steps .row.final{background:var(--ok-soft,#ecfdf5)}
+  .steps .row.final .eq{color:var(--ok);font-weight:700}
   table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px}
   table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center}
   table.anskey th{background:var(--brand-soft);color:var(--brand)}
@@ -387,10 +395,20 @@
 </summary>
 <div class="body">
   <div class="answer">答案：a⁻¹*b</div>
-  <div class="sol"><span class="lab">解析：</span>群中每个元素都有唯一逆元。在等式<b>左</b>边乘 a⁻¹：<br>
-    a⁻¹*(a*x) = a⁻¹*b ⇒ (a⁻¹*a)*x = a⁻¹*b（结合律）⇒ e*x = a⁻¹*b ⇒ <span class="m">x = a⁻¹*b</span><br>
+  <div class="sol"><span class="lab">先补知识点（这步的依据）：</span><br>
+    &nbsp;&nbsp;· <b>单位元 e</b>：和任何元素运算都不改变它，<span class="m">e*x = x*e = x</span>。<br>
+    &nbsp;&nbsp;· <b>逆元 a⁻¹</b>：群里每个元素都有它，专门用来“抵消”a 自己，<span class="m">a⁻¹*a = a*a⁻¹ = e</span>。<br>
+    &nbsp;&nbsp;· <b>为什么要乘 a⁻¹</b>：x 被左边的 a 缠住，要解出 x 就得把 a 消掉。群里没有“除法”，“消掉 a”就靠<b>乘它的逆元 a⁻¹</b>——和普通代数里 <span class="m">3x=b → x=b÷3=3⁻¹·b</span> 是一个道理。<br>
+    <span class="lab">解答（两边同「左乘」a⁻¹，一步一行）：</span>
+    <div class="steps">
+      <div class="row"><span class="why">原式</span><span class="eq">a*x = b</span></div>
+      <div class="row"><span class="why">① 两边左乘 a⁻¹</span><span class="eq">a⁻¹*(a*x) = a⁻¹*b</span></div>
+      <div class="row"><span class="why">② 结合律挪括号</span><span class="eq">(a⁻¹*a)*x = a⁻¹*b</span></div>
+      <div class="row"><span class="why">③ 逆元 a⁻¹*a = e</span><span class="eq">e*x = a⁻¹*b</span></div>
+      <div class="row final"><span class="why">④ 单位元 e*x = x</span><span class="eq">x = a⁻¹*b ✓</span></div>
+    </div>
     <b>方向别搞反：</b>若方程是 x*a = b，则应<b>右</b>乘 a⁻¹，解为 x = b*a⁻¹。群不必交换，a⁻¹*b 与 b*a⁻¹ 一般不等。<br>
-    这正是群中"消去律/除法唯一可解"：a*x=b 与 x*a=b 都有唯一解。</div>
+    这正是群中“消去律/除法唯一可解”：a*x=b 与 x*a=b 都有唯一解。</div>
   <span class="tag">考点：群中方程求解</span><span class="tag">左乘逆元解 a*x=b</span>
 </div></details>
 
