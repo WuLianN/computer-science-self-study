@@ -83,6 +83,7 @@
 <div class="toc">
   <div class="toc-h">本章目录（定义 · 定理）</div>
   <a href="#s1">一、二元关系（定义）</a>
+  <a href="#compose" style="padding-left:16px;color:var(--muted);font-size:13.5px">↳ 关系的复合（R₁∘R₂）</a>
   <a href="#s2">二、关系五大性质（定义 + 判定）</a>
   <a href="#s3">三、闭包（定义 + 公式）</a>
   <a href="#s4">四、等价关系与划分（定义 + 定理）</a>
@@ -131,6 +132,24 @@
     </div>
   </div>
   <div class="note" style="margin:12px 0 0">关系矩阵与图论的<b>邻接矩阵/有向图</b>完全同构：本章的矩阵、图技巧可直接迁移到图论。</div>
+</div>
+
+<h3 id="compose" style="margin:22px 0 4px;font-size:16px;color:var(--brand)">・关系的复合（R₁∘R₂）</h3>
+<div class="def">
+  <div class="dt">定义　关系的复合运算</div>
+  设 <b>R₁ ⊆ A×B</b>、<b>R₂ ⊆ B×C</b>，则 R₁ 到 R₂ 的<b>复合</b>记作 <code>R₁∘R₂</code>（仍习惯叫“右复合”：先走 R₁、再走 R₂）：<br>
+  <code>R₁∘R₂ = { ⟨p,r⟩ | ∃q ( ⟨p,q⟩∈R₁ ∧ ⟨q,r⟩∈R₂ ) }</code><br>
+  读法：“从 <b>p</b> 经 <b>R₁</b> 能到某个中转点 <b>q</b>，从 <b>q</b> 经 <b>R₂</b> 能到 <b>r</b>”，则 ⟨p,r⟩ 属于复合关系。<span style="color:var(--muted)">（用 p/q/r 中性字母，避开题里的具体元素防撞名。）</span>
+</div>
+
+<div class="card">
+  <h3>例（2026.4 填空第20题同款）：A={1,2,3,4}、B={a,b,c}、C={x,y}</h3>
+  R₁={⟨1,a⟩,⟨2,a⟩,⟨3,c⟩,⟨4,b⟩}，R₂={⟨a,x⟩,⟨a,y⟩,⟨b,y⟩}。<br>
+  <b>“从每个起点走两步”</b>（先 R₁ 后 R₂）：<br>
+  · 1→a→x、a→y ⇒ ⟨1,x⟩、⟨1,y⟩；· 2→a→x、a→y ⇒ ⟨2,x⟩、⟨2,y⟩；<br>
+  · 3→c，但 c 在 R₂ 中<b>无出边</b> ⇒ 3 不产生任何有序对；· 4→b→y ⇒ ⟨4,y⟩。<br>
+  ∴ <code>R₁∘R₂ = {⟨1,x⟩,⟨1,y⟩,⟨2,x⟩,⟨2,y⟩,⟨4,y⟩}</code>（共 5 个）。
+  <div class="note" style="margin:12px 0 0">💡 <b>矩阵法：</b>M<sub>R₁∘R₂</sub> = M<sub>R₁</sub> · M<sub>R₂</sub>（用<b>布尔乘</b>：乘法→∧、加法→∨）。复合关系不一定是函数（一个起点可经多个中转点到达多个终点）。</div>
 </div>
 
 <h2 class="section" id="s2">二、关系五大性质（定义 + 判定）</h2>

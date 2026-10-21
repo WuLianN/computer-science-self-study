@@ -83,6 +83,7 @@
   <a href="#s7">七、子图</a>
   <a href="#s8">八、路径 / 通路 / 回路</a>
   <a href="#s9">九、特殊图：完全图 Kₙ 与完全二部图 Kₘ,ₙ</a>
+  <a href="#s10">十、平面图与欧拉公式</a>
 </div>
 
 <h2 class="section" id="s1">一、图、顶点、边</h2>
@@ -433,6 +434,66 @@
   <b>“删边成树”通用公式：</b>从 Kₙ 删边得到一棵含全部 n 点的<b>生成树</b>（树只有 n−1 条边），需删去 <span class="code">C(n,2) − (n−1) = (n−1)(n−2)/2</span> 条。<br>
   <b>真题（2026.4 第15题）：</b>K₆ 边数 = 6×5/2 = 15，6 阶树边数 = 6−1 = 5 → 删去 15−5 = <b>10</b>（选 B）。<br>
   <b>真题（2026.4 第25题填空）：</b>K₃,₃ 的边数 = 3×3 = <b>9</b>（跨组全连、组内无边）——顺带它也是<b>非平面图</b>的经典例子（与上方 K₃,₃ 图对应）。
+</div>
+
+<h2 class="section" id="s10">十、平面图与欧拉公式</h2>
+<div class="card">
+  <div class="txt">
+    <h3>什么是平面图</h3>
+    <b>平面图</b>：能画在平面上使得<b>任意两条边除公共端点外不相交</b>的图。能把图这样无交叉地画出来，就叫图的一个<b>平面嵌入</b>；画好后边把平面切成的每一块区域称为<b>面</b>，其中最外面那一块叫<b>无界面（外部面）</b>。<br>
+    一个面的<b>次数</b> = 围成它的边数（若一条边两侧是同一个面，即<b>割边</b>，则计 <b>2</b> 次）。<br>
+    <b>不是所有图都是平面图</b>——<span class="code">K₅</span>（5 个顶点两两相连）与 <span class="code">K₃,₃</span> 是最经典的两个<b>非平面图</b>，无论怎么挪点都会出现交叉。
+  </div>
+  <div class="figs">
+  <div class="fig">
+    <svg width="200" height="165" viewBox="0 0 200 165">
+      <line class="e" x1="35" y1="130" x2="165" y2="130"/>
+      <line class="e" x1="165" y1="130" x2="100" y2="22"/>
+      <line class="e" x1="100" y1="22" x2="35" y2="130"/>
+      <line class="e" x1="35" y1="130" x2="100" y2="90"/>
+      <line class="e" x1="165" y1="130" x2="100" y2="90"/>
+      <line class="e" x1="100" y1="22" x2="100" y2="90"/>
+      <circle class="v" cx="35" cy="130" r="13"/><text class="v" x="35" y="135">a</text>
+      <circle class="v" cx="165" cy="130" r="13"/><text class="v" x="165" y="135">b</text>
+      <circle class="v" cx="100" cy="22" r="13"/><text class="v" x="100" y="27">c</text>
+      <circle class="v" cx="100" cy="90" r="13"/><text class="v" x="100" y="95">d</text>
+    </svg>
+    <div class="cap"><b>完全图 K₄ 的一个平面嵌入</b><br>无边交叉 → 是平面图；内部 3 个三角面 + 1 个外部面，共 <b>f=4</b></div>
+  </div>
+  <div class="fig">
+    <svg width="210" height="165" viewBox="0 0 210 165">
+      <line class="e" x1="38" y1="125" x2="105" y2="125"/>
+      <line class="e" x1="105" y1="125" x2="172" y2="125"/>
+      <line class="hi" x1="105" y1="125" x2="105" y2="45"/>
+      <line x1="96" y1="108" x2="96" y2="66" stroke="#4f46e5" stroke-width="1.6" stroke-dasharray="4 3"/>
+      <polygon points="96,59 92,68 100,68" fill="#4f46e5"/>
+      <line x1="114" y1="66" x2="114" y2="108" stroke="#4f46e5" stroke-width="1.6" stroke-dasharray="4 3"/>
+      <polygon points="114,115 110,106 118,106" fill="#4f46e5"/>
+      <text x="58" y="90" font-size="11" fill="#4f46e5">去 ↑</text>
+      <text x="122" y="95" font-size="11" fill="#4f46e5">↓ 回</text>
+      <text x="120" y="48" font-size="12" font-weight="700" fill="var(--warn)">×2</text>
+      <circle class="v" cx="38" cy="125" r="13"/><text class="v" x="38" y="130">a</text>
+      <circle class="v" cx="105" cy="125" r="13"/><text class="v" x="105" y="130">b</text>
+      <circle class="v" cx="172" cy="125" r="13"/><text class="v" x="172" y="130">c</text>
+      <circle class="v" cx="105" cy="45" r="13"/><text class="v" x="105" y="50">d</text>
+    </svg>
+    <div class="cap"><b>带割边的树</b>（无圈，只有 1 个面）<br>紫虚线=沿割边 b–d 描边界：<b>去 ↑ + 回 ↓</b> 走过两遍 → 计 ×2</div>
+  </div>
+  </div>
+</div>
+
+<div class="note">
+  <b>面的“次数”怎么数：</b>普通边夹在两个不同面之间，各算 1 次；<b>割边</b>（右图橙色 b–d）两侧是同一个面，绕这个面走一圈会“去 ↑ + 回 ↓”经过它两遍，所以<b>算 2 次</b>。合起来每条边都被数 2 次 → <span class="code">Σ 各面的次数 = 2m</span>。（记不住过程就先只记结论：<b>割边算 2 次</b>。）
+</div>
+
+<div class="note">
+  <b>欧拉公式（连通平面图）：</b>顶点数 n、边数 m、面数 f（含无界面）满足 <span class="code">n − m + f = 2</span>（如上图 K₄：4−6+4=2 ✓）。<br>
+  <b>两个推论：</b>普通平面图 <span class="code">m ⩽ 3n − 6</span>；二部图（无三角形）更强 <span class="code">m ⩽ 2n − 4</span>。⚠ 它们只是<b>必要条件</b>——只能拿来“证伪”非平面图，不能反过来证明一定平面。
+</div>
+
+<div class="note">
+  <b>判非平面（高频）：</b>K₅（n=5、m=10 &gt; 3n−6=9）、K₃,₃（n=6、m=9 &gt; 2n−4=8）都因超出上界而<b>非平面</b>；K₃,₃ 必须用 2n−4，误用 3n−6 会判不出。<br>
+  <span style="color:var(--muted)">📌 推论的完整推导就是 2026.4 证明题第33题，已收录在 <a class="inline" href="../../全国2026年4月自考02324《离散数学》真题/真题详解.html">真题详解·第33题</a>，这里不展开。</span>
 </div>
 
 <div class="note">
