@@ -41,6 +41,10 @@
   .sol .lab{font-weight:700;color:var(--brand)}
   .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
   .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .matwrap{display:inline-flex;align-items:center;vertical-align:middle;margin:0 3px;font-family:"Cambria Math",Cambria,Georgia,serif}
+  .matwrap .par{font-size:3.1em;font-weight:300;line-height:0;color:#475569}
+  .mat{display:inline-grid;grid-template-columns:repeat(3,1.5em);gap:1px 6px;text-align:center;line-height:1.5}
+  .mat i{font-style:normal}
   table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px}
   table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center}
   table.anskey th{background:var(--brand-soft);color:var(--brand)}
@@ -468,30 +472,30 @@
 
 <details class="q"><summary>
   <span class="qno">第29题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">已知集合 A={a,b,c} 上的二元关系 R 的关系矩阵 M&#8346; = &#903;&#10009;1 0 1 / 1 0 0 / 0 0 1&#904;&#10009;，写出 R 的集合表达式，并写出自反闭包 r(R) 的关系矩阵和对称闭包 s(R) 的关系矩阵。</div>
+  <div class="stem">已知集合 A={a,b,c} 上的二元关系 R 的关系矩阵 M<sub>R</sub> = <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>0</i><i>1</i><i>1</i><i>0</i><i>0</i><i>0</i><i>0</i><i>1</i></span><span class="par">)</span></span>，写出 R 的集合表达式，并写出自反闭包 r(R) 的关系矩阵和对称闭包 s(R) 的关系矩阵。</div>
 </summary>
 <div class="body">
-  <div class="answer">答案：R={&lt;a,a&gt;,&lt;a,c&gt;,&lt;b,a&gt;,&lt;c,c&gt;}；r(R)矩阵 &#903;&#10009;1 0 1 / 1 1 0 / 0 0 1&#904;&#10009;；s(R)矩阵 &#903;&#10009;1 1 1 / 1 0 0 / 1 0 1&#904;&#10009;</div>
+  <div class="answer">答案：R={&lt;a,a&gt;,&lt;a,c&gt;,&lt;b,a&gt;,&lt;c,c&gt;}；r(R) 矩阵 <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>0</i><i>1</i><i>1</i><i>1</i><i>0</i><i>0</i><i>0</i><i>1</i></span><span class="par">)</span></span>；s(R) 矩阵 <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>1</i><i>1</i><i>0</i><i>0</i><i>1</i><i>0</i><i>1</i></span><span class="par">)</span></span></div>
   <div class="sol"><span class="lab">解答（行/列顺序均为 a,b,c）：</span><br>
     由矩阵读关系（第 i 行第 j 列为1 &hArr; &lt;第i个,第j个&gt;&isin;R）：<br>
     <b>R</b> = {&lt;a,a&gt;,&lt;a,c&gt;,&lt;b,a&gt;,&lt;c,c&gt;}<br>
-    <b>自反闭包 r(R)</b> = R &cup; I&#8342;，即把主对角线全补为1（仅缺 &lt;b,b&gt;）：<br>
-    M&#8347;&#8322;&#8337;&#8343;&#8320; = <span class="m">&#903;&#10009;1 0 1 / 1 1 0 / 0 0 1&#904;&#10009;</span><br>
+    <b>自反闭包 r(R)</b> = R ∪ I<sub>A</sub>，即把主对角线全补为1（仅缺 &lt;b,b&gt;）：<br>
+    M<sub>r(R)</sub> = <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>0</i><i>1</i><i>1</i><i>1</i><i>0</i><i>0</i><i>0</i><i>1</i></span><span class="par">)</span></span><br>
     <b>对称闭包 s(R)</b> = R &cup; R&#8315;&sup1;，R&#8315;&sup1;={&lt;a,a&gt;,&lt;c,a&gt;,&lt;a,b&gt;,&lt;c,c&gt;}，并集需补上 &lt;c,a&gt;、&lt;a,b&gt;：<br>
-    M&#8347;&#8322;&#8337;&#8343;&#8321; = <span class="m">&#903;&#10009;1 1 1 / 1 0 0 / 1 0 1&#904;&#10009;</span><br>
+    M<sub>s(R)</sub> = <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>1</i><i>1</i><i>0</i><i>0</i><i>1</i><i>0</i><i>1</i></span><span class="par">)</span></span><br>
     <span style="color:var(--muted);font-size:13px">💡 自反闭包=对角线置1；对称闭包=沿主对角线镜像（M 与 Mᵀ 取或）。</span></div>
   <span class="tag">考点：关系闭包与关系矩阵</span>
 </div></details>
 
 <details class="q"><summary>
   <span class="qno">第30题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">设 A={a,b,c,d} 的一个划分为 S={{a,b},{c,d}}，求由 S 确定的 A 上的等价关系 R&#8347;。</div>
+  <div class="stem">设 A={a,b,c,d} 的一个划分为 S={{a,b},{c,d}}，求由 S 确定的 A 上的等价关系 R<sub>S</sub>。</div>
 </summary>
 <div class="body">
-  <div class="answer">答案：R&#8347; = {&lt;a,a&gt;,&lt;a,b&gt;,&lt;b,a&gt;,&lt;b,b&gt;,&lt;c,c&gt;,&lt;c,d&gt;,&lt;d,c&gt;,&lt;d,d&gt;}</div>
+  <div class="answer">答案：R<sub>S</sub> = {&lt;a,a&gt;,&lt;a,b&gt;,&lt;b,a&gt;,&lt;b,b&gt;,&lt;c,c&gt;,&lt;c,d&gt;,&lt;d,c&gt;,&lt;d,d&gt;}</div>
   <div class="sol"><span class="lab">解答：</span>由划分确定的等价关系：同一块内的元素两两相关，不同块的元素不相关。<br>
     块 {a,b} 内部产生 a,b 的 4 个有序对；块 {c,d} 内部产生 c,d 的 4 个有序对。<br>
-    R&#8347; = {&lt;a,a&gt;,&lt;a,b&gt;,&lt;b,a&gt;,&lt;b,b&gt;,&lt;c,c&gt;,&lt;c,d&gt;,&lt;d,c&gt;,&lt;d,d&gt;}，共 8 个有序对。<br>
+    R<sub>S</sub> = {&lt;a,a&gt;,&lt;a,b&gt;,&lt;b,a&gt;,&lt;b,b&gt;,&lt;c,c&gt;,&lt;c,d&gt;,&lt;d,c&gt;,&lt;d,d&gt;}，共 8 个有序对。<br>
     <span style="color:var(--muted);font-size:13px">💡 划分与等价关系一一对应：每个划分唯一确定一个等价关系，其等价类恰好就是各块。</span></div>
   <span class="tag">考点：划分与等价关系</span>
 </div></details>

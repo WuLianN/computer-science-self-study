@@ -41,6 +41,10 @@
   .sol .lab{font-weight:700;color:var(--brand)}
   .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
   .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+  .matwrap{display:inline-flex;align-items:center;vertical-align:middle;margin:0 3px;font-family:"Cambria Math",Cambria,Georgia,serif}
+  .matwrap .par{font-size:3.1em;font-weight:300;line-height:0;color:#475569}
+  .mat{display:inline-grid;grid-template-columns:repeat(3,1.5em);gap:1px 6px;text-align:center;line-height:1.5}
+  .mat i{font-style:normal}
   table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px}
   table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center}
   table.anskey th{background:var(--brand-soft);color:var(--brand)}
@@ -501,18 +505,18 @@
 
 <details class="q"><summary>
   <span class="qno">第29题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">已知集合 A={x,y,z} 上的二元关系 R₁ 和 R₂ 的关系矩阵分别为 M_{R₁}=⎛⎝1 0 0 / 1 0 1 / 0 1 1⎞⎠，M_{R₂}=⎛⎝0 1 0 / 1 0 0 / 1 0 1⎞⎠，求 R₁∪R₂ 的集合表达式以及自反闭包 r(R₁∪R₂) 的关系矩阵。</div>
+  <div class="stem">已知集合 A={x,y,z} 上的二元关系 R₁ 和 R₂ 的关系矩阵 M<sub>R₁</sub>、M<sub>R₂</sub> 如下图所示，求 R₁∪R₂ 的集合表达式以及自反闭包 r(R₁∪R₂) 的关系矩阵。<div style="margin:10px 0"><img src="题29图.png" alt="题29图 关系矩阵" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div></div>
 </summary>
 <div class="body">
-  <div class="answer">答案：R₁∪R₂={&lt;x,x&gt;,&lt;x,y&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,x&gt;,&lt;z,y&gt;,&lt;z,z&gt;}；r 矩阵为⎛⎝1 1 0 / 1 1 1 / 1 1 1⎞⎠</div>
+  <div class="answer">答案：R₁∪R₂={&lt;x,x&gt;,&lt;x,y&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,x&gt;,&lt;z,y&gt;,&lt;z,z&gt;}；自反闭包矩阵为<span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>0</i><i>1</i><i>1</i><i>1</i><i>1</i><i>1</i><i>1</i></span><span class="par">)</span></span></div>
   <div class="sol"><span class="lab">解答（行/列顺序均为 x,y,z）：</span><br>
     由矩阵读出关系（第 i 行第 j 列为1 ⇔ &lt;第i个,第j个&gt;∈R）：<br>
     R₁ = {&lt;x,x&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,y&gt;,&lt;z,z&gt;}<br>
     R₂ = {&lt;x,y&gt;,&lt;y,x&gt;,&lt;z,x&gt;,&lt;z,z&gt;}<br>
     <b>R₁∪R₂</b> = {&lt;x,x&gt;,&lt;x,y&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,x&gt;,&lt;z,y&gt;,&lt;z,z&gt;}（共 7 个）<br>
-    并集矩阵 = 对应元素取 max：⎛⎝1 1 0 / 1 0 1 / 1 1 1⎞⎠<br>
-    <b>自反闭包 r(R₁∪R₂)</b> = (R₁∪R₂) ∪ I_A，即把主对角线全补为 1（仅缺 &lt;y,y&gt;）：<br>
-    M_{r(R₁∪R₂)} = <span class="m">⎛⎝1 1 0 / 1 1 1 / 1 1 1⎞⎠</span><br>
+    并集矩阵 = 对应元素取 max：<span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>0</i><i>1</i><i>0</i><i>1</i><i>1</i><i>1</i><i>1</i></span><span class="par">)</span></span><br>
+    <b>自反闭包 r(R₁∪R₂)</b> = (R₁∪R₂) ∪ I<sub>A</sub>，即把主对角线全补为 1（仅缺 &lt;y,y&gt;）：<br>
+    M<sub>r(R₁∪R₂)</sub> = <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>0</i><i>1</i><i>1</i><i>1</i><i>1</i><i>1</i><i>1</i></span><span class="par">)</span></span><br>
     <span style="color:var(--muted);font-size:13px">💡 并/交关系矩阵：对应元素取布尔加/乘；自反闭包矩阵 = 原矩阵 ⊕ 单位矩阵（对角线全置 1）。</span></div>
   <span class="tag">考点：关系矩阵运算</span><span class="tag">自反闭包 = 对角线补 1</span>
 </div></details>
