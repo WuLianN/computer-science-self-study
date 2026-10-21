@@ -218,21 +218,18 @@
 
 <h2 class="section" id="s5">五、群的阶与元素的阶</h2>
 <div class="rule">
-  <b>群的阶 |G|</b>：群中元素个数。<b>元素的阶 ord(a)</b>：使 <span class="m">aᵏ = e</span> 成立的<b>最小正整数</b> k；若不存在则称 a 的阶为无穷。
+  <b>群的阶 |G|</b>：群中元素个数。<b>元素的阶 ord(a)</b>：使 <span class="m">aᵏ = e</span> 成立的<b>最小正整数</b> k。
   <div class="th">
-    核心公式：<span class="m">ord(a) = n ⇒ ord(aᵏ) = n / gcd(n, k)</span>（gcd(n,k) 即 n 与 k 的<b>最大公约数</b>，如 gcd(6,2)=2）。<br>
-    推论：<span class="m">aᵐ = e ⟺ ord(a) | m</span>；配合下方🌱第七节的拉格朗日定理可得<b>元素的阶整除群阶</b>，且 <span class="m">a^|G| = e</span>。
+    核心公式：<span class="m">ord(a) = n ⇒ ord(aᵏ) = n / gcd(n, k)</span>（gcd 即“最大公约数”）。<br>
+    <span style="color:var(--warn)">⚠ 这里的 n 是<b>元素 a 自己的阶 ord(a)</b>，不一定是群的阶 |G|；只有“循环群 + a 是生成元”时 ord(a) 才等于 |G|，才能直接拿群阶当 n。</span>
   </div>
 </div>
 
 <div class="card">
-  <h3>例：求元素的阶</h3>
-  在 <span class="m">(Z₁₂, +)</span> 中（幺元 0，“aᵏ”即 ka）：元素 3 的阶 = 使 3k≡0(mod12) 的最小 k = <b>4</b>。一般 <span class="m">ord(x)=12/gcd(12,x)</span>。<br>
-  在 6 阶循环群 <span class="m">G=⟨a⟩</span> 中：ord(a²)=6/gcd(6,2)=<b>3</b>，ord(a³)=6/3=<b>2</b>，ord(a⁴)=6/2=<b>3</b>，ord(a⁵)=6/gcd(6,5)=<b>6</b>（故 a⁵ 也是生成元）。
-</div>
-
-<div class="note">
-  <b>真题呼应：</b>“n 阶循环群生成元个数 = φ(n)”就是 ord(aᵏ)=n 的个数（需 gcd(n,k)=1）。6 阶循环群生成元 = φ(6)=2 个（a、a⁵）。这类计算几乎每年一道。
+  <h3>第12题这样用（一步到位）</h3>
+  题目是 <b>10 阶循环群</b>、a 是<b>生成元</b> → a 自己的阶就是 10，直接套公式（k=4）：<br>
+  <span class="m">ord(a⁴) = 10 / gcd(10, 4) = 10 / 2 = <b>5</b></span><br>
+  <span style="color:var(--muted)">一句话记法：<b>aᵏ 的阶 = a 的阶 ÷（a 的阶与 k 的最大公约数）</b>。gcd(10,4)=2 就是「10 和 4 的最大公约数」。考前只背这一句就够做题。</span>
 </div>
 
 <h2 class="section" id="s6">六、Cayley 表与常见小群速查</h2>
