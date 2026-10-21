@@ -360,7 +360,7 @@
 <div class="body">
   <div class="answer">答案：{&lt;1,x&gt;,&lt;1,y&gt;,&lt;2,x&gt;,&lt;2,y&gt;,&lt;4,y&gt;}（共 5 个有序对，3 无像）</div>
   <div class="sol"><span class="lab">解析：</span>因 R₁⊆A×B、R₂⊆B×C，此处记号表示<b>右复合</b>（先走 R₁ 再走 R₂）：<br>
-    <span class="m">R₁∘R₂ = {&lt;a,c&gt; | ∃b(&lt;a,b&gt;∈R₁ ∧ &lt;b,c&gt;∈R₂)}</span><br>
+    <span class="m">R₁∘R₂ = {&lt;p,r&gt; | ∃q(&lt;p,q&gt;∈R₁ ∧ &lt;q,r&gt;∈R₂)}</span>　<span style="color:var(--muted);font-size:13px">（p=起点、q=中转点、r=终点；故意用 p/q/r 避开题里的 a,b,c、x,y，防撞名）</span><br>
     逐个起点"走两步"（R₁：1→a、2→a、3→c、4→b；R₂：a→x、a→y、b→y）：<br>
     &nbsp;&nbsp;· 1→a→x ⇒ &lt;1,x&gt;；1→a→y ⇒ &lt;1,y&gt;<br>
     &nbsp;&nbsp;· 2→a→x ⇒ &lt;2,x&gt;；2→a→y ⇒ &lt;2,y&gt;<br>
