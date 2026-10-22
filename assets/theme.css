@@ -1,8 +1,11 @@
-/* 全站共享设计系统 theme.css
-   仅含各知识点页逐字一致的“页面骨架”样式(重置/版式/导航/页脚)。
-   各页内容组件、以及存在差异的规则(:root 配色变量 / hero 渐变 / 行高 / 宽度)
-   仍保留在页面内 <style>，因引入顺序在后而自然覆盖本文件。 */
+/* 全站共享设计系统 theme.css —— 知识点页文档套件（配色变量/版式/导航/内容盒）。
+   页面级差异（各章 hero 渐变 / 动画 / 表格 / figure / 专属提示框）仍留各页 <style>，
+   因引入顺序在后而覆盖本文件。改主题色/字体：改本文件 :root 即可全站生效。 */
+:root{--bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;--brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;--warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;}
 *{box-sizing:border-box}
+body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+.wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
+header.hero{background:var(--hero,linear-gradient(135deg,#4f46e5,#7c3aed));color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
 header.hero h1{margin:0 0 6px;font-size:23px}
 header.hero p{margin:4px 0;opacity:.92}
 .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
@@ -12,4 +15,22 @@ h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);
 .gotos a:hover{background:#fff;color:var(--brand)}
 a.inline{color:var(--brand);font-weight:700;text-decoration:none}
 a.inline:hover{text-decoration:underline}
-footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
+.card h3{margin:0 0 8px;font-size:16.5px;color:var(--brand)}
+.card code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+.rule{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0;font-size:14.5px}
+.rule code{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 7px;font-weight:700}
+.rule .th{border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;margin:8px 0;border-radius:6px}
+.note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+.note b{color:var(--warn)}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin:16px 0}
+.toc .toc-h{font-weight:700;color:var(--brand);margin-bottom:6px;font-size:15px}
+.toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.toc a:last-child{border-bottom:none}
+.toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+.m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
+.m sub{font-size:11px}
+.law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
+.law th{background:var(--brand-soft);color:var(--brand)}
+.law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
+.law td.nm{white-space:nowrap;font-weight:700}
