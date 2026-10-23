@@ -74,8 +74,8 @@
 
 <header class="hero">
   <h1>🔥 高级语言程序设计 13013 · 考前抢分一页纸</h1>
-  <p>基于 <b>2025.4 / 2025.10 / 2026.4 三套全国真题</b>逐题统计 · 唯一目标：<b>及格 60+</b> · C 语言是"套路最固定"的一门课</p>
-  <span class="pill">题型结构三套完全一致</span><span class="pill">8 个可默写模板</span><span class="pill">客观题 50 分是基本盘</span>
+  <p>基于 <b>2025.4 / 2025.10 / 2026.4 三套全国真题</b>逐题统计 · 唯一目标：<b>及格 60+</b> · 教材按 <b>C89（ANSI C）</b>标准出题</p>
+  <span class="pill">题型结构三套完全一致</span><span class="pill">8 个可默写模板</span><span class="pill">客观题 50 分是基本盘</span><span class="pill">C89 语法禁忌单列一节</span>
   <div class="gotos">
     <a href="../index.html">🏠 首页</a>
     <a href="真题/index.html">📝 历年真题</a>
@@ -228,7 +228,7 @@ for (i = 2; i &lt; 20; i++)
   <div class="ex"><span class="h">真题 2025.10 第34题：</span>正确序列 0 1 1 0 1 1 2 1 3 2 5 3 8 5 13 8 21 13 34 21。<span style="color:var(--muted);font-size:13px">⚠ 网络版用 <code>i%2==1</code> 从第 3 项起就全错，是典型案例。</span></div>
 </div>
 
-<h2 class="sec">五、⚠️ 最容易记错的 12 个坑（年年考）</h2>
+<h2 class="sec">五、🧨 最容易记错的 12 个坑（年年考）</h2>
 <div class="sub">这些不是"知识点"，是"阅卷老师就等着你错"的陷阱。考前扫两遍。</div>
 <table>
   <tr><th style="width:34%">陷阱</th><th>正确结论</th></tr>
@@ -246,7 +246,21 @@ for (i = 2; i &lt; 20; i++)
   <tr><td>文件函数</td><td><code>fopen</code> 返回 <code>FILE*</code>；<code>FILE</code> 定义在 <b>stdio.h</b>；按存储分文本/二进制、按内容分程序/数据</td></tr>
 </table>
 
-<h2 class="sec">六、🎯 考场抢分策略</h2>
+<h2 class="sec">六、⚠️ C89 标准：写代码前先看这一段</h2>
+<div class="sub">教材（郑岩《高级语言程序设计》机械工业出版社 2017）按 <b>ANSI C / C89</b> 出题。你平时用 Dev-C++/VS 默认按 C99 及以上编译，写习惯了会在答题时踩坑——<b>下面的写法在考卷上都算错</b>。</div>
+<table>
+  <tr><th style="width:34%">C99 及以上（不要这么写）</th><th>C89（考卷要求）</th></tr>
+  <tr><td><code>int i = 0;</code> 写在任何位置都行，随用随声明</td><td><b>所有变量声明必须写在块（<code>{ }</code>）的最前面</b>，声明完才能写第一条语句</td></tr>
+  <tr><td><code>for (int i = 0; i &lt; n; i++)</code></td><td><b>for 括号里不能声明变量</b>，必须先在块首写 <code>int i;</code>，再 <code>for (i = 0; …)</code></td></tr>
+  <tr><td><code>// 单行注释</code></td><td><b>不支持 <code>//</code></b>，只能用 <code>/* … */</code>，且多行注释不能嵌套</td></tr>
+  <tr><td><code>long long</code>、<code>inline</code>、<code>_Bool</code>、<code>restrict</code>、<code>snprintf</code></td><td>这些关键字/函数 C89 里<b>都没有</b>，写出来就是语法错</td></tr>
+  <tr><td><code>int a[n];</code> 用变量做数组长度（变长数组）</td><td><b>数组长度必须是常量表达式</b>，用变量开数组判错</td></tr>
+  <tr><td><code>int a[3] = {[0]=1, [2]=3};</code> 指定初始化器</td><td>只能按顺序写 <code>{1, 0, 3}</code></td></tr>
+</table>
+<div class="note">✅ <b>能放心用的标准库</b>：<code>stdio.h</code>（printf / scanf / gets / puts / fopen / fclose / fgets）、<code>string.h</code>（strlen / strcpy / strcat / strcmp）、<code>ctype.h</code>（isdigit / islower / toupper）、<code>math.h</code>（sqrt / fabs / pow）——这些在 C89 里全部存在，考卷也只用这些。</div>
+<div class="note">🖊️ <b>答题习惯建议</b>：程序填空/设计题先在函数开头把要用到的变量一次性声明完（<code>int i, j, sum = 0;</code>），再写语句——既符合 C89，又不会因为中途声明丢格式分。</div>
+
+<h2 class="sec">七、🎯 考场抢分策略</h2>
 <ul class="tips">
   <li><b>先扫第 32 题</b>：三套卷这一题全是结构体数组，先看它考"求最值"还是"查找"，心里有底再回头做客观题。</li>
   <li><b>程序分析题一定动笔打草稿</b>：把每次循环后的变量值列成小表格（i、j、m 各一列），别在脑子里算——短路、落穿、static 三件事最容易算错。</li>

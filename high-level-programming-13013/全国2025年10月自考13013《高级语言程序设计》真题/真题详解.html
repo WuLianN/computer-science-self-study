@@ -64,7 +64,7 @@
 </header>
 
 <div class="tip">
-  📚 <b>本卷共 34 题满分 100 分</b>。原卷是扫描件（7 页试卷 + 3 页答案），本页已把全部题干与代码转录成可复制的文字。其中 <b>第 27、31、34 题网络版答案有误</b>，已按 C 规则与 gcc 实跑结果更正，详见各题解析。<b>答案速查表在页面最下方</b>。
+  📚 <b>本卷共 34 题满分 100 分</b>。原卷是扫描件（7 页试卷 + 3 页答案），本页已把全部题干与代码转录成可复制的文字。教材按 <b>C89（ANSI C）</b>标准命题：变量声明写在块首、注释只能用 <code>/* */</code>、<code>for</code> 括号内不能声明变量。其中 <b>第 18、27、31、34 题网络版答案有误</b>，已按 C 规则与 gcc 实跑结果更正，详见各题解析。<b>答案速查表在页面最下方</b>。
 </div>
 
 <div class="toolbar">
@@ -384,7 +384,8 @@ int main(void)
 </summary>
 <div class="body"><div class="answer">答案：第一空 s1　第二空 strlen(s1)　第三空 isdigit</div>
 <div class="sol"><span class="lab">解析：</span>① <code class="c">gets(s1)</code> 读入整行到数组 s1；② 循环要遍历到串尾，用 <code class="c">strlen(s1)</code> 取长度最稳妥（等价写法 <code class="c">s1[i]!='\0'</code> 也可以）；③ 判断"是不是数字字符"用 <code class="c">isdigit</code>，与之配套的还有 islower / isupper / tolower / toupper，都在 <code class="c">&lt;ctype.h&gt;</code>。<br>
-注意：如果 s1 中出现空格、标点等既不满足三个分支的字符，s2 对应位置不会被赋值（这是原始题目的疏漏），但填空答案不受影响。</div>
+注意：如果 s1 中出现空格、标点等既不满足三个分支的字符，s2 对应位置不会被赋值（这是原始题目的疏漏），但填空答案不受影响。<br>
+<span style="color:var(--muted);font-size:13px">📌 原卷把 <code class="c">int i;</code> 写在了 <code class="c">gets(...)</code> 之后——严格按 C89 规程，声明应全部提到函数开头；考试照原卷位置作答即可，但自己写程序时请养成“先声明后语句”的习惯。</span></div>
 <span class="tag">考点：字符处理函数 · gets/strlen</span></div></details>
 
 <details class="q"><summary><span class="qno">第31题</span><span class="toggle">点击展开答案</span><div class="stem">将字符串 "I like C Programming" 中的 "like" 子串逆序。请填空。</div><pre class="code">#include &lt;stdio.h&gt;
@@ -506,7 +507,7 @@ int main(void)
 </table>
 
 <div class="note">
-  ✍️ <b>答案可信度说明</b>：本套原卷为扫描件，题干由原图逐字转录。答案以"网络流传版答案 PDF"为底稿，并全部按 C 语言规则复核、关键题用 gcc 实跑验证；已发现并修正 <b>3 处错误</b>——第 18 题应为 <b>0</b>（非 1）、第 27 题应为 <b>27</b>（非 36）、第 31 题第三空应为 <b>fun(s,2,6)</b>（网络版 s,2,5 逆错了范围）。第 33、34 题为编程题，评分看思路与完整性。
+  ✍️ <b>答案可信度说明</b>：本套原卷为扫描件，题干由原图逐字转录。答案以"网络流传版答案 PDF"为底稿，并全部按 C 语言规则复核、关键题用 gcc 实跑验证；已发现并修正 <b>4 处错误</b>——第 18 题应为 <b>0</b>（非 1）、第 27 题应为 <b>27</b>（非 36）、第 31 题第三空应为 <b>fun(s,2,6)</b>（网络版 s,2,5 逆错了范围）、第 34 题递推条件应为 <b>(i+1)%2!=0</b>（网络版写 i%2==1，属差一错误）。第 33、34 题为编程题，评分看思路与完整性。
 </div>
 
 <footer>2025年10月高等教育自学考试 · 高级语言程序设计（13013）真题详解 · 教材：郑岩《高级语言程序设计》机械工业出版社 2017 · 仅供学习交流参考</footer>
