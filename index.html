@@ -32,13 +32,18 @@
   .hero-card > *{position:relative}
   .hero h1{font-size:2.05rem;letter-spacing:.4px;margin-bottom:6px;font-weight:800}
   .hero .tagline{font-size:.98rem;opacity:.92;margin-bottom:16px}
-  .hero .stats{display:flex;gap:8px;flex-wrap:wrap}
-  .hero .stats span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:4px 12px;font-size:.8rem;backdrop-filter:blur(6px)}
+  .hero .stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .hero .stats .chip{display:flex;flex-direction:column;gap:1px;text-decoration:none;color:#fff;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.26);border-radius:13px;padding:8px 15px;line-height:1.35;backdrop-filter:blur(6px);transition:.16s}
+  .hero .stats .chip b{font-size:.92rem;font-weight:700}
+  .hero .stats .chip span{font-size:.72rem;opacity:.82}
+  .hero .stats .chip:hover{background:#fff;color:var(--primary-deep);border-color:#fff;transform:translateY(-2px)}
+  .stats-sum{margin:10px 0 0;font-size:.78rem;opacity:.85}
   .tip{max-width:960px;margin:18px auto 0;background:#fff;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:12px;padding:14px 20px;font-size:.9rem;color:var(--muted);box-shadow:var(--shadow)}
   .tip b{color:var(--text)}
   .tip code{background:var(--primary-soft);color:var(--primary-deep);border-radius:5px;padding:1px 7px;font-size:.85em;font-family:"SFMono-Regular",Consolas,monospace}
   main{max-width:960px;margin:0 auto;padding-top:22px}
-  .subject{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .subject{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;margin-bottom:20px;box-shadow:var(--shadow);scroll-margin-top:18px}
+  .subject:target{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft),var(--shadow-md)}
   .subject-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
   .code{background:linear-gradient(135deg,var(--primary-soft),#dbeafe);color:var(--primary-deep);font-weight:700;padding:4px 12px;border-radius:999px;font-size:.82rem;letter-spacing:.5px}
   .subject h2{font-size:1.32rem;color:var(--text)}
@@ -61,6 +66,7 @@
     .hero-card{padding:26px 20px 22px;border-radius:18px}
     .hero h1{font-size:1.55rem}
     .entries{grid-template-columns:1fr}
+    .hero .stats .chip{flex:1 1 100%}
     .subject{padding:20px}
   }
 </style>
@@ -71,14 +77,8 @@
   <div class="hero-card">
     <h1>🎓 自考 CS 学习笔记</h1>
     <p class="tagline">计算机科学与技术专业 · 知识点详解 + 历年真题 + 图示动画</p>
-    <div class="stats">
-      <span>📚 30 页知识点</span>
-      <span>📝 3 套全国卷</span>
-      <span>🎨 100+ SVG 图示</span>
-      <span>▶ 4 页算法动画</span>
-      <span>🔍 逐题复核</span>
-      <span>🆕 13013 知识点 16 页</span>
-    </div>
+    <div class="stats" id="subj-nav"></div>
+    <p class="stats-sum" id="stats-sum"></p>
   </div>
 </section>
 
@@ -109,6 +109,8 @@ const subjects = [
   {
     code: "02324",
     name: "离散数学",
+    icon: "📐",
+    brief: "14 页知识点 · 3 套真题",
     desc: "全国自考本科《离散数学》· 知识点详解与历年真题",
     entries: [
       {
@@ -137,8 +139,17 @@ const subjects = [
   {
     code: "13013",
     name: "高级语言程序设计",
+    icon: "🖥️",
+    brief: "16 页知识点 · 2 套真题",
     desc: "全国自考本科《高级语言程序设计》（C 语言）· 16 页知识点 + 两套真题逐题详解 + 考前抢分一页纸",
     entries: [
+      {
+        icon: "🔥",
+        title: "考前抢分一页纸",
+        desc: "三套真题统计的必考清单 + 8 个可默写代码模板 + 12 个易错坑 + 考场策略",
+        meta: "目标 60+ · 可打印带走",
+        url: "high-level-programming-13013/考前抢分.html"
+      },
       {
         icon: "📚",
         title: "知识点讲解（16 页全）",
@@ -147,33 +158,12 @@ const subjects = [
         url: "high-level-programming-13013/知识点/index.html"
       },
       {
-        icon: "📖",
-        title: "2026.4 真题详解（34 题全）",
-        desc: "题干与程序代码常显、答案和解析折叠，可直接当卷子做；答案速查表在页尾",
-        meta: "第 28 题网络答案已更正 · gcc 实测",
-        url: "high-level-programming-13013/全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html"
-      },
-      {
-        icon: "📖",
-        title: "2025.10 真题详解（34 题全）",
-        desc: "扫描件全文转录为可复制文字，含第 18/27/31/34 题网络答案更正说明",
-        meta: "2025.10 卷 · 4 处答案已校正",
-        url: "high-level-programming-13013/全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html"
-      },
-      {
         icon: "📝",
-        title: "历年真题导航",
+        title: "历年真题",
         desc: "2 套全国卷的详解与原卷 PDF 入口，含答案纠错说明与收录范围",
         meta: "2026.4 / 2025.10 · 旧代码 00342 真题通用",
         url: "high-level-programming-13013/真题/index.html"
       },
-      {
-        icon: "🔥",
-        title: "考前抢分一页纸",
-        desc: "三套真题统计的必考清单 + 8 个可默写代码模板 + 12 个易错坑 + 考场策略",
-        meta: "目标 60+ · 可打印带走",
-        url: "high-level-programming-13013/考前抢分.html"
-      }
     ]
   }
   /* 示例：后续新增学科，照抄一段即可
@@ -191,9 +181,19 @@ const subjects = [
 ];
 
 const app = document.getElementById("app");
+
+/* 顶部科目快捷入口由 subjects 自动生成：以后新增科目只需改这个数组，不用动 HTML */
+const nav = document.getElementById("subj-nav");
+nav.innerHTML = subjects.map(s =>
+  `<a class="chip" href="#sub-${s.code}"><b>${s.icon || "📘"} ${s.name}</b><span>${s.code} · ${s.brief || "整理中"}</span></a>`
+).join("");
+document.getElementById("stats-sum").textContent =
+  `共 ${subjects.length} 个科目 · 30 页知识点 · 5 套真题详解 · 100+ SVG 图示`;
+
 subjects.forEach(s => {
   const sec = document.createElement("section");
   sec.className = "subject";
+  sec.id = "sub-" + s.code;
 
   const head = document.createElement("div");
   head.className = "subject-head";
