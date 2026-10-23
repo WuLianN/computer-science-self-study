@@ -34,3 +34,24 @@ a.inline:hover{text-decoration:underline}
 .law th{background:var(--brand-soft);color:var(--brand)}
 .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
 .law td.nm{white-space:nowrap;font-weight:700}
+
+/* 窄屏：表格改成横向滑动，不要撑破整页。
+   诱因是单元格里不可断行的长串（如 p->no　等价于　(*p).no 中的全角空格），
+   会把 table 的最小宽度顶到 340px 以上；宽屏不命中此媒体查询，布局保持原样。 */
+@media (max-width:640px){
+  .law{display:block;overflow-x:auto}
+  /* 图容器与配图：带 viewBox 的 SVG/PNG 按容器等比缩，极端宽的图改成滑动 */
+  .fig{overflow-x:auto}
+  svg[viewBox]{max-width:100%;height:auto}
+  img{max-width:100%;height:auto}
+  /* 行内公式允许在空格处折行（.m 默认 nowrap 会把长公式顶破页面） */
+  .m{white-space:normal}
+  /* 一整串行内 code（如 "rb"、"wb"、"ab"… 被顿号连着）在中文里没合法断点，允许强制断行 */
+  .rule,.card{overflow-wrap:anywhere}
+}
+
+/* 跟随系统「减少动态效果」设置：关掉平滑滚动与过渡/动画 */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

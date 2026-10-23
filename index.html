@@ -69,6 +69,10 @@
     .hero .stats .chip{flex:1 1 100%}
     .subject{padding:20px}
   }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+  }
 </style>
 </head>
 <body>

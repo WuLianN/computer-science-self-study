@@ -22,6 +22,11 @@
   .mtx{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
   .mtx .blk{flex:0 0 auto}
   .lbl{font-size:13px;color:var(--muted);margin:4px 0 2px}
+  /* 窄屏：.blk 原本 flex:0 0 auto 会按内容撑宽（说明文字比矩阵宽），改成整行可收缩 */
+  @media (max-width:640px){
+    .mtx{gap:16px}
+    .mtx .blk{flex:1 1 100%;min-width:0}
+  }
   /* 🌱 超纲·选学 */
   .extbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:2px 0 16px}
   .extbar button{cursor:pointer;border:1px solid #d97706;background:#fffbeb;color:#d97706;border-radius:999px;padding:6px 15px;font-size:13.5px;font-weight:700}
