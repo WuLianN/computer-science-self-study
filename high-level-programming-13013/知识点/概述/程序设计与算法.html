@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 程序设计与算法（第 1 章）｜计算机语言 / 算法特性 / 三种基本结构 / 编译链接</title>
+<meta name="description" content="高级语言程序设计 13013 第 1 章知识点：计算机语言三代、算法的 5 个特性与三种描述方法、结构化程序设计与三种基本结构图示、C 程序从 .c 到 .exe 的编译链接过程，附 2025.10/2026.4 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#0f766e,#0891b2)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  .figrow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 8px 8px;text-align:center}
+  .fig svg{display:block;margin:0 auto}
+  .fig .cap{font-size:13px;color:var(--ink);margin-top:6px;font-weight:700}
+  .fig .cap small{display:block;color:var(--muted);font-weight:400}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 1 章 · 程序设计与算法</h1>
+  <p>本章直接考的只有 4 分左右，但它是后面九章的"地图"：先弄清计算机语言分几代、算法要满足什么条件、程序为什么只能用三种结构拼出来，再看 C 程序怎样从一行源码变成一个能双击运行的 <code>.exe</code>。</p>
+  <span class="pill">语言三代</span><span class="pill">算法 5 特性</span><span class="pill">三种基本结构</span><span class="pill">编译与链接</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="C语言基础.html">→ 下一节：C 语言基础</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、计算机语言的三代与语言处理程序</a>
+  <a href="#s2">二、算法：定义与 5 个特性</a>
+  <a href="#s3">三、算法的三种描述方法</a>
+  <a href="#s4">四、程序与程序设计：结构化 + 三种基本结构</a>
+  <a href="#s5">五、C 程序从源码到运行的 4 步</a>
+  <a href="#s6">六、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、计算机语言的三代与语言处理程序</h2>
+<div class="rule">
+  计算机只认二进制，但人不可能直接写二进制。按"离机器有多远"分三代：
+  <table class="law">
+    <tr><th>代</th><th>名称</th><th>形式</th><th>特点</th></tr>
+    <tr><td class="nm">第一代</td><td>机器语言</td><td>二进制指令代码</td><td>计算机能直接识别执行，速度快；难写、难读、难移植</td></tr>
+    <tr><td class="nm">第二代</td><td>汇编语言</td><td>用助记符（如 <code>MOV</code>、<code>ADD</code>）表示指令</td><td>仍与具体机器相关，需汇编程序翻译</td></tr>
+    <tr><td class="nm">第三代</td><td>高级语言</td><td>接近自然语言的语句，如 C、Pascal</td><td>与机器无关、可移植，需编译或解释</td></tr>
+  </table>
+  <div class="th">
+    <b>语言处理程序</b>：把"人能读的源程序"翻译成"机器能执行的目标程序"。<br>
+    <b>汇编程序</b>——汇编语言 → 机器语言；<b>编译程序</b>——整个源程序一次性翻译，生成目标程序；<b>解释程序</b>——逐句翻译、译一句执行一句，不生成目标程序。
+  </div>
+</div>
+
+<div class="note">
+  <b>一句话记住：</b>机器语言是<b>唯一</b>能被计算机直接识别执行的语言；高级语言必须经过"翻译"。C 语言属于<b>高级语言</b>，用的是<b>编译</b>方式（不是解释）。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q16">2025.10 真题·第 16 题</a> 机器语言是用二进制代码表示的能被计算机识别和执行的<u>指令</u>（答"指令/指令系统"）。
+</div>
+
+<h2 class="section" id="s2">二、算法：定义与 5 个特性</h2>
+<div class="rule">
+  <b>算法</b>：解决一个问题的<b>方法和步骤</b>。程序 = 数据结构 + 算法；算法是程序的灵魂，程序是算法的实现。<br>
+  教材给出算法必须满足的 5 个特性（考填空、也考单选判断）：
+  <table class="law">
+    <tr><th>特性</th><th>含义</th><th>反面例子</th></tr>
+    <tr><td class="nm">有穷性</td><td>有限步之内必须结束，且每步都在合理时间内完成</td><td>死循环、无限等待输入</td></tr>
+    <tr><td class="nm">确定性</td><td>每一步的含义必须确切，不能有二义性</td><td>"取较大的一个数"却没说相等怎么办</td></tr>
+    <tr><td class="nm">可行性</td><td>每一步都能分解为可执行的基本操作</td><td>要求"求任意方程的精确解析解"</td></tr>
+    <tr><td class="nm">零个或多个输入</td><td>可以有输入，也可以没有（如直接输出常数）</td><td>——</td></tr>
+    <tr><td class="nm">一个或多个输出</td><td><b>必须</b>有输出，否则算法毫无意义</td><td>算完不打印、不返回任何值</td></tr>
+  </table>
+</div>
+
+<div class="note">
+  <b>易错：</b>输入可以是<b>零个</b>（"零个或多个"），但输出必须是<b>一个或多个</b>——"零输出"的算法一定错。另外"有穷性"说的是<b>步骤有限</b>，不是"运行快"。
+</div>
+
+<h2 class="section" id="s3">三、算法的三种描述方法</h2>
+<div class="card">
+  <h3>1. 自然语言</h3>
+  用汉语/英语按步骤写。优点是人人看得懂；缺点是容易<b>啰嗦、有歧义</b>，遇到分支和循环描述不清。
+</div>
+<div class="card">
+  <h3>2. 流程图（传统流程图）</h3>
+  用规定图形表示操作，直观、便于检查。教材要求的<b>四种基本图形</b>：
+  <table class="law">
+    <tr><th>图形</th><th>名称</th><th>表示</th></tr>
+    <tr><td class="nm">圆角矩形 / 椭圆</td><td>起止框</td><td>开始、结束</td></tr>
+    <tr><td class="nm">矩形</td><td>处理框</td><td>赋值、计算等一个处理步骤</td></tr>
+    <tr><td class="nm">平行四边形</td><td>输入输出框</td><td>输入数据、输出结果</td></tr>
+    <tr><td class="nm">菱形</td><td>判断框</td><td>根据条件成立与否走两条路</td></tr>
+  </table>
+  另有<b>流程线</b>（带箭头的线）表示执行方向，<b>连接点</b>（小圆圈）用于跨页连接。
+</div>
+<div class="card">
+  <h3>3. N-S 结构化流程图（盒图）</h3>
+  把整个算法装在一个大矩形里，<b>取消流程线</b>，只用矩形框的嵌套表示顺序、选择（⊤ 形分叉）、循环（L 形回边）。好处是<b>不可能画出非结构化的流程</b>，自然保证"只有一个入口、一个出口"。
+</div>
+
+<h2 class="section" id="s4">四、程序与程序设计：结构化 + 三种基本结构</h2>
+<div class="rule">
+  <b>结构化程序设计</b>的核心思想（三句话，填空常考）：
+  <ol class="steps">
+    <li><b>自顶向下</b>：先想整体，再往下拆。</li>
+    <li><b>逐步细化</b>：每一层都细化成具体操作，直到能用三种基本结构写出来。</li>
+    <li><b>模块化</b>：把大问题拆成功能单一的小模块，一个模块一个入口一个出口。</li>
+  </ol>
+  它要求任何程序都只由 <b>顺序、选择、循环</b> 三种基本结构组成；复杂问题靠这三种结构的<b>组合、嵌套</b>实现。
+</div>
+
+<div class="card">
+  <h3>三种基本结构对照</h3>
+  <div class="figrow">
+    <div class="fig">
+      <svg viewBox="0 0 150 210" width="146" height="204">
+        <rect x="35" y="10" width="80" height="30" rx="6" fill="#ecfdf5" stroke="#059669"/><text x="75" y="30" font-size="13" text-anchor="middle" fill="#047857">A</text>
+        <line x1="75" y1="40" x2="75" y2="58" stroke="#64748b" marker-end="url(#ar)"/>
+        <rect x="35" y="58" width="80" height="30" rx="6" fill="#ecfdf5" stroke="#059669"/><text x="75" y="78" font-size="13" text-anchor="middle" fill="#047857">B</text>
+        <line x1="75" y1="88" x2="75" y2="106" stroke="#64748b" marker-end="url(#ar)"/>
+        <rect x="35" y="106" width="80" height="30" rx="6" fill="#ecfdf5" stroke="#059669"/><text x="75" y="126" font-size="13" text-anchor="middle" fill="#047857">C</text>
+        <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#64748b"/></marker></defs>
+      </svg>
+      <div class="cap">顺序结构<small>A→B→C 依次执行，无分支无回头</small></div>
+    </div>
+    <div class="fig">
+      <svg viewBox="0 0 150 210" width="146" height="204">
+        <polygon points="75,8 128,38 75,68 22,38" fill="#eef2ff" stroke="#4f46e5"/><text x="75" y="43" font-size="12" text-anchor="middle" fill="#4338ca">P?</text>
+        <line x1="38" y1="54" x2="30" y2="86" stroke="#64748b" marker-end="url(#ar2)"/>
+        <line x1="112" y1="54" x2="120" y2="86" stroke="#64748b" marker-end="url(#ar2)"/>
+        <text x="12" y="60" font-size="11" fill="#dc2626">真</text><text x="126" y="60" font-size="11" fill="#64748b">假</text>
+        <rect x="2" y="86" width="58" height="28" rx="5" fill="#fff" stroke="#4f46e5"/><text x="31" y="105" font-size="12" text-anchor="middle" fill="#4338ca">A</text>
+        <rect x="90" y="86" width="58" height="28" rx="5" fill="#fff" stroke="#4f46e5"/><text x="119" y="105" font-size="12" text-anchor="middle" fill="#4338ca">B</text>
+        <path d="M31,114 L31,140 L75,140 M119,114 L119,140 L75,140" fill="none" stroke="#64748b"/>
+        <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#64748b"/></marker></defs>
+      </svg>
+      <div class="cap">选择结构<small>P 成立走 A，不成立走 B，只走一条</small></div>
+    </div>
+    <div class="fig">
+      <svg viewBox="0 0 150 210" width="146" height="204">
+        <polygon points="75,8 128,38 75,68 22,38" fill="#fef9c3" stroke="#ca8a04"/><text x="75" y="43" font-size="12" text-anchor="middle" fill="#a16207">P?</text>
+        <line x1="75" y1="68" x2="75" y2="84" stroke="#64748b" marker-end="url(#ar3)"/>
+        <text x="80" y="82" font-size="11" fill="#dc2626">真</text>
+        <rect x="35" y="84" width="80" height="28" rx="5" fill="#fff" stroke="#ca8a04"/><text x="75" y="103" font-size="12" text-anchor="middle" fill="#a16207">A</text>
+        <path d="M35,98 L8,98 L8,38 L22,38" fill="none" stroke="#64748b"/>
+        <path d="M115,98 L142,98" fill="none" stroke="#64748b"/>
+        <text x="118" y="92" font-size="11" fill="#64748b">假</text>
+        <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6" fill="#64748b"/></marker></defs>
+      </svg>
+      <div class="cap">循环结构（当型）<small>P 成立就执行 A，再回来判 P</small></div>
+    </div>
+  </div>
+  <div class="th" style="border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;border-radius:6px">
+    三种结构的共同点：<b>只有一个入口、只有一个出口</b>；结构内每一部分都有机会被执行到；结构内不存在"死循环"（循环有出口）。
+  </div>
+</div>
+
+<div class="note">
+  <b>教材原话，两套卷都考：</b><br>
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q22">2026.4 真题·第 22 题</a> 任何程序都可由顺序、选择、循环三种基本结构组成，复杂问题可通过三种基本结构的组合、<u>嵌套</u>实现。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q17">2025.10 真题·第 17 题</a> 结构化程序设计又称为面向<b>过程</b>的程序设计。（因为它以"要做什么步骤"为中心，而不是以数据/对象为中心）
+</div>
+
+<h2 class="section" id="s5">五、C 程序从源码到运行的 4 步</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>步骤</th><th>动作</th><th>产物（Windows 下）</th></tr>
+    <tr><td class="nm">1 编辑</td><td>在编辑器中写源代码，存成文本文件</td><td>源程序 <code>.c</code></td></tr>
+    <tr><td class="nm">2 编译</td><td><b>编译程序</b>检查语法，把源程序翻译成机器指令</td><td>目标文件 <code>.obj</code></td></tr>
+    <tr><td class="nm">3 链接</td><td><b>链接程序</b>把目标文件与库函数等连接成整体</td><td><b>可执行文件 <code>.exe</code></b></td></tr>
+    <tr><td class="nm">4 运行</td><td>执行可执行文件，得到结果</td><td>—（调试时改回第 1 步）</td></tr>
+  </table>
+  <div class="th">
+    编译阶段只做"翻译 + 查语法"；<b>只有链接之后才有可执行文件</b>。像 <code>printf</code> 这种库函数，代码在库文件里，必须靠链接才接得上——所以漏写 <code>#include &lt;stdio.h&gt;</code> 时常常是"编译警告 + 链接报错"，两句提示并不在同一阶段。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：一个最小的 C 程序</h3>
+<pre class="src">#include &lt;stdio.h&gt;              <span class="cm">/* 预处理：把标准输入输出头文件包含进来 */</span>
+
+int main(void)                 <span class="cm">/* 主函数：程序唯一的入口 */</span>
+{
+    int a, b, max;             <span class="cm">/* C89：所有声明写在块首 */</span>
+
+    scanf("%d%d", &amp;a, &amp;b);     <span class="cm">/* 输入两个整数 */</span>
+    if (a &gt; b)
+        max = a;
+    else
+        max = b;
+    printf("max = %d\n", max);  <span class="cm">/* 输出结果 */</span>
+    return 0;                  <span class="cm">/* 返回 0 表示正常结束 */</span>
+}</pre>
+  这段代码里已经出现了后面几章的全部骨架：<b>预处理器</b>（第 9 章）、<b>变量声明</b>（第 3 章）、<b>输入输出</b>（第 4 章）、<b>选择结构</b>（第 4 章）、<b>函数</b>（第 6 章）。
+</div>
+
+<h2 class="section" id="s6">六、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>计算机只认二进制 → 所以要有"语言的三代"和"翻译程序" → 写程序前先想清楚算法（5 个特性）→ 算法用流程图或 N-S 图描述 → 落到代码上必须只用三种基本结构（顺序/选择/循环）组合嵌套 → 最后经"编辑 .c → 编译 .obj → 链接 .exe"才能运行。<br><br>
+  本章在两套卷里的直接考法：<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q16">2025.10-16</a>机器语言是能被识别执行的<b>指令</b>；<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q17">2025.10-17</a>结构化程序设计又称面向<b>过程</b>的程序设计；<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q22">2026.4-22</a>三种结构的<b>组合、嵌套</b>；<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q25">2026.4-25</a>链接后生成的可执行文件扩展名 <b>.exe</b>。<br>
+  这几题都藏在填空里，看到就写，别空着。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 1 章 程序设计与算法 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

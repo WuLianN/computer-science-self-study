@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 变量作用域与存储类别（第 6 章·下）｜auto / static / register / extern 三列对照</title>
+<meta name="description" content="高级语言程序设计 13013 第 6 章下半：局部变量与全局变量的作用域、auto / static / register / extern 四种类别的作用域与生存期与初值对照表、static 局部只初始化一次、static 全局限本文件、extern 声明与定义的区别、同名屏蔽，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏳</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#7c3aed,#db2777)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.tr{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;font-family:Consolas,Monaco,monospace}
+  table.tr th{background:#eef2ff;color:#4338ca;border:1px solid var(--line);padding:4px 8px}
+  table.tr td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 6 章（下）· 变量作用域与存储类别</h1>
+  <p><b>每套卷固定 2 道单选 + 1 道程序分析（约 8 分）都在这里。</b>只要把 <code>auto / static / register / extern</code> 的"<b>作用域 → 生存期 → 初值</b>"三列背成一张表，这 8 分就是白送。</p>
+  <span class="pill">局部 / 全局 / 外部</span><span class="pill">4 种存储类别</span><span class="pill">static 只初始化一次</span><span class="pill">同名屏蔽</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="函数与递归.html">← 上一节：函数与递归</a>
+    <a href="../指针/指针与数组.html">→ 下一节：指针与数组</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、作用域三档：局部 / 全局 / 外部</a>
+  <a href="#s2">二、四种存储类别总表（背这一张）</a>
+  <a href="#s3">三、static 局部：只初始化一次</a>
+  <a href="#s4">四、static 全局：把作用域锁在本文件</a>
+  <a href="#s5">五、extern：声明，不是定义</a>
+  <a href="#s6">六、同名屏蔽与默认类别</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、作用域三档：局部 / 全局 / 外部</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>种类</th><th>定义位置</th><th>作用域（可见范围）</th></tr>
+    <tr><td class="nm">局部变量</td><td>函数体内 / 复合语句内</td><td>只在<b>本函数或本复合语句</b>内有效，出了 <code>}</code> 就不可见</td></tr>
+    <tr><td class="nm">全局变量（外部变量）</td><td>函数外</td><td><b>从定义位置开始，到本源程序文件结束</b>（定义之前不可见）</td></tr>
+    <tr><td class="nm">外部变量（跨文件）</td><td>在另一个文件中定义</td><td>本文件用 <code>extern</code> 声明后才能用</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q7">2026.4 真题·第 7 题</a> 外部变量的作用域是"<b>从定义外部变量的位置开始到其所在的源程序文件结束</b>"（答案 D）。<b>不是</b>整个源程序文件——<b>定义之前的函数看不见它</b>；也<b>不是</b>到"第一个相邻函数结束"。
+  </div>
+</div>
+<div class="note">
+  <b>为什么"定义之前不可见"？</b>编译是从上往下扫描的，扫描到某个函数时，如果这个全局变量还没被定义，编译器不知道它是什么。<b>想让它对自己后面的所有函数都可见，就把定义写在文件最前面。</b>
+</div>
+
+<h2 class="section" id="s2">二、四种存储类别总表（背这一张）</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>存储类别</th><th>修饰对象</th><th>作用域</th><th>生存期</th><th>初值</th></tr>
+    <tr><td class="nm"><code>auto</code>（默认）</td><td>局部变量</td><td>所定义的<b>函数或复合语句</b></td><td>函数调用期间（进函数建、出函数毁）</td><td class="n">不确定（垃圾值）</td></tr>
+    <tr><td class="nm"><code>static</code> 局部</td><td>局部变量</td><td>所定义的函数 / 复合语句</td><td><b>整个程序运行期间</b>（只初始化一次）</td><td class="y">0</td></tr>
+    <tr><td class="nm"><code>register</code></td><td>局部变量</td><td>所定义的函数 / 复合语句</td><td>函数调用期间</td><td class="n">不确定</td></tr>
+    <tr><td class="nm"><code>extern</code></td><td>全局变量 / 函数</td><td>可跨文件</td><td>整个程序</td><td>取决于真正的定义</td></tr>
+    <tr><td class="nm">全局（无 static）</td><td>变量</td><td>本文件（<b>多文件可见</b>）</td><td>整个程序</td><td class="y">0</td></tr>
+    <tr><td class="nm"><code>static</code> 全局</td><td>全局变量</td><td><b>仅本文件</b></td><td>整个程序</td><td class="y">0</td></tr>
+  </table>
+  <div class="th">
+    <b>一句话记忆：</b><code>static</code> 有两个"身份"——<b>修饰局部变量时延长寿命（不重新初始化）</b>；<b>修饰全局变量/函数时缩小作用域（只在本文件可见）</b>。方向正好相反，考题最爱在这里绕。
+  </div>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q6">2025.10 真题·第 6 题</a> 下列变量定义会自动赋初值的是 <code>static int a;</code>（答案 D）——<b>只有 static 和全局变量自动置 0</b>，<code>int m;</code>、<code>char c;</code>、<code>register int n;</code> 都是垃圾值。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q7">2025.10 真题·第 7 题</a> 声明为 <code>auto</code> 类型变量的作用域是<b>所定义的函数或复合语句</b>（答案 B）。
+</div>
+
+<h2 class="section" id="s3">三、static 局部：只初始化一次</h2>
+<div class="rule">
+  <b>static 局部变量 = "寿命被延长到整个程序、但名字只在函数里可见"的变量。</b>它存放在静态存储区，<b>函数返回后值仍然保留</b>，下次进函数接着用；而且<b>只在第一次进入时初始化一次</b>。
+</div>
+<div class="card">
+  <h3>例：连续调用 4 次，看 k 会不会被重置（2025.10 第 29 题）</h3>
+<pre class="src">#include &lt;stdio.h&gt;
+
+int f(int j)
+{
+    static int k;            <span class="hl"><span class="cm">/* 只初始化 1 次，默认值 0 */</span></span>
+    k++;
+    return k + j;
+}
+
+int main(void)
+{
+    int i;
+    for (i = 1; i &lt;= 4; i++)
+        printf("%d ", f(10));
+    printf("\n");
+    return 0;
+}</pre>
+  <table class="tr">
+    <tr><th>第几次调用</th><th>进入时 k</th><th>k++ 后</th><th>返回值 k+10</th></tr>
+    <tr><td>1</td><td>0（初始化）</td><td>1</td><td>11</td></tr>
+    <tr><td>2</td><td><b>1</b>（保留上次的值）</td><td>2</td><td>12</td></tr>
+    <tr><td>3</td><td>2</td><td>3</td><td>13</td></tr>
+    <tr><td>4</td><td>3</td><td>4</td><td>14</td></tr>
+  </table>
+  <div class="out">11 12 13 14</div>
+  <b>对比：</b>如果把 <code>static</code> 去掉，每次调用都是新的 k（垃圾值），结果就完全不是这个序列了。
+</div>
+<div class="note">
+  <b>三个必记结论：</b>① static 局部<b>只初始化一次</b>；② 它的<b>初值一定是 0</b>（不写也是 0）；③ 它的<b>作用域不变</b>——出了函数还是不可见，只是"活得久"。
+</div>
+
+<h2 class="section" id="s4">四、static 全局：把作用域锁在本文件</h2>
+<div class="rule">
+  <b>全局变量加 <code>static</code> → 变成"内部变量"</b>：<b>作用域只在本文件</b>，其他文件即使写 <code>extern</code> 也引用不到。
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q9">2026.4 真题·第 9 题</a> 用来将全局变量作用域限制在本文件的关键字是 <b><code>static</code></b>（答案 C）。<code>extern</code> 的作用正好相反——它<b>扩大</b>作用域，让别的文件也能用。
+  </div>
+  <table class="law">
+    <tr><th>写法</th><th>叫什么</th><th>其他文件能否使用</th></tr>
+    <tr><td class="nm"><code>int g;</code>（文件级）</td><td>外部变量</td><td class="y">能（<code>extern int g;</code>）</td></tr>
+    <tr><td class="nm"><code>static int g;</code></td><td>内部变量 / 静态全局</td><td class="n">不能</td></tr>
+    <tr><td class="nm"><code>static int f(void)</code></td><td>内部函数</td><td class="n">不能</td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s5">五、extern：声明，不是定义</h2>
+<div class="rule">
+  <b><code>extern</code> 用来"引用"别处（别的文件或本文件后面）已经定义的变量/函数</b>——它<b>只是声明，不分配内存</b>。
+<pre class="src">/* 文件 a.c */                  <span class="cm">/* 文件 b.c */</span>
+int total = 0;                  extern int total;      <span class="cm">/* 声明：total 在别处定义 */</span>
+                                void add(void) { total++; }   <span class="cm">/* 现在可以用了 */</span></pre>
+  <table class="law">
+    <tr><th></th><th>定义</th><th>声明（extern）</th></tr>
+    <tr><td class="nm">分配内存</td><td class="y">分配</td><td class="n">不分配</td></tr>
+    <tr><td class="nm">能否重复</td><td class="n">只能一次</td><td class="y">可以多次</td></tr>
+    <tr><td class="nm">能否赋初值</td><td>能</td><td>不能（赋了就成了定义）</td></tr>
+  </table>
+  <div class="th">
+    <b>不写存储类别时：</b>局部变量默认 <code>auto</code>，全局变量默认"外部"（可跨文件）——所以平时写 <code>int g;</code> 就已经是外部变量了，<code>extern</code> 只在<b>跨文件引用</b>时才必须写。
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、同名屏蔽与默认类别</h2>
+<div class="rule">
+  <b>局部变量与全局变量同名时，在局部变量的作用域内，全局变量被"屏蔽"（不起作用）。</b>
+<pre class="src">int x = 10;                    <span class="cm">/* 全局 */</span>
+
+int main(void)
+{
+    int x = 20;                <span class="hl"><span class="cm">/* 局部，屏蔽了全局的 10 */</span></span>
+    printf("%d\n", x);         <span class="cm">/* 20 */</span>
+    {
+        int x = 30;            <span class="cm">/* 更内层，再屏蔽一层 */</span>
+        printf("%d\n", x);     <span class="cm">/* 30 */</span>
+    }
+    printf("%d\n", x);         <span class="cm">/* 回到 20 */</span>
+    return 0;
+}</pre>
+  <div class="out">20
+30
+20</div>
+  <b>register 变量（补充）：</b>建议把变量放在 CPU 寄存器里以提高速度，<b>不能对它取地址</b>（<code>&amp;n</code> 非法），实际编译器可能忽略这个建议。考试只考"它属于局部变量、不能取地址、无自动初值"。
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>先分作用域（局部只在函数/块内、全局从定义处到文件末、跨文件靠 <code>extern</code>）→ 再分存储类别（<code>auto</code> 进函数建出函数毁、<code>static</code> 局部活得久且只初始化一次、<code>register</code> 想放寄存器、<code>extern</code> 只声明不分配）→ 最后记住两条"自动为 0"的只有 <b>static 和全局</b>，<b>static 修饰全局 = 锁在本文件</b>（<code>extern</code> 反过来）。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q7">2026.4-7</a> 外部变量作用域（D）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q9">2026.4-9</a> static 限本文件（C）；<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q6">2025.10-6</a> static 自动赋初值（D）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q7">2025.10-7</a> auto 作用域（B）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q29">2025.10-29</a> static 局部的生存期（程序分析，答案 11 12 13 14）。<br>
+  合计约 <b>10 分</b>，全靠这一张表。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 6 章（下）变量作用域与存储类别 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

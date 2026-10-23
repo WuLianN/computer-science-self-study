@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高级语言程序设计 13013 · 知识点导航</title>
+<meta name="description" content="高级语言程序设计 13013（C 语言）知识点导航：按郑岩《高级语言程序设计》机械工业出版社 2017 年版 10 章拆成 16 页，代码全部符合 C89 标准，每页标注 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🖥️</text></svg>">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#059669; --brand-soft:#ecfdf5; --ok:#047857; --ok-soft:#d1fae5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75}
+  .wrap{max-width:960px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#047857,#0891b2);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:23px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--brand)}
+  h2.section{margin:32px 0 8px;font-size:19px;border-left:5px solid var(--brand);padding-left:12px}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 6px}
+  .pgrid.one{grid-template-columns:repeat(auto-fit,minmax(300px,460px))}
+  .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:118px}
+  .pcard:hover{border-color:var(--brand);background:#f7fffb;transform:translateY(-2px);box-shadow:0 4px 12px rgba(5,150,105,.10)}
+  .pcard .t{font-weight:700;color:var(--brand);margin-bottom:4px;font-size:15px}
+  .pcard .t .ico{margin-right:6px}
+  .pcard .d{font-size:13px;color:var(--muted);line-height:1.65}
+  .pcard .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 8px;font-size:11.5px;font-weight:700;margin-right:6px;margin-top:6px}
+  .pcard .badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .pcard .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 20px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .jump .lbl{font-size:12.5px;color:var(--muted);margin-right:4px}
+  .jump a{font-size:13px;padding:4px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-weight:600;transition:.15s}
+  .jump a:hover{background:var(--brand);color:#fff}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:16px 0;font-size:13.5px}
+  .note b{color:var(--warn)}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px;transition:.15s}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>高级语言程序设计 13013 · 知识点导航</h1>
+  <p>按郑岩《高级语言程序设计》（机械工业出版社 2017 年版）<b>10 章</b>顺序拆成 <b>16 页</b>，每页都标了它在 2026.4 / 2025.10 两套真题里对应的题号，看完直接去真题里找同款练手。</p>
+  <p>所有代码按教材要求的 <b>C89（ANSI C）</b>书写：声明写在块首、注释只用 <code>/* */</code>、<code>for</code> 括号内不声明变量。</p>
+  <span class="pill">16 页知识点</span><span class="pill">代码 C89 合规</span><span class="pill">对应 68 道真题</span><span class="pill">每页标题号</span>
+  <div class="gotos">
+    <a href="../../index.html">🏠 首页</a>
+    <a href="../考前抢分.html">🔥 考前抢分一页纸</a>
+    <a href="../真题/index.html">📝 历年真题导航</a>
+  </div>
+</header>
+
+<nav class="jump">
+  <span class="lbl">📍 章节快速跳转：</span>
+  <a href="#c1">1–2 概述与基础</a>
+  <a href="#c3">3 数据类型与运算</a>
+  <a href="#c4">4 结构化程序设计</a>
+  <a href="#c5">5 数组</a>
+  <a href="#c6">6 函数</a>
+  <a href="#c7">7 指针</a>
+  <a href="#c8">8 结构体与自定义类型</a>
+  <a href="#c9">9–10 预处理与文件</a>
+</nav>
+
+<h2 class="section" id="c1">一、概述与 C 语言基础（第 1–2 章）</h2>
+<p class="section-sub">这两章只直接考 4–6 分，但"程序由什么组成""编译器怎么把 .c 变成 .exe"是理解后面一切的前提，别跳过。</p>
+<div class="pgrid">
+  <a class="pcard" href="概述/程序设计与算法.html">
+    <div class="t"><span class="ico">🧭</span>程序设计与算法（第 1 章）</div>
+    <div class="d">计算机语言三代、机器语言/汇编/高级语言、算法的 5 个特性与三种描述方法（自然语言 / 流程图 / N-S 图）、结构化程序设计与三种基本结构、编译—链接—运行的完整过程</div>
+    <span class="badge">2025.10-16 · 2025.10-17</span><span class="badge">2026.4-22 · 2026.4-25</span>
+  </a>
+  <a class="pcard" href="概述/C语言基础.html">
+    <div class="t"><span class="ico">🔤</span>C 语言基础（第 2 章）</div>
+    <div class="d">C 语言特点与发展、基本词法（标识符 3 条规则 / 32 个关键字 / 分隔符）、5 类基本语句、C 程序的组成与 main 函数、注释写法、源程序 → 目标文件 → 可执行文件的扩展名</div>
+    <span class="badge">2026.4-1 · 2025.10-1</span><span class="badge">2026.4-18 · 2025.10-19</span>
+  </a>
+</div>
+
+<h2 class="section" id="c3">二、数据类型、运算符与表达式（第 3 章）</h2>
+<p class="section-sub">全卷最"送分"的一章：单选 15 题里平均 5 题、填空 10 题里平均 3 题都落在这里，几乎全是背了就能对的死知识。</p>
+<div class="pgrid">
+  <a class="pcard" href="数据类型/数据类型与常量.html">
+    <div class="t"><span class="ico">📦</span>数据类型与常量变量</div>
+    <div class="d">基本类型 5 族与字节数、整型/实型/字符型常量写法、转义字符全表、<code>const</code> 有名常量、变量命名与初始化、值域计算、强制类型转换的写法与"必转"四种场合</div>
+    <span class="badge">2026.4-2/3/16/21/24</span><span class="badge">2025.10-2/3/5/20/21</span>
+  </a>
+  <a class="pcard" href="数据类型/运算符与表达式.html">
+    <div class="t"><span class="ico">➗</span>运算符与表达式</div>
+    <div class="d">算术 / 关系 / 逻辑 / 赋值 / 逗号 / 条件 / 位运算 7 类运算符、优先级与结合性总表、整数除法与求余符号、短路求值、自增自减的 4 种写法、<code>sizeof</code> 与隐式转换</div>
+    <span class="badge">2026.4-4/5/6/19</span><span class="badge">2025.10-4/18/26</span>
+  </a>
+</div>
+
+<h2 class="section" id="c4">三、结构化程序设计（第 4 章）</h2>
+<p class="section-sub">三种基本结构分三页写。这一章不直接出概念题，但<b>第 26/27 题程序分析、第 33 题程序设计</b>全在这里，而且到处都是"少写一个 break""循环多跑一轮"的坑。</p>
+<div class="pgrid">
+  <a class="pcard" href="结构化程序设计/顺序结构与输入输出.html">
+    <div class="t"><span class="ico">⌨️</span>顺序结构与输入输出</div>
+    <div class="d">表达式语句 / 空语句 / 复合语句 / 赋值语句、<code>printf</code> 格式符全表与宽度精度、<code>scanf</code> 的地址表与 <code>%d,%d</code> 逗号陷阱、<code>getchar/putchar/gets/puts</code>、缓冲区残留回车</div>
+    <span class="badge">2025.10-30</span><span class="badge warn">填空必用</span>
+  </a>
+  <a class="pcard" href="结构化程序设计/选择结构.html">
+    <div class="t"><span class="ico">🔀</span>选择结构</div>
+    <div class="d"><code>if / if-else / else if 多分支</code>、条件表达式的"非 0 即真"、悬空 else 配对、<code>switch</code> 的表达式与 case 常量要求、<b>忘记 break 的"下落"</b>、区间判断的写法</div>
+    <span class="badge">2026.4-26 · 2026.4-33</span><span class="badge warn">break 高频陷阱</span>
+  </a>
+  <a class="pcard" href="结构化程序设计/循环结构.html">
+    <div class="t"><span class="ico">🔁</span>循环结构</div>
+    <div class="d"><code>while / do-while / for</code> 三者互换与"至少执行一次"的差别、<code>break</code> vs <code>continue</code>、双重循环的输出顺序、累加累乘 / 计数 / 素数 / 穷举 / 递推五类固定套路</div>
+    <span class="badge">2026.4-27 · 2025.10-27/33</span><span class="badge">手推 3 步法</span>
+  </a>
+</div>
+
+<h2 class="section" id="c5">四、数组（第 5 章）</h2>
+<p class="section-sub">第 30/31 题程序填充、第 34 题程序设计的主战场：<b>字符串处理</b>几乎年年考，套路固定到可以直接背。</p>
+<div class="pgrid">
+  <a class="pcard" href="数组/一维与二维数组.html">
+    <div class="t"><span class="ico">🔢</span>一维数组与二维数组</div>
+    <div class="d">定义与初始化（部分初始化自动补 0）、下标从 0 开始与越界、<code>sizeof</code> 求元素个数、遍历 / 求和 / 最值 / 逆序 / 冒泡排序 / 顺序查找、二维数组按行存储与 <code>a[i][j]</code> 地址换算</div>
+    <span class="badge">2025.10-28 · 2026.4-34</span><span class="badge">2025.10-34</span>
+  </a>
+  <a class="pcard" href="数组/字符数组与字符串.html">
+    <div class="t"><span class="ico">🔠</span>字符数组与字符串</div>
+    <div class="d">字符串以 <code>'\0'</code> 结尾（占 1 字节、不算长度）、字符数组初始化两种写法、<code>strlen/strcpy/strcat/strcmp</code> 与自写版本、子串复制 / 逆序 / 大小写转换 / 删除子串 4 个必背模板</div>
+    <span class="badge ok">必背 4 模板</span><span class="badge">2026.4-29/30/31</span><span class="badge">2025.10-30/31/32</span>
+  </a>
+</div>
+
+<h2 class="section" id="c6">六、函数（第 6 章）</h2>
+<p class="section-sub">函数的"语法"考得少，"变量能活多久、在哪儿可见"考得多——每套卷至少 2 题单选 + 1 题程序分析直接考存储类别。</p>
+<div class="pgrid">
+  <a class="pcard" href="函数/函数与递归.html">
+    <div class="t"><span class="ico">🧩</span>函数定义、调用与递归</div>
+    <div class="d">返回值类型与 <code>return</code>、形参与实参的<b>单向值传递</b>、函数声明（原型）为什么必须有、嵌套调用 vs 递归调用、递归求阶乘/Fibonacci/汉诺塔的写法与终止条件</div>
+    <span class="badge">2026.4-8 · 2025.10-8/22</span><span class="badge">2025.10-10</span>
+  </a>
+  <a class="pcard" href="函数/变量作用域与存储类别.html">
+    <div class="t"><span class="ico">⏳</span>变量作用域与存储类别</div>
+    <div class="d">局部 / 全局 / 外部变量、<code>auto / static / register / extern</code> 四种类别的"作用域 + 生存期 + 初值"三列对照、<code>static</code> 局部只初始化一次的实质、外部变量定义与声明的区别</div>
+    <span class="badge ok">每套必考</span><span class="badge">2026.4-7/9 · 2025.10-6/7/29</span>
+  </a>
+</div>
+
+<h2 class="section" id="c7">七、指针（第 7 章）</h2>
+<p class="section-sub">分值最高、最容易混的一章。判断标准只有一条：<b>先看名字先跟谁结合</b>——<code>*a[5]</code> 是数组，<code>(*p)[5]</code> 是指针。</p>
+<div class="pgrid">
+  <a class="pcard" href="指针/指针与数组.html">
+    <div class="t"><span class="ico">📍</span>指针与数组</div>
+    <div class="d">指针变量的定义与初始化（类型必须匹配）、<code>&amp;</code> 与 <code>*</code> 的一对互逆运算、指针加减整数与两指针相减、数组名是首地址常量、<code>p[i] ≡ *(p+i)</code>、指针遍历字符串、指针作函数参数"带回"多个结果</div>
+    <span class="badge">2026.4-10/20/29</span><span class="badge">2025.10-9/31</span>
+  </a>
+  <a class="pcard" href="指针/指针进阶.html">
+    <div class="t"><span class="ico">🧷</span>指针进阶（三组"长得像"）</div>
+    <div class="d"><code>char *s[5]</code> 指针数组 vs <code>char (*p)[5]</code> 数组指针 vs <code>char **p</code> 二级指针、返回指针的函数、函数指针、<code>malloc/free</code> 动态内存与链表结点的 <code>next</code></div>
+    <span class="badge">2026.4-11 · 2025.10-11</span><span class="badge warn">年年考辨析</span>
+  </a>
+</div>
+
+<h2 class="section" id="c8">八、结构体类型与自定义类型（第 8 章）</h2>
+<p class="section-sub">第 32 题程序填充连续三套都是"结构体数组 + 求最值 / 查找"，第 12、13 题单选固定考成员引用和 <code>typedef</code>——这一章投入产出比极高。</p>
+<div class="pgrid one">
+  <a class="pcard" href="结构体与自定义类型/结构体与自定义类型.html">
+    <div class="t"><span class="ico">🗂️</span>结构体 · 共用体 · 枚举 · typedef</div>
+    <div class="d">结构体类型定义与三种变量声明、成员访问 <code>.</code> 与 <code>-&gt;</code>、嵌套与结构体数组的初始化、<code>sizeof</code> 与内存对齐、共用体"共享同一块内存"、枚举值从 0 递增、<code>typedef</code> 与 <code>#define</code> 的本质区别</div>
+    <span class="badge">2026.4-12/13/28/32</span><span class="badge">2025.10-12/13/32</span>
+  </a>
+</div>
+
+<h2 class="section" id="c9">九、编译预处理与文件（第 9–10 章）</h2>
+<p class="section-sub">这两章合计 8–10 分，且全是"记住就会、记错就废"的客观题——宏的括号陷阱和 <code>fopen</code> 的返回值是两套卷共有的坑。</p>
+<div class="pgrid">
+  <a class="pcard" href="编译预处理/宏与文件包含.html">
+    <div class="t"><span class="ico">🧵</span>宏定义与文件包含</div>
+    <div class="d">无参宏与带参宏、<b>纯文本替换</b>导致的 <code>x/x</code>、<code>p*q</code> 陷阱、<code>#include &lt; &gt;</code> 与 <code>" "</code> 的查找路径差别、条件编译三种形式与"提高程序可移植性"的标准答法</div>
+    <span class="badge">2026.4-14/23</span><span class="badge">2025.10-14/23/24</span>
+  </a>
+  <a class="pcard" href="文件/文件操作.html">
+    <div class="t"><span class="ico">💾</span>文件操作</div>
+    <div class="d">文件两种分类（按存储形式 / 按内容）、<code>FILE *</code> 与 <code>fopen</code> 的 12 种打开方式、6 组读写函数（字符/字符串/格式化/数据块）、<code>feof</code> 与 <code>fclose</code>、文件定位 <code>rewind/fseek/ftell</code></div>
+    <span class="badge">2026.4-15/17</span><span class="badge">2025.10-15/25</span>
+  </a>
+</div>
+
+<div class="note">
+  <b>怎么用这套知识点：</b>先按章顺序读一遍（每页 10–15 分钟），把 <b>⚠️ 易错</b> 框和代码模板抄到本子上；再拿<a href="../真题/index.html">两套真题</a>限时做，错题按页面里的题号标回对应小节；考前三天只看<a href="../考前抢分.html">考前抢分一页纸</a>和每页的「本章小结」。<br>
+  代码统一按 <b>C89</b> 写：教材（2017 年版）与考纲都按 ANSI C 命题，<code>//</code> 注释、<code>for (int i=0; …)</code> 这类 C99 写法在答题卡上要被扣分。
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../../index.html">🏠 返回首页</a>
+    <a href="../真题/index.html">📝 历年真题导航</a>
+    <a href="../考前抢分.html">🔥 考前抢分</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>建议顺序：第 1–4 章打通语法 → 第 5 章字符串（分值最重）→ 第 6 章存储类别 → 第 7 章指针 → 第 8 章结构体 → 第 9–10 章客观题突击</div>
+</footer>
+</div>
+</body>
+</html>

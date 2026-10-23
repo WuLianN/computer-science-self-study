@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 数据类型与常量变量（第 3 章·上）｜类型分类 / 值域 / 常量写法 / 转义字符 / 强制转换</title>
+<meta name="description" content="高级语言程序设计 13013 第 3 章上半：数据类型四大家族、整型与实型的字节数和值域、整型/实型/字符/字符串常量的写法、转义字符全表、const 有名常量、强制类型转换，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#0e7490,#2563eb)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 3 章（上）· 数据类型与常量变量</h1>
+  <p>这一页全是"背了就能拿分"的东西：类型有几族、每种占几个字节、值域怎么算、常量怎么写才合法。两套卷里单选 5 题、填空 3 题直接落在这里。</p>
+  <span class="pill">4 类数据类型</span><span class="pill">字节数与值域</span><span class="pill">常量写法</span><span class="pill">转义字符</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="运算符与表达式.html">→ 下一节：运算符与表达式</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、数据类型的四大家族</a>
+  <a href="#s2">二、整型：字节数、值域与符号</a>
+  <a href="#s3">三、实型与字符型</a>
+  <a href="#s4">四、常量：整型 / 实型 / 字符 / 字符串</a>
+  <a href="#s5">五、转义字符全表（易错重灾区）</a>
+  <a href="#s6">六、const 有名常量与变量初始化</a>
+  <a href="#s7">七、类型转换：隐式提升与强制转换</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、数据类型的四大家族</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>大类</th><th>包含</th><th>要点</th></tr>
+    <tr><td class="nm">基本类型</td><td>整型（<code>int / short / long / unsigned</code>）、字符型 <code>char</code>、实型（<code>float / double</code>）、枚举型 <code>enum</code></td><td>系统<b>已定义好</b>，直接用</td></tr>
+    <tr><td class="nm">构造类型</td><td>数组、结构体 <code>struct</code>、共用体 <code>union</code></td><td>由基本类型<b>按规则组合</b>而成</td></tr>
+    <tr><td class="nm">指针类型</td><td><code>int *</code>、<code>char *</code> …</td><td>存放的是<b>地址</b>，不是数据本身</td></tr>
+    <tr><td class="nm">空类型</td><td><code>void</code></td><td>无返回值 / 无参数 / 通用指针</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q20">2025.10 真题·第 20 题</a> 由基本数据类型按一定规则组合而成的复杂数据类型称为 <u>构造数据类型</u>（也叫复合数据类型）——填"构造类型"或"复合数据类型"都对。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、整型：字节数、值域与符号</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>类型</th><th>16 位机字节数</th><th>32 位机字节数</th><th>值域（16 位）</th></tr>
+    <tr><td class="nm"><code>short</code> / <code>short int</code></td><td>2</td><td>2</td><td>−32768 ~ 32767</td></tr>
+    <tr><td class="nm"><code>int</code></td><td><b>2</b></td><td>4</td><td><b>−32768 ~ 32767</b></td></tr>
+    <tr><td class="nm"><code>unsigned int</code></td><td>2</td><td>4</td><td><b>0 ~ 65535</b></td></tr>
+    <tr><td class="nm"><code>long</code></td><td>4</td><td>4</td><td>−2147483648 ~ 2147483647</td></tr>
+    <tr><td class="nm"><code>unsigned long</code></td><td>4</td><td>4</td><td>0 ~ 4294967295</td></tr>
+  </table>
+  <div class="th">
+    <b>值域公式（记住就能推）：</b>占 n 位 → 无符号 <span class="m">0 ~ 2ⁿ−1</span>；有符号 <span class="m">−2<sup>n−1</sup> ~ 2<sup>n−1</sup>−1</span>。<br>
+    16 位 = 2 字节：无符号 2¹⁶−1 = <b>65535</b>；有符号 −32768 ~ 32767。<b>unsigned 的最小值是 0，永远没有负数。</b>
+  </div>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q21">2026.4 真题·第 21 题</a> 在 16 位 PC 中，一个 unsigned 型变量的值域是 0 到 <u>65535</u>。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q21">2025.10 真题·第 21 题</a> 在 16 位编译器中，一个 int 型变量一般占用 <u>2</u> 字节。<br>
+  <b>怎么判断题目是 16 位还是 32 位？</b>题干会明说"16 位 PC / 16 位编译器"——只看题干，别用自己电脑的 4 字节去答。
+</div>
+
+<h2 class="section" id="s3">三、实型与字符型</h2>
+<div class="grid2">
+  <div class="card">
+    <h3>实型（浮点型）</h3>
+    <table class="law">
+      <tr><th>类型</th><th>字节</th><th>有效数字</th><th>值域</th></tr>
+      <tr><td class="nm"><code>float</code></td><td>4</td><td>6–7 位</td><td>约 ±3.4e38</td></tr>
+      <tr><td class="nm"><code>double</code></td><td>8</td><td>15–16 位</td><td>约 ±1.7e308</td></tr>
+    </table>
+    实型<b>不能用 <code>%</code> 求余</b>，也不能做位运算；比较两个实型是否相等要用"差的绝对值小于一个小数"。
+  </div>
+  <div class="card">
+    <h3>字符型</h3>
+    <code>char</code> 占 <b>1 字节</b>，存的是字符的 <b>ASCII 码</b>（本质是小整数，可参与算术运算）。<br>
+    必背三个码：<code>'0'</code> = <b>48</b>、<code>'A'</code> = <b>65</b>、<code>'a'</code> = <b>97</b>。<br>
+    <div class="th" style="border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;border-radius:6px;margin-top:8px">
+      <b>字符 <code>'0'</code> 与数字 <code>0</code> 完全不同：</b><code>'0'</code> 的值是 48，<code>'0' + 1</code> 得 <code>'1'</code>；而 <code>0 + 1</code> 得 1。把小写字母转大写就是 <code>c = c - 32;</code>（97−65=32）。
+    </div>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、常量：整型 / 实型 / 字符 / 字符串</h2>
+<div class="rule">
+  <b>常量</b>：程序运行过程中值<b>不能改变</b>的量。分直接常量（字面量）和符号常量（有名常量）两类。
+  <table class="law">
+    <tr><th>种类</th><th>合法写法</th><th>非法写法 / 陷阱</th></tr>
+    <tr><td class="nm">整型常量</td><td><code>123</code>（十进制）、<code>017</code>（八进制，以 0 开头 = 15）、<code>0x1F</code>（十六进制 = 31）、<code>123L</code>（长整型）、<code>123U</code>（无符号）</td><td><code>08</code>、<code>0x1G</code>（八进制/十六进制里出现了越界数字）</td></tr>
+    <tr><td class="nm">实型常量</td><td>小数形式 <code>3.14</code>、<code>.5</code>、<code>5.</code>；<b>指数形式</b> <code>1.5e3</code>、<code>1.5E-3</code>、<code>1e5</code></td><td><code>e2.6</code>（指数必须是<b>整数</b>）、<code>e5</code>（e 前必须有数字）、<code>3.14e</code>（e 后必须有数字）</td></tr>
+    <tr><td class="nm">字符常量</td><td><code>'a'</code>、<code>'A'</code>、<code>'0'</code>、<code>'\n'</code>、<code>'\101'</code>（八进制转义）</td><td><code>'ab'</code>（只能一个字符）、<code>"a"</code>（这是字符串）</td></tr>
+    <tr><td class="nm">字符串常量</td><td><code>"a"</code>、<code>"hello"</code>、<code>""</code>（空串）</td><td><code>"a"</code> 实际占 <b>2 字节</b>（<code>'a'</code> 和 <code>'\0'</code>）</td></tr>
+  </table>
+</div>
+<div class="note">
+  <b>指数形式的两个硬规定（年年考）：</b>① <code>e</code>（或 <code>E</code>）<b>前面必须有数字</b>；② <code>e</code> <b>后面必须是整数</b>，不能带小数点。<br>
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q3">2026.4 真题·第 3 题</a> <code>a=3.14e2.6;</code> 错误（指数 2.6 不是整数），而 <code>1.89e2</code>、<code>3.14e2</code> 都合法。<br>
+  <b>还有一处：</b><code>float a = 789.456;</code> 合法（实型常量默认 double，赋给 float 只是精度损失，不算错）。
+</div>
+
+<h2 class="section" id="s5">五、转义字符全表（易错重灾区）</h2>
+<div class="rule">
+  以反斜杠 <code>\</code> 开头的字符常量，用来表示"看不见的"或"有特殊含义的"字符：
+  <table class="law">
+    <tr><th>转义字符</th><th>含义</th><th>ASCII</th><th>转义字符</th><th>含义</th><th>ASCII</th></tr>
+    <tr><td class="nm"><code>\n</code></td><td>换行</td><td>10</td><td class="nm"><code>\\</code></td><td>反斜杠本身</td><td>92</td></tr>
+    <tr><td class="nm"><code>\t</code></td><td>横向跳格（Tab）</td><td>9</td><td class="nm"><code>\'</code></td><td>单引号</td><td>39</td></tr>
+    <tr><td class="nm"><code>\b</code></td><td>退格</td><td>8</td><td class="nm"><code>\"</code></td><td>双引号</td><td>34</td></tr>
+    <tr><td class="nm"><code>\r</code></td><td>回车</td><td>13</td><td class="nm"><code>\0</code></td><td><b>空字符</b>（字符串结束符）</td><td>0</td></tr>
+    <tr><td class="nm"><code>\f</code></td><td>换页</td><td>12</td><td class="nm"><code>\ddd</code></td><td>1–3 位<b>八进制</b>码</td><td>如 <code>'\101'</code>=65='A'</td></tr>
+    <tr><td class="nm"><code>\a</code></td><td>响铃</td><td>7</td><td class="nm"><code>\xhh</code></td><td><b>十六进制</b>码</td><td>如 <code>'\x41'</code>=65='A'</td></tr>
+  </table>
+  <div class="th">
+    <b>判断口诀：</b>合法转义字符只有"上面这一张表"里的字母 + 数字码，<b>其余字母（<code>\p</code>、<code>\q</code>、<code>\m</code>）都不是转义字符</b>——在字符串里写成 <code>"\p"</code> 只是普通字符 <code>p</code>，作为字符常量 <code>'\p'</code> 则是非法写法。
+  </div>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q2">2026.4 真题·第 2 题</a> 不属于转义字符常量的是 <code>'\p'</code>（其余 <code>'\n'</code>、<code>'\b'</code>、<code>'\101'</code> 都合法，其中 <code>'\101'</code> 是八进制码 101₈ = 65 = <code>'A'</code>）。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q2">2025.10 真题·第 2 题</a> 表示空字符的转义字符是 <code>\0</code>（不是 <code>\n</code> 换行、<code>\b</code> 退格、<code>\t</code> 跳格）。
+</div>
+
+<h2 class="section" id="s6">六、const 有名常量与变量初始化</h2>
+<div class="rule">
+  <b>有名常量（符号常量）</b>：用 <code>const</code> 定义，<b>在定义时就必须赋初值</b>，之后不能再改。<b>有名常量的值是通过"赋初值"的方式获得的</b>，不是运行时算出来的。
+<pre class="src">const float PI = 3.14159;      <span class="cm">/* 定义时必须给值，以后再赋值就报错 */</span>
+const int N = 10;               <span class="cm">/* 之后可作数组长度：int a[N]; 合法 */</span>
+
+PI = 3.14;                      <span class="hl"><span class="cm">/* ✗ 错：const 常量不能被重新赋值 */</span></span></pre>
+  <table class="law">
+    <tr><th>方式</th><th>写法</th><th>关键点</th></tr>
+    <tr><td class="nm">const 有名常量</td><td><code>const int N = 10;</code></td><td>有类型、有地址，参与类型检查；<b>教材首选</b></td></tr>
+    <tr><td class="nm">#define 宏常量</td><td><code>#define N 10</code></td><td>纯文本替换，没有类型（第 9 章），<b>不加分号</b></td></tr>
+    <tr><td class="nm">枚举常量</td><td><code>enum {N = 10};</code></td><td>本质是整型（第 8 章）</td></tr>
+  </table>
+</div>
+<div class="card">
+  <h3>变量的定义与初始化</h3>
+  <b>格式：</b><code>类型名 变量名1, 变量名2 …;</code>　如 <code>int a, b, sum;</code>
+  <ol class="steps">
+    <li><b>必须先定义后使用</b>，而且 C89 要求定义写在<b>块的开头</b>（所有可执行语句之前）。</li>
+    <li>定义时<b>不初始化</b>的变量，其值是<b>不确定的垃圾值</b>（<code>static</code> 变量除外，见第 6 章）。</li>
+    <li>一行可以定义多个同类型变量，中间用<b>逗号</b>分隔，最后是<b>分号</b>。</li>
+    <li>变量名遵循标识符规则，<b>同一作用域内不能重名</b>。</li>
+  </ol>
+<pre class="src">int a = 1, b, c = 3;            <span class="cm">/* a、c 有初值，b 是垃圾值 */</span>
+int x, y;
+x = y = 0;                      <span class="cm">/* 从右往左：先 y=0，再 x=0，两个都变成 0 */</span></pre>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q16">2026.4 真题·第 16 题</a> 有名常量的值通过 <u>赋初值</u> 的方式获得。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q3">2025.10 真题·第 3 题</a> C 语言中定义有名常量所用的关键字是 <code>const</code>（<code>define</code> 不是关键字，是预处理命令名）。
+</div>
+
+<h2 class="section" id="s7">七、类型转换：隐式提升与强制转换</h2>
+<div class="rule">
+  <b>（1）隐式转换（自动转换）</b>：混合运算时按"精度不降低"的方向转换：
+  <div class="th"><span class="m">char / short → int → unsigned → long → float → double</span>　（赋值时高精度赋给低精度会"截断"，只是不报错）</div>
+  <b>（2）强制类型转换</b>：<b>格式只有一种</b>——
+  <div class="th"><code>(类型名) 表达式</code>　例：<code>(double)x</code>、<code>(int)(a+b)</code>、<code>(float)(3)</code></div>
+  <b>必须加括号把整个表达式括起来</b>，否则只转换第一个操作数。转换只是"取个中间值"，<b>原变量的类型和值都不变</b>。
+<pre class="src">int a = 5, b = 2;
+double x;
+
+x = a / b;                       <span class="cm">/* ✗ 先整除得 2，再转成 2.0 */</span>
+x = (double)a / b;               <span class="hl"><span class="cm">/* ✓ 2.5：先把 a 转成 5.0 再除 */</span></span>
+x = (double)(a / b);             <span class="cm">/* ✗ 2.0：括号里先整除完再转 */</span></pre>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q24">2026.4 真题·第 24 题</a> 将 <code>(a+3)</code> 强制转换成双精度实型：<code>(double)(a+3)</code>。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q5">2025.10 真题·第 5 题</a> 将 <code>x</code> 强制转化成双精度实型：<code>(double)x</code>。<br>
+  <b>两个必错写法：</b><code>double(x)</code>（C 语言没有这种"函数式转换"）、<code>x(double)</code>（顺序反了）。
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>类型分四族（基本 / 构造 / 指针 / 空）→ 基本类型记<b>字节数与值域</b>（16 位 int 是 2 字节、unsigned 是 0~65535）→ 常量要会判断写法（指数 e 前有数字、后是整数；转义字符只认表里的）→ 有名常量用 <code>const</code> 且<b>定义时赋初值</b> → 转换只有 <code>(类型名)表达式</code> 一种写法。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q2">2026.4-2/3</a> 转义字符与实型常量、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q16">2026.4-16/21/24</a> const 赋初值、unsigned 值域、强制转换；<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q2">2025.10-2/3/5</a> 空字符、const 关键字、强制转换、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q20">2025.10-20/21</a> 构造类型、int 字节数。<br>
+  全都是 2 分题，一题都不能错。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 3 章（上）数据类型与常量变量 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

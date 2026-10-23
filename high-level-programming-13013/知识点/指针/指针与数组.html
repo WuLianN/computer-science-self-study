@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 指针与数组（第 7 章·上）｜取地址 / 解引用 / 指针遍历 / 指针作参数</title>
+<meta name="description" content="高级语言程序设计 13013 第 7 章上半：指针变量与地址、& 和 * 的互逆关系、指针初始化必须类型匹配、指针加减与两指针相减、a[i] 等价于 *(a+i)、指针遍历字符串、指针作函数参数真正交换两个数，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📍</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#9f1239,#db2777)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.mem{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;text-align:center}
+  table.mem th{background:#fce7f3;color:#9f1239;border:1px solid var(--line);padding:4px}
+  table.mem td{border:1px solid var(--line);padding:5px 4px;font-family:Consolas,Monaco,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 7 章（上）· 指针与数组</h1>
+  <p>指针唯一的"难点"是它其实很简单：<b>指针变量里装的就是一个地址</b>。<code>&amp;</code> 是"取谁的地址"，<code>*</code> 是"顺着地址去找内容"，两者互为逆运算。把这两个符号看顺了，第 7 章就通了。</p>
+  <span class="pill">&amp; 与 * 互逆</span><span class="pill">类型必须匹配</span><span class="pill">a[i] ≡ *(a+i)</span><span class="pill">指针作参数</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../函数/变量作用域与存储类别.html">← 上一节：变量作用域与存储类别</a>
+    <a href="指针进阶.html">→ 下一节：指针进阶</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、指针是什么：地址与指针变量</a>
+  <a href="#s2">二、&amp; 与 *：一对互逆运算</a>
+  <a href="#s3">三、初始化：类型必须匹配</a>
+  <a href="#s4">四、指针的算术运算</a>
+  <a href="#s5">五、指针与一维数组：a[i] ≡ *(a+i)</a>
+  <a href="#s6">六、指针与字符串</a>
+  <a href="#s7">七、指针作函数参数：唯一能"改实参"的办法</a>
+  <a href="#s8">八、四个必避的指针错误</a>
+  <a href="#s9">九、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、指针是什么：地址与指针变量</h2>
+<div class="rule">
+  <b>内存的每个字节都有一个编号，这个编号就是"地址"。</b>一个变量占几个字节，它的地址就是<b>第一个字节的地址</b>。
+  <div class="th">
+    <b>指针 = 地址</b>（一种数据类型）；<b>指针变量 = 专门用来存放地址的变量</b>。<br>
+    所以"指针是存放数据的内存单元地址"这个说法是对的（<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q9">2025.10 真题·第 9 题</a> 的 D 项），而"指针可以实现动态分配内存""通过指针可以直接访问变量的值"也都对；错的那项是"指针可以直接访问<b>内存</b>"之类表述。<b>指针的本质是地址，不是数据本身。</b>
+  </div>
+  <table class="mem">
+    <tr><th>变量</th><th>地址</th><th>内容</th><th>说明</th></tr>
+    <tr><td>int x</td><td>2000</td><td>25</td><td>x 占 2000–2001 两个字节</td></tr>
+    <tr><td>int *p</td><td>3000</td><td><b>2000</b></td><td>p 里存的是 x 的地址</td></tr>
+  </table>
+  <b>写法：</b><code>int *p;</code>　—— 星号 <code>*</code> 说明"p 是个指针"，<code>int</code> 说明"p 指向的数据是 int 型"（叫<b>基类型</b>）。
+</div>
+<div class="note">
+  <b>基类型为什么重要：</b>它决定了两件事——① 通过 p 取值时<b>一次读几个字节</b>；② <code>p+1</code> 到底<b>往后跳多少字节</b>。<code>int *p</code> 的 <code>p+1</code> 跳 2 字节（16 位机），<code>char *p</code> 的 <code>p+1</code> 跳 1 字节。
+</div>
+
+<h2 class="section" id="s2">二、&amp; 与 *：一对互逆运算</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>符号</th><th>名称</th><th>作用</th><th>例</th></tr>
+    <tr><td class="nm"><code>&amp;</code></td><td>取地址运算符</td><td>得到变量的<b>地址</b></td><td><code>p = &amp;x;</code>　p 指向 x</td></tr>
+    <tr><td class="nm"><code>*</code></td><td>指针运算符（解引用）</td><td>顺着地址<b>取出/修改</b>那个变量的值</td><td><code>*p = 25;</code>　等价于 <code>x = 25;</code></td></tr>
+  </table>
+  <div class="th">
+    <b>互逆关系：</b><code>*&amp;x</code> 就是 <code>x</code>；<code>&amp;*p</code> 就是 <code>p</code>。<br>
+    <b>一句话：</b><code>*p</code> 出现在<b>赋值号左边</b>是"写"，出现在<b>右边</b>是"读"，两种用法都指向同一块内存。
+  </div>
+<pre class="src">int x = 10, y;
+int *p;
+
+p = &amp;x;          <span class="cm">/* p 指向 x */</span>
+y = *p;          <span class="cm">/* 读：y = 10 */</span>
+*p = 99;         <span class="hl"><span class="cm">/* 写：x 也变成 99 —— 通过指针改了变量 */</span></span>
+printf("%d %d\n", x, y);</pre>
+  <div class="out">99 10</div>
+</div>
+
+<h2 class="section" id="s3">三、初始化：类型必须匹配</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>写法</th><th>是否合法</th><th>原因</th></tr>
+    <tr><td class="nm"><code>int x, *p = &amp;x;</code></td><td class="y">✓</td><td>int 指针指向 int 变量</td></tr>
+    <tr><td class="nm"><code>char c, *p = &amp;c;</code></td><td class="y">✓</td><td>类型一致</td></tr>
+    <tr><td class="nm"><code>char *pc = NULL;</code></td><td class="y">✓</td><td><code>NULL</code> 是空指针（不指向任何地方），可以赋给任何指针</td></tr>
+    <tr><td class="nm"><code>int x, *px = &amp;x, *py = px;</code></td><td class="y">✓</td><td>让 py 也指向 x</td></tr>
+    <tr><td class="nm"><code>int x; float *p = &amp;x;</code></td><td class="n">✗</td><td><b>基类型不匹配</b>：float 指针不能指向 int 变量</td></tr>
+    <tr><td class="nm"><code>int *p = 2000;</code></td><td class="n">✗</td><td>不能直接把一个整数当地址赋给指针（<code>(int *)2000</code> 强转才行）</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q10">2026.4 真题·第 10 题</a> 初始化不正确的是 <code>int x; float *p = &amp;x;</code>（答案 B）——<b>基类型不匹配</b>。<br>
+    <b>补充：</b>指针变量本身也占内存（16 位机 2 字节、32 位机 4 字节），所以可以有"指向指针的指针"（第 13 页）。
+  </div>
+</div>
+<div class="note">
+  <b>野指针（考试与工程里都致命）：</b><code>int *p;</code> 只定义没赋值，p 里是<b>垃圾地址</b>，此时 <code>*p = 5;</code> 会写坏别的内存甚至直接崩。<b>定义指针时要么立刻让它指向某个变量，要么赋 <code>NULL</code>。</b>
+</div>
+
+<h2 class="section" id="s4">四、指针的算术运算</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>运算</th><th>含义</th><th>例（int *，int 占 2 字节）</th></tr>
+    <tr><td class="nm"><code>p + n</code> / <code>p - n</code></td><td>向前/向后移动 <b>n 个元素</b>，不是 n 个字节</td><td><code>p+1</code> 的地址增加 <b>2</b> 字节</td></tr>
+    <tr><td class="nm"><code>p++</code> / <code>p--</code></td><td>指向下一个 / 上一个元素</td><td>遍历数组全靠它</td></tr>
+    <tr><td class="nm"><code>p1 - p2</code></td><td>两个指针之间隔了<b>几个元素</b></td><td>同类型、同一数组内才有意义</td></tr>
+    <tr><td class="nm"><code>p1 &lt; p2</code></td><td>比较地址先后</td><td>循环条件常用 <code>p &lt; a+n</code></td></tr>
+    <tr><td class="nm"><code>p1 + p2</code>、<code>p * 2</code></td><td class="n">非法</td><td>两个地址相加没有意义</td></tr>
+  </table>
+  <div class="th">
+    <b>关键理解：</b><code>p+1</code> 不是"地址 +1"，而是"<b>地址 + sizeof(基类型)</b>"。这就是为什么 <code>int *</code> 加 1 跳 2 字节、<code>double *</code> 加 1 跳 8 字节。
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、指针与一维数组：a[i] ≡ *(a+i)</h2>
+<div class="rule">
+  <b>数组名是首元素的地址</b>（一个常量），所以：
+  <div class="th">
+    <code>a[i]</code> ≡ <code>*(a + i)</code> ≡ <code>*(p + i)</code> ≡ <code>p[i]</code>　（其中 <code>p = a;</code>）
+  </div>
+  <b>四种遍历写法完全等价：</b>
+<pre class="src">int a[5] = {1, 2, 3, 4, 5}, i;
+int *p;
+
+for (i = 0; i &lt; 5; i++)  printf("%d ", a[i]);        <span class="cm">/* ① 下标法 */</span>
+for (i = 0; i &lt; 5; i++)  printf("%d ", *(a + i));    <span class="cm">/* ② 数组名 + 偏移 */</span>
+for (p = a; p &lt; a + 5; p++) printf("%d ", *p);       <span class="hl"><span class="cm">/* ③ 指针法（最常用） */</span></span>
+for (p = a, i = 0; i &lt; 5; i++) printf("%d ", p[i]);  <span class="cm">/* ④ 指针下标法 */</span></pre>
+  <div class="th">
+    <b>两个细节：</b>① <code>a</code> 是地址<b>常量</b>，<code>a++</code> <b class="n">非法</b>；但 <code>p = a; p++</code> 合法（p 是变量）。<br>
+    ② <code>sizeof(a)</code> 是整个数组的字节数，<code>sizeof(p)</code> 只是指针的字节数——<b>数组名一当参数传出去就退化成指针，长度信息就丢了</b>。
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、指针与字符串</h2>
+<div class="rule">
+  <b>字符串可以用字符数组存，也可以用字符指针指向它：</b>
+<pre class="src">char s1[] = "hello";      <span class="cm">/* 数组：可读可写，占 6 字节 */</span>
+char *s2  = "hello";      <span class="hl"><span class="cm">/* 指针：指向字符串常量，只读，别去改它 */</span></span>
+
+printf("%s\n", s1);       <span class="cm">/* hello */</span>
+printf("%c\n", *(s2 + 1));/* e —— 指针 + 偏移取单个字符 */</span></pre>
+  <b>用指针遍历字符串（第 31 题的自写版基础）：</b>
+<pre class="src">char *p = s1;
+while (*p != '\0') {
+    putchar(*p);
+    p++;                  <span class="cm">/* 指针往下走一个字符 */</span>
+}</pre>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q29">2026.4 真题·第 29 题</a> <code>char a[]={"lovely\n"}; char *p=&amp;a[1];</code> —— p 指向 <code>'o'</code>，从 p 数到 <code>'\0'</code> 共 <b>6</b> 个字符（<code>o v e l y \n</code>）。<b>做这类题先把指针落在哪个字符上标出来，再数字符。</b>
+  </div>
+</div>
+<div class="note">
+  <b>易错：</b><code>char *s = "abc";</code> 里的 <code>"abc"</code> 是<b>字符串常量</b>，存放在只读区，<code>s[0] = 'A';</code> 运行时会崩。<b>要修改就写成 <code>char s[] = "abc";</code>。</b>
+</div>
+
+<h2 class="section" id="s7">七、指针作函数参数：唯一能"改实参"的办法</h2>
+<div class="rule">
+  第 6 章说过：值传递是单向复制，<code>swap(x, y)</code> 换不了。<b>把地址传进去就能换了</b>——因为函数拿到的是"原件的位置"，可以直接改原件。
+<pre class="src">void swap(int *a, int *b)      <span class="cm">/* 形参是指针，接收地址 */</span>
+{
+    int t;
+    t = *a;
+    *a = *b;
+    *b = t;                    <span class="hl"><span class="cm">/* 改动的是主函数里的变量 */</span></span>
+}
+
+int main(void)
+{
+    int x = 1, y = 2;
+    swap(&amp;x, &amp;y);              <span class="cm">/* 传地址，不是传值 */</span>
+    printf("%d %d\n", x, y);
+    return 0;
+}</pre>
+  <div class="out">2 1</div>
+  <table class="law">
+    <tr><th>需求</th><th>形参写法</th><th>调用写法</th></tr>
+    <tr><td class="nm">改一个变量的值</td><td><code>int *p</code></td><td><code>f(&amp;x)</code></td></tr>
+    <tr><td class="nm">处理一个数组</td><td><code>int a[], int n</code></td><td><code>f(a, n)</code>（数组名天然是地址）</td></tr>
+    <tr><td class="nm">改字符串</td><td><code>char s[]</code> 或 <code>char *s</code></td><td><code>f(str)</code></td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s8">八、四个必避的指针错误</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>错误</th><th>后果</th><th>正确做法</th></tr>
+    <tr><td class="nm">野指针：定义后直接用</td><td>写坏内存 / 崩溃</td><td>定义即指向某变量，或赋 <code>NULL</code></td></tr>
+    <tr><td class="nm"><code>scanf("%d", p)</code> 而 p 没指向任何变量</td><td>崩溃</td><td>先 <code>p = &amp;x;</code>，或直接 <code>scanf("%d", &amp;x)</code></td></tr>
+    <tr><td class="nm">返回局部变量的地址</td><td>函数返回后那块内存失效，值不可靠</td><td>返回全局/静态变量地址，或用 <code>malloc</code></td></tr>
+    <tr><td class="nm">数组名赋值 <code>a = p;</code></td><td>编译错误（a 是常量地址）</td><td><code>p = a;</code>（反过来可以）</td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s9">九、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>指针就是地址 → <code>&amp;</code> 取地址、<code>*</code> 顺着地址取内容（互逆）→ 初始化<b>类型必须匹配</b>，否则直接错 → <code>p+1</code> 跳一个<b>基类型</b>的长度 → <code>a[i] ≡ *(a+i)</code>，数组名是常量地址不能自增 → 字符指针可以遍历字符串，但 <code>char *s="abc"</code> 是只读常量 → <b>想让函数改实参，必须传地址</b>。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q10">2026.4-10</a> 指针初始化类型匹配（B）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q20">2026.4-20</a> 表示地址的数据类型叫<b>指针</b>（填空）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q29">2026.4-29</a> 字符指针 + <code>'\0'</code>（6）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q9">2025.10-9</a> 指针概念（C）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q31">2025.10-31</a> 指针作参数做逆序（6）。<br>
+  指针题的正确率，基本就是这门的及格线。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 7 章（上）指针与数组 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

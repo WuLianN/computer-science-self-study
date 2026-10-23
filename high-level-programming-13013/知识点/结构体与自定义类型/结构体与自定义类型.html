@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 结构体 · 共用体 · 枚举 · typedef（第 8 章）｜成员引用 / 结构体数组 / 自引用</title>
+<meta name="description" content="高级语言程序设计 13013 第 8 章：结构体类型定义与三种变量声明、成员引用点号与箭头的区别、结构体数组的初始化与扁平写法、嵌套定义与自引用指针、共用体共享同一块内存、枚举值从 0 递增、typedef 与 define 的本质区别，附 2026.4 与 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#b45309,#db2777)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.mem{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;text-align:center}
+  table.mem th{background:#fef3c7;color:#b45309;border:1px solid var(--line);padding:4px}
+  table.mem td{border:1px solid var(--line);padding:5px 4px;font-family:Consolas,Monaco,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 8 章 · 结构体类型与自定义类型</h1>
+  <p>前面学的类型都是"单个值"，<b>结构体把不同类型的数据打包成一个整体</b>——一个学生 = 学号 + 姓名 + 成绩。这一章投入产出比极高：<b>每套卷 4 道客观点 + 1 道程序填充（约 15 分）</b>，而且题型极其固定。</p>
+  <span class="pill">定义类型 ≠ 分配内存</span><span class="pill"><code>.</code> 与 <code>-&gt;</code></span><span class="pill">结构体数组</span><span class="pill">typedef 只是别名</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../指针/指针进阶.html">← 上一节：指针进阶</a>
+    <a href="../编译预处理/宏与文件包含.html">→ 下一节：宏定义与文件包含</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、为什么需要结构体</a>
+  <a href="#s2">二、类型定义与三种变量声明</a>
+  <a href="#s3">三、成员引用：<code>.</code> 与 <code>-&gt;</code></a>
+  <a href="#s4">四、初始化与结构体数组</a>
+  <a href="#s5">五、嵌套定义与自引用指针</a>
+  <a href="#s6">六、共用体（union）</a>
+  <a href="#s7">七、枚举（enum）</a>
+  <a href="#s8">八、typedef 与 #define 的区别</a>
+  <a href="#s9">九、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、为什么需要结构体</h2>
+<div class="rule">
+  一个学生有学号（int）、姓名（字符串）、成绩（float）——<b>类型不同，一个数组装不下</b>。结构体就是"自己定义一个类型"，把这些数据<b>打包成一个整体</b>。
+  <div class="th">
+    <b>结构体（structure）= 由若干个"成员"组成的构造数据类型。</b>成员的类型可以不同，可以是基本类型、数组、指针，甚至另一个结构体。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、类型定义与三种变量声明</h2>
+<div class="rule">
+  <b>① 先定义类型，再定义变量（最常用）：</b>
+<pre class="src">struct student {              <span class="cm">/* struct 是关键字，student 是结构体名 */</span>
+    int no;
+    char name[20];
+    float score;
+};                            <span class="hl"><span class="cm">/* ← 分号千万不能少 */</span></span>
+
+struct student s1, s2;        <span class="cm">/* 用类型名定义变量，struct 不能省 */</span></pre>
+  <b>② 定义类型的同时定义变量：</b>
+<pre class="src">struct student {
+    int no;
+    char name[20];
+} s1, s2;                     <span class="cm">/* 花括号后、分号前就是变量名 */</span></pre>
+  <b>③ 省略结构体名（匿名结构体），直接定义变量：</b>
+<pre class="src">struct {
+    int no;
+    char name[20];
+} s1;                         <span class="cm">/* 没有类型名，以后无法再定义同类型变量 */</span></pre>
+  <div class="th">
+    <b>核心结论（年年考）：定义结构体类型时，系统不会为成员分配内存；只有定义变量时才分配。</b><br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q12">2025.10 真题·第 12 题</a> 描述正确的是"<b>结构体类型可以嵌套定义</b>"（答案 A）：<br>
+    · B 错——成员可以是数组、指针、结构体，不限于基本类型；<br>
+    · C 错——定义类型只描述"格式"，不分配内存；<br>
+    · D 错——同类型成员可以一行写 <code>int year, month, day;</code>。
+  </div>
+</div>
+<div class="note">
+  <b>sizeof 提示：</b><code>sizeof(struct student)</code> 不一定等于各成员大小之和——编译器可能插入<b>对齐填充字节</b>。自考一般不考对齐细节，但"类型大小 ≠ 成员之和"这句要记住。
+</div>
+
+<h2 class="section" id="s3">三、成员引用：<code>.</code> 与 <code>-&gt;</code></h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>场景</th><th>写法</th><th>例</th></tr>
+    <tr><td class="nm">结构体变量</td><td><code>变量名.成员名</code></td><td><code>s1.no</code>、<code>s1.name</code></td></tr>
+    <tr><td class="nm">指向结构体的指针</td><td><code>指针-&gt;成员名</code></td><td><code>p-&gt;no</code>　等价于　<code>(*p).no</code></td></tr>
+    <tr><td class="nm">嵌套成员</td><td>一层层往下点</td><td><code>s1.birthday.year</code></td></tr>
+  </table>
+  <div class="th">
+    <b>为什么 <code>*p.no</code> 是错的：</b>点号 <code>.</code> 的优先级<b>高于</b> <code>*</code>，所以 <code>*p.no</code> 被解释成 <code>*(p.no)</code>——而 p 是指针，根本没有成员 no。<b>正确写法必须加括号：<code>(*p).no</code>，而 <code>p-&gt;no</code> 是它的简写。</b>
+  </div>
+<pre class="src">struct student s = {1, "Li", 90.5};
+struct student *p = &amp;s;
+
+printf("%d %s %.1f\n", s.no, s.name, s.score);      <span class="cm">/* 变量用 . */</span>
+printf("%d %s %.1f\n", p-&gt;no, p-&gt;name, p-&gt;score);   <span class="hl"><span class="cm">/* 指针用 -> */</span></span>
+printf("%d\n", (*p).no);                             <span class="cm">/* 与 p->no 完全等价 */</span></pre>
+  <div class="out">1 Li 90.5
+1 Li 90.5
+1</div>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q12">2026.4 真题·第 12 题</a> 已定义 <code>struct date{int year,month,day;} birth;</code> 和 <code>int *p;</code>，成员引用正确的是 <code>*p = birth.year;</code>（答案 C）——<b>引用成员的标准写法就是"结构体变量.成员名"</b>。
+  </div>
+</div>
+<div class="note">
+  <b>两条整体操作规则：</b>① <b>同类型的结构体变量可以整体赋值</b>（<code>s2 = s1;</code> 合法，逐成员复制）；② <b>但不能整体输入输出</b>——<code>scanf("%d", &amp;s1)</code>、<code>printf("%s", s1)</code> 都是错的，必须一个成员一个成员地读写。
+</div>
+
+<h2 class="section" id="s4">四、初始化与结构体数组</h2>
+<div class="rule">
+  <b>单个变量：</b>按成员顺序给初值，可以部分初始化（其余补 0 / <code>'\0'</code>）。
+<pre class="src">struct student s = {1, "Li", 90.5};     <span class="cm">/* 完整 */</span>
+struct student t = {2, "Wang"};         <span class="cm">/* 部分：score 自动补 0 */</span></pre>
+  <b>结构体数组：</b>每个元素用一对花括号括起来最清楚。
+<pre class="src">struct student a[3] = {
+    {1, "Li",    90.5},
+    {2, "Zhang", 85.0},
+    {3, "Wang",  78.5}
+};
+printf("%s\n", a[1].name);              <span class="cm">/* Zhang */</span></pre>
+  <b>扁平写法（真题第 28 题就考这个）：</b>内层花括号可以全省略，编译器按成员顺序<b>依次填充</b>。
+<pre class="src">struct keyword {
+    char key[20];
+    int id;
+} k[] = {"void", 1, "char", 2, "int", 3, "float", 4};
+<span class="cm">/* 8 个初值 → 每个元素 2 个成员 → 共 4 个元素 */</span></pre>
+  <table class="mem">
+    <tr><th>元素</th><th>key</th><th>id</th></tr>
+    <tr><td>k[0]</td><td>"void"</td><td>1</td></tr>
+    <tr><td>k[1]</td><td>"char"</td><td>2</td></tr>
+    <tr><td>k[2]</td><td>"int"</td><td>3</td></tr>
+    <tr><td>k[3]</td><td>"float"</td><td>4</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q28">2026.4 真题·第 28 题</a> 输出 <code>k[2].key[2]</code> 和 <code>k[2].id</code> → <code>k[2]</code> 是 <code>{"int", 3}</code>，<code>key[2]</code> 是第 3 个字符 <code>t</code> → 答案 <b>t,3</b>。<br>
+    <b>两步走：先按"每 2 个初值一个元素"数出下标，再数字符（下标从 0 开始）。</b>
+  </div>
+</div>
+<div class="card">
+  <h3>结构体数组的固定套路：求最值（2026.4 第 32 题）</h3>
+<pre class="src">#include &lt;stdio.h&gt;
+
+struct worker { int no; int age; } w[5];   <span class="hl"><span class="cm">/* 第一空：定义含 5 个元素的数组 */</span></span>
+
+int main(void)
+{
+    int i, max1;
+
+    for (i = 0; i &lt; 5; i++)
+        scanf("%d%d", &amp;w[i].no, &amp;w[i].age);
+
+    max1 = w[0].age;                        <span class="cm">/* 打擂台：先拿下标 0 的 */</span>
+    for (i = 1; i &lt; 5; i++)
+        if (max1 &lt; w[i].age)
+            max1 = w[i].age;                <span class="hl"><span class="cm">/* 第二空 */</span></span>
+
+    printf("max age:%d\n", max1);           <span class="hl"><span class="cm">/* 第三空 */</span></span>
+    return 0;
+}</pre>
+  <b>规律：</b>结构体数组求最值，<b>比较的是 <code>w[i].成员</code>，暂存的也是成员的副本</b>——千万别写 <code>max1 = w[i];</code>（类型不匹配）。
+</div>
+
+<h2 class="section" id="s5">五、嵌套定义与自引用指针</h2>
+<div class="rule">
+  <b>嵌套：一个结构体的成员可以是另一个结构体。</b>
+<pre class="src">struct date {
+    int year, month, day;
+};
+
+struct student {
+    int no;
+    struct date birthday;      <span class="cm">/* 成员是结构体（这里必须已定义过 date） */</span>
+    struct student *next;      <span class="cm">/* 自引用：只能是指针 */</span>
+};
+
+<span class="cm">/* 访问：一层层点下去 */</span>
+s.birthday.year
+s.next-&gt;no</pre>
+  <table class="law">
+    <tr><th>写法</th><th>是否合法</th><th>说明</th></tr>
+    <tr><td class="nm"><code>struct date birthday;</code></td><td class="y">✓</td><td>date 类型已定义，大小确定</td></tr>
+    <tr><td class="nm"><code>struct student *next;</code></td><td class="y">✓</td><td>指针大小固定，且可以"先声明后补全"</td></tr>
+    <tr><td class="nm"><code>struct student next;</code></td><td class="n">✗</td><td>自己包含自己，大小无限大</td></tr>
+  </table>
+  <div class="th">
+    <b>自引用为什么必须是指针：</b>结构体的大小要在定义时算出来，如果成员又是一个同类型的完整结构体，就成了"俄罗斯套娃"，永远算不完；<b>指针的大小是固定的（2 或 4 字节），所以合法</b>。这也是下一章链表能成立的根本原因。
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、共用体（union）</h2>
+<div class="rule">
+  <b>共用体的所有成员共用同一块内存</b>，同一时刻只有一个成员有意义。
+<pre class="src">union data {
+    int i;          <span class="cm">/* 2 字节 */</span>
+    char c;         <span class="cm">/* 1 字节 */</span>
+    float f;        <span class="cm">/* 4 字节 */</span>
+};
+
+union data u;
+u.i = 65;
+printf("%c\n", u.c);    <span class="hl"><span class="cm">/* A —— 改了 i，c 也跟着变（同一块内存） */</span></span></pre>
+  <table class="law">
+    <tr><th>对比项</th><th>结构体 struct</th><th>共用体 union</th></tr>
+    <tr><td class="nm">内存</td><td>各成员<b>各占一块</b>，总大小 ≥ 成员之和</td><td>所有成员<b>共用一块</b>，大小 = <b>最大成员</b>的大小</td></tr>
+    <tr><td class="nm">同时有效</td><td class="y">所有成员同时有效</td><td class="n">同一时刻只有一个有效</td></tr>
+    <tr><td class="nm">赋值影响</td><td>互不影响</td><td>改一个成员会<b>覆盖</b>其他成员</td></tr>
+  </table>
+  <div class="th">
+    <b>用途：</b>几个数据不会同时使用、又想省空间时用；也常用来"用同一块内存按不同类型解读"。<b>考试只考"共享内存"和"大小取最大成员"这两点。</b>
+  </div>
+</div>
+
+<h2 class="section" id="s7">七、枚举（enum）</h2>
+<div class="rule">
+  <b>枚举把一组相关的名字列出来，本质是整数常量。</b>
+<pre class="src">enum week { MON, TUE, WED, THU, FRI, SAT, SUN };
+<span class="cm">/* 默认：MON=0, TUE=1, WED=2, … SUN=6 */</span>
+
+enum color { RED = 1, GREEN = 5, BLUE };
+<span class="cm">/* 指定后：RED=1, GREEN=5, BLUE=6（紧跟上一个 +1） */</span>
+
+enum week today;
+today = WED;
+printf("%d\n", today);      <span class="cm">/* 2 */</span></pre>
+  <table class="law">
+    <tr><th>要点</th><th>说明</th></tr>
+    <tr><td class="nm">默认值</td><td>第一个枚举值为 <b>0</b>，后面依次 <b>+1</b></td></tr>
+    <tr><td class="nm">可指定</td><td>任意一个都可以赋初值，其后的成员在它基础上继续 +1</td></tr>
+    <tr><td class="nm">本质</td><td>枚举值是 <code>int</code> 型常量，可以参与运算、可以输出 %d</td></tr>
+    <tr><td class="nm">不能输入</td><td><code>scanf("%d", &amp;today)</code> 不规范——枚举变量应按名字赋值</td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s8">八、typedef 与 #define 的区别</h2>
+<div class="rule">
+  <b><code>typedef</code> 给"已有类型"起一个别名，不产生新类型。</b>
+<pre class="src">typedef long C;              <span class="cm">/* C 是 long 的别名 */</span>
+C a, b;                      <span class="cm">/* 等价 long a, b; */</span>
+
+typedef struct student {     <span class="cm">/* 给结构体类型起别名，最常用 */</span>
+    int no;
+    char name[20];
+} STU;
+
+STU s1;                      <span class="cm">/* 以后不用再写 struct student */</span></pre>
+  <table class="law">
+    <tr><th>对比项</th><th><code>typedef</code></th><th><code>#define</code></th></tr>
+    <tr><td class="nm">处理阶段</td><td>编译阶段，由编译器识别</td><td>预处理阶段，<b>纯文本替换</b></td></tr>
+    <tr><td class="nm">作用</td><td>只能给<b>类型</b>起别名</td><td>任意文本都能替换（常量、表达式、类型名）</td></tr>
+    <tr><td class="nm">结尾分号</td><td class="y">要写 <code>;</code></td><td class="n">不写 <code>;</code></td></tr>
+    <tr><td class="nm">类型检查</td><td class="y">有</td><td class="n">没有（替换完才编译）</td></tr>
+    <tr><td class="nm">是否产生新类型</td><td class="n">不产生，只是别名</td><td class="n">也不产生</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q13">2026.4 真题·第 13 题</a> <code>typedef long C;</code> 的含义是"<b>定义 long 类型的别名</b>"（答案 D）。<br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q13">2025.10 真题·第 13 题</a> <code>typedef</code> 的作用是"<b>定义已有数据类型的别名</b>"（答案 D）。<br>
+    <b>陷阱选项是"定义新类型"——C 里 typedef 从不产生新类型。</b>
+  </div>
+</div>
+<div class="note">
+  <b>为什么给结构体起别名要用 typedef：</b>不起别名时每次都得写 <code>struct student s1;</code>，<code>struct</code> 三个字母不能省（C 里 <code>student</code> 单独不是类型名）；起了别名后写 <code>STU s1;</code> 就行，<b>少敲字、也不容易漏 struct</b>。
+</div>
+
+<h2 class="section" id="s9">九、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>五个必背结论：</b><br>
+  ① <b>定义类型不分配内存，定义变量才分配</b>（2025.10-12 的 C 项就错在这）；<br>
+  ② 变量用 <code>.</code>、指针用 <code>-&gt;</code>，<code>p-&gt;x</code> ≡ <code>(*p).x</code>；<br>
+  ③ 同类型结构体<b>可整体赋值、不可整体输入输出</b>；<br>
+  ④ 结构体数组初始化可以省内层花括号，<b>按成员顺序依次填</b>；<br>
+  ⑤ <code>union</code> 共享内存、大小取最大成员；<code>enum</code> 从 0 递增；<code>typedef</code> 只是别名、不产生新类型。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q12">2026.4-12</a> 成员引用 <code>birth.year</code>（C）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q13">2026.4-13</a> typedef 别名（D）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q28">2026.4-28</a> 结构体数组 <code>t,3</code>、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q32">2026.4-32</a> 结构体数组求最值（<code>w[5]</code> / <code>w[i].age</code> / <code>max1</code>）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q12">2025.10-12</a> 类型定义（A）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q13">2025.10-13</a> typedef（D）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q32">2025.10-32</a> 结构体数组查找（<code>!=</code> / <code>i++</code>）。<br>
+  <b>这一章的 15 分几乎没有变化题——把上面五个结论背下来就能拿。</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 8 章 结构体类型与自定义类型 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

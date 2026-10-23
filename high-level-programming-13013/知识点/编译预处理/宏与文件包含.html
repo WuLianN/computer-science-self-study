@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 宏定义与文件包含（第 9 章）｜纯文本替换 / 括号陷阱 / 条件编译</title>
+<meta name="description" content="高级语言程序设计 13013 第 9 章：预处理命令的三类、无参宏与带参宏的定义、宏是纯文本替换不做计算（P(4+6) 展开成 4+6/4+6 得 11）、参数与整体都必须加括号、宏与函数的六项区别、include 尖括号与双引号的查找路径、条件编译三种形式与提高可移植性，附 2026.4 与 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧵</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#4d7c0f,#0891b2)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 9 章 · 宏定义与文件包含</h1>
+  <p>编译预处理只有一句话：<b>在编译之前做纯文本替换</b>。它不理解类型、不做计算、不分配内存——所以 <code>#define P(x) x/x</code> 传进 <code>4+6</code> 得到的不是 1，而是 <b>11</b>。这一章两套卷共 5 道题，全是"记住规则就得分"。</p>
+  <span class="pill">纯文本替换</span><span class="pill">括号必须加满</span><span class="pill">include 两种写法</span><span class="pill">条件编译 = 可移植性</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../结构体与自定义类型/结构体与自定义类型.html">← 上一节：结构体与自定义类型</a>
+    <a href="../文件/文件操作.html">→ 下一节：文件操作</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、预处理是什么：编译前的三类命令</a>
+  <a href="#s2">二、无参宏：<code>#define N 10</code></a>
+  <a href="#s3">三、带参宏：纯文本替换的陷阱</a>
+  <a href="#s4">四、宏与函数的区别</a>
+  <a href="#s5">五、文件包含：<code>#include</code></a>
+  <a href="#s6">六、条件编译</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、预处理是什么：编译前的三类命令</h2>
+<div class="rule">
+  <b>预处理（编译预处理）</b>是在<b>正式编译之前</b>由预处理程序对源程序做的"文字加工"，结果仍然是一个源程序文件，再交给编译器。
+  <table class="law">
+    <tr><th>类别</th><th>命令</th><th>作用</th></tr>
+    <tr><td class="nm">宏定义</td><td><code>#define</code>、<code>#undef</code></td><td>定义 / 取消一个"名字替换规则"</td></tr>
+    <tr><td class="nm">文件包含</td><td><code>#include</code></td><td>把另一个文件的全部内容<b>复制</b>到本行位置</td></tr>
+    <tr><td class="nm">条件编译</td><td><code>#if</code>、<code>#ifdef</code>、<code>#ifndef</code>、<code>#else</code>、<code>#elif</code>、<code>#endif</code></td><td>按条件决定"哪几行参与编译"</td></tr>
+  </table>
+  <div class="th">
+    <b>三条共同点：</b>① 都以 <code>#</code> 开头，<b>独占一行</b>；② <b>行尾不加分号</b>（加了分号，分号也会被当成内容替换进去）；③ 它们<b>不是 C 语句</b>，预处理后就不存在了。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、无参宏：<code>#define N 10</code></h2>
+<div class="rule">
+<pre class="src">#define PI 3.14159
+#define N  10
+#define MAX 100
+
+int a[N];              <span class="cm">/* 预处理后变成 int a[10]; */</span>
+double s = PI * r * r; <span class="cm">/* 预处理后变成 3.14159 * r * r */</span></pre>
+  <ol class="steps">
+    <li><b>纯文本替换</b>：宏名出现的地方，原样换成后面的字符序列，<b>不做任何计算</b>。</li>
+    <li><b>不分配内存、不做类型检查</b>：<code>N</code> 没有类型，替换完才参与编译。</li>
+    <li><b>行尾不加分号</b>：写成 <code>#define N 10;</code> 时，<code>int a[N];</code> 会展开成 <code>int a[10;];</code> 直接报错。</li>
+    <li><b>作用域</b>：从定义处起，到本文件结束；可以用 <code>#undef N</code> 提前取消。</li>
+    <li><b>命名习惯</b>：宏名一般全大写，与变量名区分。</li>
+  </ol>
+</div>
+<div class="note">
+  <b>宏定义可以嵌套引用：</b><code>#define A 2</code> 后再写 <code>#define B (A + 3)</code>，则 <code>B</code> 展开为 <code>(2 + 3)</code>——<b>替换是逐层进行的</b>。
+</div>
+
+<h2 class="section" id="s3">三、带参宏：纯文本替换的陷阱</h2>
+<div class="rule">
+  <b>带参宏看起来像函数，但它绝不是函数：</b>形参没有类型，调用时把<b>实参原样抄进去</b>，然后整体替换。
+<pre class="src">#define S(a, b) ((a) * (b))     <span class="hl"><span class="cm">/* 正确写法：参数和整体都加括号 */</span></span>
+
+m = S(x + 1, y);                <span class="cm">/* 展开为 m = ((x + 1) * (y)); */</span></pre>
+  <b>如果不加括号，就会出这些事：</b>
+<pre class="src">#define P(x) x/x
+printf("%d\n", P(4 + 6));       <span class="hl"><span class="cm">/* 展开为 4 + 6/4 + 6 = 4 + 1 + 6 = 11 */</span></span></pre>
+  <div class="out">11</div>
+  <table class="law">
+    <tr><th>宏定义</th><th>调用</th><th>实际展开</th><th>结果</th></tr>
+    <tr><td class="nm"><code>#define P(x) x/x</code></td><td><code>P(4+6)</code></td><td><code>4+6/4+6</code></td><td class="n">11（不是 1）</td></tr>
+    <tr><td class="nm"><code>#define SQ(x) x*x</code></td><td><code>SQ(a+1)</code></td><td><code>a+1*a+1</code></td><td class="n">2a+1（不是 (a+1)²）</td></tr>
+    <tr><td class="nm"><code>#define SQ(x) ((x)*(x))</code></td><td><code>SQ(a+1)</code></td><td><code>((a+1)*(a+1))</code></td><td class="y">正确</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q14">2025.10 真题·第 14 题</a> <code>#define P(x) x/x</code>，<code>P(4+6)</code> → <code>4+6/4+6</code> = 4 + 1 + 6 = <b>11</b>（答案 C）。<br>
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q14">2026.4 真题·第 14 题</a> <code>#define S(p,q) p*q</code>，<code>m=S(x,y);</code> —— 按"<b>实参逐字替换形参</b>"的原则，p 换成 x、q 换成 y（官方答案 C）。
+  </div>
+</div>
+<div class="note">
+  <b>带参宏的三个硬规则：</b>① <b>宏名与左括号之间不能有空格</b>——<code>#define S (a,b)</code> 会被当成"无参宏 S 替换成 (a,b)"；② <b>每个参数都要加括号</b>；③ <b>整个表达式再加一层括号</b>。<br>
+  <b>还要小心副作用：</b><code>#define MAX(a,b) ((a)&gt;(b)?(a):(b))</code> 里，<code>MAX(i++, j++)</code> 会让 i 或 j <b>自增两次</b>——宏的参数被求值多次，这是函数不会有的问题。
+</div>
+
+<h2 class="section" id="s4">四、宏与函数的区别</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>对比项</th><th>宏（带参宏）</th><th>函数</th></tr>
+    <tr><td class="nm">处理阶段</td><td><b>预处理</b>（编译之前）</td><td>编译、链接，运行时调用</td></tr>
+    <tr><td class="nm">类型检查</td><td class="n">没有</td><td class="y">有</td></tr>
+    <tr><td class="nm">参数类型</td><td>不写类型</td><td>必须写类型</td></tr>
+    <tr><td class="nm">是否分配空间</td><td class="n">不分配</td><td>调用时分配栈空间</td></tr>
+    <tr><td class="nm">代码长度</td><td>每展开一次就复制一份，<b>程序变长</b></td><td>只有一份</td></tr>
+    <tr><td class="nm">执行速度</td><td class="y">快（没有调用开销）</td><td>有参数传递、返回的开销</td></tr>
+    <tr><td class="nm">参数副作用</td><td class="n">可能被求值多次</td><td class="y">只求值一次</td></tr>
+  </table>
+  <div class="th">
+    <b>一句话：</b>宏是"<b>用空间换时间、用灵活换安全</b>"。简单的常量、短小表达式用宏；逻辑复杂、需要类型检查的，一律用函数。
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、文件包含：<code>#include</code></h2>
+<div class="rule">
+<pre class="src">#include &lt;stdio.h&gt;       <span class="cm">/* 尖括号：到系统目录（库目录）找 */</span>
+#include "myhead.h"      <span class="cm">/* 双引号：先到当前目录找，找不到再去系统目录 */</span></pre>
+  <table class="law">
+    <tr><th>写法</th><th>查找顺序</th><th>适用</th></tr>
+    <tr><td class="nm"><code>#include &lt;文件名&gt;</code></td><td>只在<b>系统目录</b>（标准库头文件所在处）找</td><td>标准库头文件：stdio.h、string.h、math.h</td></tr>
+    <tr><td class="nm"><code>#include "文件名"</code></td><td>先在<b>当前源文件所在目录</b>找，再找系统目录</td><td>自己写的头文件</td></tr>
+  </table>
+  <div class="th">
+    <b>作用：把被包含文件的全部内容，原样"复制"到 <code>#include</code> 命令出现的位置上。</b><br>
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q23">2026.4 真题·第 23 题</a> 填空答案就是"<b>复制</b>"。<br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q23">2025.10 真题·第 23 题</a> 使用库函数前要包含相应的"<b>头文件</b>"。
+  </div>
+  <b>头文件里通常放什么：</b>函数声明（原型）、宏定义、结构体/共用体/枚举类型定义、<code>typedef</code>、<code>extern</code> 全局变量声明。<b>不要放函数定义</b>——被多个文件包含时会重复定义。
+</div>
+<div class="note">
+  <b>一个 <code>#include</code> 只能包含一个文件</b>，不能写 <code>#include &lt;a.h, b.h&gt;</code>。想包含多个就写多行。<br>
+  <b>重复包含的经典防护（背下来）：</b>
+<pre class="src">#ifndef MYHEAD_H
+#define MYHEAD_H
+<span class="cm">/* 头文件内容 */</span>
+#endif</pre>
+  第一次包含时 <code>MYHEAD_H</code> 没定义 → 内容被编入并定义它；第二次再包含时它已定义 → 整段被跳过。
+</div>
+
+<h2 class="section" id="s6">六、条件编译</h2>
+<div class="rule">
+  <b>条件编译让"同一份源程序"按条件编出不同的目标代码</b>，最典型的用途是调试开关和多平台适配。
+  <b>① <code>#ifdef</code> / <code>#ifndef</code>（判断有没有定义过某个宏）：</b>
+<pre class="src">#define DEBUG 1
+
+#ifdef DEBUG
+    printf("x = %d\n", x);      <span class="cm">/* 只有定义了 DEBUG 才编译这一行 */</span>
+#endif
+
+#ifndef PI
+#define PI 3.14159
+#endif</pre>
+  <b>② <code>#if</code> / <code>#elif</code> / <code>#else</code>（对常量表达式求值）：</b>
+<pre class="src">#define LEVEL 2
+
+#if LEVEL == 1
+    printf("初级\n");
+#elif LEVEL == 2
+    printf("中级\n");
+#else
+    printf("高级\n");
+#endif</pre>
+  <b>③ 嵌套使用</b>：条件编译可以多层嵌套，每层都要有配对的 <code>#endif</code>。
+  <div class="th">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q24">2025.10 真题·第 24 题</a> 条件编译可以有效地提高程序的 <b>可移植性</b>（也答"灵活性"），使同一个源程序可提供各种不同的版本。<br>
+    <b>记忆点：</b>条件编译 = 按"机型 / 环境 / 版本"裁剪代码 → <b>可移植性</b>；这和"宏 = 纯文本替换""include = 复制"是三条并列的送分填空。
+  </div>
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>四条主线：</b><br>
+  ① 预处理在<b>编译之前</b>完成，命令以 <code>#</code> 开头、<b>不加分号</b>、不是 C 语句；<br>
+  ② 宏是<b>纯文本替换</b>——<code>P(4+6)</code> 展开成 <code>4+6/4+6</code> 得 <b>11</b>；<b>参数加括号、整体加括号、宏名与括号间不留空格</b>；<br>
+  ③ <code>#include &lt; &gt;</code> 找系统目录、<code>#include " "</code> 先找当前目录；作用是<b>复制</b>到本行位置；<br>
+  ④ 条件编译的三种形式与"<b>提高可移植性</b>"的标准答法。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q14">2026.4-14</a> 带参宏展开（C）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q23">2026.4-23</a> include 是<b>复制</b>、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q14">2025.10-14</a> <code>P(4+6)</code> = <b>11</b>（C）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q23">2025.10-23</a> 包含<b>头文件</b>、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q24">2025.10-24</a> 条件编译提高<b>可移植性</b>。<br>
+  <b>这 10 分是整张卷子里最"背了就有"的 10 分。</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 9 章 编译预处理 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

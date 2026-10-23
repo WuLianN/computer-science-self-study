@@ -39,7 +39,8 @@
   .answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
   .sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
   .sol .lab{font-weight:700;color:var(--brand)}
-  .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
+  .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0;text-decoration:none}
+  a.tag:hover{background:var(--warn);color:#fff}
   code.c{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#f3f4f6;border-radius:5px;padding:1px 6px;font-size:.92em;color:#b91c1c}
   pre.code{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.6;overflow-x:auto;margin:10px 0;white-space:pre}
   .blank{color:var(--brand);font-weight:700}
@@ -76,7 +77,7 @@
 
 <h2 class="section">一、单项选择题（每小题2分，共30分）</h2>
 
-<details class="q"><summary>
+<details class="q" id="q1"><summary>
   <span class="qno">第1题</span><span class="toggle">点击展开答案</span>
   <div class="stem">关于 C 程序描述正确的是</div>
   <div class="opts"><span>A. C 程序的基本单位是语句</span><span>B. C 程序的任意位置都可以加注释</span><span>C. C 程序中一条语句只能写在一行上</span><span>D. C 程序中的所有函数都可以互相调用</span></div>
@@ -84,10 +85,10 @@
 <div class="body">
   <div class="answer">答案：B</div>
   <div class="sol"><span class="lab">解析：</span>C 程序的<b>基本单位是函数</b>而不是语句（A 错）；注释可出现在程序的任意位置（B 对）；一条语句可以分多行写（C 错）；main 函数不能被其他函数调用（D 错）。</div>
-  <span class="tag">考点：C 程序结构 · 注释</span>
+  <a class="tag" href="../知识点/概述/C语言基础.html#s3">考点：C 程序结构 · 注释</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q2"><summary>
   <span class="qno">第2题</span><span class="toggle">点击展开答案</span>
   <div class="stem">表示空字符的转义字符是</div>
   <div class="opts"><span>A. \0</span><span>B. \n</span><span>C. \b</span><span>D. \t</span></div>
@@ -95,10 +96,10 @@
 <div class="body">
   <div class="answer">答案：A</div>
   <div class="sol"><span class="lab">解析：</span><code class="c">\0</code> 是空字符（ASCII 码 0），正是字符串结束标志；<code class="c">\n</code> 换行、<code class="c">\b</code> 退格、<code class="c">\t</code> 制表。</div>
-  <span class="tag">考点：转义字符</span>
+  <a class="tag" href="../知识点/数据类型/数据类型与常量.html#s5">考点：转义字符</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q3"><summary>
   <span class="qno">第3题</span><span class="toggle">点击展开答案</span>
   <div class="stem">C 语言中定义有名常量所用的关键字是</div>
   <div class="opts"><span>A. auto</span><span>B. const</span><span>C. define</span><span>D. static</span></div>
@@ -106,10 +107,10 @@
 <div class="body">
   <div class="answer">答案：B</div>
   <div class="sol"><span class="lab">解析：</span><b>有名常量用 <code class="c">const</code> 定义</b>（如 <code class="c">const float PI=3.14;</code>），其值通过赋初值获得、之后不可改变。auto/static 是存储类别，define 是预处理命令且没有"#"不成立。</div>
-  <span class="tag">考点：const 有名常量</span>
+  <a class="tag" href="../知识点/数据类型/数据类型与常量.html#s6">考点：const 有名常量</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q4"><summary>
   <span class="qno">第4题</span><span class="toggle">点击展开答案</span>
   <div class="stem">下列运算符中优先级最高的是</div>
   <div class="opts"><span>A. &amp;&amp;</span><span>B. %</span><span>C. --</span><span>D. &gt;=</span></div>
@@ -117,10 +118,10 @@
 <div class="body">
   <div class="answer">答案：C</div>
   <div class="sol"><span class="lab">解析：</span>优先级：<b>单目 <code class="c">--</code></b> &gt; 算术 <code class="c">%</code> &gt; 关系 <code class="c">&gt;=</code> &gt; 逻辑 <code class="c">&amp;&amp;</code>。自增自减是一元运算符，仅次于括号类。</div>
-  <span class="tag">考点：运算符优先级</span>
+  <a class="tag" href="../知识点/数据类型/运算符与表达式.html#s2">考点：运算符优先级</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q5"><summary>
   <span class="qno">第5题</span><span class="toggle">点击展开答案</span>
   <div class="stem">设 int x;，则将 x 强制转化成双精度实型的表达式是</div>
   <div class="opts"><span>A. x(double)</span><span>B. double(x)</span><span>C. (x)double</span><span>D. (double)x</span></div>
@@ -128,10 +129,10 @@
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span>C 的强制类型转换格式为 <code class="c">(类型名)表达式</code>，故写作 <code class="c">(double)x</code>。B 是 C++ 的函数式写法，C 语言不支持。</div>
-  <span class="tag">考点：强制类型转换</span>
+  <a class="tag" href="../知识点/数据类型/数据类型与常量.html#s7">考点：强制类型转换</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q6"><summary>
   <span class="qno">第6题</span><span class="toggle">点击展开答案</span>
   <div class="stem">下列变量定义会自动赋初值的是</div>
   <div class="opts"><span>A. int m;</span><span>B. char c;</span><span>C. register int n;</span><span>D. static int a;</span></div>
@@ -139,10 +140,10 @@
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span><b>静态变量（static）和外部变量若不显式赋值，系统自动初始化为 0</b>；auto、register 及普通局部变量是随机值，不自动赋值。</div>
-  <span class="tag">考点：变量的存储类别 · 初值</span>
+  <a class="tag" href="../知识点/函数/变量作用域与存储类别.html#s2">考点：变量的存储类别 · 初值</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q7"><summary>
   <span class="qno">第7题</span><span class="toggle">点击展开答案</span>
   <div class="stem">声明为 auto 类型变量的作用域是</div>
   <div class="opts"><span>A. 整个文件</span><span>B. 所定义的函数或复合语句</span><span>C. 本文件和其他文件</span><span>D. 从定义位置开始到 main 函数结束</span></div>
@@ -150,10 +151,10 @@
 <div class="body">
   <div class="answer">答案：B</div>
   <div class="sol"><span class="lab">解析：</span>auto（自动）变量即普通的局部变量，作用域限于<b>定义它的函数或复合语句（一对 {}）内部</b>，出块即失效。</div>
-  <span class="tag">考点：auto 变量作用域</span>
+  <a class="tag" href="../知识点/函数/变量作用域与存储类别.html#s2">考点：auto 变量作用域</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q8"><summary>
   <span class="qno">第8题</span><span class="toggle">点击展开答案</span>
   <div class="stem">主函数调用函数 x()，函数 x() 调用函数 y()，属于函数的</div>
   <div class="opts"><span>A. 嵌套调用</span><span>B. 递归调用</span><span>C. 循环调用</span><span>D. 分层调用</span></div>
@@ -161,10 +162,10 @@
 <div class="body">
   <div class="answer">答案：A</div>
   <div class="sol"><span class="lab">解析：</span>调用过程中又调用另一个函数称为<b>嵌套调用</b>；若函数直接或间接调用自己才是递归调用。</div>
-  <span class="tag">考点：函数嵌套调用 vs 递归</span>
+  <a class="tag" href="../知识点/函数/函数与递归.html#s5">考点：函数嵌套调用 vs 递归</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q9"><summary>
   <span class="qno">第9题</span><span class="toggle">点击展开答案</span>
   <div class="stem">关于指针描述<u>不正确</u>的是</div>
   <div class="opts"><span>A. 指针是一种数据类型</span><span>B. 指针可以实现动态分配内存</span><span>C. 通过指针可以直接访问变量的值</span><span>D. 指针是存放数据的内存单元地址</span></div>
@@ -172,10 +173,10 @@
 <div class="body">
   <div class="answer">答案：C</div>
   <div class="sol"><span class="lab">解析：</span>指针类型是"存放地址"的数据类型（A、D 正确），可配合 malloc 动态分配（B 正确）；通过指针访问变量值是<b>间接访问</b>（要先 <code class="c">*p</code> 解引用），说成"直接访问"故错。</div>
-  <span class="tag">考点：指针概念 · 间接访问</span>
+  <a class="tag" href="../知识点/指针/指针与数组.html#s1">考点：指针概念 · 间接访问</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q10"><summary>
   <span class="qno">第10题</span><span class="toggle">点击展开答案</span>
   <div class="stem">可以接收 int *fun() 函数返回值的是</div>
   <div class="opts"><span>A. 字符变量</span><span>B. 指针变量</span><span>C. 整型变量</span><span>D. 实型变量</span></div>
@@ -183,10 +184,10 @@
 <div class="body">
   <div class="answer">答案：B</div>
   <div class="sol"><span class="lab">解析：</span><code class="c">int *fun()</code> 的返回类型是 <code class="c">int*</code>（整型指针），必须用<b>同类型的指针变量</b>接收，如 <code class="c">int *p=fun();</code>。</div>
-  <span class="tag">考点：返回指针的函数</span>
+  <a class="tag" href="../知识点/指针/指针进阶.html#s5">考点：返回指针的函数</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q11"><summary>
   <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
   <div class="stem">语句 char *str[]={"Zhang","Li","Wang",NULL}; 定义了一个</div>
   <div class="opts"><span>A. 包含四个元素的字符数组</span><span>B. 包含四个元素的指针数组</span><span>C. 指向一个一维字符数组的指针变量</span><span>D. 指向一个二维字符数组的指针变量</span></div>
@@ -194,10 +195,10 @@
 <div class="body">
   <div class="answer">答案：B</div>
   <div class="sol"><span class="lab">解析：</span><code class="c">char *str[4]</code>：先看后缀 <code class="c">[4]</code> 是数组，再看元素是 <code class="c">char*</code>，故为<b>长度为 4 的字符指针数组</b>（常用来存若干字符串）。对比：<code class="c">char (*p)[4]</code> 才是指向一维数组的指针。</div>
-  <span class="tag">考点：指针数组 vs 数组指针</span>
+  <a class="tag" href="../知识点/指针/指针进阶.html#s1">考点：指针数组 vs 数组指针</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q12"><summary>
   <span class="qno">第12题</span><span class="toggle">点击展开答案</span>
   <div class="stem">关于结构体类型定义描述正确的是</div>
   <div class="opts"><span>A. 结构体类型可以嵌套定义</span><span>B. 结构体类型的成员只能是基本数据类型</span><span>C. 结构体类型定义后，系统会为其成员分配内存</span><span>D. 结构体类型中的成员，即使数据类型相同，也必须分别定义</span></div>
@@ -205,10 +206,10 @@
 <div class="body">
   <div class="answer">答案：A</div>
   <div class="sol"><span class="lab">解析：</span>结构体成员可以是另一个结构体类型（<b>嵌套定义</b>，A 对）；成员也可以是数组、指针、结构体（B 错）；<b>定义类型只描述"格式"，不分配内存</b>，定义变量时才分配（C 错）；同类型成员可一行声明，不必分别定义（D 错）。</div>
-  <span class="tag">考点：结构体类型定义</span>
+  <a class="tag" href="../知识点/结构体与自定义类型/结构体与自定义类型.html#s2">考点：结构体类型定义</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q13"><summary>
   <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
   <div class="stem">typedef 的作用是</div>
   <div class="opts"><span>A. 定义常量</span><span>B. 定义变量</span><span>C. 定义函数</span><span>D. 定义已有数据类型的别名</span></div>
@@ -216,10 +217,10 @@
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span><code class="c">typedef</code> 只给<b>已有类型起别名</b>，并不产生新类型，如 <code class="c">typedef long C;</code> 后 <code class="c">C a;</code> 等价于 <code class="c">long a;</code>。</div>
-  <span class="tag">考点：typedef 类型别名</span>
+  <a class="tag" href="../知识点/结构体与自定义类型/结构体与自定义类型.html#s8">考点：typedef 类型别名</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q14"><summary>
   <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
   <div class="stem">设 #define P(x) x/x，则执行语句 printf("%d\n",P(4+6)); 后输出的结果是</div>
   <div class="opts"><span>A. 1</span><span>B. 10</span><span>C. 11</span><span>D. 11.5</span></div>
@@ -228,10 +229,10 @@
   <div class="answer">答案：C</div>
   <div class="sol"><span class="lab">解析：</span>宏是<b>纯文本替换、不做运算</b>：<code class="c">P(4+6)</code> 展开为 <code class="c">4+6/4+6</code>，按优先级 = 4 + (6/4) + 6 = 4 + 1 + 6 = <b>11</b>。<br>
   <span style="color:var(--muted);font-size:13px">⚠ 若宏写成 <code class="c">#define P(x) (x)/(x)</code> 才是 1。这就是"宏参数必须加括号"的经典陷阱。</span></div>
-  <span class="tag">考点：带参宏展开 · 括号陷阱</span>
+  <a class="tag" href="../知识点/编译预处理/宏与文件包含.html#s3">考点：带参宏展开 · 括号陷阱</a>
 </div></details>
 
-<details class="q"><summary>
+<details class="q" id="q15"><summary>
   <span class="qno">第15题</span><span class="toggle">点击展开答案</span>
   <div class="stem">文件型指针的作用是</div>
   <div class="opts"><span>A. 接收文件的存放路径</span><span>B. 指向文件名字符串的首地址</span><span>C. 接收文件打开函数返回的地址</span><span>D. 接收文件打开函数返回的文件名</span></div>
@@ -239,55 +240,55 @@
 <div class="body">
   <div class="answer">答案：C</div>
   <div class="sol"><span class="lab">解析：</span><code class="c">FILE *fp;</code> 用来接收 <code class="c">fopen</code> 返回的<b>文件结构体地址</b>，后续所有文件操作都靠它定位文件。</div>
-  <span class="tag">考点：文件型指针 FILE*</span>
+  <a class="tag" href="../知识点/文件/文件操作.html#s2">考点：文件型指针 FILE*</a>
 </div></details>
 
 <h2 class="section">二、填空题（每空2分，共20分）</h2>
 
-<details class="q"><summary><span class="qno">第16题</span><span class="toggle">点击展开答案</span><div class="stem">机器语言是用二进制代码表示的能被计算机识别和执行的 ______ 。</div></summary>
+<details class="q" id="q16"><summary><span class="qno">第16题</span><span class="toggle">点击展开答案</span><div class="stem">机器语言是用二进制代码表示的能被计算机识别和执行的 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：指令</div>
-<div class="sol"><span class="lab">解析：</span>机器语言即二进制<b>指令</b>的集合，是计算机唯一能直接识别执行的语言。</div><span class="tag">考点：机器语言</span></div></details>
+<div class="sol"><span class="lab">解析：</span>机器语言即二进制<b>指令</b>的集合，是计算机唯一能直接识别执行的语言。</div><a class="tag" href="../知识点/概述/程序设计与算法.html#s1">考点：机器语言</a></div></details>
 
-<details class="q"><summary><span class="qno">第17题</span><span class="toggle">点击展开答案</span><div class="stem">结构化程序设计又称为面向 ______ 的程序设计。</div></summary>
+<details class="q" id="q17"><summary><span class="qno">第17题</span><span class="toggle">点击展开答案</span><div class="stem">结构化程序设计又称为面向 ______ 的程序设计。</div></summary>
 <div class="body"><div class="answer">答案：过程</div>
-<div class="sol"><span class="lab">解析：</span>结构化程序设计以"过程（函数）"为中心，故称<b>面向过程</b>的程序设计，与面向对象相对。</div><span class="tag">考点：结构化程序设计</span></div></details>
+<div class="sol"><span class="lab">解析：</span>结构化程序设计以"过程（函数）"为中心，故称<b>面向过程</b>的程序设计，与面向对象相对。</div><a class="tag" href="../知识点/概述/程序设计与算法.html#s4">考点：结构化程序设计</a></div></details>
 
-<details class="q"><summary><span class="qno">第18题</span><span class="toggle">点击展开答案</span><div class="stem">设 int x=3,y=4;，则表达式 ++x&lt;y 的值为 ______ 。</div></summary>
+<details class="q" id="q18"><summary><span class="qno">第18题</span><span class="toggle">点击展开答案</span><div class="stem">设 int x=3,y=4;，则表达式 ++x&lt;y 的值为 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：0</div>
 <div class="sol"><span class="lab">解析：</span><code class="c">++x</code> 先自加 → x=4，再比较 <code class="c">4 &lt; 4</code> → <b>假，值为 0</b>。<br>
-<span style="color:var(--muted);font-size:13px">⚠ 网络版答案写"1"，属笔误：<code class="c">++x&lt;y</code> 在 x=3,y=4 时两边相等，关系不成立；已用 gcc 实测为 0。若题目是 <code class="c">x++&lt;y</code> 或 <code class="c">++x&lt;=y</code> 才为 1。</span></div><span class="tag">考点：自增 · 关系表达式取值</span></div></details>
+<span style="color:var(--muted);font-size:13px">⚠ 网络版答案写"1"，属笔误：<code class="c">++x&lt;y</code> 在 x=3,y=4 时两边相等，关系不成立；已用 gcc 实测为 0。若题目是 <code class="c">x++&lt;y</code> 或 <code class="c">++x&lt;=y</code> 才为 1。</span></div><a class="tag" href="../知识点/数据类型/运算符与表达式.html#s4">考点：自增 · 关系表达式取值</a></div></details>
 
-<details class="q"><summary><span class="qno">第19题</span><span class="toggle">点击展开答案</span><div class="stem">用 { } 括起来的多个语句称为 ______ 。</div></summary>
+<details class="q" id="q19"><summary><span class="qno">第19题</span><span class="toggle">点击展开答案</span><div class="stem">用 { } 括起来的多个语句称为 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：复合语句（语句块）</div>
-<div class="sol"><span class="lab">解析：</span>用花括号把若干语句括起来，在语法上当作<b>一条语句</b>看待，称复合语句或语句块。</div><span class="tag">考点：复合语句</span></div></details>
+<div class="sol"><span class="lab">解析：</span>用花括号把若干语句括起来，在语法上当作<b>一条语句</b>看待，称复合语句或语句块。</div><a class="tag" href="../知识点/概述/C语言基础.html#s4">考点：复合语句</a></div></details>
 
-<details class="q"><summary><span class="qno">第20题</span><span class="toggle">点击展开答案</span><div class="stem">由基本数据类型按一定规则组合而成的复杂数据类型称为 ______ 。</div></summary>
+<details class="q" id="q20"><summary><span class="qno">第20题</span><span class="toggle">点击展开答案</span><div class="stem">由基本数据类型按一定规则组合而成的复杂数据类型称为 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：构造数据类型（复合数据类型）</div>
-<div class="sol"><span class="lab">解析：</span>C 的数据类型分基本类型、<b>构造类型</b>（数组、结构体、共用体）、指针类型和空类型。</div><span class="tag">考点：数据类型分类</span></div></details>
+<div class="sol"><span class="lab">解析：</span>C 的数据类型分基本类型、<b>构造类型</b>（数组、结构体、共用体）、指针类型和空类型。</div><a class="tag" href="../知识点/数据类型/数据类型与常量.html#s1">考点：数据类型分类</a></div></details>
 
-<details class="q"><summary><span class="qno">第21题</span><span class="toggle">点击展开答案</span><div class="stem">在 16 位编译器中，一个 int 型变量一般占用 ______ 字节内存。</div></summary>
+<details class="q" id="q21"><summary><span class="qno">第21题</span><span class="toggle">点击展开答案</span><div class="stem">在 16 位编译器中，一个 int 型变量一般占用 ______ 字节内存。</div></summary>
 <div class="body"><div class="answer">答案：2</div>
-<div class="sol"><span class="lab">解析：</span>16 位系统下 <code class="c">int</code> 占 <b>2 字节</b>（值域 −32768~32767）；32 位/64 位下占 4 字节。题干特意说 16 位，答案就是 2。</div><span class="tag">考点：整型数据长度</span></div></details>
+<div class="sol"><span class="lab">解析：</span>16 位系统下 <code class="c">int</code> 占 <b>2 字节</b>（值域 −32768~32767）；32 位/64 位下占 4 字节。题干特意说 16 位，答案就是 2。</div><a class="tag" href="../知识点/数据类型/数据类型与常量.html#s2">考点：整型数据长度</a></div></details>
 
-<details class="q"><summary><span class="qno">第22题</span><span class="toggle">点击展开答案</span><div class="stem">调用函数之前，应让编译程序预先了解函数的有关信息，即对被调函数进行 ______ 。</div></summary>
+<details class="q" id="q22"><summary><span class="qno">第22题</span><span class="toggle">点击展开答案</span><div class="stem">调用函数之前，应让编译程序预先了解函数的有关信息，即对被调函数进行 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：声明（原型声明）</div>
-<div class="sol"><span class="lab">解析：</span>在调用前写函数的<b>声明（原型）</b>，告诉编译器返回值类型、函数名和参数表，编译器才能做类型检查。</div><span class="tag">考点：函数声明</span></div></details>
+<div class="sol"><span class="lab">解析：</span>在调用前写函数的<b>声明（原型）</b>，告诉编译器返回值类型、函数名和参数表，编译器才能做类型检查。</div><a class="tag" href="../知识点/函数/函数与递归.html#s3">考点：函数声明</a></div></details>
 
-<details class="q"><summary><span class="qno">第23题</span><span class="toggle">点击展开答案</span><div class="stem">使用 C 语言提供的库函数编程时，需要在源程序文件开始部分包含相应的 ______ 。</div></summary>
+<details class="q" id="q23"><summary><span class="qno">第23题</span><span class="toggle">点击展开答案</span><div class="stem">使用 C 语言提供的库函数编程时，需要在源程序文件开始部分包含相应的 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：头文件</div>
-<div class="sol"><span class="lab">解析：</span>用 <code class="c">#include &lt;stdio.h&gt;</code> 这类命令包含相应的<b>头文件</b>，才能使用其中的库函数声明。</div><span class="tag">考点：#include 头文件</span></div></details>
+<div class="sol"><span class="lab">解析：</span>用 <code class="c">#include &lt;stdio.h&gt;</code> 这类命令包含相应的<b>头文件</b>，才能使用其中的库函数声明。</div><a class="tag" href="../知识点/编译预处理/宏与文件包含.html#s5">考点：#include 头文件</a></div></details>
 
-<details class="q"><summary><span class="qno">第24题</span><span class="toggle">点击展开答案</span><div class="stem">条件编译可以有效地提高程序的 ______ ，使同一个源程序可提供各种不同的版本。</div></summary>
+<details class="q" id="q24"><summary><span class="qno">第24题</span><span class="toggle">点击展开答案</span><div class="stem">条件编译可以有效地提高程序的 ______ ，使同一个源程序可提供各种不同的版本。</div></summary>
 <div class="body"><div class="answer">答案：可移植性（灵活性）</div>
-<div class="sol"><span class="lab">解析：</span>用 <code class="c">#if / #ifdef / #else</code> 等条件编译，可为不同机型、不同环境编出不同版本，从而提高程序的<b>可移植性</b>。</div><span class="tag">考点：条件编译</span></div></details>
+<div class="sol"><span class="lab">解析：</span>用 <code class="c">#if / #ifdef / #else</code> 等条件编译，可为不同机型、不同环境编出不同版本，从而提高程序的<b>可移植性</b>。</div><a class="tag" href="../知识点/编译预处理/宏与文件包含.html#s6">考点：条件编译</a></div></details>
 
-<details class="q"><summary><span class="qno">第25题</span><span class="toggle">点击展开答案</span><div class="stem">文件按照内容可分为程序文件和 ______ 。</div></summary>
+<details class="q" id="q25"><summary><span class="qno">第25题</span><span class="toggle">点击展开答案</span><div class="stem">文件按照内容可分为程序文件和 ______ 。</div></summary>
 <div class="body"><div class="answer">答案：数据文件</div>
-<div class="sol"><span class="lab">解析：</span>按内容分：程序文件（源程序 .c、目标文件 .obj、可执行文件 .exe）与<b>数据文件</b>；按存储形式分：文本文件与二进制文件。</div><span class="tag">考点：文件的分类</span></div></details>
+<div class="sol"><span class="lab">解析：</span>按内容分：程序文件（源程序 .c、目标文件 .obj、可执行文件 .exe）与<b>数据文件</b>；按存储形式分：文本文件与二进制文件。</div><a class="tag" href="../知识点/文件/文件操作.html#s1">考点：文件的分类</a></div></details>
 
 <h2 class="section">三、程序分析题（每小题4分，共16分）</h2>
 
-<details class="q"><summary><span class="qno">第26题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+<details class="q" id="q26"><summary><span class="qno">第26题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
 int main(void)
 {
     int a=-1,b=4,c;
@@ -299,9 +300,9 @@ int main(void)
 <div class="body"><div class="answer">答案：0,0,4</div>
 <div class="sol"><span class="lab">解析：</span>先算 <code class="c">++a</code>：a 由 −1 变 <b>0</b>；再判 <code class="c">0&lt;0</code> → 假。<b>逻辑与短路</b>：左边已为假，右边 <code class="c">b--&lt;=0</code> 根本不执行，故 b 仍为 4。整个表达式 c=0。<br>
 输出顺序是 <code class="c">c,a,b</code> → <b>0,0,4</b>。</div>
-<span class="tag">考点：自增在前/在后 · 逻辑与短路</span></div></details>
+<a class="tag" href="../知识点/数据类型/运算符与表达式.html#s5">考点：自增在前/在后 · 逻辑与短路</a></div></details>
 
-<details class="q"><summary><span class="qno">第27题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+<details class="q" id="q27"><summary><span class="qno">第27题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
 int main(void)
 {
     int i,j,w=0;
@@ -316,9 +317,9 @@ int main(void)
 <div class="sol"><span class="lab">解析：</span>把每一轮的加法写全（i 取 4、3、2，每个 i 下 j 取 1、2）：<br>
 4×1+4×2 = 12 → w=12；3×1+3×2 = 9 → w=21；2×1+2×2 = 6 → w=<b>27</b>。<br>
 <span style="color:var(--muted);font-size:13px">⚠ 网络版答案写"36"，是把 6 次乘法各自相加后又多算了一遍；已用 gcc 实测为 <b>27</b>。速算技巧：w = Σi × Σj = (4+3+2) × (1+2) = 9 × 3 = 27。</span></div>
-<span class="tag">考点：双重循环累加 · 内层无大括号</span></div></details>
+<a class="tag" href="../知识点/结构化程序设计/循环结构.html#s5">考点：双重循环累加 · 内层无大括号</a></div></details>
 
-<details class="q"><summary><span class="qno">第28题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+<details class="q" id="q28"><summary><span class="qno">第28题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
 int main(void)
 {
     int a[3][4]={0,1,2,3,4,5,6,7,8,9,10,11},i,j;
@@ -335,9 +336,9 @@ int main(void)
 <div class="sol"><span class="lab">解析：</span>二维数组按行存放：第 0 行 0~3、第 1 行 4~7、第 2 行 8~11。<br>
 每行所有元素整除 2 后：第 0 行 0,0,1,1；第 1 行 2,2,3,3；第 2 行 4,4,5,5。<br>
 每行只输出下标 1 的元素：<b>0、2、4</b>（注意 <code class="c">printf</code> 在内层循环之外，每行只输出一个数）。</div>
-<span class="tag">考点：二维数组遍历 · 复合赋值 /= · 缩进陷阱</span></div></details>
+<a class="tag" href="../知识点/数组/一维与二维数组.html#s6">考点：二维数组遍历 · 复合赋值 /= · 缩进陷阱</a></div></details>
 
-<details class="q"><summary><span class="qno">第29题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+<details class="q" id="q29"><summary><span class="qno">第29题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
 int f(int j)
 {
     static int k;
@@ -356,11 +357,11 @@ int main(void)
 <div class="sol"><span class="lab">解析：</span>关键在 <code class="c">static int k;</code>：<b>静态局部变量只初始化一次，且整个程序运行期间一直存在</b>（未赋初值时自动为 0），函数返回后值不消失。<br>
 第 1 次调用 k=0→1，返回 1+10=11；第 2 次 k=1→2，返回 12；依此类推得 <b>11 12 13 14</b>。<br>
 （若把 static 去掉，k 每次都是垃圾值，输出就不确定了。）</div>
-<span class="tag">考点：静态局部变量的生存期</span></div></details>
+<a class="tag" href="../知识点/函数/变量作用域与存储类别.html#s3">考点：静态局部变量的生存期</a></div></details>
 
 <h2 class="section">四、程序填充题（每小题6分，共18分）</h2>
 
-<details class="q"><summary><span class="qno">第30题</span><span class="toggle">点击展开答案</span><div class="stem">从键盘输入一串字符，将其中的大写字母转小写、小写字母转大写，数字都改成字符 '0'，输出转换结果。请填空。</div><pre class="code">#include &lt;ctype.h&gt;
+<details class="q" id="q30"><summary><span class="qno">第30题</span><span class="toggle">点击展开答案</span><div class="stem">从键盘输入一串字符，将其中的大写字母转小写、小写字母转大写，数字都改成字符 '0'，输出转换结果。请填空。</div><pre class="code">#include &lt;ctype.h&gt;
 #include &lt;stdio.h&gt;
 #include &lt;string.h&gt;
 int main(void)
@@ -386,9 +387,9 @@ int main(void)
 <div class="sol"><span class="lab">解析：</span>① <code class="c">gets(s1)</code> 读入整行到数组 s1；② 循环要遍历到串尾，用 <code class="c">strlen(s1)</code> 取长度最稳妥（等价写法 <code class="c">s1[i]!='\0'</code> 也可以）；③ 判断"是不是数字字符"用 <code class="c">isdigit</code>，与之配套的还有 islower / isupper / tolower / toupper，都在 <code class="c">&lt;ctype.h&gt;</code>。<br>
 注意：如果 s1 中出现空格、标点等既不满足三个分支的字符，s2 对应位置不会被赋值（这是原始题目的疏漏），但填空答案不受影响。<br>
 <span style="color:var(--muted);font-size:13px">📌 原卷把 <code class="c">int i;</code> 写在了 <code class="c">gets(...)</code> 之后——严格按 C89 规程，声明应全部提到函数开头；考试照原卷位置作答即可，但自己写程序时请养成“先声明后语句”的习惯。</span></div>
-<span class="tag">考点：字符处理函数 · gets/strlen</span></div></details>
+<a class="tag" href="../知识点/数组/字符数组与字符串.html#s3">考点：字符处理函数 · gets/strlen</a></div></details>
 
-<details class="q"><summary><span class="qno">第31题</span><span class="toggle">点击展开答案</span><div class="stem">将字符串 "I like C Programming" 中的 "like" 子串逆序。请填空。</div><pre class="code">#include &lt;stdio.h&gt;
+<details class="q" id="q31"><summary><span class="qno">第31题</span><span class="toggle">点击展开答案</span><div class="stem">将字符串 "I like C Programming" 中的 "like" 子串逆序。请填空。</div><pre class="code">#include &lt;stdio.h&gt;
 void fun(char* str,int a,int b)
 {
     char *p=str+a,*q= ______ ,t;                 /* 第一空 */
@@ -412,9 +413,9 @@ int main(void)
 <div class="body"><div class="answer">答案：第一空 str+b-1　第二空 q--　第三空 s,2,6</div>
 <div class="sol"><span class="lab">解析：</span>① 首尾指针法逆序：p 指向第 a 个字符，q 必须指向<b>最后一个要交换的字符</b>，即下标 b−1，故填 <code class="c">str+b-1</code>；② 交换完一对后 p 后移、q 必须<b>前移</b>，故填 <code class="c">q--</code>；③ "like" 在串中下标是 <b>2~5</b>（I=0、空格=1、l=2、i=3、k=4、e=5），而 b 表示"末字符下标+1"，故要传 <b>6</b>：<code class="c">fun(s,2,6)</code>。<br>
 <span style="color:var(--muted);font-size:13px">⚠ 网络版答案写 <code class="c">fun(s,2,5)</code>，实测只会把 "lik" 逆成 "kil"，输出 "I kile C Programming"；正确答案必须是 <b>s,2,6</b>，输出 "I ekil C Programming"。（已用 gcc 实跑对比）</span></div>
-<span class="tag">考点：指针作参数 · 首尾交换逆序 · 区间端点</span></div></details>
+<a class="tag" href="../知识点/指针/指针与数组.html#s7">考点：指针作参数 · 首尾交换逆序 · 区间端点</a></div></details>
 
-<details class="q"><summary><span class="qno">第32题</span><span class="toggle">点击展开答案</span><div class="stem">输入并保存若干人员的姓名和联系方式，以姓名为 "#" 结束输入，然后再输入一个姓名，查找并输出对应人员的联系方式。请填空。</div><pre class="code">#include &lt;string.h&gt;
+<details class="q" id="q32"><summary><span class="qno">第32题</span><span class="toggle">点击展开答案</span><div class="stem">输入并保存若干人员的姓名和联系方式，以姓名为 "#" 结束输入，然后再输入一个姓名，查找并输出对应人员的联系方式。请填空。</div><pre class="code">#include &lt;string.h&gt;
 #include &lt;stdio.h&gt;
 struct call
 {
@@ -448,11 +449,11 @@ int main(void)
 <div class="body"><div class="answer">答案：第一空 !=　第二空 i++　第三空 j==i</div>
 <div class="sol"><span class="lab">解析：</span>① 循环条件是"姓名不等于 #"，<code class="c">strcmp</code> 返回 0 表示相等，故填 <code class="c">!=</code>；② 每读入一条有效记录就要<b>换到下一个数组元素</b>，故填 <code class="c">i++</code>（循环结束时 i 正好是记录条数）；③ 查完一遍若没找到，for 循环自然结束时 <b>j==i</b>（找着就会 break，j 必然小于 i），故填 <code class="c">j==i</code>（写 <code class="c">j&gt;=i</code> 也对）。<br>
 这就是"<b>标志变量/循环变量判空</b>"的经典手法，比另设 flag 更简洁。</div>
-<span class="tag">考点：结构体数组 · strcmp · 查找未命中判断</span></div></details>
+<a class="tag" href="../知识点/结构体与自定义类型/结构体与自定义类型.html#s4">考点：结构体数组 · strcmp · 查找未命中判断</a></div></details>
 
 <h2 class="section">五、程序设计题（每小题8分，共16分）</h2>
 
-<details class="q"><summary><span class="qno">第33题</span><span class="toggle">点击展开答案</span><div class="stem">从键盘输入正整数 k，计算并输出 k 以内（包括 k）能被 13 或 17 整除的自然数之和。</div></summary>
+<details class="q" id="q33"><summary><span class="qno">第33题</span><span class="toggle">点击展开答案</span><div class="stem">从键盘输入正整数 k，计算并输出 k 以内（包括 k）能被 13 或 17 整除的自然数之和。</div></summary>
 <div class="body"><div class="answer">参考答案（循环 + 求余判断）</div>
 <pre class="code">#include &lt;stdio.h&gt;
 int main(void)
@@ -468,9 +469,9 @@ int main(void)
 }</pre>
 <div class="sol"><span class="lab">套路：</span>① 循环枚举 1~k；② 条件用 <b><code class="c">%</code> 求余 + <code class="c">||</code></b>（"或"用逻辑或，不要写成两个 if 会把 221 这类公倍数加两次）；③ 累加。<br>
 <b>易错点：</b>是"或"不是"且"；sum 必须初始化 0；k 用 <code class="c">i&lt;=k</code> 含端点。</div>
-<span class="tag">考点：循环枚举 · 求余判断 · 逻辑或</span></div></details>
+<a class="tag" href="../知识点/结构化程序设计/循环结构.html#s6">考点：循环枚举 · 求余判断 · 逻辑或</a></div></details>
 
-<details class="q"><summary><span class="qno">第34题</span><span class="toggle">点击展开答案</span><div class="stem">生成一个数列的前 20 项并存入一维数组，该数列第 1、2 项分别为 0 和 1，以后每个奇数项是前两项之和，每个偶数项是前两项之差，输出该数列。</div></summary>
+<details class="q" id="q34"><summary><span class="qno">第34题</span><span class="toggle">点击展开答案</span><div class="stem">生成一个数列的前 20 项并存入一维数组，该数列第 1、2 项分别为 0 和 1，以后每个奇数项是前两项之和，每个偶数项是前两项之差，输出该数列。</div></summary>
 <div class="body"><div class="answer">参考答案（数组 + 双分支递推）</div>
 <pre class="code">#include &lt;stdio.h&gt;
 int main(void)
@@ -493,7 +494,7 @@ int main(void)
 <div class="sol"><span class="lab">套路：</span>① 前三项先手写定值；② 从 <code class="c">i=2</code> 起递推，<b>注意"项号"与"下标"差 1</b>：第 i+1 项为奇数 ⟺ <code class="c">(i+1)%2!=0</code>；③ 每项只依赖前两项，用数组顺序推即可。<br>
 正确序列（20 项）：<b>0 1 1 0 1 1 2 1 3 2 5 3 8 5 13 8 21 13 34 21</b><br>
 <span style="color:var(--muted);font-size:13px">⚠ 网络版答案用了 <code class="c">if(i%2==1)</code>，等于把"下标为奇"当"项号为奇"，从第 3 项起就推错（会得到 0 1 1 2 1 3 2 5…），属于典型的<b>差一错误</b>。</span></div>
-<span class="tag">考点：数组递推 · 项号与下标 · 差一错误</span></div></details>
+<a class="tag" href="../知识点/结构化程序设计/循环结构.html#s6">考点：数组递推 · 项号与下标 · 差一错误</a></div></details>
 
 <h2 class="section" id="anskey">答案速查表</h2>
 <div class="tip" style="margin:0 0 10px">全部 34 题答案一页看完，适合考前 5 分钟扫一遍；想逐题学思路请回到上方各题。</div>
@@ -512,5 +513,23 @@ int main(void)
 
 <footer>2025年10月高等教育自学考试 · 高级语言程序设计（13013）真题详解 · 教材：郑岩《高级语言程序设计》机械工业出版社 2017 · 仅供学习交流参考</footer>
 </div>
+
+<script>
+(function () {
+  function openTarget() {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      el.scrollIntoView();
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', openTarget);
+  } else {
+    openTarget();
+  }
+  window.addEventListener('hashchange', openTarget);
+})();
+</script>
 </body>
 </html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 运算符与表达式（第 3 章·下）｜优先级 / 结合性 / 整除求余 / 自增自减 / 短路求值</title>
+<meta name="description" content="高级语言程序设计 13013 第 3 章下半：9 类运算符、优先级与结合性总表、整数除法与求余符号规则、自增自减的四种写法、逻辑与或的短路求值、逗号与条件表达式，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>➗</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#0369a1,#4f46e5)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.law tr.lv1 td{background:#eff6ff}
+  table.law tr.lv2 td{background:#f0fdfa}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 3 章（下）· 运算符与表达式</h1>
+  <p>全课程"最不讲道理"却最好拿分的一页：<b>优先级表背下来，两套卷的 4 道单选 + 2 道填空直接全对</b>。剩下的就是整数除法、求余、自增自减、短路这四个老坑。</p>
+  <span class="pill">9 类运算符</span><span class="pill">优先级 & 结合性</span><span class="pill">整除与求余</span><span class="pill">短路求值</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="数据类型与常量.html">← 上一节：数据类型与常量</a>
+    <a href="../结构化程序设计/顺序结构与输入输出.html">→ 下一节：顺序结构与输入输出</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、运算符的九大类别</a>
+  <a href="#s2">二、优先级与结合性总表（背这一张）</a>
+  <a href="#s3">三、算术运算：整除与求余的两条铁律</a>
+  <a href="#s4">四、自增自减：前后缀与"必须是变量"</a>
+  <a href="#s5">五、关系与逻辑：结果只有 0 和 1，还有短路</a>
+  <a href="#s6">六、赋值、逗号、条件、sizeof</a>
+  <a href="#s7">七、位运算一眼带过</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、运算符的九大类别</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>类别</th><th>运算符</th><th>注意</th></tr>
+    <tr><td class="nm">算术</td><td><code>+ - * / %</code> 双目，<code>++ --</code> 单目</td><td><code>/</code> 两侧都是整数时做<b>整除</b>；<code>%</code> 两侧必须是<b>整数</b></td></tr>
+    <tr><td class="nm">关系</td><td><code>&lt; &lt;= &gt; &gt;= == !=</code></td><td>结果是 1（真）或 0（假）</td></tr>
+    <tr><td class="nm">逻辑</td><td><code>! &amp;&amp; ||</code></td><td>结果只有 0/1，且 <code>&amp;&amp;</code> <code>||</code> <b>短路</b></td></tr>
+    <tr><td class="nm">赋值</td><td><code>=</code> 及复合赋值 <code>+= -= *= /= %=</code></td><td>右结合，从右往左算</td></tr>
+    <tr><td class="nm">条件</td><td><code>? :</code></td><td>三目，右结合</td></tr>
+    <tr><td class="nm">逗号</td><td><code>,</code></td><td>从左到右算，整个表达式的值是<b>最后一个</b></td></tr>
+    <tr><td class="nm">位运算</td><td><code>&amp; | ^ ~ &lt;&lt; &gt;&gt;</code></td><td>按二进制位操作，操作数须为整型</td></tr>
+    <tr><td class="nm">sizeof</td><td><code>sizeof(类型/变量)</code></td><td><b>是运算符不是函数</b>，编译期就求出字节数</td></tr>
+    <tr><td class="nm">其他</td><td><code>&amp;</code> 取地址、<code>*</code> 解引用、<code>.</code> <code>-&gt;</code> 成员、<code>(类型)</code> 强制转换</td><td>第 7、8 章讲</td></tr>
+  </table>
+  C89 共有 <b>34 种</b>运算符——这个数字记一下，有时会考"运算符丰富"这个特点。
+</div>
+
+<h2 class="section" id="s2">二、优先级与结合性总表（背这一张）</h2>
+<div class="rule">
+  从上到下优先级由高到低，共 15 级：
+  <table class="law">
+    <tr><th>级</th><th>运算符</th><th>结合性</th><th>说明</th></tr>
+    <tr class="lv1"><td class="nm">1</td><td><code>()</code>　<code>[]</code>　<code>-&gt;</code>　<code>.</code></td><td>左 → 右</td><td><b>最高</b>：括号、下标、成员</td></tr>
+    <tr class="lv1"><td class="nm">2</td><td><code>!</code> <code>~</code> <code>++</code> <code>--</code> <code>+</code> <code>-</code>（正负）<code>*</code>（解引用）<code>&amp;</code>（取地址）<code>(类型)</code> <code>sizeof</code></td><td><b>右 → 左</b></td><td><b>单目运算符，全部右结合</b></td></tr>
+    <tr><td class="nm">3</td><td><code>*</code>　<code>/</code>　<code>%</code></td><td>左 → 右</td><td>乘除求余</td></tr>
+    <tr><td class="nm">4</td><td><code>+</code>　<code>-</code></td><td>左 → 右</td><td>加减</td></tr>
+    <tr><td class="nm">5</td><td><code>&lt;&lt;</code>　<code>&gt;&gt;</code></td><td>左 → 右</td><td>移位</td></tr>
+    <tr><td class="nm">6</td><td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code></td><td>左 → 右</td><td>关系</td></tr>
+    <tr><td class="nm">7</td><td><code>==</code>　<code>!=</code></td><td>左 → 右</td><td>等于/不等于（比大小关系低一级！）</td></tr>
+    <tr><td class="nm">8</td><td><code>&amp;</code> 按位与</td><td>左 → 右</td><td rowspan="3">位运算整体低于关系运算</td></tr>
+    <tr><td class="nm">9</td><td><code>^</code> 按位异或</td><td>左 → 右</td></tr>
+    <tr><td class="nm">10</td><td><code>|</code> 按位或</td><td>左 → 右</td></tr>
+    <tr><td class="nm">11</td><td><code>&amp;&amp;</code></td><td>左 → 右</td><td>逻辑与</td></tr>
+    <tr><td class="nm">12</td><td><code>||</code></td><td>左 → 右</td><td>逻辑或</td></tr>
+    <tr><td class="nm">13</td><td><code>? :</code></td><td>右 → 左</td><td>条件</td></tr>
+    <tr><td class="nm">14</td><td><code>=</code> 及各种复合赋值</td><td><b>右 → 左</b></td><td>赋值</td></tr>
+    <tr class="lv2"><td class="nm">15</td><td><code>,</code></td><td>左 → 右</td><td><b>最低</b>：逗号</td></tr>
+  </table>
+  <div class="th">
+    <b>三个必须刻进脑子的事实：</b>① <b>单目运算符优先级最高（仅次于括号等），且是右结合</b>；② <b>算术 &gt; 关系 &gt; 逻辑 &gt; 赋值 &gt; 逗号</b>；③ 赋值和条件运算符是<b>右结合</b>，其余绝大多数左结合。
+  </div>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q4">2026.4 真题·第 4 题</a> 比 <code>++</code> 优先级<b>高</b>的只有第 1 级的 <code>[]</code>、<code>()</code>、<code>-&gt;</code>、<code>.</code>——所以答案是 <code>[]</code>；<code>&lt;</code>、<code>%</code>、<code>%=</code> 都比 <code>++</code> 低。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q4">2025.10 真题·第 4 题</a> <code>&amp;&amp;</code>、<code>%</code>、<code>--</code>、<code>&gt;=</code> 中最高的是单目的 <code>--</code>。<br>
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q19">2026.4 真题·第 19 题</a> 单目运算符的结合方向是 <u>自右向左</u>。<b>注意：</b>该题官方答案栏误印"从左至右"，按 C 标准应为右结合，本站按正确答案标注。
+</div>
+
+<h2 class="section" id="s3">三、算术运算：整除与求余的两条铁律</h2>
+<div class="rule">
+  <b>铁律 1：<code>/</code> 两边都是整数 → 整除，结果向零取整（直接砍掉小数部分）。</b>
+  <div class="th">
+    <code>5/2 = 2</code>　<code>5/2.0 = 2.5</code>　<code>5.0/2 = 2.5</code>　<code>-5/3 = -1</code>（不是 −2，<b>向零取整</b>）　<code>5/-3 = -1</code>
+  </div>
+ <b>铁律 2：<code>%</code> 两边只能是整数，结果符号与被除数（左边那个）相同。</b>
+  <div class="th">
+    <code>7%3 = 1</code>　<code>-7%3 = -1</code>　<code>7%-3 = 1</code>　<code>-7%-3 = -1</code>　<code>5%2.0</code> <b>非法</b>（右边是实型）<br>
+    <small>说明：C89 对"负数求余的符号"未作强制规定，主流编译器（含考试用的 Turbo C / Dev-C++）按"与被除数同号"实现，答题按教材这条答即可。</small>
+  </div>
+  <b>类型提升：</b>只要有一边是实型（<code>float</code>/<code>double</code>），另一边就自动转成实型，做的是实数除法。<code>10/4*2.0 = 2*2.0 = 4.0</code>（先整除再乘，不是 5.0！）
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q6">2026.4 真题·第 6 题</a> 正确的除法运算是 <code>5/2.0 = 2.5</code>；<code>-5/3</code> 得 −1 不是 1，<code>5/2.0</code> 不是 2，<code>5.0/2</code> 不是 2（是 2.5）。<br>
+  <b>答题技巧：</b>看到除法先看两边类型，只要出现 <code>.0</code> 或 <code>float</code>/<code>double</code> 变量，就按实数算；否则一律整除。
+</div>
+
+<h2 class="section" id="s4">四、自增自减：前后缀与"必须是变量"</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>写法</th><th>含义</th><th>在表达式中的值</th></tr>
+    <tr><td class="nm"><code>++i</code>（前缀）</td><td>先 <code>i = i + 1</code>，再用</td><td><b>加完之后</b>的值</td></tr>
+    <tr><td class="nm"><code>i++</code>（后缀）</td><td>先用原来的值，再 <code>i = i + 1</code></td><td><b>加之前</b>的值</td></tr>
+    <tr><td class="nm"><code>--i</code> / <code>i--</code></td><td>同理，减 1</td><td>同上</td></tr>
+  </table>
+<pre class="src">int i = 3, a, b, c;
+a = i++;      <span class="cm">/* a = 3，i 变成 4 */</span>
+b = ++i;      <span class="hl"><span class="cm">/* i 先变 5，b = 5 */</span></span>
+c = i-- + --i;  <span class="cm">/* ✗ 别这么写：同一表达式中对同一变量多次自增，结果依赖编译器 */</span></pre>
+  <b>只能作用于"变量"（左值）</b>，不能作用于常量或表达式：
+  <table class="law">
+    <tr><th>写法</th><th>对错</th><th>原因</th></tr>
+    <tr><td class="nm"><code>i++</code></td><td class="y">✓</td><td>i 是变量</td></tr>
+    <tr><td class="nm"><code>i + 3</code></td><td class="y">✓</td><td>普通加法表达式，没问题</td></tr>
+    <tr><td class="nm"><code>i+3++</code></td><td class="n">✗</td><td><code>3</code> 是常量，不能自增（而且被解析成 <code>(i+3)++</code>）</td></tr>
+    <tr><td class="nm"><code>--(i+3)</code></td><td class="n">✗</td><td>括号里是表达式，没有内存单元可改</td></tr>
+    <tr><td class="nm"><code>++(i++)</code></td><td class="n">✗</td><td><code>i++</code> 的结果是"值"不是变量</td></tr>
+  </table>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q5">2026.4 真题·第 5 题</a> <code>int i=3;</code> 后表达式正确的是 <code>i+3</code>；其余三项都是把 <code>++</code>/<code>--</code> 用在常量或表达式上。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q18">2025.10 真题·第 18 题</a> <code>int x=3, y=4;</code> 则 <code>++x&lt;y</code> 的值是 <u>0</u>：先 <code>x</code> 变 4，再算 <code>4&lt;4</code> 为假，关系表达式的值就是 <b>0</b>。
+</div>
+
+<h2 class="section" id="s5">五、关系与逻辑：结果只有 0 和 1，还有短路</h2>
+<div class="rule">
+  <b>关系运算</b>结果：真为 <b>1</b>，假为 <b>0</b>。<b>逻辑运算</b>结果也只有 0/1，判断标准是"<b>非 0 即真</b>"。
+  <table class="law">
+    <tr><th>运算符</th><th>为真的条件</th><th>是否短路</th></tr>
+    <tr><td class="nm"><code>a &amp;&amp; b</code></td><td>a、b <b>都</b>非 0</td><td><b>a 为 0 时，b 根本不计算</b></td></tr>
+    <tr><td class="nm"><code>a || b</code></td><td>a、b <b>有一个</b>非 0</td><td><b>a 非 0 时，b 根本不计算</b></td></tr>
+    <tr><td class="nm"><code>!a</code></td><td>a 为 0</td><td>—</td></tr>
+  </table>
+  <div class="th">
+    <b>短路求值就是"跳过副作用"：</b>如果右边写了 <code>++i</code>，而左边已经决定了结果，<code>i</code> 就<b>不会</b>被加 1。程序分析题里最爱考这一点。
+  </div>
+</div>
+<div class="card">
+ <h3>例：短路让右边的自增"没有发生"</h3>
+<pre class="src">int i = 1, r;
+r = (i &gt; 5) &amp;&amp; (i++);        <span class="cm">/* i&gt;5 为假 → i++ 不执行 */</span>
+printf("%d,%d\n", r, i);</pre>
+  <div class="out">0,1　　← r 为 0（假），i 仍是 1；若把 &amp;&amp; 换成 ||，i++ 也不会执行而 r 为 1</div>
+  <div class="th" style="border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;border-radius:6px;margin-top:8px">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q26">2025.10 真题·第 26 题</a> 与 <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q26">2026.4 真题·第 26 题</a> 都是"自增 + 短路"的连环题：推的时候<b>每算一步就把变量的新值写在旁边</b>，遇到 <code>&amp;&amp;</code> 左边为假 / <code>||</code> 左边为真，立刻跳过后面的所有自增。
+  </div>
+</div>
+<div class="note">
+  <b>两个高频坑：</b><br>
+  ① <code>if (a = 0)</code> 是<b>赋值</b>不是比较，值恒为 0 → 条件永远假；要比较必须写 <code>a == 0</code>。<br>
+  ② <code>0 &lt; x &lt; 10</code> 在 C 里<b>不表示"x 在 0 到 10 之间"</b>：先算 <code>0 &lt; x</code> 得 0 或 1，再拿这个结果和 10 比，结果<b>恒为真</b>。正确写法：<code>x &gt; 0 &amp;&amp; x &lt; 10</code>。
+</div>
+
+<h2 class="section" id="s6">六、赋值、逗号、条件、sizeof</h2>
+<div class="rule">
+  <b>（1）赋值</b>：<code>=</code> 右边先算，再赋给左边；<b>右结合</b>，<code>a = b = c = 0</code> 等价于 <code>a = (b = (c = 0))</code>。<br>
+  <b>复合赋值</b>：<code>a += b</code> 等价于 <code>a = a + b</code>；<code>x *= y + 1</code> 等价于 <code>x = x * (y + 1)</code>（<b>右边整体参与</b>，不是 x*y+1）。
+  <table class="law">
+    <tr><th>写法</th><th>等价于</th></tr>
+    <tr><td class="nm"><code>a += b</code></td><td><code>a = a + b</code></td></tr>
+    <tr><td class="nm"><code>a -= b</code></td><td><code>a = a - b</code></td></tr>
+    <tr><td class="nm"><code>a *= b + 1</code></td><td><code>a = a * (b + 1)</code></td></tr>
+    <tr><td class="nm"><code>a /= b</code></td><td><code>a = a / b</code>（两边都整型时按整除）</td></tr>
+    <tr><td class="nm"><code>a %= b</code></td><td><code>a = a % b</code></td></tr>
+  </table>
+  <b>（2）逗号表达式</b>：<code>表达式1, 表达式2, …, 表达式n</code>，从左到右依次执行，<b>整个表达式的值是最后一个</b>，优先级最低。
+<pre class="src">int a, b;
+a = (1, 2, 3);                 <span class="hl"><span class="cm">/* a = 3 */</span></span>
+b = 1, 2, 3;                   <span class="cm">/* 这是赋值语句 + 逗号表达式：b = 1 */</span></pre>
+  <b>（3）条件表达式</b>：<code>e1 ? e2 : e3</code>，e1 非 0 取 e2，否则取 e3；右结合，可嵌套。
+<pre class="src">max = (a &gt; b) ? a : b;         <span class="cm">/* 等价于 if (a&gt;b) max=a; else max=b; */</span>
+sign = (x &gt; 0) ? 1 : (x &lt; 0) ? -1 : 0;   <span class="cm">/* 嵌套，右结合 */</span></pre>
+  <b>（4）sizeof</b>：求类型或变量占用的<b>字节数</b>，是运算符不是函数。注意 <code>sizeof('a')</code> 在 C 中是 <b>4</b>（字符常量按 int 处理），而 <code>sizeof(char)</code> 是 1——这一点与 C++ 不同。
+</div>
+
+<h2 class="section" id="s7">七、位运算一眼带过</h2>
+<div class="rule">
+  位运算只对<b>整型</b>数据按二进制位操作，考得少（两套卷都没直接考），但要知道符号：
+  <table class="law">
+    <tr><th>运算符</th><th>名称</th><th>例（以 8 位示意）</th></tr>
+    <tr><td class="nm"><code>a &amp; b</code></td><td>按位与</td><td><code>6 &amp; 3</code> = 110 &amp; 011 = 010 = <b>2</b>（常用于"取某几位"）</td></tr>
+    <tr><td class="nm"><code>a | b</code></td><td>按位或</td><td><code>6 | 3</code> = 110 | 011 = 111 = <b>7</b>（常用于"置某位为 1"）</td></tr>
+    <tr><td class="nm"><code>a ^ b</code></td><td>按位异或</td><td><code>6 ^ 3</code> = <b>5</b>（相同为 0、不同为 1；<code>a^a=0</code>，可用来交换两数）</td></tr>
+    <tr><td class="nm"><code>~a</code></td><td>按位取反</td><td><code>~0</code> = −1（补码表示）</td></tr>
+    <tr><td class="nm"><code>a &lt;&lt; n</code></td><td>左移 n 位</td><td>相当于乘 2ⁿ（高位溢出丢弃）</td></tr>
+    <tr><td class="nm"><code>a &gt;&gt; n</code></td><td>右移 n 位</td><td>相当于除以 2ⁿ（负数右移补 1，结果与编译器实现相关）</td></tr>
+  </table>
+  <div class="th"><b>别混：</b><code>&amp;</code>（按位与）与 <code>&amp;&amp;</code>（逻辑与）、<code>|</code>（按位或）与 <code>||</code>（逻辑或）、<code>^</code>（按位异或）与数学的"次方"完全是两回事。</div>
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>先背优先级——<b>括号 → 单目 → 算术（* / % 高于 + -）→ 移位 → 关系 → 相等 → 位运算 → 逻辑 → 条件 → 赋值 → 逗号</b>，单目与赋值、条件<b>右结合</b>，其余左结合 → 再看类型：两边都整型就是整除/求余 → 再看有没有 <code>++</code>/<code>--</code>（只能在变量上，前后缀取值不同）→ 最后看有没有 <code>&amp;&amp;</code>/<code>||</code>（短路会跳过右边、连带跳过自增）。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q4">2026.4-4/5/6/19</a> 优先级、左值、整除、单目结合性；<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q4">2025.10-4/18</a> 优先级、<code>++x&lt;y</code> 取值；另有 <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q26">2026.4-26</a>、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q26">2025.10-26</a> 两道程序分析题全靠短路与自增。<br>
+  这 6 题合计 14 分，是整张卷子最划算的一页。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 3 章（下）运算符与表达式 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

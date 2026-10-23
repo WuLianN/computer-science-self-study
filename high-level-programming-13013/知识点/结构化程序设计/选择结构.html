@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 选择结构（第 4 章·中）｜if 三种形式 / 悬空 else / switch 下落</title>
+<meta name="description" content="高级语言程序设计 13013 第 4 章中：if 单分支双分支多分支、条件非 0 即真、悬空 else 配对、switch 的表达式与 case 常量要求、忘记 break 导致的下落、区间判断写法，附 2026.4 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔀</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#1e40af,#4f46e5)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章（中）· 选择结构</h1>
+  <p>选择结构是程序分析题（第 26 题）和程序设计题（第 33 题）的常客。<b>90% 的错都出在两个地方：if 后面多了个分号，switch 里面少了个 break。</b></p>
+  <span class="pill">if 三种形式</span><span class="pill">悬空 else</span><span class="pill">switch 与 break</span><span class="pill">区间边界</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="顺序结构与输入输出.html">← 上一节：顺序与输入输出</a>
+    <a href="循环结构.html">→ 下一节：循环结构</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、条件的本质：非 0 即真</a>
+  <a href="#s2">二、if 的三种形式与四条铁律</a>
+  <a href="#s3">三、嵌套 if 与悬空 else</a>
+  <a href="#s4">四、switch：case 常量、break 与"下落"</a>
+  <a href="#s5">五、多分支区间判断（第 33 题标准套路）</a>
+  <a href="#s6">六、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、条件的本质：非 0 即真</h2>
+<div class="rule">
+  C 没有"布尔类型"（C89），<b>任何表达式都能当条件</b>：值为 <b>0</b> 视为假，<b>非 0</b> 视为真。真正的关系必须是 0 或 1；但 <code>if (5)</code>、<code>while (n)</code> 都是合法的。
+  <table class="law">
+    <tr><th>写法</th><th>结果</th><th>为什么</th></tr>
+    <tr><td class="nm"><code>if (a = 0)</code></td><td class="n">永远为假</td><td>这是<b>赋值</b>：把 0 赋给 a，整个表达式的值就是 0</td></tr>
+    <tr><td class="nm"><code>if (a = 5)</code></td><td class="n">永远为真</td><td>赋值后表达式的值是 5（同时把 a 改成了 5）</td></tr>
+    <tr><td class="nm"><code>if (a == 0)</code></td><td class="y">按实际判断</td><td>这才是"比较"</td></tr>
+    <tr><td class="nm"><code>if (x)</code></td><td class="y">x 非 0 就是真</td><td>等价于 <code>x != 0</code></td></tr>
+  </table>
+  <div class="th">
+    <b>防御性写法（养成本能）：</b>把常量写在左边，<code>if (0 == a)</code>——万一漏写一个等号，编译器会报"不能给常量赋值"，错误当场暴露，而不是藏到运行时。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、if 的三种形式与四条铁律</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>形式</th><th>写法</th><th>执行</th></tr>
+    <tr><td class="nm">单分支</td><td><code>if (条件) 语句;</code></td><td>条件真才执行，假就跳过</td></tr>
+    <tr><td class="nm">双分支</td><td><code>if (条件) 语句1; else 语句2;</code></td><td>二者必执行其一</td></tr>
+    <tr><td class="nm">多分支</td><td><code>if (c1) s1; else if (c2) s2; … else sn;</code></td><td><b>从上往下</b>判断，命中一个就跳出整条链</td></tr>
+  </table>
+  <ol class="steps">
+    <li>条件必须用<b>圆括号</b>括起来，括号后<b>不能加分号</b>（<code>if (x &gt; 0);</code> 是"条件成立时执行空语句"）。</li>
+    <li>if / else 后面"管"的只有<b>一条语句</b>；要多条必须用 <code>{ }</code> 变成复合语句。</li>
+    <li><b>else 不能单独出现</b>，它必须跟着一个 if。</li>
+    <li>多分支是<b>"短路"的</b>：前面的条件一旦成立，后面的 else if 一律不再判断——所以区间要按<b>从大到小或从小到大</b>的顺序排，别乱序。</li>
+  </ol>
+</div>
+<div class="note">
+  <b>最经典的两个错误（每年都有人踩）：</b><br>
+  <code>if (x &gt; 0);</code> → 多了个分号，条件成立时的"语句"变成空语句，下一行无条件执行。<br>
+  <code>if (x &gt; 0)<br>&nbsp;&nbsp;&nbsp;&nbsp;printf("正");<br>&nbsp;&nbsp;&nbsp;&nbsp;printf("数");</code> → 第二个 printf 不在 if 里，永远执行。
+</div>
+
+<h2 class="section" id="s3">三、嵌套 if 与悬空 else</h2>
+<div class="rule">
+  <b>else 永远与它上面最近的那个"还没有配对"的 if 配对</b>——不管缩进写得多好看。
+<pre class="src">if (a &gt; 0)
+    if (b &gt; 0)
+        printf("a&gt;0 且 b&gt;0\n");
+else
+    printf("else 到底跟谁走？\n");   <span class="hl"><span class="cm">/* ✗ 实际跟里面的 if (b&gt;0) 配对！ */</span></span></pre>
+  <b>正确做法：用花括号把意图写死。</b>
+<pre class="src">if (a &gt; 0) {
+    if (b &gt; 0)
+        printf("a&gt;0 且 b&gt;0\n");
+} else {                             <span class="hl"><span class="cm">/* ✓ 现在明确属于外层 if */</span></span>
+    printf("a&lt;=0\n");
+}</pre>
+</div>
+
+<h2 class="section" id="s4">四、switch：case 常量、break 与"下落"</h2>
+<div class="rule">
+  <b>格式：</b>
+<pre class="src">switch (表达式) {
+case 常量1:
+    语句序列1;
+    break;
+case 常量2:
+    语句序列2;
+    break;
+default:
+    语句序列n;
+}</pre>
+  <table class="law">
+    <tr><th>要点</th><th>说明</th></tr>
+    <tr><td class="nm">表达式类型</td><td>只能是<b>整型</b>（含 char、enum），<b>不能是实型、字符串</b>；<code>switch(x)</code> 里 x 是 float 直接编译错误</td></tr>
+    <tr><td class="nm">case 后面</td><td>必须是<b>常量表达式</b>（<code>case 1:</code>、<code>case 'A':</code>、<code>case 2+3:</code>），<b>不能是变量</b>，各 case 的值不能重复</td></tr>
+    <tr><td class="nm">default</td><td>可以没有；位置任意（放中间也行），但只在所有 case 都不匹配时才进入</td></tr>
+    <tr><td class="nm">break</td><td><b>跳出整个 switch</b>；没有 break 就"<b>下落</b>"，继续执行下一个 case 的语句（不管它的值匹配不匹配）</td></tr>
+    <tr><td class="nm">配对原则</td><td>先算表达式的值 → 找到匹配的 case 作<b>入口</b> → 一路往下执行，直到遇到 break 或 switch 结束</td></tr>
+  </table>
+</div>
+<div class="card">
+  <h3>例：没有 break 的"下落"（2026.4 第 26 题同型）</h3>
+<pre class="src">int x = 2;
+switch (x) {
+case 1: printf("A ");
+case 2: printf("B ");      <span class="hl"><span class="cm">/* 从这里进入 */</span></span>
+case 3: printf("C ");      <span class="cm">/* 没有 break → 继续下落 */</span>
+        break;
+default: printf("D ");
+}
+printf("\n");</pre>
+  <div class="out">B C</div>
+  <b>推法：</b>x = 2 → 从 <code>case 2</code> 进入 → 打印 B → 没有 break → 落进 <code>case 3</code> 打印 C → 遇到 break 跳出。<b>匹配只决定"从哪儿进"，不决定"到哪儿停"。</b>
+</div>
+<div class="note">
+  <b>什么时候"故意不写 break"是合法的？</b>多个值走同一段代码时：
+<pre class="src">switch (ch) {
+case 'a':
+case 'A': printf("元音 A\n"); break;   <span class="cm">/* 大小写共用一段 */</span>
+case 'b':
+case 'B': printf("辅音 B\n"); break;
+default : break;
+}</pre>
+  除这种"多入口一段代码"外，<b>每个 case 都要有 break</b>。
+</div>
+
+<h2 class="section" id="s5">五、多分支区间判断（第 33 题标准套路）</h2>
+<div class="rule">
+  <b>switch 只能判"等于某个常量"，判断区间必须用 if-else 链。</b>写法上有两条铁律：
+  <ol class="steps">
+    <li><b>区间必须首尾相接、不重不漏</b>：每一档都写清"含不含边界"，如 <code>x &gt;= 0 &amp;&amp; x &lt; 35</code>、<code>x &gt;= 35 &amp;&amp; x &lt;= 75</code>、<code>x &gt; 75</code>。</li>
+    <li><b>else if 的顺序按从小到大（或从大到小）排</b>，利用"命中即跳出"，后面的条件不必再重复前面的下界。</li>
+  </ol>
+</div>
+<div class="card">
+  <h3>例：PM2.5 空气质量（2026.4 第 33 题）</h3>
+  <p>规则：0 ~ 35（含 0 不含 35）为优；35 ~ 75（含 35 和 75）为良；75 以上为污染。</p>
+<pre class="src">#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int pm;
+
+    scanf("%d", &amp;pm);
+    if (pm &gt;= 0 &amp;&amp; pm &lt; 35)              <span class="hl"><span class="cm">/* 含 0，不含 35 */</span></span>
+        printf("优\n");
+    else if (pm &gt;= 35 &amp;&amp; pm &lt;= 75)        <span class="cm">/* 含 35 和 75 */</span>
+        printf("良\n");
+    else if (pm &gt; 75)                      <span class="cm">/* 75 以上 */</span>
+        printf("污染\n");
+    else
+        printf("输入无效\n");              <span class="cm">/* 负数兜底，不写也不扣分 */</span>
+    return 0;
+}</pre>
+  <b>边界自检：</b>35 落在第二档（第一档 <code>&lt; 35</code> 不含它）；75 也在第二档；76 进第三档。<b>把边界值 0 / 35 / 75 / 76 各代进去手推一遍，能挡住 90% 的丢分。</b>
+</div>
+<div class="note">
+  <b>另一种常见写法（利用命中即跳出）：</b>
+<pre class="src">if (pm &lt; 35)
+    printf("优\n");
+else if (pm &lt;= 75)
+    printf("良\n");
+else
+    printf("污染\n");</pre>
+  第二种更短，但<b>只在前一档已经排除了小值时才成立</b>；如果题目要求"负数也要报错"，就必须用第一种写法。
+</div>
+
+<h2 class="section" id="s6">六、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>条件看"非 0 即真" → 单分支 / 双分支 / 多分支（命中即跳出，顺序别乱）→ 多条语句记得加花括号 → else 配最近未配对的 if（用花括号写死）→ <code>switch</code> 只能判整型等于某常量，<b>case 后必须是常量</b>，忘写 break 就下落 → 判区间只能用 if-else 链，<b>边界含不含必须逐字对齐题目</b>。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q26">2026.4-26</a> switch 下落 + 短路（答案 4 8 7）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q33">2026.4-33</a> PM2.5 多分支区间判断（8 分，边界错一个就整题减分）。<br>
+  做题口诀：<b>先定入口，再看有没有 break，最后把边界值代一遍。</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 4 章（中）选择结构 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

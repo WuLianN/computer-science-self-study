@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 文件操作（第 10 章）｜fopen 12 种方式 / 六组读写函数 / feof</title>
+<meta name="description" content="高级语言程序设计 13013 第 10 章：文件按内容分程序文件与数据文件、按存储形式分文本文件与二进制文件、FILE 指针接收 fopen 的返回值、12 种打开方式中 w 会清空原文件、六组读写函数 fgetc fputc fgets fputs fscanf fprintf fread fwrite、feof 与 fclose、rewind fseek ftell 文件定位，附 2026.4 与 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💾</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#065f46,#0d9488)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 10 章 · 文件操作</h1>
+  <p>文件这一章的套路极其固定：<b>fopen 打开 → 判断 fp 是否为 NULL → 循环读写 → fclose 关闭</b>。客观点只考分类和 <code>FILE *</code>，程序题很少出——所以<b>花 20 分钟把这一页的表格背完就够</b>。</p>
+  <span class="pill">两种分类</span><span class="pill">FILE * 接收 fopen 返回值</span><span class="pill">"w" 会清空</span><span class="pill">六组读写函数</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../编译预处理/宏与文件包含.html">← 上一节：宏定义与文件包含</a>
+    <a href="../../考前抢分.html">🔥 考前抢分一页纸</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、文件的两种分类（必背填空）</a>
+  <a href="#s2">二、FILE 指针与 fopen</a>
+  <a href="#s3">三、12 种打开方式</a>
+  <a href="#s4">四、六组读写函数</a>
+  <a href="#s5">五、feof 与 fclose</a>
+  <a href="#s6">六、文件定位：rewind / fseek / ftell</a>
+  <a href="#s7">七、完整例子与本章小结</a>
+</div>
+
+<h2 class="section" id="s1">一、文件的两种分类（必背填空）</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>分类角度</th><th>种类</th><th>说明与举例</th></tr>
+    <tr><td class="nm">按<b>内容</b>分</td><td>程序文件 / <b>数据文件</b></td><td>程序文件：源程序 <code>.c</code>、目标文件 <code>.obj</code>、可执行文件 <code>.exe</code>；数据文件：供程序读写的数据</td></tr>
+    <tr><td class="nm">按<b>存储形式</b>分</td><td>文本文件 / <b>二进制</b>文件</td><td>文本文件（ASCII 文件）每个字符占 1 字节，可直接看；二进制文件按内存中的形式存放，省空间但不能直接看</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q17">2026.4 真题·第 17 题</a> 文件按照<b>存储形式</b>可分为文本文件和 <b>二进制</b>文件。<br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q25">2025.10 真题·第 25 题</a> 文件按照<b>内容</b>可分为程序文件和 <b>数据文件</b>。<br>
+    <b>这两个角度千万别串：问"存储形式"答二进制，问"内容"答数据文件。</b>
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、FILE 指针与 fopen</h2>
+<div class="rule">
+  <b>C 不直接操作文件，而是通过一个"文件指针"间接操作。</b>
+<pre class="src">#include &lt;stdio.h&gt;
+
+FILE *fp;                          <span class="cm">/* FILE 是系统定义的结构体类型 */</span>
+fp = fopen("data.txt", "r");       <span class="cm">/* 打开文件，返回文件结构体的地址 */</span>
+if (fp == NULL) {                  <span class="hl"><span class="cm">/* 打开失败返回 NULL，必须判断 */</span></span>
+    printf("文件打开失败\n");
+    return 1;
+}
+<span class="cm">/* … 读写操作 … */</span>
+fclose(fp);                        <span class="cm">/* 用完一定要关 */</span></pre>
+  <table class="law">
+    <tr><th>要点</th><th>说明</th></tr>
+    <tr><td class="nm"><code>FILE</code> 在哪定义</td><td>在 <b><code>stdio.h</code></b> 中（<b>不是</b> stdlib.h），所以文件操作必须包含 stdio.h</td></tr>
+    <tr><td class="nm"><code>FILE *</code> 干什么</td><td>接收 <code>fopen</code> 返回的<b>地址</b>，之后所有读写函数都靠它定位文件</td></tr>
+    <tr><td class="nm">打开失败</td><td><code>fopen</code> 返回 <code>NULL</code>（空指针），<b>不判断就往下读会崩</b></td></tr>
+    <tr><td class="nm">关闭</td><td><code>fclose(fp)</code>：把缓冲区内容写回磁盘并释放文件结构</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q15">2026.4 真题·第 15 题</a> 关于文件型指针描述正确的是"<b>用于接收文件打开函数返回的内容</b>"（答案 D）。<br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q15">2025.10 真题·第 15 题</a> 文件型指针的作用是"<b>接收文件打开函数返回的地址</b>"（答案 C）。<br>
+    <b>三年考同一句话：FILE * 就是接 fopen 的返回值。</b>
+  </div>
+</div>
+
+<h2 class="section" id="s3">三、12 种打开方式</h2>
+<div class="rule">
+  <b>6 种基本方式 × 加不加 <code>b</code>（二进制）= 12 种。</b>
+  <table class="law">
+    <tr><th>方式</th><th>含义</th><th>文件不存在时</th><th>已存在时</th></tr>
+    <tr><td class="nm">"r"</td><td>只读</td><td class="n">失败，返回 NULL</td><td>从开头读</td></tr>
+    <tr><td class="nm">"w"</td><td>只写</td><td class="y">新建</td><td class="n"><b>清空全部内容</b>再写</td></tr>
+    <tr><td class="nm">"a"</td><td>追加写</td><td class="y">新建</td><td>保留原内容，在<b>末尾</b>追加</td></tr>
+    <tr><td class="nm">"r+"</td><td>读写</td><td class="n">失败，返回 NULL</td><td>从开头读写</td></tr>
+    <tr><td class="nm">"w+"</td><td>读写</td><td class="y">新建</td><td class="n"><b>清空</b>后可读可写</td></tr>
+    <tr><td class="nm">"a+"</td><td>读 + 追加</td><td class="y">新建</td><td>读从开头，写只追加到末尾</td></tr>
+  </table>
+  <div class="th">
+    <b>加 <code>b</code> 就是二进制方式</b>：<code>"rb"</code>、<code>"wb"</code>、<code>"ab"</code>、<code>"rb+"</code>、<code>"wb+"</code>、<code>"ab+"</code>（<code>b</code> 的位置在 <code>+</code> 之前）。<br>
+    <b>最常考的一句话：用 "w" 打开一个已存在的文件，原有内容会被全部清除。</b>
+  </div>
+</div>
+<div class="note">
+  <b>路径写法：</b>Windows 下写路径要双斜杠或用正斜杠——<code>fopen("d:\\data\\a.txt", "r")</code> 或 <code>fopen("d:/data/a.txt", "r")</code>。单斜杠 <code>\d</code> 会被当成转义字符。
+</div>
+
+<h2 class="section" id="s4">四、六组读写函数</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>类别</th><th>读</th><th>写</th><th>说明</th></tr>
+    <tr><td class="nm">字符</td><td><code>fgetc(fp)</code></td><td><code>fputc(ch, fp)</code></td><td>一次一个字符，读到文件尾返回 <code>EOF</code>（-1）</td></tr>
+    <tr><td class="nm">字符串</td><td><code>fgets(s, n, fp)</code></td><td><code>fputs(s, fp)</code></td><td>最多读 <b>n-1</b> 个字符，自动补 <code>'\0'</code></td></tr>
+    <tr><td class="nm">格式化</td><td><code>fscanf(fp, "%d", &amp;x)</code></td><td><code>fprintf(fp, "%d", x)</code></td><td>与 <code>scanf/printf</code> 只差第一个参数</td></tr>
+    <tr><td class="nm">数据块</td><td><code>fread(buf, size, n, fp)</code></td><td><code>fwrite(buf, size, n, fp)</code></td><td>读写 n 个大小为 size 的数据，用于二进制文件</td></tr>
+    <tr><td class="nm">判断 / 关闭</td><td><code>feof(fp)</code></td><td><code>fclose(fp)</code></td><td>是否到文件尾 / 关闭文件</td></tr>
+    <tr><td class="nm">定位</td><td><code>ftell(fp)</code></td><td><code>rewind(fp)</code>、<code>fseek(…)</code></td><td>取当前位置 / 移动位置指针</td></tr>
+  </table>
+  <b>最常用的一段——逐字符复制文件：</b>
+<pre class="src">int ch;                          <span class="hl"><span class="cm">/* 必须用 int：要能存下 EOF（-1） */</span></span>
+
+while ((ch = fgetc(fp)) != EOF)
+    fputc(ch, fpout);</pre>
+  <div class="th">
+    <b>为什么用 int 不用 char：</b><code>fgetc</code> 正常返回 0~255，结束时返回 <code>EOF</code>（一般是 -1）。<b>char 装不下 256 种状态</b>，用 char 接会导致"文件里有 0xFF 字节时提前结束"。
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、feof 与 fclose</h2>
+<div class="rule">
+  <b><code>feof(fp)</code> 返回非 0 表示"刚刚读到过文件尾"</b>，注意它<b>是事后判定</b>：读完最后一个字符时 feof 仍是 0，必须再读一次失败后才置位。
+<pre class="src">while (!feof(fp)) {              <span class="cm">/* 不推荐的写法：会多处理一次 */</span>
+    ch = fgetc(fp);
+    putchar(ch);
+}</pre>
+  <b>推荐写法（靠返回值判断，天然正确）：</b>
+<pre class="src">while ((ch = fgetc(fp)) != EOF)
+    putchar(ch);</pre>
+  <div class="th">
+    <b><code>fclose(fp)</code> 做两件事：</b>① 把缓冲区里没写回磁盘的数据<b>冲刷</b>出去；② 断开文件指针。<b>不关文件可能丢数据</b>，程序结束前每个打开的流都要关。
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、文件定位：rewind / fseek / ftell</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>函数</th><th>原型</th><th>作用</th></tr>
+    <tr><td class="nm"><code>rewind</code></td><td><code>void rewind(FILE *fp)</code></td><td>把位置指针<b>移回文件开头</b>，无返回值</td></tr>
+    <tr><td class="nm"><code>fseek</code></td><td><code>int fseek(FILE *fp, long offset, int origin)</code></td><td>从 <code>origin</code> 起移动 <code>offset</code> 字节；成功返回 0</td></tr>
+    <tr><td class="nm"><code>ftell</code></td><td><code>long ftell(FILE *fp)</code></td><td>返回当前位置<b>距文件开头的字节数</b>；失败返回 -1L</td></tr>
+  </table>
+  <b><code>origin</code> 的三个取值（宏，定义在 stdio.h）：</b>
+  <table class="law">
+    <tr><th>宏</th><th>值</th><th>含义</th></tr>
+    <tr><td class="nm"><code>SEEK_SET</code></td><td>0</td><td>从<b>文件开头</b>算</td></tr>
+    <tr><td class="nm"><code>SEEK_CUR</code></td><td>1</td><td>从<b>当前位置</b>算</td></tr>
+    <tr><td class="nm"><code>SEEK_END</code></td><td>2</td><td>从<b>文件末尾</b>算</td></tr>
+  </table>
+<pre class="src">fseek(fp, 0L, SEEK_END);       <span class="cm">/* 跳到文件末尾 */</span>
+len = ftell(fp);               <span class="cm">/* 文件长度 = 末尾位置距开头的字节数 */</span>
+rewind(fp);                    <span class="cm">/* 回到开头，准备重新读 */</span></pre>
+  <b>最常用的一招：</b>用 <code>fseek + ftell</code> 求文件长度（上面三行就是标准写法）。
+</div>
+
+<h2 class="section" id="s7">七、完整例子与本章小结</h2>
+<div class="card">
+  <h3>写文件 + 读文件：完整闭环</h3>
+<pre class="src">#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    FILE *fp;
+    int i;
+
+    fp = fopen("num.txt", "w");            <span class="cm">/* 写方式打开（不存在会自动建） */</span>
+    if (fp == NULL) {
+        printf("cannot open\n");
+        return 1;
+    }
+    for (i = 1; i &lt;= 5; i++)
+        fprintf(fp, "%d ", i);
+    fclose(fp);                            <span class="hl"><span class="cm">/* 写完必须关，否则可能没落盘 */</span></span>
+
+    fp = fopen("num.txt", "r");            <span class="cm">/* 换成读方式再打开 */</span>
+    if (fp == NULL) {
+        printf("cannot open\n");
+        return 1;
+    }
+    while (fscanf(fp, "%d", &amp;i) == 1)       <span class="cm">/* 成功读入 1 项就继续 */</span>
+        printf("%d ", i);
+    fclose(fp);
+    return 0;
+}</pre>
+  <div class="out">1 2 3 4 5</div>
+  <b>读循环的三种等价判断：</b><code>fscanf(...) == 1</code>、<code>(ch = fgetc(fp)) != EOF</code>、<code>fgets(s, n, fp) != NULL</code>——<b>都比 <code>while (!feof(fp))</code> 稳</b>。
+</div>
+<div class="ok">
+  <b>本章只要背四句话：</b><br>
+  ① 按<b>内容</b>分程序文件和<b>数据文件</b>，按<b>存储形式</b>分文本文件和<b>二进制</b>文件；<br>
+  ② <code>FILE *</code> 定义在 <b>stdio.h</b>，专门接收 <b>fopen 返回的地址</b>，返回 <code>NULL</code> 就是打开失败；<br>
+  ③ <code>"w"</code> 会<b>清空</b>已有文件，<code>"a"</code> 在末尾追加；<code>fgetc</code> 用 <b>int</b> 接、判 <code>EOF</code>；<br>
+  ④ 用完必须 <code>fclose</code>。四组函数记法：字符 f 前缀、字符串带 s、格式化加 f、数据块 fread/fwrite。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q15">2026.4-15</a> FILE 指针接 fopen 返回值（D）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q17">2026.4-17</a> 存储形式分<b>二进制</b>文件、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q15">2025.10-15</a> 文件型指针的作用（C）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q25">2025.10-25</a> 内容分<b>数据文件</b>。<br>
+  <b>加上第 9 章，这两章合计 8~10 分，是全卷性价比最高的部分。</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 10 章 文件 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

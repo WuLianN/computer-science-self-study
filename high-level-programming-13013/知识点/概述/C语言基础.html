@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · C 语言基础（第 2 章）｜词法 / 标识符 / 32 关键字 / 5 类语句 / 程序结构</title>
+<meta name="description" content="高级语言程序设计 13013 第 2 章知识点：C 语言特点、基本词法（标识符规则、32 个关键字、分隔符、注释）、5 类基本语句与复合语句、C 程序的组成与 main 函数位置、源程序到可执行文件的扩展名，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#0d9488,#0284c7)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  .kwlist{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+  .kwlist code{background:#e0f2fe;color:#0369a1;border-radius:6px;padding:1px 7px;font-weight:700;font-size:13px}
+  table.law td.bad{color:#b91c1c}
+  table.law td.good{color:#047857}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 2 章 · C 语言基础</h1>
+  <p>这一章是"语法零件库"：C 程序由哪些字符拼出来、标识符怎么起名、语句分几类、一个程序长什么骨架。后面每一章的错，几乎都能追到这里没记牢。</p>
+  <span class="pill">标识符 3 条规则</span><span class="pill">32 个关键字</span><span class="pill">5 类基本语句</span><span class="pill">程序结构</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="程序设计与算法.html">← 上一节：程序设计与算法</a>
+    <a href="../数据类型/数据类型与常量.html">→ 下一节：数据类型与常量</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、C 语言的发展与 7 个特点</a>
+  <a href="#s2">二、基本词法：字符集 / 标识符 / 关键字 / 分隔符</a>
+  <a href="#s3">三、注释：只能用 /* */ 且不能嵌套</a>
+  <a href="#s4">四、5 类基本语句与复合语句、空语句</a>
+  <a href="#s5">五、C 程序的组成：函数、main、分号</a>
+  <a href="#s6">六、开发环境与文件扩展名</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、C 语言的发展与 7 个特点</h2>
+<div class="rule">
+  <b>来历：</b>1972 年由美国贝尔实验室的 <b>Dennis Ritchie（里奇）</b>在 B 语言基础上设计，最初用于编写 UNIX 操作系统；1978 年 Kernighan 与 Ritchie 合著《The C Programming Language》（K&amp;R 标准）；1983 年美国国家标准协会制定 <b>ANSI C</b>（即 <b>C89</b>），1990 年被 ISO 采纳。<b>本课程（教材 2017 年版）按 C89 命题。</b>
+  <table class="law">
+    <tr><th>特点</th><th>说明 / 考点</th></tr>
+    <tr><td class="nm">兼有高级、低级语言特性</td><td>既能写结构化程序，又能直接访问内存地址、做位运算（这是它比其他高级语言"更贴近机器"的地方）</td></tr>
+    <tr><td class="nm">简洁紧凑</td><td>只有 <b>32 个关键字</b>、9 种控制语句，源程序短</td></tr>
+    <tr><td class="nm">运算符丰富</td><td><b>34 种</b>运算符，表达式类型灵活</td></tr>
+    <tr><td class="nm">数据结构丰富</td><td>基本类型之外还有数组、指针、结构体、共用体等构造类型</td></tr>
+    <tr><td class="nm">结构化语言</td><td>用函数作模块单位，只用三种基本结构</td></tr>
+    <tr><td class="nm">可移植性好</td><td>与具体机器无关，换平台只需重新编译</td></tr>
+    <tr><td class="nm">生成目标代码质量高</td><td>接近汇编语言的效率</td></tr>
+  </table>
+  <div class="th">教材还提到一条<b>缺点式的特点</b>：C 的<b>语法限制不太严格、程序设计自由度大</b>——所以编译器常常"不报错但结果错"，这也是本课程爱考陷阱题的根源。</div>
+</div>
+
+<h2 class="section" id="s2">二、基本词法：字符集 / 标识符 / 关键字 / 分隔符</h2>
+<div class="card">
+  <h3>1. 字符集</h3>
+  C 源程序由三类基本字符构成：<b>字母</b>（A–Z、a–z）、<b>数字</b>（0–9）、<b>下划线</b> <code>_</code>，再加上各种<b>标点符号和运算符</b>（<code>+ - * / % = &lt; &gt; ( ) { } [ ] , ; : ' " # &amp; | ! ? ~ ^ \</code> 等）。
+</div>
+<div class="card">
+  <h3>2. 标识符（名字）——3 条硬规则 + 2 条建议</h3>
+  <ol class="steps">
+    <li>只能由<b>字母、数字、下划线</b>三种字符组成，不能出现 <code>% # - 空格</code> 等。</li>
+    <li><b>第一个字符必须是字母或下划线</b>，不能是数字（<code>3a</code>、<code>2nd</code> 都非法）。</li>
+    <li>不能用<b>关键字</b>作标识符，且<b>严格区分大小写</b>（<code>sum</code>、<code>Sum</code>、<code>SUM</code> 是三个不同的名字）。</li>
+  </ol>
+  建议：<b>见名知义</b>（<code>score</code> 而不是 <code>a1</code>）；变量名全小写、常量全大写，这是教材与试卷都默认的风格。
+  <div class="th">合法：<code>_x</code>、<code>sum1</code>、<code>maxValue</code>、<code>a_b</code>　|　非法：<code>3x</code>（数字开头）、<code>m-n</code>（含减号）、<code>int</code>（关键字）、<code>float</code>（关键字）</div>
+</div>
+<div class="card">
+  <h3>3. 关键字（C89 共 32 个，小写）</h3>
+  <div class="kwlist">
+    <code>auto</code><code>break</code><code>case</code><code>char</code><code>const</code><code>continue</code><code>default</code><code>do</code><code>double</code><code>else</code><code>enum</code><code>extern</code><code>float</code><code>for</code><code>goto</code><code>if</code><code>int</code><code>long</code><code>register</code><code>return</code><code>short</code><code>signed</code><code>sizeof</code><code>static</code><code>struct</code><code>switch</code><code>typedef</code><code>union</code><code>unsigned</code><code>void</code><code>volatile</code><code>while</code>
+  </div>
+  <div class="th">
+    <b>易错三点：</b>① <code>main</code>、<code>printf</code>、<code>scanf</code> 都<b>不是</b>关键字（main 是函数名，后两个是库函数名）；② <code>define</code>、<code>include</code> 也<b>不是</b>关键字——它们是预处理命令名，前面必须带 <code>#</code>；③ C89 里<b>没有</b> <code>inline</code>、<code>long long</code>、<code>_Bool</code>、<code>restrict</code>，写出来是错的。
+  </div>
+</div>
+<div class="card">
+  <h3>4. 分隔符</h3>
+  C 语言的分隔符包括 <b>逗号</b> 和 <b>空格</b> 两种，用来把各个语法单位隔开（如 <code>int a, b;</code> 里的逗号、<code>int a</code> 之间的空格）。<br>
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q18">2026.4 真题·第 18 题</a> C 语言的分隔符包括 <u>逗号</u> 和空格两种。
+</div>
+
+<h2 class="section" id="s3">三、注释：只能用 /* */ 且不能嵌套</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>写法</th><th>是否 C89</th><th>说明</th></tr>
+    <tr><td class="nm"><code>/* 说明 */</code></td><td class="good">✓ 唯一合法写法</td><td>可跨行，编译时<b>被替换成一个空格</b>，不参与编译；<b>不能嵌套</b></td></tr>
+    <tr><td class="nm"><code>// 说明</code></td><td class="bad">✗ C99 才有</td><td>本课程按 C89 阅卷，答题时写 <code>//</code> 属于不规范写法</td></tr>
+  </table>
+  注释可以出现在程序的<b>任意位置</b>（包括语句与语句之间、函数内外），只要不把字符串或标识符从中间劈开。<br>
+  <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q1">2025.10 真题·第 1 题</a> "C 程序的任意位置都可以加注释"——<b>正确</b>；同题的 A 项"C 程序的基本单位是语句"错在<b>基本单位是函数</b>。
+</div>
+
+<h2 class="section" id="s4">四、5 类基本语句与复合语句、空语句</h2>
+<div class="rule">
+  C 语句是程序执行的最小单位，<b>必须以分号结尾</b>。教材把语句分成 5 类：
+  <table class="law">
+    <tr><th>类别</th><th>形式 / 例子</th><th>说明</th></tr>
+    <tr><td class="nm">控制语句</td><td><code>if…else</code>、<code>for</code>、<code>while</code>、<code>do…while</code>、<code>continue</code>、<code>break</code>、<code>switch</code>、<code>return</code>、<code>goto</code></td><td>共 <b>9 种</b>，完成分支与循环（第 4 章）</td></tr>
+    <tr><td class="nm">函数调用语句</td><td><code>printf("hi\n");</code></td><td>函数调用 + 分号</td></tr>
+    <tr><td class="nm">表达式语句</td><td><code>a = b + c;</code>　<code>i++;</code></td><td>最常用；只写 <code>a+b;</code> 也合法，只是算完就丢</td></tr>
+    <tr><td class="nm">空语句</td><td><code>;</code></td><td>什么也不做，循环体为空时常用</td></tr>
+    <tr><td class="nm">复合语句</td><td><code>{ … }</code></td><td>用花括号把多条语句括成一个整体，又称<b>语句块</b> / 分程序</td></tr>
+  </table>
+  <div class="th">
+    <b>复合语句的两层身份：</b>① 它是一个<b>整体</b>，可以当作一条语句放在 <code>if</code>、<code>for</code> 后面（所以"if 后面管多条语句要加花括号"）；② 它<b>自成作用域</b>，里面定义的变量出了 <code>}</code> 就消失（第 6 章讲作用域时要用）。<br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q19">2025.10 真题·第 19 题</a> 用 <code>{ }</code> 括起来的多个语句称为 <u>复合语句（语句块）</u>。
+  </div>
+</div>
+<div class="note">
+  <b>三个"分号"陷阱：</b><br>
+  ① <code>if (x &gt; 0);</code> 多的那个分号把 if 变成了"空语句"，后面 <code>{ }</code> 里的代码无论条件真假都会执行。<br>
+  ② <code>for (i = 0; i &lt; n; i++);</code> 同理，循环体成了空语句。<br>
+  ③ 复合语句的 <code>}</code> 后面一般<b>不加分号</b>（写成 <code>};</code> 多数编译器只警告，但习惯上不要加）。
+</div>
+
+<h2 class="section" id="s5">五、C 程序的组成：函数、main、分号</h2>
+<div class="rule">
+  <b>四句话讲完 C 程序结构（考单选、也考判断）：</b>
+  <ol class="steps">
+    <li>C 程序由<b>函数</b>组成，函数是 C 程序的基本单位；<b>至少有一个 main 函数</b>，且只能有一个。</li>
+    <li>程序执行<b>总是从 main 开始、到 main 结束</b>；被调用的其他函数不会自己跑。</li>
+    <li><b>main 函数的位置任意</b>——可以写在所有函数之前，也可以写在最后，不影响执行顺序。</li>
+    <li><b>预处理命令以 <code>#</code> 开头，必须写在函数外</b>（通常在文件开头），且<b>不以分号结尾</b>。</li>
+  </ol>
+  <div class="th">
+    每条<b>语句</b>以分号结束，但：预处理命令不是语句，不加分号；函数定义的头 <code>int main(void)</code> 也不加分号；复合语句的 <code>}</code> 后一般不加。
+  </div>
+</div>
+
+<div class="card">
+  <h3>例：一个完整的 C 程序骨架</h3>
+<pre class="src">#include &lt;stdio.h&gt;              <span class="hl"><span class="cm">/* ① 预处理命令：文件开头、函数外、无分号 */</span></span>
+#define N 10                   <span class="cm">/* ② 宏定义也属于预处理，同样无分号 */</span>
+
+int max(int a, int b);         <span class="cm">/* ③ 函数声明（原型），后面章节讲 */</span>
+
+int main(void)                 <span class="hl"><span class="cm">/* ④ 主函数：程序入口，位置任意 */</span></span>
+{
+    int x, y, m;
+
+    scanf("%d%d", &amp;x, &amp;y);     <span class="cm">/* ⑤ 函数调用语句 */</span>
+    m = max(x, y);             <span class="cm">/* ⑥ 表达式语句：以分号结尾 */</span>
+    if (m &gt; N)                 <span class="cm">/* ⑦ 控制语句 */</span>
+        printf("big\n");
+    else
+        printf("small\n");
+    return 0;
+}
+
+int max(int a, int b)
+{
+    return (a &gt; b) ? a : b;
+}</pre>
+  注意：<b>main 写在中间、max 写在最后</b>，程序照样先从 main 跑——这就是"主函数位置任意"的实证。
+</div>
+
+<div class="note">
+  <b>易错：</b>C 程序的<b>基本单位是函数</b>，不是语句、不是文件；一个 C 程序<b>有且只有一个 main</b>；<b>main 不能被其他函数调用</b>（<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q1">2025.10-1</a> 的 D 项就错在这里）；一条语句可以写成多行，一行也可以写多条语句。
+</div>
+
+<h2 class="section" id="s6">六、开发环境与文件扩展名</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>阶段</th><th>文件</th><th>扩展名</th></tr>
+    <tr><td class="nm">编辑</td><td>源程序</td><td><code>.c</code></td></tr>
+    <tr><td class="nm">编译</td><td>目标文件（机器指令，还不能运行）</td><td><code>.obj</code></td></tr>
+    <tr><td class="nm">链接</td><td>可执行文件</td><td><b><code>.exe</code></b></td></tr>
+    <tr><td class="nm">调试</td><td>生成的可执行文件运行出错时的排查</td><td>—</td></tr>
+  </table>
+  <div class="th">
+    教材提到的开发环境：Turbo C 2.0（DOS 时代经典）、Visual C++ 6.0 / Dev-C++（Windows）。<b>考试不考 IDE 操作</b>，只考"哪个阶段得到什么扩展名"。
+  </div>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q25">2026.4 真题·第 25 题</a> C 语言中，目标文件经过链接后生成的可执行文件的扩展名是 <u>.exe</u>。<br>
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q1">2026.4 真题·第 1 题</a> "主函数位置任意"是对的；"必须有预处理命令"是错的（可以一个 <code>#include</code> 都不写）。
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>字符集 → 拼成标识符（3 条规则）→ 关键字不能当名字（32 个）→ 词法单位用逗号和空格分隔 → 语句分 5 类（控制/函数调用/表达式/空/复合）→ 函数组成程序，main 是唯一入口且位置任意 → 预处理命令以 <code>#</code> 开头、放函数外、无分号 → 编译得 <code>.obj</code>、链接得 <code>.exe</code>。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q1">2026.4-1</a> 程序组成（答 A 主函数位置任意）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q18">2026.4-18</a> 分隔符 = 逗号、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q25">2026.4-25</a> 扩展名 = .exe；<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q1">2025.10-1</a> 基本单位是函数、注释任意位置、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q19">2025.10-19</a> 复合语句。<br>
+  全是 2 分的死知识，读完这页应该 100% 拿满。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 2 章 C 语言基础 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

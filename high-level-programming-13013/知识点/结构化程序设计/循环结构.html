@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 循环结构（第 4 章·下）｜while / do-while / for / break / continue / 嵌套</title>
+<meta name="description" content="高级语言程序设计 13013 第 4 章下：while 与 do-while 的区别、for 三表达式的执行顺序、break 与 continue 的差别、嵌套循环与缺少花括号的陷阱、累加累乘素数穷举递推五类套路，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔁</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#3730a3,#7c3aed)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+  table.tr{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;font-family:Consolas,Monaco,monospace}
+  table.tr th{background:#eef2ff;color:#4338ca;border:1px solid var(--line);padding:4px 8px}
+  table.tr td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章（下）· 循环结构</h1>
+  <p>第 27 题（程序分析）和第 33 题（程序设计）几乎都靠这一页。<b>推循环题只要一张变量跟踪表，写循环题只要记住"初值、条件、增量"三件套。</b></p>
+  <span class="pill">while / do-while / for</span><span class="pill">break vs continue</span><span class="pill">嵌套与花括号</span><span class="pill">五类套路</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="选择结构.html">← 上一节：选择结构</a>
+    <a href="../数组/一维与二维数组.html">→ 下一节：一维与二维数组</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、循环三要素与三种语句</a>
+  <a href="#s2">二、while 与 do-while：至少执行几次</a>
+  <a href="#s3">三、for 的执行顺序与省略写法</a>
+  <a href="#s4">四、break 与 continue 的差别</a>
+  <a href="#s5">五、嵌套循环：外层一次，内层一轮</a>
+  <a href="#s6">六、五类必会套路（真题原型）</a>
+  <a href="#s7">七、手推循环题的"变量跟踪表"</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、循环三要素与三种语句</h2>
+<div class="rule">
+  任何循环都必须回答三个问题，<b>缺一个就是死循环或跑错次数</b>：
+  <ol class="steps">
+    <li><b>初值</b>：循环变量从哪儿开始（<code>i = 1;</code>）。</li>
+    <li><b>条件</b>：什么时候继续（<code>i &lt;= 100</code>）。</li>
+    <li><b>增量</b>：每轮怎么变化（<code>i++</code>）。</li>
+  </ol>
+  <table class="law">
+    <tr><th>语句</th><th>特点</th><th>循环体最少执行次数</th></tr>
+    <tr><td class="nm"><code>while (条件) 循环体;</code></td><td><b>先判断，后执行</b></td><td><b>0 次</b>（条件一开始就假）</td></tr>
+    <tr><td class="nm"><code>do 循环体; while (条件);</code></td><td><b>先执行，后判断</b>；末尾<b>必须有分号</b></td><td><b>1 次</b></td></tr>
+    <tr><td class="nm"><code>for (初值; 条件; 增量) 循环体;</code></td><td>三要素写在一行，最紧凑</td><td>0 次（条件一开始就假）</td></tr>
+  </table>
+  <div class="th">
+    <b>三者可以互相改写：</b>任何一个 for 都能拆成 while；
+    <code>for (i=1; i&lt;=n; i++) s+=i;</code> ⇔ <code>i=1; while (i&lt;=n) { s+=i; i++; }</code>
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、while 与 do-while：至少执行几次</h2>
+<div class="card">
+  <h3>while：条件不成立就一次都不做</h3>
+<pre class="src">int i = 1, sum = 0;
+while (i &lt;= 100) {        <span class="cm">/* 先判断 */</span>
+    sum += i;             <span class="cm">/* 累加 */</span>
+    i++;                  <span class="cm">/* 增量，忘了就是死循环 */</span>
+}
+printf("%d\n", sum);      <span class="cm">/* 5050 */</span></pre>
+</div>
+<div class="card">
+  <h3>do-while：不管条件如何，先做一次</h3>
+<pre class="src">int n;
+do {
+    scanf("%d", &amp;n);     <span class="hl"><span class="cm">/* 先读一次，再判断合不合法 */</span></span>
+} while (n &lt;= 0);         <span class="cm">/* 注意这个分号！漏了直接编译错误 */</span></pre>
+  <b>典型用途：</b>"至少输入一次、直到输入合法为止"——用 while 做不到"先做后判"，用 do-while 最自然。
+</div>
+<div class="note">
+  <b>最常考的一句话：</b><code>do-while</code> 的循环体<b>至少执行一次</b>；<code>while</code> 和 <code>for</code> 可能一次都不执行。题目问"哪个循环体一定至少执行一次"，答 <code>do-while</code>。
+</div>
+
+<h2 class="section" id="s3">三、for 的执行顺序与省略写法</h2>
+<div class="rule">
+  <b>执行顺序（背下来，程序分析题全靠它）：</b>
+  <div class="th">
+    ① 求初值（<b>只做一次</b>）→ ② 判断条件（假就结束）→ ③ 执行循环体 → ④ 求增量 → 回到 ②
+  </div>
+  <table class="law">
+    <tr><th>写法</th><th>含义</th><th>是否合法</th></tr>
+    <tr><td class="nm"><code>for (i=0; i&lt;10; i++)</code></td><td>标准写法</td><td class="y">✓</td></tr>
+    <tr><td class="nm"><code>for (;;)</code></td><td>死循环（靠 break 跳出），等价 <code>while (1)</code></td><td class="y">✓</td></tr>
+    <tr><td class="nm"><code>for (i=0; i&lt;10; )</code> + 体内 <code>i++</code></td><td>增量写在循环体里</td><td class="y">✓</td></tr>
+    <tr><td class="nm"><code>for (i=0, j=10; i&lt;j; i++, j--)</code></td><td>初值、增量都可以是逗号表达式</td><td class="y">✓（要写成逗号表达式，不能直接写两个分号）</td></tr>
+    <tr><td class="nm"><code>for (int i=0; i&lt;10; i++)</code></td><td><b>C99 才允许</b>在 for 里声明变量</td><td class="n">✗ C89 禁止</td></tr>
+  </table>
+  <div class="th">
+    <b>三个表达式都能省，但两个分号一个都不能省</b>：<code>for ( ; ; )</code> 合法，<code>for ( )</code> 非法。
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、break 与 continue 的差别</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>语句</th><th>作用范围</th><th>效果</th></tr>
+    <tr><td class="nm"><code>break;</code></td><td>循环 / switch</td><td><b>结束整个循环</b>，直接跳到循环后面的第一条语句</td></tr>
+    <tr><td class="nm"><code>continue;</code></td><td>只能用在循环里</td><td><b>结束本次循环</b>，跳过剩余语句，<b>进入下一次</b>（for 会先做增量）</td></tr>
+  </table>
+<pre class="src">int i;
+for (i = 1; i &lt;= 10; i++) {
+    if (i == 3) continue;     <span class="cm">/* 只跳过 3 */</span>
+    if (i == 6) break;        <span class="cm">/* 到 6 就整体结束 */</span>
+    printf("%d ", i);
+}
+printf("\n");                 <span class="hl"><span class="cm">/* 输出：1 2 4 5 */</span></span></pre>
+  <div class="out">1 2 4 5</div>
+  <b>嵌套时的关键：</b>break 和 continue 都<b>只管自己所在的最内层循环</b>，不能一次跳出两层（要跳两层得用 <code>goto</code> 或加标志变量）。
+</div>
+
+<h2 class="section" id="s5">五、嵌套循环：外层一次，内层一轮</h2>
+<div class="rule">
+  <b>口诀：外层转一圈，内层跑满一整轮。</b><b>总次数 = 外层次数 × 内层次数</b>（前提是内层次数与外层无关）。
+  <div class="th">
+    <b>最容易错的一点：内层循环的"初值"每轮都会重新执行</b>——所以 <code>j = 1</code> 必须写在 for 的初值里，不能提到外层去（一旦提到外面，第二轮内层就会从上次结束的位置开始，次数全乱）。
+  </div>
+</div>
+<div class="card">
+  <h3>例：只给内层加大括号——"少一对花括号"的经典坑（2025.10 第 27 题同型）</h3>
+<pre class="src">int i, j, w = 0;
+for (i = 4; i &gt; 1; i--)
+    for (j = 1; j &lt; i; j++)
+        w += j;
+printf("%d\n", w);</pre>
+  <table class="tr">
+    <tr><th>外层 i</th><th>内层 j 取值</th><th>本轮累加</th><th>w 累计</th></tr>
+    <tr><td>4</td><td>1,2,3</td><td>+6</td><td>6</td></tr>
+    <tr><td>3</td><td>1,2</td><td>+3</td><td>9</td></tr>
+    <tr><td>2</td><td>1</td><td>+1</td><td>10</td></tr>
+    <tr><td>1</td><td>不进入（1 &lt; 1 假）</td><td>0</td><td><b>10</b></td></tr>
+  </table>
+  <div class="out">10</div>
+  <b>注意：</b>这里没写花括号，<b>内层 for 就是外层唯一的循环体</b>，语法完全正确；但如果在外层里面还想写一条别的语句，就必须加 <code>{ }</code>，否则那条语句只在<u>外层结束之后</u>执行一次。
+</div>
+
+<h2 class="section" id="s6">六、五类必会套路（真题原型）</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>套路</th><th>代码骨架</th><th>真题</th></tr>
+    <tr><td class="nm">① 累加 / 计数</td><td><code>for (i=1;i&lt;=n;i++) s += i;</code>　条件满足时 <code>cnt++;</code></td><td>2025.10-33</td></tr>
+    <tr><td class="nm">② 累乘 / 阶乘</td><td><code>s = 1; for (i=1;i&lt;=n;i++) s *= i;</code>（初值必须是 1，不能是 0）</td><td>—</td></tr>
+    <tr><td class="nm">③ 求最值</td><td><code>max = a[0]; for (i=1;i&lt;n;i++) if (a[i]&gt;max) max = a[i];</code></td><td>2026.4-32</td></tr>
+    <tr><td class="nm">④ 素数判断</td><td><code>for (i=2;i*i&lt;=n;i++) if (n%i==0) break;</code>　循环正常结束才是素数</td><td>—</td></tr>
+    <tr><td class="nm">⑤ 穷举 / 递推</td><td>穷举：双重循环试所有组合；递推：<code>a[i] = a[i-1] + a[i-2];</code></td><td>2025.10-34</td></tr>
+  </table>
+</div>
+<div class="card">
+  <h3>例 1：能被 13 或 17 整除的数求和（2025.10 第 33 题）</h3>
+<pre class="src">#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    int k, i, sum = 0;
+
+    scanf("%d", &amp;k);
+    for (i = 1; i &lt;= k; i++)                 <span class="cm">/* 枚举 1 ~ k */</span>
+        if (i % 13 == 0 || i % 17 == 0)      <span class="hl"><span class="cm">/* 是 13 或 17 的倍数 */</span></span>
+            sum += i;
+    printf("%d\n", sum);
+    return 0;
+}</pre>
+  <b>三个得分点：</b>枚举范围含 k（<code>&lt;=</code> 不是 <code>&lt;</code>）、用 <code>||</code> 不是 <code>&amp;&amp;</code>、<code>sum</code> 初始化成 0。
+</div>
+<div class="card">
+  <h3>例 2：判断素数（循环 + break 的经典组合）</h3>
+<pre class="src">int n, i, flag = 1;
+
+scanf("%d", &amp;n);
+if (n &lt; 2)
+    flag = 0;
+else
+    for (i = 2; i * i &lt;= n; i++)
+        if (n % i == 0) {
+            flag = 0;
+            break;              <span class="cm">/* 找到因子就不是素数，立刻结束 */</span>
+        }
+if (flag)
+    printf("%d 是素数\n", n);
+else
+    printf("%d 不是素数\n", n);</pre>
+  <b>为什么写 <code>i*i &lt;= n</code>：</b>因子成对出现，只需试到 √n，既正确又快。<code>i &lt; n</code> 也对，只是多跑很多轮。
+</div>
+
+<h2 class="section" id="s7">七、手推循环题的"变量跟踪表"</h2>
+<div class="rule">
+  程序分析题（第 27 题）不要心算，<b>画一张表，一行一轮</b>，绝不会错：
+  <ol class="steps">
+    <li>先写下所有<b>会被修改</b>的变量名（循环变量 + 累加变量）。</li>
+    <li>每执行一轮，<b>记下这一轮结束时</b>各变量的值。</li>
+    <li>特别注意：循环变量是<b>先加还是先用</b>（<code>++i</code>/<code>i++</code>）、判断用的是 <code>&lt;</code> 还是 <code>&lt;=</code>、内层变量<b>每轮是否重置</b>。</li>
+    <li>最后写输出时，<b>逐个字符核对分隔符</b>（空格、逗号、换行都算分）。</li>
+  </ol>
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>三要素（初值、条件、增量）→ 三种写法（while 可能 0 次 / do-while 至少 1 次 / for 最紧凑）→ <code>break</code> 跳整层、<code>continue</code> 只跳本轮 → 嵌套"外层一圈、内层一轮"，<b>内层初值必须每轮重置</b> → 五类套路（累加、累乘、最值、素数、穷举/递推）几乎覆盖所有大题。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q27">2026.4-27</a> 嵌套循环计数（答案 4）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q27">2025.10-27</a> 双重循环累加（答案 27）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q33">2025.10-33</a> 13/17 倍数求和（8 分）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q34">2026.4-34</a> 相邻元素求和（8 分）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q34">2025.10-34</a> 双分支递推（8 分）。<br>
+  <b>第 27 题 + 第 33/34 题合计 24 分</b>，这一页的投入产出比仅次于字符串。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 4 章（下）循环结构 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

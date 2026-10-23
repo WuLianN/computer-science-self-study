@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 顺序结构与输入输出（第 4 章·上）｜printf / scanf / getchar / gets 全表</title>
+<meta name="description" content="高级语言程序设计 13013 第 4 章上半：顺序结构、printf 格式符与宽度精度、scanf 的地址表与分隔符陷阱、getchar/putchar/gets/puts、缓冲区残留回车问题，附真题用法。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌨️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#1d4ed8,#0891b2)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.law code{white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章（上）· 顺序结构与输入输出</h1>
+  <p>顺序结构本身没什么可考的，真正值钱的是<b>输入输出函数</b>：每一道程序填空题的第一空、每一道程序设计题的读入写出，都靠这一页。<code>scanf</code> 少写一个 <code>&amp;</code>、<code>%d,%d</code> 多写一个逗号，就是白丢 6 分。</p>
+  <span class="pill">printf 格式符</span><span class="pill">scanf 地址表</span><span class="pill">gets / puts</span><span class="pill">缓冲区回车</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../数据类型/运算符与表达式.html">← 上一节：运算符与表达式</a>
+    <a href="选择结构.html">→ 下一节：选择结构</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、顺序结构与语句回顾</a>
+  <a href="#s2">二、printf：格式符与宽度精度</a>
+  <a href="#s3">三、scanf：地址表、分隔符与返回值</a>
+  <a href="#s4">四、字符与字符串输入输出四函数</a>
+  <a href="#s5">五、缓冲区里的回车——最阴的坑</a>
+  <a href="#s6">六、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、顺序结构与语句回顾</h2>
+<div class="rule">
+  <b>顺序结构</b>：程序按书写顺序<b>逐条</b>执行，没有分支也没有回头。它是另外两种结构的基础——选择结构和循环结构的"每一支"里面，都是顺序结构。
+  <table class="law">
+    <tr><th>语句</th><th>写法</th><th>作用</th></tr>
+    <tr><td class="nm">赋值语句</td><td><code>变量 = 表达式;</code></td><td>把右边算出来存进左边（左必须是变量）</td></tr>
+    <tr><td class="nm">函数调用语句</td><td><code>printf(…);</code></td><td>把控制权交给函数，做完再回来</td></tr>
+    <tr><td class="nm">复合语句</td><td><code>{ … }</code></td><td>多条语句当一个整体用</td></tr>
+    <tr><td class="nm">空语句</td><td><code>;</code></td><td>什么都不做</td></tr>
+  </table>
+  <div class="th">
+    <b>赋值的方向性：</b><code>a = b</code> 是把 b 的值给 a，a 原来的值被覆盖；反过来写就换了一个意思。考试里常靠这一点出"交换两个变量"的题——必须用<code>t = a; a = b; b = t;</code>，不能直接 <code>a = b; b = a;</code>。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、printf：格式符与宽度精度</h2>
+<div class="rule">
+  <b>格式：</b><code>printf("格式控制串", 输出表列);</code>　格式串里的 <code>%</code> 后跟格式符，一个格式符对应后面一个输出项。
+  <table class="law">
+    <tr><th>格式符</th><th>含义</th><th>例（值 → 输出）</th></tr>
+    <tr><td class="nm"><code>%d</code></td><td>十进制整型</td><td><code>printf("%d", 42)</code> → <code>42</code></td></tr>
+    <tr><td class="nm"><code>%o</code></td><td>八进制（无 # 时不带前导 0）</td><td><code>15</code> → <code>17</code></td></tr>
+    <tr><td class="nm"><code>%x</code> / <code>%X</code></td><td>十六进制（小写/大写）</td><td><code>255</code> → <code>ff</code> / <code>FF</code></td></tr>
+    <tr><td class="nm"><code>%u</code></td><td>无符号十进制</td><td>负数会按无符号解释成很大的数</td></tr>
+    <tr><td class="nm"><code>%c</code></td><td>单个字符</td><td><code>'A'</code> → <code>A</code></td></tr>
+    <tr><td class="nm"><code>%s</code></td><td>字符串（遇到 <code>'\0'</code> 停）</td><td><code>"abc"</code> → <code>abc</code></td></tr>
+    <tr><td class="nm"><code>%f</code></td><td>实型，默认 6 位小数</td><td><code>3.14</code> → <code>3.140000</code></td></tr>
+    <tr><td class="nm"><code>%e</code></td><td>指数形式</td><td><code>31400.0</code> → <code>3.140000e+04</code></td></tr>
+    <tr><td class="nm"><code>%g</code></td><td>自动选 %f 或 %e 中较短的一种</td><td>—</td></tr>
+    <tr><td class="nm"><code>%%</code></td><td>输出一个百分号</td><td>—</td></tr>
+  </table>
+  <b>宽度与精度：</b><code>%m.n格式符</code> —— <code>m</code> 是<b>最小宽度</b>（不够左边补空格，超过就按实际输出），<code>n</code> 是<b>小数位数</b>（对 <code>%s</code> 则是取前 n 个字符）；<code>-</code> 表示<b>左对齐</b>；<code>0</code> 表示补 0。
+</div>
+<div class="card">
+  <h3>例：同一批值用不同宽度输出</h3>
+<pre class="src">printf("%d|%5d|%-5d|%05d|\n", 42, 42, 42, 42);
+printf("%f|%.2f|%8.2f\n", 3.14159, 3.14159, 3.14159);
+printf("%s|%5s|%-5s|%.2s\n", "abc", "abc", "abc", "abc");</pre>
+  <div class="out">42|   42|42   |00042|
+3.141590|3.14|    3.14
+abc|  abc|abc  |ab</div>
+  <b>关键：</b><code>%5d</code> 输出 42 时<b>左边补 3 个空格</b>；<code>%-5d</code> 补在右边；<code>%05d</code> 补 0。<code>%2d</code> 输出 487 时宽度不够，<b>按实际 3 位输出，不会截断</b>。
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q26">2026.4 真题·第 26 题</a> 就用到了 <code>%2d</code> 的宽度规则（答案 <b>4 8 7</b>）：宽度不足时原样输出，所以三个数之间是靠格式串里<b>自己写的空格</b>分开的，不是靠 %2d 补齐。
+</div>
+
+<h2 class="section" id="s3">三、scanf：地址表、分隔符与返回值</h2>
+<div class="rule">
+  <b>格式：</b><code>scanf("格式控制串", &amp;变量1, &amp;变量2 …);</code>
+  <table class="law">
+    <tr><th>要点</th><th>说明</th></tr>
+    <tr><td class="nm">必须写 &amp;</td><td>除了字符数组名（本身就是地址），其余变量都要加 <code>&amp;</code>。<b>漏写 &amp; 是程序填空题最常见的扣分点</b>（常常是"能编译、运行崩"）</td></tr>
+    <tr><td class="nm">不能有精度</td><td><code>scanf("%5.2f", &amp;x)</code> <b class="n">非法</b>（scanf 可写宽度，但不能指定小数位）</td></tr>
+    <tr><td class="nm">普通字符要原样输入</td><td><code>scanf("%d,%d", &amp;a, &amp;b)</code> 输入时必须写成 <code>3,5</code>；写成 <code>3 5</code> 则 b 读不到</td></tr>
+    <tr><td class="nm">%d/%f 自动跳过空白</td><td><code>scanf("%d%d", &amp;a, &amp;b)</code> 的输入可以用空格、Tab、回车任意分隔</td></tr>
+    <tr><td class="nm">%c 不跳过任何字符</td><td><code>scanf("%c", &amp;ch)</code> 会把空格、回车都读进来</td></tr>
+    <tr><td class="nm">返回值</td><td>成功读入的<b>变量个数</b>；遇到输入结束或格式不匹配返回 0 / EOF</td></tr>
+  </table>
+</div>
+<div class="card">
+  <h3>例：两种分隔写法的差别</h3>
+<pre class="src">int a, b;
+scanf("%d%d", &amp;a, &amp;b);        <span class="cm">/* 输入 3 5  或 3&lt;回车&gt;5 都行 */</span>
+
+scanf("%d,%d", &amp;a, &amp;b);      <span class="hl"><span class="cm">/* 必须输入 3,5 —— 漏了逗号 b 就永远读不到 */</span></span>
+
+scanf("%d\n", &amp;a);            <span class="cm">/* ✗ 别在 scanf 里加 \n，它要求你再输入一个非空白字符 */</span></pre>
+</div>
+
+<h2 class="section" id="s4">四、字符与字符串输入输出四函数</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>函数</th><th>调用形式</th><th>作用</th><th>注意</th></tr>
+    <tr><td class="nm"><code>putchar</code></td><td><code>putchar(ch);</code></td><td>输出<b>一个</b>字符</td><td>参数可以是字符常量、变量或整型 ASCII 码</td></tr>
+    <tr><td class="nm"><code>getchar</code></td><td><code>ch = getchar();</code></td><td>从键盘读<b>一个</b>字符</td><td><b>没有参数</b>；返回 int；连空格和回车都会读</td></tr>
+    <tr><td class="nm"><code>puts</code></td><td><code>puts(s);</code></td><td>输出一个字符串</td><td>自动在末尾<b>加一个换行</b></td></tr>
+    <tr><td class="nm"><code>gets</code></td><td><code>gets(s);</code></td><td>读入<b>一整行</b>（可含空格）</td><td>遇到回车结束，并把回车换成 <code>'\0'</code>；<b>能读空格</b>，这是它和 <code>scanf("%s")</code> 的关键区别</td></tr>
+  </table>
+  <div class="th">
+    四个函数都声明在 <code>&lt;stdio.h&gt;</code> 里。字符分类/转换函数（<code>isupper</code>、<code>islower</code>、<code>isdigit</code>、<code>toupper</code>、<code>tolower</code>）在 <code>&lt;ctype.h&gt;</code> 里，字符串处理函数（<code>strlen</code>、<code>strcpy</code>、<code>strcat</code>、<code>strcmp</code>）在 <code>&lt;string.h&gt;</code> 里。<b>考试给的代码框架里，头文件已经写好了，别自己加。</b>
+  </div>
+</div>
+<div class="card">
+  <h3>例：读一整行再逐字符处理（2025.10 第 30 题同一套路）</h3>
+<pre class="src">#include &lt;ctype.h&gt;
+#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    char s[100];
+    int i;
+
+    gets(s);                          <span class="cm">/* 读整行，含空格 */</span>
+    for (i = 0; s[i] != '\0'; i++) {  <span class="cm">/* 遍历到字符串结束符 */</span>
+        if (isupper(s[i]))
+            s[i] = tolower(s[i]);
+        else if (islower(s[i]))
+            s[i] = toupper(s[i]);
+        else if (isdigit(s[i]))
+            s[i] = '0';               <span class="hl"><span class="cm">/* 数字统一变成字符 '0' */</span></span>
+    }
+    puts(s);
+    return 0;
+}</pre>
+  这一题的三个空分别是：循环条件 <code>s[i] != '\0'</code>、判断大写 <code>isupper(s[i])</code> / 判断小写 <code>islower(s[i])</code>、数字替换成 <code>'0'</code>。
+</div>
+
+<h2 class="section" id="s5">五、缓冲区里的回车——最阴的坑</h2>
+<div class="rule">
+  键盘输入先进<b>缓冲区</b>，函数再从缓冲区取。用 <code>scanf("%d", &amp;n)</code> 读完数字后，<b>你敲的那个回车还留在缓冲区里</b>；紧接着的 <code>getchar()</code> 或 <code>gets()</code> 会立刻把它读走，看起来就像"程序跳过了输入"。
+<pre class="src">int n;
+char ch;
+
+scanf("%d", &amp;n);        <span class="cm">/* 输入 5&lt;回车&gt; —— 回车留在缓冲区 */</span>
+ch = getchar();        <span class="hl"><span class="cm">/* ch 得到的是 '\n'，不是你想输入的字符！ */</span></span>
+getchar();             <span class="cm">/* ✓ 补救：先吃掉那个回车，再读下一个字符 */</span></pre>
+  <div class="th">
+    <b>三种常用补救：</b>① 在读字符前多写一个 <code>getchar();</code>；② 用 <code>scanf(" %c", &amp;ch);</code>（格式串里<b>加一个空格</b>，表示跳过所有空白字符）；③ 干脆统一用 <code>gets</code> 读整行再自己解析。
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>顺序结构就是"一条接一条" → 输出用 <code>printf</code>，重点记 10 个格式符 + <code>%m.n</code> 宽度精度（<code>%2d</code> 不够宽就按实际输出）→ 输入用 <code>scanf</code>，<b>变量前面必须有 <code>&amp;</code></b>、格式串里的逗号要跟着输、<code>%c</code> 连回车都吃 → 整行读用 <code>gets</code>（能吃空格），整行写用 <code>puts</code>（自动换行）→ 遇到"跳过了输入"，先想到<b>缓冲区残留的回车</b>。<br><br>
+  本章在两套卷里不单独出客观题，但<b>每一道程序填空（30–32 题）和程序设计（33–34 题）的第 1 行</b>都在用它：<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q30">2025.10-30</a> 用 <code>gets</code> + <code>ctype.h</code> 做大小写转换，<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q31">2026.4-31</a> 用 <code>gets</code> + <code>strlen</code> 做子串复制，<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q34">2026.4-34</a> 用 <code>scanf</code> 读 10 个数。<br>
+  记住一句话：<b>读入写错，后面全错</b>。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 4 章（上）顺序结构与输入输出 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

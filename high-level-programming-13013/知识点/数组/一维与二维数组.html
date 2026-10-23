@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 一维与二维数组（第 5 章·上）｜定义 / 初始化 / 遍历 / 排序 / 二维地址</title>
+<meta name="description" content="高级语言程序设计 13013 第 5 章上半：一维数组定义与初始化（部分初始化自动补 0）、下标越界、sizeof 求元素个数、遍历求和最值逆序冒泡排序、二维数组按行存储与 a[i][j] 地址换算，附 2025.10 / 2026.4 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#4338ca,#7c3aed)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.mem{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;text-align:center}
+  table.mem th{background:#eef2ff;color:#4338ca;border:1px solid var(--line);padding:4px}
+  table.mem td{border:1px solid var(--line);padding:5px 4px;font-family:Consolas,Monaco,monospace}
+  table.mem td.ix{background:#f8fafc;color:#64748b;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 5 章（上）· 一维数组与二维数组</h1>
+  <p>数组是"一批同类型数据的连续存放"。考试就考三件事：<b>下标从 0 开始、初始化会自动补 0、二维数组按行排列</b>。第 28 题程序分析、第 34 题程序设计都从这里出题。</p>
+  <span class="pill">下标 0 开始</span><span class="pill">部分初始化补 0</span><span class="pill">按行存储</span><span class="pill">排序与查找</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../结构化程序设计/循环结构.html">← 上一节：循环结构</a>
+    <a href="字符数组与字符串.html">→ 下一节：字符数组与字符串</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、一维数组的定义与三个硬规定</a>
+  <a href="#s2">二、初始化：自动补 0 与省略长度</a>
+  <a href="#s3">三、下标越界与"不能整体操作"</a>
+  <a href="#s4">四、六个必会一维算法</a>
+  <a href="#s5">五、二维数组：定义、初始化与按行存储</a>
+  <a href="#s6">六、二维数组的遍历与地址换算</a>
+  <a href="#s7">七、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、一维数组的定义与三个硬规定</h2>
+<div class="rule">
+  <b>格式：</b><code>类型名 数组名[长度];</code>　例：<code>int a[10];</code>（10 个 int，共 20 字节，前提是 int 占 2 字节）
+  <ol class="steps">
+    <li><b>长度必须是常量表达式</b>：<code>int a[10];</code> ✓、<code>int a[N];</code>（N 是 <code>const</code> 常量）✓、<code>int a[n];</code>（n 是变量）<b class="n">✗ C89 非法</b>（C99 才有变长数组）。</li>
+    <li><b>下标从 0 开始，最大下标是"长度 − 1"</b>：<code>int a[10]</code> 的有效下标是 <b>0 ~ 9</b>，没有 <code>a[10]</code>。</li>
+    <li><b>数组名是一个常量地址</b>：代表首元素地址，<b>不能被赋值</b>（<code>a = b;</code> 编译错误），也不能自增。</li>
+  </ol>
+  <div class="th">
+    数组元素在内存里<b>连续存放</b>，所以第 i 个元素的地址 = 首地址 + i × sizeof(元素类型)。这也是"下标访问为什么快"的原因。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、初始化：自动补 0 与省略长度</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>写法</th><th>结果</th><th>要点</th></tr>
+    <tr><td class="nm"><code>int a[5] = {1, 2, 3};</code></td><td>1, 2, 3, <b>0, 0</b></td><td><b>部分初始化，其余自动补 0</b></td></tr>
+    <tr><td class="nm"><code>int a[5] = {0};</code></td><td>0, 0, 0, 0, 0</td><td><b>全 0 的标准写法</b></td></tr>
+    <tr><td class="nm"><code>int a[] = {1, 2, 3};</code></td><td>长度为 <b>3</b></td><td>省略长度时由初值个数决定</td></tr>
+    <tr><td class="nm"><code>int a[3] = {1,2,3,4};</code></td><td class="n">编译错误</td><td>初值个数<b>不能超过</b>长度</td></tr>
+    <tr><td class="nm"><code>int a[5];</code></td><td>垃圾值</td><td>未初始化 = 不确定值（<code>static</code> 数组除外，自动为 0）</td></tr>
+  </table>
+  <div class="th">
+    <b>程序分析题最爱的两个点：</b>① <code>{1,2,3}</code> 后面两个是 <b>0</b>，不是随机数；② <b>不要写 <code>{1, 2, 3,}</code> 之外的花样</b>——<code>{[0]=1}</code> 这种指定初始化器是 C99 的，C89 不支持。
+  </div>
+</div>
+<div class="card">
+  <h3>例：数组在内存里长什么样</h3>
+  <p><code>int a[5] = {7, 9, 4};</code>（假设 int 占 2 字节，首地址 1000）</p>
+  <table class="mem">
+    <tr><td class="ix">下标</td><td>a[0]</td><td>a[1]</td><td>a[2]</td><td>a[3]</td><td>a[4]</td></tr>
+    <tr><td class="ix">值</td><td>7</td><td>9</td><td>4</td><td><b>0</b></td><td><b>0</b></td></tr>
+    <tr><td class="ix">地址</td><td>1000</td><td>1002</td><td>1004</td><td>1006</td><td>1008</td></tr>
+  </table>
+  <code>a[3]</code> 的地址 = 1000 + 3 × 2 = <b>1006</b>。地址连续 + 等差，这就是"数组名 + 下标"能算出位置的原理。
+</div>
+
+<h2 class="section" id="s3">三、下标越界与"不能整体操作"</h2>
+<div class="rule">
+  <b>C 不对下标做越界检查</b>：写 <code>a[10] = 5;</code>（长度 10 的数组）编译器<b>不报错</b>，运行时可能改掉别的变量的值、也可能直接崩。<b>这类题在程序分析里常以"输出奇怪结果"的形式出现。</b>
+  <table class="law">
+    <tr><th>想做的事</th><th>能不能直接写</th><th>正确做法</th></tr>
+    <tr><td class="nm">整体赋值 <code>b = a;</code></td><td class="n">✗</td><td>用循环逐个复制，<b>或字符串用 <code>strcpy</code></b></td></tr>
+    <tr><td class="nm">整体比较 <code>if (a == b)</code></td><td class="n">✗（比的是地址）</td><td>循环逐元素比较，字符串用 <code>strcmp</code></td></tr>
+    <tr><td class="nm">整体输入输出</td><td class="n">✗</td><td>循环 + <code>scanf</code>/<code>printf</code> 逐个元素（字符数组可用 <code>%s</code>）</td></tr>
+    <tr><td class="nm">求元素个数</td><td class="y">✓</td><td><code>sizeof(a) / sizeof(a[0])</code></td></tr>
+  </table>
+</div>
+<div class="note">
+  <b><code>sizeof(a) / sizeof(a[0])</code> 为什么能算个数？</b><code>sizeof(a)</code> 是整个数组占的字节数，<code>sizeof(a[0])</code> 是单个元素的字节数，相除就是元素个数。<b>注意：这个式子只在"数组还在自己作用域内"时有效</b>——数组名当参数传给函数后就退化成了指针，那时 <code>sizeof(a)</code> 只是指针大小（第 7 章细讲）。
+</div>
+
+<h2 class="section" id="s4">四、六个必会一维算法</h2>
+<div class="card">
+  <h3>① 输入 + 遍历输出</h3>
+<pre class="src">int a[10], i;
+for (i = 0; i &lt; 10; i++)
+    scanf("%d", &amp;a[i]);        <span class="hl"><span class="cm">/* 注意 &amp; 不能丢 */</span></span>
+for (i = 0; i &lt; 10; i++)
+    printf("%d ", a[i]);</pre>
+</div>
+<div class="card">
+  <h3>② 求和 / 求平均</h3>
+<pre class="src">int a[10], i, sum = 0;        <span class="cm">/* 累加变量必须初始化成 0 */</span>
+for (i = 0; i &lt; 10; i++) {
+    scanf("%d", &amp;a[i]);
+    sum += a[i];               <span class="cm">/* 边读边加，省一轮循环 */</span>
+}
+printf("sum=%d, avg=%.2f\n", sum, (float)sum / 10);   <span class="cm">/* 想得到小数必须转型 */</span></pre>
+</div>
+<div class="card">
+  <h3>③ 求最大值及其下标（第 32 题同型）</h3>
+<pre class="src">int a[10], i, max, pos;
+for (i = 0; i &lt; 10; i++)
+    scanf("%d", &amp;a[i]);
+max = a[0];  pos = 0;          <span class="hl"><span class="cm">/* 用第一个元素打底，不要用 0 打底 */</span></span>
+for (i = 1; i &lt; 10; i++)       <span class="cm">/* 从 1 开始比 */</span>
+    if (a[i] &gt; max) {
+        max = a[i];
+        pos = i;
+    }</pre>
+  <b>为什么不能用 <code>max = 0</code> 打底：</b>如果数组全是负数，0 会成为"最大值"，答案就错了。
+</div>
+<div class="card">
+  <h3>④ 逆序存放 / 逆序输出</h3>
+<pre class="src">int a[10], i, t;
+for (i = 0; i &lt; 10 / 2; i++) {          <span class="hl"><span class="cm">/* 只走一半，否则又换回去了 */</span></span>
+    t = a[i];
+    a[i] = a[9 - i];
+    a[9 - i] = t;
+}</pre>
+</div>
+<div class="card">
+  <h3>⑤ 冒泡排序（从小到大）</h3>
+<pre class="src">int a[10], i, j, t;
+for (i = 0; i &lt; 9; i++)                  <span class="cm">/* 9 轮就够 */</span>
+    for (j = 0; j &lt; 9 - i; j++)          <span class="hl"><span class="cm">/* 每轮少比一个 */</span></span>
+        if (a[j] &gt; a[j + 1]) {           <span class="cm">/* &gt; 是从小到大；改 &lt; 就是从大到小 */</span>
+            t = a[j];
+            a[j] = a[j + 1];
+            a[j + 1] = t;
+        }</pre>
+</div>
+<div class="card">
+  <h3>⑥ 顺序查找（找得到返回下标，找不到返回 −1）</h3>
+<pre class="src">int find(int a[], int n, int x)      <span class="cm">/* 数组作参数时必须再传长度 */</span>
+{
+    int i;
+    for (i = 0; i &lt; n; i++)
+        if (a[i] == x)
+            return i;                <span class="cm">/* 找到就返回下标 */</span>
+    return -1;
+}</pre>
+</div>
+
+<h2 class="section" id="s5">五、二维数组：定义、初始化与按行存储</h2>
+<div class="rule">
+  <b>格式：</b><code>类型名 数组名[行数][列数];</code>　例：<code>int a[3][4];</code>（3 行 4 列，共 12 个元素）
+  <div class="th">
+    <b>二维数组本质是"数组的数组"</b>：<code>a[3][4]</code> 可看成"3 个元素，每个元素是一个含 4 个 int 的一维数组"。所以 <code>a[0]</code> 本身就是一个一维数组名。
+  </div>
+  <table class="law">
+    <tr><th>初始化写法</th><th>结果</th><th>说明</th></tr>
+    <tr><td class="nm"><code>int a[2][3] = {{1,2,3},{4,5,6}};</code></td><td>两行三列</td><td>分行写，最清楚</td></tr>
+    <tr><td class="nm"><code>int a[2][3] = {1,2,3,4,5,6};</code></td><td>同上</td><td><b>按行顺序</b>依次填</td></tr>
+    <tr><td class="nm"><code>int a[2][3] = {{1},{4,5}};</code></td><td>1,0,0 / 4,5,0</td><td>每行缺的自动补 0</td></tr>
+    <tr><td class="nm"><code>int a[][3] = {{1,2,3},{4,5,6}};</code></td><td>2 行 3 列</td><td><b>行数可省，列数不能省</b></td></tr>
+    <tr><td class="nm"><code>int a[2][] = {…};</code></td><td class="n">编译错误</td><td>列数决定"每行切几刀"，必须给</td></tr>
+  </table>
+</div>
+<div class="note">
+  <b>三个易错：</b>① 二维数组的元素用 <code>a[i][j]</code>，<b>不能写成 <code>a[i,j]</code></b>（<code>a[i,j]</code> 是逗号表达式，等价于 <code>a[j]</code>，编译器多半不报错但结果完全错）。<br>
+  ② 行、列下标都从 0 开始：<code>a[3][4]</code> 的行下标 0–2、列下标 0–3。<br>
+  ③ 二维数组在内存里是<b>按行连续存放</b>：先放 a[0][0] a[0][1] … a[0][3]，再放 a[1][0] …
+</div>
+
+<h2 class="section" id="s6">六、二维数组的遍历与地址换算</h2>
+<div class="card">
+  <h3>例：遍历并输出一个 3×4 矩阵（2025.10 第 28 题同型）</h3>
+<pre class="src">int a[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11};
+int i, j;
+
+for (i = 0; i &lt; 3; i++) {
+    for (j = 0; j &lt; 4; j++)
+        printf("%d ", a[i][j]);
+    printf("\n");                 <span class="cm">/* 每输出完一行要换行 */</span>
+}</pre>
+  <div class="out">0 1 2 3
+4 5 6 7
+8 9 10 11</div>
+</div>
+<div class="rule">
+  <b>地址换算：</b><code>a[i][j]</code> 的地址 = 首地址 + <b>(i × 列数 + j)</b> × sizeof(元素类型)。<br>
+  例：<code>int a[3][4]</code>（int 占 2 字节，首地址 2000），则 <code>a[2][1]</code> 的地址 = 2000 + (2×4 + 1)×2 = 2000 + 18 = <b>2018</b>。
+  <div class="th">
+    这个公式是"按行存储"的直接结果：前面 full 行共 i × 列数 个元素，本行前面还有 j 个。<b>注意乘的是"列数"</b>，别乘行数。
+  </div>
+</div>
+<div class="card">
+  <h3>例：求二维数组每行的和（大题常见小问）</h3>
+<pre class="src">int a[3][4], i, j, s;
+
+for (i = 0; i &lt; 3; i++) {
+    s = 0;                        <span class="hl"><span class="cm">/* 每行开始前必须清零！ */</span></span>
+    for (j = 0; j &lt; 4; j++) {
+        scanf("%d", &amp;a[i][j]);
+        s += a[i][j];
+    }
+    printf("第 %d 行之和 = %d\n", i + 1, s);
+}</pre>
+  <b>最容易丢分的地方：</b>把 <code>s = 0</code> 写在双重循环外面 → 得到的是"前三行的累计和"，而不是每行各自的和。
+</div>
+
+<h2 class="section" id="s7">七、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>定义（长度必须是常量、下标 0 开始）→ 初始化（<code>{1,2,3}</code> 后面自动补 0；省略长度看初值个数；二维可省行不省列）→ 访问（<code>a[i]</code> / <code>a[i][j]</code>，越界不报错）→ 算法（遍历、求和、最值、逆序、排序、查找，全都靠"一层或两层 for"）→ 二维地址 <b>(i×列数 + j)×sizeof</b>。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q28">2025.10-28</a> 二维数组遍历（答案 0 2 4，注意复合赋值 <code>/=</code> 与缩进陷阱）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q34">2026.4-34</a> 相邻元素求和（8 分，<code>a[i] = x[i] + x[i+1]</code>，循环只能到 8）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q34">2025.10-34</a> 数组递推（8 分，<b>项号与下标差 1</b>）。<br>
+  写数组题永远先问自己三句：<b>长度是多少？下标从几开始？循环到几结束？</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 5 章（上）一维与二维数组 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

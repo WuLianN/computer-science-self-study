@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 函数定义、调用与递归（第 6 章·上）｜值传递 / 原型声明 / 递归三要素</title>
+<meta name="description" content="高级语言程序设计 13013 第 6 章上半：函数定义格式与返回值、函数原型声明为什么必须有、值传递的单向性、嵌套调用与递归调用的区别、阶乘与斐波那契递归写法、数组作参数、返回指针的函数，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#6d28d9,#c026d3)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  ol.steps{counter-reset:s;list-style:none;padding-left:0;margin:8px 0}
+  ol.steps li{counter-increment:s;position:relative;padding:6px 0 6px 38px;border-bottom:1px dashed var(--line)}
+  ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:26px;height:26px;background:var(--brand);color:#fff;border-radius:50%;text-align:center;line-height:26px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 6 章（上）· 函数定义、调用与递归</h1>
+  <p>函数是 C 程序的"积木"。这一页真正要记住的只有两条：<b>实参传给形参是单向的"值复制"</b>，<b>函数可以自己调自己（递归），但不能在函数里面再定义函数</b>。</p>
+  <span class="pill">定义与返回值</span><span class="pill">原型声明</span><span class="pill">单向值传递</span><span class="pill">递归三要素</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../数组/字符数组与字符串.html">← 上一节：字符数组与字符串</a>
+    <a href="变量作用域与存储类别.html">→ 下一节：变量作用域与存储类别</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、函数的分类与定义格式</a>
+  <a href="#s2">二、返回值与 return</a>
+  <a href="#s3">三、函数声明（原型）为什么必须有</a>
+  <a href="#s4">四、调用与值传递：单向的</a>
+  <a href="#s5">五、嵌套调用 vs 递归调用</a>
+  <a href="#s6">六、递归三要素与两个经典例</a>
+  <a href="#s7">七、数组作参数与返回指针</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、函数的分类与定义格式</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>分类方式</th><th>种类</th><th>说明</th></tr>
+    <tr><td class="nm">按来源</td><td>库函数 / 用户自定义函数</td><td>库函数由系统提供（<code>printf</code>、<code>strlen</code>），要用就 <code>#include</code> 对应头文件</td></tr>
+    <tr><td class="nm">按有无参数</td><td>有参函数 / 无参函数</td><td>无参要写 <code>(void)</code> 或 <code>()</code></td></tr>
+    <tr><td class="nm">按有无返回值</td><td>有返回值 / 无返回值（<code>void</code>）</td><td><code>void</code> 函数不能用 <code>return 值;</code></td></tr>
+  </table>
+  <b>定义格式：</b>
+<pre class="src"><span class="cm">/* 返回类型  函数名(形参类型 形参名, …) */</span>
+int max(int a, int b)
+{
+    int m;                 <span class="cm">/* 函数体：先声明，后语句（C89） */</span>
+
+    if (a &gt; b)
+        m = a;
+    else
+        m = b;
+    return m;              <span class="cm">/* 把结果交回调用处 */</span>
+}</pre>
+  <div class="th">
+    <b>三个要点：</b>① <b>函数不能嵌套定义</b>——一个函数的 <code>{ }</code> 里不能再写另一个函数的定义（但可以在里面<b>调用</b>别的函数）；② 形参只在函数内部有效；③ 函数定义的头部<b>不加分号</b>（加了分号就变成"声明"）。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、返回值与 return</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>规则</th><th>说明</th></tr>
+    <tr><td class="nm">类型要匹配</td><td><code>return</code> 的表达式类型应与函数返回类型一致，不一致会<b>自动转换</b></td></tr>
+    <tr><td class="nm">只执行一次</td><td>一个函数里可以有多个 <code>return</code>，但<b>只执行第一个被执行到的</b>，执行后立即返回</td></tr>
+    <tr><td class="nm">void 函数</td><td>可以不写 <code>return;</code>，也可以写 <code>return;</code>（不带值），但<b>不能写 <code>return 值;</code></b></td></tr>
+    <tr><td class="nm">不写 return</td><td>非 void 函数若没执行到 return，返回值是<b>不确定的</b>（考试里算错）</td></tr>
+  </table>
+  <div class="th">
+    <b>返回值的三种用法：</b>赋值给变量 <code>m = max(a,b);</code>、直接输出 <code>printf("%d", max(a,b));</code>、参与表达式 <code>s = max(a,b) * 2;</code>。<b>返回值只有一个</b>——想"带回多个结果"必须靠指针（第 7 章）。
+  </div>
+</div>
+
+<h2 class="section" id="s3">三、函数声明（原型）为什么必须有</h2>
+<div class="rule">
+  <b>函数声明（原型声明）：</b><code>返回类型 函数名(参数类型表);</code>　例：<code>int max(int, int);</code> 或 <code>int max(int a, int b);</code>
+  <ol class="steps">
+    <li>编译是<b>从上往下</b>看的：如果函数定义写在使用它的函数<b>之后</b>，编译器此时还不知道这个函数有几个参数、返回什么，必须先"打个招呼"。</li>
+    <li>所以要么<b>把定义写在 main 之前</b>，要么在 main 之前（或文件开头）<b>写一行原型声明</b>。</li>
+    <li>调用函数前，应让编译程序预先了解函数的有关信息，也就是<b>对被调函数进行声明</b>。<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q22">2025.10 真题·第 22 题</a> 答案就是"<u>声明</u>"。</li>
+  </ol>
+<pre class="src">#include &lt;stdio.h&gt;
+
+int max(int a, int b);        <span class="hl"><span class="cm">/* ← 声明：告诉编译器"有这么个函数" */</span></span>
+
+int main(void)
+{
+    printf("%d\n", max(3, 5));   <span class="cm">/* 调用时编译器已知道 max 的返回值和参数 */</span>
+    return 0;
+}
+
+int max(int a, int b)          <span class="cm">/* 定义可以放在后面 */</span>
+{
+    return (a &gt; b) ? a : b;
+}</pre>
+  <div class="th">
+    <b>声明与定义的区别：</b>声明<b>只交代类型信息</b>（后面加分号，不写函数体，不分配空间）；定义<b>真正写出函数体</b>（不带分号）。<b>一个函数只能定义一次，可以声明多次。</b>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、调用与值传递：单向的</h2>
+<div class="rule">
+  <b>调用格式：</b><code>函数名(实参表);</code>　实参与形参必须<b>个数相同、顺序对应、类型一致或可转换</b>。
+  <div class="th">
+    <b>值传递是"复制粘贴"：</b>调用时把实参的<b>值</b>复制一份给形参，之后形参怎么改，<b>都影响不到实参</b>。形参是函数内部的局部变量，函数一返回就消失。
+  </div>
+</div>
+<div class="card">
+  <h3>经典反例：这样交换是无效的</h3>
+<pre class="src">void swap(int a, int b)     <span class="cm">/* 形参 a、b 只是副本 */</span>
+{
+    int t;
+    t = a;  a = b;  b = t;
+}
+
+int main(void)
+{
+    int x = 1, y = 2;
+    swap(x, y);
+    printf("%d %d\n", x, y);  <span class="hl"><span class="cm">/* 输出 1 2 —— 根本没换 */</span></span>
+    return 0;
+}</pre>
+  <div class="out">1 2</div>
+  <b>为什么没用：</b><code>swap</code> 里换的是 a、b 两个副本，主函数里的 x、y 毫发无伤。<b>正确写法是把地址传进去（<code>swap(&amp;x, &amp;y)</code>，形参写成 <code>int *a</code>），第 7 章详讲。</b>
+</div>
+
+<h2 class="section" id="s5">五、嵌套调用 vs 递归调用</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>概念</th><th>含义</th><th>是否允许</th></tr>
+    <tr><td class="nm">嵌套调用</td><td>函数 A 调用函数 B，函数 B 再调用函数 C —— <b>调用链条可以有很多层</b></td><td class="y">✓ 允许</td></tr>
+    <tr><td class="nm">嵌套定义</td><td>在函数 A 的 <code>{ }</code> 里再定义一个函数 B —— <b>C 语言不允许</b></td><td class="n">✗ 禁止</td></tr>
+    <tr><td class="nm">递归调用</td><td>函数自己调用自己（直接递归），或 A 调 B、B 又调 A（间接递归）</td><td class="y">✓ 允许</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q8">2025.10 真题·第 8 题</a> 主函数调用 x()，x() 又调用 y()，属于函数的 <u>嵌套调用</u>（答案 A）。<br>
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q8">2026.4 真题·第 8 题</a> 正确答案是"<b>不允许递归定义函数，允许递归调用函数</b>"（答案 C）——这里的"递归定义"指的是<b>“在函数体内再定义一个函数”这种嵌套定义</b>，C 语言禁止；而自己调自己是正当的递归调用。
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、递归三要素与两个经典例</h2>
+<div class="rule">
+  写递归只问三件事，缺一样就死循环 / 栈溢出：
+  <ol class="steps">
+    <li><b>终止条件</b>（边界）：什么时候直接给答案、不再递归。</li>
+    <li><b>递推关系</b>：原问题怎么化成规模更小的同类问题。</li>
+    <li><b>向终止靠拢</b>：每次递归参数都必须比原来更接近边界。</li>
+  </ol>
+</div>
+<div class="card">
+  <h3>例 1：阶乘 n!</h3>
+<pre class="src">long fact(int n)
+{
+    if (n == 0 || n == 1)      <span class="hl"><span class="cm">/* 终止条件 */</span></span>
+        return 1;
+    return n * fact(n - 1);    <span class="cm">/* 递推：n! = n × (n-1)! */</span>
+}
+
+<span class="cm">/* main 里：printf("%ld\n", fact(5));  →  120 */</span></pre>
+  <b>跟踪一次 fact(3)：</b>3×fact(2) → 3×2×fact(1) → 3×2×1 = <b>6</b>。递归是"先往下走到边界，再一层层往上乘"。
+</div>
+<div class="card">
+  <h3>例 2：斐波那契数列（第 34 题的递推原型）</h3>
+<pre class="src">int fib(int n)
+{
+    if (n == 1 || n == 2)      <span class="cm">/* 前两项都是 1 */</span>
+        return 1;
+    return fib(n - 1) + fib(n - 2);
+}</pre>
+  <b>注意：</b>这个递归写法清晰但<b>极慢</b>（重复计算），考试写它没问题；实际工程里用数组递推（第 5 章）。
+</div>
+<div class="note">
+  <b>递归最容易犯的两个错：</b>① <b>忘了终止条件</b> → 无限递归，运行时"栈溢出"；② <b>终止条件写错方向</b>，如 <code>if (n == 0)</code> 但参数是 <code>n+1</code> 递增，永远到不了 0。<br>
+  <b>答程序分析题的技巧：</b>递归题一定<b>从最小规模往上推</b>（先算 f(1)、f(2)，再 f(3)），别从大往小猜。
+</div>
+
+<h2 class="section" id="s7">七、数组作参数与返回指针</h2>
+<div class="rule">
+  <b>（1）数组作函数参数</b>：形参写成 <code>int a[]</code> 或 <code>int a[10]</code> 或 <code>int *a</code>，<b>三种写法完全等价</b>，传过去的是首地址。
+  <div class="th">
+    <b>结果：函数内部对 <code>a[i]</code> 的修改会真的改掉原数组</b>（因为操作的是同一块内存）。这是"值传递"的例外——数组名传的是地址。<br>
+    <b>副作用：</b>数组长度信息丢了，所以必须<b>额外传一个长度参数</b>：<code>void show(int a[], int n)</code>。在函数里 <code>sizeof(a)</code> 得到的是<b>指针大小</b>，不是数组总字节数。
+  </div>
+<pre class="src">void add1(int a[], int n)      <span class="cm">/* 每个元素加 1 */</span>
+{
+    int i;
+    for (i = 0; i &lt; n; i++)
+        a[i]++;                <span class="hl"><span class="cm">/* 直接改掉了主函数里的数组 */</span></span>
+}</pre>
+  <b>（2）返回指针的函数</b>：<code>int *fun(int n)</code> 表示函数返回一个 <code>int *</code> 类型的值。
+  <div class="th">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q10">2025.10 真题·第 10 题</a> 能接收 <code>int *fun()</code> 返回值的是 <u>指针变量</u>（答案 B）——返回的是地址，必须用同类型指针接。<b>注意：绝不能返回局部变量的地址</b>（函数一结束，那块内存就失效了）。
+  </div>
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>函数 = 返回类型 + 名字 + 形参表 + 函数体 → <b>不能嵌套定义，可以嵌套调用</b> → 用之前要么写在前、要么先声明（原型）→ 调用时<b>值传递是单向复制</b>，想改实参必须传地址 → 递归三要素（终止、递推、靠拢），从最小规模往上推 → 数组作参数传的是地址、长度要另传 → 返回指针要用指针变量接。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q8">2026.4-8</a> 递归定义 vs 递归调用（答案 C）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q8">2025.10-8</a> 嵌套调用（答案 A）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q10">2025.10-10</a> 返回指针的函数（答案 B）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q22">2025.10-22</a> 调用前要对被调函数<b>声明</b>（填空）。<br>
+  这 8 分全是概念题，看完这页应该一题不错。
+</div>
+
+<footer>高级语言程序设计 13013 · 第 6 章（上）函数定义、调用与递归 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

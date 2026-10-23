@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 字符数组与字符串（第 5 章·下）｜'\0' / strlen / 六个必背模板</title>
+<meta name="description" content="高级语言程序设计 13013 第 5 章下半：字符串以 '\\0' 结尾、字符数组两种初始化、strlen/strcpy/strcat/strcmp 用法与返回值、自写 strcat 与子串复制、子串逆序、删除子串、大小写转换六个必背模板，附 2026.4 / 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔠</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#4f46e5,#a21caf)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.mem{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;text-align:center}
+  table.mem th{background:#eef2ff;color:#4338ca;border:1px solid var(--line);padding:4px}
+  table.mem td{border:1px solid var(--line);padding:5px 4px;font-family:Consolas,Monaco,monospace}
+  table.mem td.ix{background:#f8fafc;color:#64748b;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 5 章（下）· 字符数组与字符串</h1>
+  <p><b>这是全卷分值最重、套路最固定的一页。</b>两套卷的第 30、31 题（程序填充，各 6 分）和第 32、34 题的一半，全靠这六个模板。内容只有一句话：<b>C 的字符串 = 字符数组 + 结尾的 <code>'\0'</code></b>，所有操作都是"找到 <code>'\0'</code> 之前的那一段搬来搬去"。</p>
+  <span class="pill">'\0' 是灵魂</span><span class="pill">4 个库函数</span><span class="pill">6 个必背模板</span><span class="pill">sizeof ≠ strlen</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="一维与二维数组.html">← 上一节：一维与二维数组</a>
+    <a href="../函数/函数与递归.html">→ 下一节：函数与递归</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、字符串的本质：'\0' 结尾</a>
+  <a href="#s2">二、两种初始化与"长度够不够"</a>
+  <a href="#s3">三、输入输出：scanf %s 与 gets</a>
+  <a href="#s4">四、四个库函数（含返回值含义）</a>
+  <a href="#s5">五、六个必背模板（真题原型）</a>
+  <a href="#s6">六、sizeof 与 strlen 千万别混</a>
+  <a href="#s7">七、二维字符数组</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、字符串的本质：'\0' 结尾</h2>
+<div class="rule">
+  C 语言<b>没有字符串类型</b>，它用<b>字符数组 + 结尾的 <code>'\0'</code></b>（ASCII 0，空字符）来表示字符串。
+  <div class="th">
+    <b><code>"abc"</code> 占 4 个字节：</b><code>'a'</code>、<code>'b'</code>、<code>'c'</code>、<code>'\0'</code>。<code>strlen("abc")</code> = <b>3</b>，而 <code>sizeof("abc")</code> = <b>4</b>。<br>
+    <b>所有字符串函数都是"遇到 <code>'\0'</code> 就停"</b>——没有 <code>'\0'</code> 的字符数组<b>不是字符串</b>，用 <code>%s</code> 输出会一路读到内存垃圾里，出现乱码。
+  </div>
+  <table class="mem">
+    <tr><td class="ix">下标</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+    <tr><td class="ix">字符</td><td>a</td><td>b</td><td>c</td><td><b>\0</b></td><td>（未用）</td></tr>
+  </table>
+  <b>三个必须分清的东西：</b>
+  <table class="law">
+    <tr><th>写法</th><th>是什么</th><th>值</th></tr>
+    <tr><td class="nm"><code>'\0'</code></td><td>空字符（ASCII 0）</td><td>字符串结束标志</td></tr>
+    <tr><td class="nm"><code>'0'</code></td><td>数字字符 0</td><td>ASCII <b>48</b></td></tr>
+    <tr><td class="nm"><code>0</code></td><td>整数 0</td><td>数值 0</td></tr>
+  </table>
+</div>
+
+<h2 class="section" id="s2">二、两种初始化与"长度够不够"</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>写法</th><th>实际内容</th><th>占字节</th><th>是字符串吗</th></tr>
+    <tr><td class="nm"><code>char s[] = "abc";</code></td><td>a b c <b>\0</b></td><td><b>4</b></td><td class="y">✓ 是</td></tr>
+    <tr><td class="nm"><code>char s[3] = "abc";</code></td><td>a b c（<b>没有</b> \0）</td><td>3</td><td class="n">✗ 不是，用 %s 会越界</td></tr>
+    <tr><td class="nm"><code>char s[] = {'a','b','c'};</code></td><td>a b c</td><td>3</td><td class="n">✗ 只是普通字符数组</td></tr>
+    <tr><td class="nm"><code>char s[] = {'a','b','c','\0'};</code></td><td>a b c \0</td><td>4</td><td class="y">✓ 手动加 \0 才行</td></tr>
+    <tr><td class="nm"><code>char s[10] = "abc";</code></td><td>a b c \0 后全 0</td><td>10</td><td class="y">✓ 剩余自动补 0</td></tr>
+  </table>
+  <div class="th">
+    <b>长度规则：</b><code>char s[10]</code> 最多装 <b>9 个字符 + 1 个 <code>'\0'</code></b>。判断"够不够"时，<b>一定要给 <code>'\0'</code> 留一个位置</b>：长度为 n 的字符串至要 <code>char s[n + 1]</code>。
+  </div>
+</div>
+
+<h2 class="section" id="s3">三、输入输出：scanf %s 与 gets</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>方式</th><th>能否读空格</th><th>结束条件</th><th>注意</th></tr>
+    <tr><td class="nm"><code>scanf("%s", s)</code></td><td class="n">不能</td><td>遇到空格 / Tab / 回车</td><td><b>数组名 s 前面不能加 &amp;</b>（s 本身就是地址）</td></tr>
+    <tr><td class="nm"><code>gets(s)</code></td><td class="y">能</td><td>只遇回车</td><td>会把回车换成 <code>'\0'</code>，读整行首选</td></tr>
+    <tr><td class="nm"><code>printf("%s", s)</code></td><td>—</td><td>遇到 <code>'\0'</code></td><td>同样不加 <code>&amp;</code></td></tr>
+    <tr><td class="nm"><code>puts(s)</code></td><td>—</td><td>遇到 <code>'\0'</code></td><td>输出完<b>自动换行</b></td></tr>
+  </table>
+<pre class="src">char name[20];
+
+scanf("%s", name);     <span class="hl"><span class="cm">/* 输入 "Li Ming" 只能读到 "Li" */</span></span>
+gets(name);            <span class="cm">/* ✓ 能读到 "Li Ming" 整行 */</span>
+printf("%s\n", name);</pre>
+</div>
+<div class="note">
+  <b>易错：</b>① <code>scanf("%s", &amp;s)</code> 虽然常"能跑"，但类型不对，正规写法<b>不加 <code>&amp;</code></b>；② <code>char s[5]; gets(s);</code> 输入超长字符会<b>写越界</b>，C 不检查；③ 先 <code>scanf("%d")</code> 再 <code>gets(s)</code>，<b>gets 会读到之前残留的回车</b>（第 4 章那个坑），此时要先 <code>getchar();</code>。
+</div>
+
+<h2 class="section" id="s4">四、四个库函数（含返回值含义）</h2>
+<div class="rule">
+  都在 <code>&lt;string.h&gt;</code> 里：
+  <table class="law">
+    <tr><th>函数</th><th>调用</th><th>返回值 / 结果</th><th>易错</th></tr>
+    <tr><td class="nm"><code>strlen</code></td><td><code>n = strlen(s);</code></td><td>字符串<b>长度</b>（不含 <code>'\0'</code>）</td><td>是"到第一个 <code>'\0'</code> 为止"的字符数</td></tr>
+    <tr><td class="nm"><code>strcpy</code></td><td><code>strcpy(s1, s2);</code></td><td>把 s2 <b>连同 <code>'\0'</code></b> 复制到 s1</td><td><b>不能用 <code>s1 = s2</code></b>（数组名不能赋值）；s1 必须够大</td></tr>
+    <tr><td class="nm"><code>strcat</code></td><td><code>strcat(s1, s2);</code></td><td>把 s2 接到 s1 末尾（从 s1 的 <code>'\0'</code> 处开始写）</td><td>s1 必须<b>有足够剩余空间</b>；结果在 s1 里</td></tr>
+    <tr><td class="nm"><code>strcmp</code></td><td><code>r = strcmp(s1, s2);</code></td><td>按 ASCII <b>逐字符</b>比较：s1&gt;s2 返回<b>正数</b>，相等返回 <b>0</b>，小于返回<b>负数</b></td><td><b>不能用 <code>s1 == s2</code></b>（那比的是地址）；"相等"要判 <code>== 0</code></td></tr>
+  </table>
+  <div class="th">
+    <b>strcmp 的比较规则：</b>从头开始逐字符比，<b>遇到第一处不同就按 ASCII 码定胜负</b>；若前面都一样，则<b>长的那个大</b>（因为它的下一个字符不是 <code>'\0'</code>）。例：<code>"abc"</code> &lt; <code>"abd"</code>（'c'&lt;'d'）；<code>"ab"</code> &lt; <code>"abc"</code>（'ab' 结束）。
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、六个必背模板（真题原型）</h2>
+
+<div class="card">
+  <h3>模板 1 · 求长度（strlen 的自写版）</h3>
+<pre class="src">int mylen(char s[])
+{
+    int i = 0;
+    while (s[i] != '\0')      <span class="cm">/* 或写 while (s[i]) */</span>
+        i++;
+    return i;
+}</pre>
+</div>
+
+<div class="card">
+  <h3>模板 2 · 字符串连接（2026.4 第 30 题）</h3>
+  <p>要求：把 s2 接到 s1 末尾，结果存在 s1 中。</p>
+<pre class="src">void mycat(char s1[], char s2[])
+{
+    int i = 0, j = 0;
+
+    while (s1[i] != '\0')          <span class="cm">/* 第一步：找到 s1 的末尾 */</span>
+        i++;
+    while (s2[j] != '\0') {        <span class="hl"><span class="cm">/* 第二步：从这一位开始覆盖写 */</span></span>
+        s1[i] = s2[j];
+        i++;
+        j++;
+    }
+    s1[i] = '\0';                  <span class="hl"><span class="cm">/* 第三步：补上结束符，别忘！ */</span></span>
+}</pre>
+  <b>三步走：找尾 → 搬运 → 补 <code>'\0'</code>。</b>三个空基本就对应这三步。
+</div>
+
+<div class="card">
+  <h3>模板 3 · 子串复制（2026.4 第 31 题）</h3>
+  <p>要求：把 s1 中第 m 个字符开始的全部字符复制到 s2。<b>第 m 个字符的下标是 m − 1。</b></p>
+<pre class="src">int main(void)
+{
+    char s1[100], s2[100];
+    int m, i, j = 0;
+
+    gets(s1);
+    scanf("%d", &amp;m);
+    for (i = m - 1; s1[i] != '\0'; i++) {   <span class="hl"><span class="cm">/* 起点 m-1，一直搬到末尾 */</span></span>
+        s2[j] = s1[i];
+        j++;
+    }
+    s2[j] = '\0';                            <span class="cm">/* 补结束符 */</span>
+    puts(s2);
+    return 0;
+}</pre>
+  <b>注意：</b>题目说"第 m 个"用的是<b>日常序数</b>（从 1 数），而下标从 0 数，所以起点是 <code>m-1</code>。<b>这是本题唯一的坑。</b>
+</div>
+
+<div class="card">
+  <h3>模板 4 · 子串逆序（2025.10 第 31 题）</h3>
+  <p>要求：把 <code>"I like C"</code> 里的 <code>"like"</code> 逆序 → <code>"I ekil C"</code>。参数 a、b 是<b>下标区间 [a, b)</b>。</p>
+<pre class="src">void fun(char *str, int a, int b)   <span class="cm">/* 逆序 str[a] ~ str[b-1] */</span>
+{
+    char *p = str + a;
+    char *q = str + b - 1;          <span class="hl"><span class="cm">/* 末字符是 b-1，不是 b */</span></span>
+    char t;
+
+    while (p &lt; q) {                 <span class="cm">/* 相遇就停，只换一半 */</span>
+        t = *p;
+        *p = *q;
+        *q = t;
+        p++;
+        q--;                        <span class="hl"><span class="cm">/* 两个指针都要往中间走 */</span></span>
+    }
+}</pre>
+  <b>调用：</b><code>fun(s, 2, 6)</code> 处理下标 2~5（即 <code>"like"</code>）。<b>端点最容易写错</b>：右端是 <code>b-1</code>，循环条件是 <code>p &lt; q</code>。
+</div>
+
+<div class="card">
+  <h3>模板 5 · 删除子串（2025.4 第 34 题同型）</h3>
+  <pre class="src">void delstr(char s[], char sub[])
+{
+    int i = 0, j = 0, k;
+    int n = mylen(sub);
+
+    while (s[i] != '\0') {
+        for (k = 0; k &lt; n; k++)         <span class="cm">/* 试着匹配 sub */</span>
+            if (s[i + k] != sub[k])
+                break;
+        if (k == n)                     <span class="hl"><span class="cm">/* 全部匹配上 → 跳过这 n 个字符 */</span></span>
+            i += n;
+        else
+            s[j++] = s[i++];            <span class="cm">/* 不匹配 → 保留当前字符 */</span>
+    }
+    s[j] = '\0';
+}</pre>
+  <b>思路：</b>用两个下标 i（读）和 j（写），<b>i 走得快、j 走得慢</b>，相当于"原地删除"。
+</div>
+
+<div class="card">
+  <h3>模板 6 · 大小写转换与字符统计（2025.10 第 30 题）</h3>
+<pre class="src">#include &lt;ctype.h&gt;
+
+for (i = 0; s[i] != '\0'; i++) {
+    if (s[i] &gt;= 'a' &amp;&amp; s[i] &lt;= 'z')        <span class="cm">/* 小写 → 大写 */</span>
+        s[i] = s[i] - 32;                   <span class="cm">/* 也可写 toupper(s[i]) */</span>
+    else if (s[i] &gt;= 'A' &amp;&amp; s[i] &lt;= 'Z')    <span class="cm">/* 大写 → 小写 */</span>
+        s[i] = s[i] + 32;
+    else if (isdigit(s[i]))
+        s[i] = '0';                         <span class="hl"><span class="cm">/* 数字统一替换成字符 '0' */</span></span>
+}</pre>
+  <b>为什么是 32：</b><code>'a'</code>=97、<code>'A'</code>=65，差 32。也可以写成 <code>s[i] - 'a' + 'A'</code>，可读性更好。
+</div>
+
+<h2 class="section" id="s6">六、sizeof 与 strlen 千万别混</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>项目</th><th><code>sizeof</code></th><th><code>strlen</code></th></tr>
+    <tr><td class="nm">是什么</td><td><b>运算符</b>（编译期求值）</td><td><b>库函数</b>（运行期数到 <code>'\0'</code>）</td></tr>
+    <tr><td class="nm">算的是</td><td>占用的<b>总字节数</b>，<b>含 <code>'\0'</code></b></td><td>字符个数，<b>不含 <code>'\0'</code></b></td></tr>
+    <tr><td class="nm"><code>char s[]="abc"</code></td><td>4</td><td>3</td></tr>
+    <tr><td class="nm"><code>char s[10]="abc"</code></td><td>10</td><td>3</td></tr>
+    <tr><td class="nm">需要头文件吗</td><td>不需要</td><td>需要 <code>&lt;string.h&gt;</code></td></tr>
+  </table>
+  <div class="th">
+    <b>经典例题：</b><code>char a[] = {"lovely\n"};</code> 则 <code>sizeof(a)</code> = <b>8</b>（7 个字符 + <code>'\0'</code>），<code>strlen(a)</code> = <b>7</b>。若 <code>p = &amp;a[1]</code>，则 <code>strlen(p)</code> = <b>6</b>（从 'o' 数到 <code>'\0'</code>）。
+  </div>
+</div>
+<div class="note">
+  <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q29">2026.4 真题·第 29 题</a> <code>char a[]={"lovely\n"}; char *p=&amp;a[1];</code> 求结果，答案 <b>6</b>——因为 p 指向 <code>'o'</code>，<code>'o','v','e','l','y','\n'</code> 正好 6 个字符，<code>'\0'</code> 不算。
+</div>
+
+<h2 class="section" id="s7">七、二维字符数组</h2>
+<div class="rule">
+  存多个字符串用二维字符数组：<b>第一维是"第几个串"，第二维是"每个串最长多少"</b>。
+<pre class="src">char name[3][10] = {"Zhang", "Li", "Wang"};
+
+printf("%s\n", name[1]);     <span class="cm">/* Li —— name[1] 就是一个字符串 */</span>
+printf("%c\n", name[1][0]);  <span class="cm">/* L  —— 再下一层就是单个字符 */</span></pre>
+  <table class="law">
+    <tr><th>写法</th><th>含义</th></tr>
+    <tr><td class="nm"><code>name[i]</code></td><td>第 i 个字符串（相当于一个一维字符数组名）</td></tr>
+    <tr><td class="nm"><code>name[i][j]</code></td><td>第 i 个字符串的第 j 个字符</td></tr>
+    <tr><td class="nm"><code>char *p[3] = {"Zhang","Li","Wang"};</code></td><td><b>指针数组</b>：更省内存，但每个串长度可不同（第 7 章）</td></tr>
+  </table>
+  <div class="th">
+    <b>为什么 <code>char s[3][10]</code> 浪费空间：</b>每个串都按 10 字节分配，"Li" 只用了 3 字节，剩下 7 字节空着。<b>指针数组</b>只存地址，比较省——这就是第 11 题"指针数组 vs 字符数组"的考点。
+  </div>
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条主线：</b>字符串 = 字符数组 + <code>'\0'</code> → 初始化时<b>给 <code>'\0'</code> 留位置</b> → 读入用 <code>gets</code>（能吃空格）或 <code>scanf("%s")</code>（不能吃空格）→ 所有操作都是"<b>找到尾 → 搬运 → 补 <code>'\0'</code></b>"三个动作 → 库函数只记四个（<code>strlen/strcpy/strcat/strcmp</code>），<b><code>strcmp</code> 判等要用 <code>== 0</code></b>。<br><br>
+  两套卷本章的题（<b>合计约 24 分，全卷最重</b>）：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q29">2026.4-29</a> 字符指针 + <code>'\0'</code>（6）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q30">2026.4-30</a> 自写 strcat 三空（6）、<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q31">2026.4-31</a> 子串复制（6）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q30">2025.10-30</a> 大小写转换（6）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q31">2025.10-31</a> 子串逆序（6）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q32">2025.10-32</a> 结构体数组 + <code>strcmp</code> 查找（6）。<br>
+  <b>这六个模板能默写，等于白拿 30 分。</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 5 章（下）字符数组与字符串 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>

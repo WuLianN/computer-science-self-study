@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13013 · 指针进阶（第 7 章·下）｜指针数组 / 数组指针 / 二级指针 / 动态内存</title>
+<meta name="description" content="高级语言程序设计 13013 第 7 章下半：指针数组与数组指针的辨析总则、char *s[5] 与 char (*p)[5] 的读法、二级指针 **p 的两层解引用、返回指针的函数与函数指针、malloc 与 free 动态内存、链表结点的 next 自引用指针，附 2026.4 与 2025.10 真题题号。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧷</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css">
+<style>
+  header.hero{background:linear-gradient(135deg,#9f1239,#db2777)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
+  .ok b{color:var(--ok)}
+  pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.src .cm{color:#94a3b8}
+  pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  a.qref:hover{text-decoration:underline}
+  table.law td.y{color:#047857;font-weight:700}
+  table.law td.n{color:#b91c1c;font-weight:700}
+  table.mem{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;text-align:center}
+  table.mem th{background:#fce7f3;color:#9f1239;border:1px solid var(--line);padding:4px}
+  table.mem td{border:1px solid var(--line);padding:5px 4px;font-family:Consolas,Monaco,monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 7 章（下）· 指针进阶</h1>
+  <p>这一页只解决一件事：<b>把"长得像"的几种指针声明分开</b>。<code>char *s[5]</code>、<code>char (*p)[5]</code>、<code>char **p</code> 三个东西一字之差，含义完全不同——而单选第 11 题<b>年年考的就是这个辨析</b>。</p>
+  <span class="pill">先看名字先跟谁结合</span><span class="pill">指针数组 vs 数组指针</span><span class="pill">二级指针</span><span class="pill">malloc / free</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="指针与数组.html">← 上一节：指针与数组</a>
+    <a href="../结构体与自定义类型/结构体与自定义类型.html">→ 下一节：结构体与自定义类型</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、判断总则：名字先跟谁结合</a>
+  <a href="#s2">二、指针数组：<code>char *s[5]</code></a>
+  <a href="#s3">三、数组指针：<code>char (*p)[5]</code></a>
+  <a href="#s4">四、二级指针：<code>char **p</code></a>
+  <a href="#s5">五、返回指针的函数 vs 函数指针</a>
+  <a href="#s6">六、动态内存：malloc 与 free</a>
+  <a href="#s7">七、链表结点：结构体的自引用指针</a>
+  <a href="#s8">八、本章小结与真题呼应</a>
+</div>
+
+<h2 class="section" id="s1">一、判断总则：名字先跟谁结合</h2>
+<div class="rule">
+  <b>C 的声明也是"表达式"：从变量名出发，先跟右边的 <code>[]</code>、左边的 <code>*</code> 结合，谁的优先级高谁先结合。</b>
+  <div class="th">
+    <b>优先级：<code>[]</code>（数组）和 <code>()</code>（函数）高于 <code>*</code>（指针）。</b>所以 <code>char *s[5]</code> 里 s 先跟 <code>[5]</code> 走；想让它先跟 <code>*</code>，就必须加<b>括号</b>：<code>char (*p)[5]</code>。
+  </div>
+  <table class="law">
+    <tr><th>声明</th><th>读法（从名字开始）</th><th>是什么</th></tr>
+    <tr><td class="nm"><code>char *s[5]</code></td><td>s 是数组，5 个元素，元素是 <code>char *</code></td><td>指针数组</td></tr>
+    <tr><td class="nm"><code>char (*p)[5]</code></td><td>p 是指针，指向"含 5 个 char 的数组"</td><td>数组指针（行指针）</td></tr>
+    <tr><td class="nm"><code>char **q</code></td><td>q 是指针，指向"<code>char *</code>"</td><td>二级指针</td></tr>
+    <tr><td class="nm"><code>int *f(int)</code></td><td>f 是函数，返回 <code>int *</code></td><td>返回指针的函数</td></tr>
+    <tr><td class="nm"><code>int (*f)(int)</code></td><td>f 是指针，指向函数</td><td>函数指针</td></tr>
+  </table>
+  <div class="note" style="margin:14px 0 0">
+    <b>口诀：先看名字跟谁走，括号一定改顺序。</b>考试里的四个选项通常就是把括号挪来挪去，看清括号在哪，答案立刻出来。
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、指针数组：<code>char *s[5]</code></h2>
+<div class="rule">
+  <b>指针数组就是"每个元素都是指针"的数组。</b>最常用的场景是存一组<b>长度不等</b>的字符串：每个元素存一个首地址，字符串本身另放在别处。
+<pre class="src">#include &lt;stdio.h&gt;
+
+int main(void)
+{
+    char *name[3] = {"Li", "Zhang", "Wang"};
+    int i;
+
+    for (i = 0; i &lt; 3; i++)
+        printf("%s\n", name[i]);          <span class="cm">/* name[i] 本身就是地址，不加 * */</span>
+    printf("%c\n", *(name[1] + 2));       <span class="hl"><span class="cm">/* a —— 第 2 个字符串的第 3 个字符 */</span></span>
+    return 0;
+}</pre>
+  <div class="out">Li
+Zhang
+Wang
+a</div>
+  <table class="law">
+    <tr><th>对比</th><th><code>char name[3][8]</code>（二维字符数组）</th><th><code>char *name[3]</code>（指针数组）</th></tr>
+    <tr><td class="nm">占用空间</td><td>3 × 8 = 24 字节，每行<b>定长</b>，短名字浪费</td><td>3 个指针（16 位机 6 字节）+ 字符串常量</td></tr>
+    <tr><td class="nm">能否修改内容</td><td class="y">能，<code>name[0][0] = 'X';</code></td><td class="n">不能（指向字符串常量，只读）</td></tr>
+    <tr><td class="nm">能否直接赋值</td><td class="n"><code>name[0] = "Hi";</code> 错</td><td class="y"><code>name[0] = "Hi";</code> 对（改的是指针）</td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q11">2026.4 真题·第 11 题</a> 指向字符型数据的指针数组定义是 <code>char *str[5];</code>（答案 C）。<br>
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q11">2025.10 真题·第 11 题</a> <code>char *str[]={"Zhang","Li","Wang",NULL};</code> 定义的是"<b>包含四个元素的指针数组</b>"（答案 B）——末尾的 <code>NULL</code> 也是一个元素，<b>元素个数是 4，不是 3</b>。
+  </div>
+</div>
+<div class="note">
+  <b>易错：</b>定义 <code>char *s[5];</code> 只是准备了 5 个"空指针"，<b>没有分配任何存放字符的空间</b>。此时 <code>strcpy(s[0], "abc");</code> 会写飞——必须先 <code>s[0] = (char *)malloc(10);</code> 或者干脆用二维数组。
+</div>
+
+<h2 class="section" id="s3">三、数组指针：<code>char (*p)[5]</code></h2>
+<div class="rule">
+  <b>数组指针（行指针）一次指向"一整行"。</b>它最典型的用法是接二维数组的数组名。
+<pre class="src">int a[3][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+int (*p)[4];                     <span class="hl"><span class="cm">/* p 指向"含 4 个 int 的数组"，即一行 */</span></span>
+int i, j;
+
+p = a;                           <span class="cm">/* a 的类型正是 int (*)[4] */</span>
+for (i = 0; i &lt; 3; i++)
+    for (j = 0; j &lt; 4; j++)
+        printf("%d ", p[i][j]);  <span class="cm">/* 等价 a[i][j]、*(*(p+i)+j) */</span></pre>
+  <div class="out">1 2 3 4 5 6 7 8 9 10 11 12</div>
+  <table class="law">
+    <tr><th>写法</th><th>含义</th><th>步长（16 位机）</th></tr>
+    <tr><td class="nm"><code>p = a;</code>　<code>int (*p)[4]</code></td><td>p 指向第 0 行</td><td><code>p+1</code> 跳 <b>1 行</b> = 4×2 = 8 字节</td></tr>
+    <tr><td class="nm"><code>p = &amp;a[0][0];</code>　<code>int *p</code></td><td>p 指向第 0 行第 0 个元素</td><td><code>p+1</code> 跳 <b>1 个 int</b> = 2 字节</td></tr>
+    <tr><td class="nm"><code>int *q = a;</code></td><td class="n">类型不匹配（<code>int (*)[4]</code> 给 <code>int *</code>）</td><td>多数编译器只报警告，但写法不规范</td></tr>
+  </table>
+  <div class="th">
+    <b>一句话区分：</b><code>int *p[4]</code> 是<b>指针数组</b>（4 个指针），<code>int (*p)[4]</code> 是<b>数组指针</b>（1 个指针，指向 4 个 int 的数组）。<b>括号一加，天翻地覆。</b>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、二级指针：<code>char **p</code></h2>
+<div class="rule">
+  <b>二级指针 = 指向"指针变量"的指针。</b>因为指针变量自己也占内存，也有地址，所以可以再取一次地址。
+<pre class="src">int x = 10;
+int *p = &amp;x;            <span class="cm">/* 一级：p 里装 x 的地址 */</span>
+int **pp = &amp;p;          <span class="hl"><span class="cm">/* 二级：pp 里装 p 的地址 */</span></span>
+
+printf("%d %d %d\n", x, *p, **pp);    <span class="cm">/* 10 10 10 */</span>
+printf("%d\n", *pp == p);              <span class="cm">/* 1 —— *pp 就是 p */</span></pre>
+  <div class="out">10 10 10
+1</div>
+  <table class="mem">
+    <tr><th>变量</th><th>地址</th><th>内容</th><th>说明</th></tr>
+    <tr><td>int x</td><td>2000</td><td>10</td><td>普通变量</td></tr>
+    <tr><td>int *p</td><td>3000</td><td><b>2000</b></td><td>一级指针</td></tr>
+    <tr><td>int **pp</td><td>4000</td><td><b>3000</b></td><td>二级指针</td></tr>
+  </table>
+  <div class="th">
+    <b>解引用要看层数：</b>对二级指针 <code>pp</code>，<code>*pp</code> 得到的是<b>一级指针 p 的值</b>（一个地址），<code>**pp</code> 才是最终的 <b>x 的值</b>。<br>
+    <b>两个常见用途：</b>① 在函数里修改"指针本身"（<code>void get(char **s)</code>，让指针指向新空间）；② <code>main(int argc, char **argv)</code> —— 等价于 <code>char *argv[]</code>，<b>指针数组作形参会退化成一维指针</b>，所以两者写法等价。
+  </div>
+</div>
+
+<h2 class="section" id="s5">五、返回指针的函数 vs 函数指针</h2>
+<div class="rule">
+  <table class="law">
+    <tr><th>声明</th><th>读法</th><th>怎么用</th></tr>
+    <tr><td class="nm"><code>int *f(int n)</code></td><td>f 是函数，返回 <code>int *</code></td><td><code>int *q = f(3);</code>　用<b>同类型指针</b>接收</td></tr>
+    <tr><td class="nm"><code>int (*g)(int, int)</code></td><td>g 是指针，指向函数</td><td><code>g = max;</code> 然后 <code>g(3,5)</code> 等价 <code>max(3,5)</code></td></tr>
+  </table>
+  <div class="th">
+    <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q10">2025.10 真题·第 10 题</a> 可以接收 <code>int *fun()</code> 返回值的是 <b>指针变量</b>（答案 B）——<code>int *fun()</code> 的返回类型是 <code>int *</code>，只能用 <code>int *p = fun();</code> 接，<b>不能</b>用整型变量接。
+  </div>
+</div>
+<div class="card">
+  <h3>返回指针的两个铁律</h3>
+<pre class="src">int *bad(void)
+{
+    int t = 5;
+    return &amp;t;              <span class="hl"><span class="cm">/* ✗ 危险：t 随函数返回就销毁了 */</span></span>
+}
+
+int *good(void)
+{
+    static int t = 5;
+    return &amp;t;              <span class="cm">/* ✓ 可以：static 变量活到程序结束 */</span>
+}
+
+int *also_good(int n)
+{
+    int *p = (int *)malloc(n * sizeof(int));
+    return p;                <span class="cm">/* ✓ 可以：堆上的空间不会自动回收 */</span>
+}</pre>
+  <b>结论：</b>返回指针时，指针指向的空间必须比函数活得久——<b>static 变量、全局变量、malloc 的堆空间</b>都行，<b>普通局部变量绝对不行</b>。
+</div>
+
+<h2 class="section" id="s6">六、动态内存：malloc 与 free</h2>
+<div class="rule">
+  数组长度在写代码时就定死了。想让程序运行时才决定开多大，就<b>向堆区动态申请</b>。
+<pre class="src">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;          <span class="cm">/* malloc、free 在这里 */</span>
+
+int main(void)
+{
+    int *p, i, n;
+
+    printf("要几个数：");
+    scanf("%d", &amp;n);
+
+    p = (int *)malloc(n * sizeof(int));    <span class="hl"><span class="cm">/* 申请 n 个 int 的空间 */</span></span>
+    if (p == NULL) {                       <span class="cm">/* 必须判空，申请可能失败 */</span>
+        printf("内存不足\n");
+        return 1;
+    }
+
+    for (i = 0; i &lt; n; i++)
+        p[i] = i + 1;                      <span class="cm">/* 用起来和数组一模一样 */</span>
+    for (i = 0; i &lt; n; i++)
+        printf("%d ", p[i]);
+
+    free(p);                               <span class="cm">/* 用完必须归还 */</span>
+    p = NULL;                              <span class="cm">/* 防止 p 变成野指针 */</span>
+    return 0;
+}</pre>
+  <table class="law">
+    <tr><th>函数</th><th>原型</th><th>作用</th></tr>
+    <tr><td class="nm"><code>malloc</code></td><td><code>void *malloc(size_t n)</code></td><td>申请 <b>n 个字节</b>，内容<b>不确定</b></td></tr>
+    <tr><td class="nm"><code>calloc</code></td><td><code>void *calloc(size_t n, size_t size)</code></td><td>申请 n 个元素共 n×size 字节，<b>全部清 0</b></td></tr>
+    <tr><td class="nm"><code>realloc</code></td><td><code>void *realloc(void *p, size_t n)</code></td><td>把 p 的空间<b>调整</b>为 n 字节</td></tr>
+    <tr><td class="nm"><code>free</code></td><td><code>void free(void *p)</code></td><td>释放 p 指向的空间，<b>必须与 malloc 配对</b></td></tr>
+  </table>
+  <div class="th">
+    <b>三个细节：</b>① <code>malloc</code> 返回 <code>void *</code>，要<b>强制转换</b>成所需类型再赋给指针（教材写法）；② <code>sizeof(int)</code> 由系统定，16 位机是 2，所以"n 个 int"要写 <code>n * sizeof(int)</code>，<b>不能写死 n * 2</b>；③ <code>free(p)</code> 只归还空间，<b>不会把 p 置空</b>，自己补一句 <code>p = NULL;</code>。
+  </div>
+</div>
+<div class="note">
+  <b>与数组的关键区别：</b>数组的空间由系统在<b>栈区</b>分配，函数返回自动回收；<code>malloc</code> 的空间在<b>堆区</b>，<b>不 free 就一直在</b>（内存泄漏）。反过来，堆上的空间可以跨函数使用，这正是"返回指针"能成立的原因。
+</div>
+
+<h2 class="section" id="s7">七、链表结点：结构体的自引用指针</h2>
+<div class="rule">
+  结点要"连着下一个结点"，就得在结构体里放一个<b>指向自身类型的指针</b>——这就是<b>自引用</b>，下一章链表的入场券。
+<pre class="src">struct node {
+    int data;
+    struct node *next;      <span class="hl"><span class="cm">/* 只能是指针，不能写 struct node next; */</span></span>
+};</pre>
+  <table class="law">
+    <tr><th>写法</th><th>是否合法</th><th>原因</th></tr>
+    <tr><td class="nm"><code>struct node *next;</code></td><td class="y">✓</td><td>指针大小固定（2 或 4 字节），编译器能算出结构体大小</td></tr>
+    <tr><td class="nm"><code>struct node next;</code></td><td class="n">✗</td><td>自己包含自己，大小无限大，编译器直接报错</td></tr>
+  </table>
+  <b>用指针把结点串起来（头插法）：</b>
+<pre class="src">struct node *head = NULL, *p;
+
+p = (struct node *)malloc(sizeof(struct node));
+p-&gt;data = 1;                <span class="cm">/* 等价 (*p).data = 1; */</span>
+p-&gt;next = head;             <span class="cm">/* 新结点的 next 指向原表头 */</span>
+head = p;                   <span class="cm">/* 表头换成新结点 */</span>
+
+<span class="cm">/* 遍历：从头走到 NULL 为止 */</span>
+for (p = head; p != NULL; p = p-&gt;next)
+    printf("%d ", p-&gt;data);</pre>
+  <div class="th">
+    <b>两条铁律：</b>① 访问成员用 <code>p-&gt;data</code>，它<b>完全等价</b>于 <code>(*p).data</code>（点号优先级高于星号，所以括号不能省）；② 遍历的终止条件是 <code>p != NULL</code>，<b>不是</b> <code>p-&gt;next != NULL</code>（那样会漏掉最后一个结点）。
+  </div>
+</div>
+
+<h2 class="section" id="s8">八、本章小结与真题呼应</h2>
+<div class="ok">
+  <b>一条总则：</b><code>[]</code>、<code>()</code> 优先于 <code>*</code> —— <b>先看名字先跟谁结合</b>，有括号先算括号。<br>
+  <code>char *s[5]</code> 是<b>指针数组</b>（5 个指针）；<code>char (*p)[5]</code> 是<b>数组指针</b>（1 个指针，指向 5 个 char）；<code>char **p</code> 是<b>二级指针</b>，<code>*p</code> 是地址、<code>**p</code> 才是值。<br>
+  <code>int *f(int)</code> 是<b>返回指针的函数</b>，<code>int (*f)(int)</code> 是<b>函数指针</b>；返回指针时千万别返回局部变量的地址。<br>
+  <code>malloc</code> 申请、<code>free</code> 归还、<b>申请后判 NULL、释放后置 NULL</b>；结构体里的 <code>next</code> 只能是指向自身的指针。<br><br>
+  两套卷本章的题：<a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q11">2026.4-11</a> 指针数组 <code>char *str[5]</code>（C）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q11">2025.10-11</a> <code>char *str[]</code> 是 4 元素的指针数组（B）、<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q10">2025.10-10</a> 接收 <code>int *fun()</code> 返回值要用指针变量（B）；<a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q9">2025.10-9</a> 的解析也点明了指针可配 <code>malloc</code> 做动态分配。<br>
+  <b>第 11 题就是送分题——只要肯花 30 秒数括号。</b>
+</div>
+
+<footer>高级语言程序设计 13013 · 第 7 章（下）指针进阶 · 代码按 C89 书写 · 配合真题详解使用</footer>
+</div>
+</body>
+</html>
