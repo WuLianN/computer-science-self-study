@@ -25,7 +25,6 @@
   .gotos a.hot{background:#fff;color:var(--brand);border-color:#fff;font-weight:700}
   h2.section{margin:32px 0 8px;font-size:19px;border-left:5px solid var(--brand);padding-left:12px}
   h2.section .yr{color:var(--muted);font-size:13px;font-weight:400;margin-left:8px}
-  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
   .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin:0 0 6px}
   .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:106px}
   .pcard:hover{border-color:var(--brand);background:#f7fffc;transform:translateY(-2px);box-shadow:0 4px 12px rgba(5,150,105,.10)}
@@ -38,10 +37,6 @@
   .exam-meta{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 16px;margin:0 0 12px;font-size:13.5px;color:var(--muted)}
   .exam-meta b{color:var(--ink)}
   .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:13.5px}
-  .plan{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 18px 14px;margin:14px 0}
-  .plan h3{margin:14px 0 6px;font-size:16px;color:var(--brand)}
-  .plan ol{margin:6px 0 0;padding-left:22px;font-size:14px}
-  .plan li{margin:5px 0}
   footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
   footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
   footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px;transition:.15s}
@@ -53,12 +48,11 @@
 
 <header class="hero">
   <h1>高级语言程序设计 13013 · 历年真题导航</h1>
-  <p>C 语言 · 教材：郑岩《高级语言程序设计》机械工业出版社 2017。</p>
+  <p>C 语言 · 教材：郑岩《高级语言程序设计》机械工业出版社 2017。旧代码 00342 的教材相同、真题通用。</p>
   <span class="pill">满分100 · 34题</span><span class="pill">单选15+填空10+分析4+填充3+设计2</span><span class="pill">2 套真题 · 均含文字详解</span>
   <div class="gotos">
     <a href="../../index.html">🏠 首页</a>
     <a class="hot" href="../考前抢分.html">🔥 考前抢分</a>
-    <a href="#sec-order">🗓 刷题顺序</a>
   </div>
 </header>
 
@@ -92,28 +86,8 @@
   </a>
 </div>
 
-<h2 class="section" id="sec-order">刷题顺序建议</h2>
-<div class="plan">
-  <h3>① 先做 2026.4（最近）</h3>
-  <ol>
-    <li>限时 <b>60 分钟</b>只做 1–25 题（客观题 50 分），做完对页尾速查表，错题回看解析并记考点标签。</li>
-    <li>再花 40 分钟做 26–34 题（程序分析 / 填充 / 设计，50 分），这几道是拉开差距的地方，务必动笔写输出、填空、完整代码。</li>
-  </ol>
-  <h3>② 隔 2–3 天做 2025.10</h3>
-  <ol>
-    <li>同流程再走一遍，重点看两套重复考的考点（运算符优先级、存储类别、字符串处理、结构体数组）。</li>
-    <li>把两套的错题按考点归类，对照 <a href="../考前抢分.html" style="color:var(--brand);font-weight:700">考前抢分</a> 里的「必考清单」补漏。</li>
-  </ol>
-  <h3>③ 考前 3 天只做三件事</h3>
-  <ol>
-    <li>背 <a href="../考前抢分.html" style="color:var(--brand);font-weight:700">考前抢分</a> 的 8 个代码模板（strcat、子串复制、结构体求最值、多分支区间、数组排序、素数、累加/阶乘、字符统计）。</li>
-    <li>把两套速查表从头到尾默写一遍答案，混不混得清 <code>%c</code>/<code>%d</code>、<code>'\0'</code>/<code>'0'</code>、<code>++x</code>/<code>x++</code>。</li>
-    <li>看两套详解里的「⚠ 答案更正」段落，这些正是最容易记错的坑。</li>
-  </ol>
-</div>
-
 <div class="note">
-  📚 <b>关于收录范围</b>：本站只收 <b>2026.4 与 2025.10</b> 两套全国卷（各配文字详解 + 原卷 PDF）。
+  📚 <b>关于收录范围</b>：本站只收 <b>2026.4 与 2025.10</b> 两套全国卷（各配文字详解 + 原卷 PDF）。更早的 2024.10 / 2024.4 及 2004–2023 年的旧代码真题，仍可在资料仓库 <code>github.com/zikaofile/13013</code> 下载；但教材改版后考点表述有差异，临考优先吃透最近两套。
 </div>
 
 <footer>
