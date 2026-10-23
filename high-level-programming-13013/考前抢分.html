@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高级语言程序设计 13013 · 考前抢分一页纸（目标 60+）</title>
+<meta name="description" content="基于 2025.4 / 2025.10 / 2026.4 三套全国真题逐题统计的 C 语言核心考点频率表、8 个可默写代码模板、易错陷阱清单与考场抢分策略，专为考前及格 60+ 冲刺设计。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#059669; --brand-soft:#ecfdf5; --deep:#047857;
+    --ok:#059669; --ok-soft:#ecfdf5; --warn:#d97706; --warn-soft:#fffbeb;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 16px 70px}
+  header.hero{background:linear-gradient(135deg,#047857,#0891b2);color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:16px;position:relative;overflow:hidden}
+  header.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 0,rgba(255,255,255,.18),transparent 45%);pointer-events:none}
+  header.hero h1{margin:0 0 6px;font-size:24px;position:relative}
+  header.hero p{margin:4px 0;opacity:.95;font-size:14.5px;position:relative}
+  .pill{display:inline-block;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 12px;font-size:13px;margin:8px 8px 0 0;position:relative}
+  .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;position:relative}
+  .gotos a{text-decoration:none;border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
+  .gotos a:hover{background:#fff;color:var(--deep)}
+  .toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--deep);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;font-weight:600}
+  .btn:hover{background:var(--brand);color:#fff}
+  h2.sec{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px 18px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--brand-soft);color:var(--deep);font-weight:700}
+  td.c,th.c{text-align:center}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}
+  .tag.hot{background:var(--brand);color:#fff}
+  .tag.mid{background:var(--warn-soft);color:var(--warn)}
+  .tag.score{background:var(--ok-soft);color:var(--ok)}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .ok b{color:var(--ok)}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;background:#fff}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--deep)}
+  .card h3 .n{display:inline-block;background:var(--brand);color:#fff;border-radius:7px;width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;margin-right:8px}
+  .tpl{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:10px 13px;font-size:14px;margin:8px 0}
+  .tpl b{color:var(--deep)}
+  .ex{background:var(--brand-soft);border-left:4px solid var(--brand);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13.6px;margin:8px 0}
+  .ex .h{font-weight:700;color:var(--deep)}
+  code,.mono{font-family:"Cascadia Code",Consolas,monospace;background:#eef2ff;color:#4338ca;border-radius:4px;padding:1px 6px;font-size:.9em}
+  pre.code{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 15px;font-size:13px;line-height:1.58;overflow-x:auto;margin:10px 0;white-space:pre}
+  .steps{margin:6px 0 0;padding-left:22px;font-size:13.6px}
+  .steps li{margin:3px 0}
+  ul.tips{padding-left:20px;font-size:14px}
+  ul.tips li{margin:6px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:620px){.grid2{grid-template-columns:1fr}th,td{padding:7px 8px;font-size:13px}}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.gotos,footer .fl{display:none}
+    header.hero{border-radius:0}
+    .card,.note,.ok,table,pre.code{box-shadow:none;break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🔥 高级语言程序设计 13013 · 考前抢分一页纸</h1>
+  <p>基于 <b>2025.4 / 2025.10 / 2026.4 三套全国真题</b>逐题统计 · 唯一目标：<b>及格 60+</b> · C 语言是"套路最固定"的一门课</p>
+  <span class="pill">题型结构三套完全一致</span><span class="pill">8 个可默写模板</span><span class="pill">客观题 50 分是基本盘</span>
+  <div class="gotos">
+    <a href="../index.html">🏠 首页</a>
+    <a href="真题/index.html">📝 历年真题</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存 PDF</button>
+  <button class="btn" onclick="document.querySelectorAll('details.ans').forEach(d=>d.open=!d.open)">👁 展开 / 收起答案</button>
+</div>
+
+<div class="ok"><b>一句话策略：</b>这门课的题型三年没变过——<b>单选 15 + 填空 10 + 程序分析 4 + 程序填充 3 + 程序设计 2</b>。先把单选填空（50 分）刷到 35+，程序分析靠"手推 + 短路/static"拿 8–12 分，程序填充几乎是<b>第 32 题必考结构体数组</b>，最后 2 道编程题写出框架就有过程分。<b>客观 35 + 分析 10 + 填充 9 + 设计 8 ≈ 62</b>。</div>
+
+<h2 class="sec">一、分数结构与及格路线</h2>
+<div class="sub">三套卷大题结构完全相同（满分 100），按"性价比"从高到低投入时间。</div>
+<table>
+  <tr><th>题型</th><th class="c">题量×分</th><th class="c">合计</th><th>抢分定位</th></tr>
+  <tr><td>单项选择题 1–15</td><td class="c">15×2</td><td class="c"><span class="tag hot">30 分</span></td><td>⭐⭐⭐ 全是概念/优先级/陷阱，<b>性价比最高，目标 22+</b></td></tr>
+  <tr><td>填空题 16–25</td><td class="c">10×2</td><td class="c">20 分</td><td>⭐⭐⭐ 全是"教材原话名词"，背就能拿，目标 14+</td></tr>
+  <tr><td>程序分析题 26–29</td><td class="c">4×4</td><td class="c">16 分</td><td>⭐⭐ 只需写输出，手推 + 记住 4 个陷阱，目标 10+</td></tr>
+  <tr><td>程序填充题 30–32</td><td class="c">3×6</td><td class="c">18 分</td><td>⭐⭐ 题型固定（字符串 / 指针 / 结构体），目标 9+</td></tr>
+  <tr><td>程序设计题 33–34</td><td class="c">2×8</td><td class="c">16 分</td><td>⭐ 写完整程序，<b>写多少给多少分</b>，保底 8</td></tr>
+</table>
+<div class="note">🎯 <b>及格算式</b>：客观题 50 分拿 35（单选 22 + 填空 14 左右）＋ 程序分析 10 ＋ 程序填充 9 ＋ 程序设计 8 ＝ <b>62 分</b>。也就是说<b>不要求全部会做</b>，只要客观题不失手、大题每题都写点东西。</div>
+
+<h2 class="sec">二、🔴 每套必考（三套全中）——先背这 8 个</h2>
+<div class="sub">下面每一项在 2025.4 / 2025.10 / 2026.4 三套卷里都出现过，是"不背就亏分"的硬通货。</div>
+<table>
+  <tr><th>核心考点</th><th>常出现在</th><th class="c">约分值</th><th>一句话记住</th></tr>
+  <tr><td><b>运算符优先级 &amp; 结合性</b></td><td>单选第 4 题左右（三套同款）</td><td class="c"><span class="tag score">2–4</span></td><td><code>[] ()</code> &gt; <code>! ~ ++ --</code> &gt; <code>* / %</code> &gt; <code>+ -</code> &gt; 关系 &gt; <code>&amp;&amp;</code> &gt; <code>||</code> &gt; 赋值；<b>单目自右向左</b></td></tr>
+  <tr><td><b>强制类型转换</b></td><td>2026.4-24、2025.10-5、2025.4-16</td><td class="c"><span class="tag score">2+</span></td><td>只能写 <code>(类型名)表达式</code>，<b>不能写 <code>double(x)</code></b></td></tr>
+  <tr><td><b>结构体（定义/成员/数组）</b></td><td>单选 + <b>第 32 题填充（三套都是它）</b></td><td class="c"><span class="tag score">8+</span></td><td>成员用 <code>.</code>、指针用 <code>-&gt;</code>；定义类型<b>不分配内存</b></td></tr>
+  <tr><td><b>指针概念 / 指针数组</b></td><td>单选（三套各 2 题）+ 第 31 题</td><td class="c"><span class="tag score">6+</span></td><td><code>char *a[5]</code> 是指针<b>数组</b>，<code>char (*p)[5]</code> 是数组<b>指针</b></td></tr>
+  <tr><td><b>变量作用域 / 存储类别</b></td><td>单选 + 填空（每套 2 题）</td><td class="c"><span class="tag score">4+</span></td><td><code>static</code> 全局=限本文件；<code>static</code> 局部=只活一次、自动置 0</td></tr>
+  <tr><td><b>文件概念（分类 / FILE*）</b></td><td>单选 15 题附近 + 填空</td><td class="c"><span class="tag score">4</span></td><td>按存储分<b>文本/二进制</b>、按内容分<b>程序/数据</b>；<code>FILE *</code> 接 <code>fopen</code> 返回值</td></tr>
+  <tr><td><b>字符串处理（循环填空）</b></td><td>第 30/31 题填充 + 第 34 题设计</td><td class="c"><span class="tag score">12+</span></td><td>永远三步：<b>求长度 → 移字符 → 补 <code>'\0'</code></b></td></tr>
+  <tr><td><b>程序分析：循环 / 自增 / 短路</b></td><td>第 26–29 题（每年必有 2 道）</td><td class="c"><span class="tag score">8+</span></td><td><code>&amp;&amp;</code> 左边为假<b>右边不算</b>；<code>static</code> 变量<b>不重置</b></td></tr>
+</table>
+
+<h2 class="sec">三、🟡 高频（2/3 套出现）——有余力再抓</h2>
+<div class="sub">这些近三套出现了两次，投入产出比很高，尤其带"陷阱"的那几个。</div>
+<div class="grid2">
+  <div class="card"><h3>🧷 转义字符</h3><div class="tpl">合法：<code>\n \t \b \r \\ \' \" \0 \ddd(八进制) \xhh</code>。非法：<code>\p \q \c</code> 这类没定义的字母。<b><code>'\0'</code> 是空字符（值 0），<code>'0'</code> 是字符 0（值 48）</b>。出现：26.4-2、25.10-2。</div></div>
+  <div class="card"><h3>📎 typedef</h3><div class="tpl"><code>typedef long C;</code> = 给已有类型<b>起别名</b>，<b>不产生新类型</b>、不分配内存。常与 <code>#define</code> 对比考。出现：26.4-13、25.10-13。</div></div>
+  <div class="card"><h3>🧨 带参宏展开（括号陷阱）</h3><div class="tpl"><code>#define P(x) x/x</code> → <code>P(4+6)</code> 展开成 <code>4+6/4+6=11</code>，<b>不是 1</b>！宏是纯文本替换、实参逐个代入形参位置。<b>写宏要给参数和整体都加括号</b>。出现：26.4-14、25.10-14。</div></div>
+  <div class="card"><h3>🔁 递归 vs 嵌套调用/定义</h3><div class="tpl">自己调自己 = <b>递归调用</b>（允许）；A 调 B 叫<b>嵌套调用</b>；<b>函数体内不能再定义函数</b>（不允许嵌套定义）。出现：26.4-8、25.10-8。</div></div>
+  <div class="card"><h3>📐 整除与类型提升</h3><div class="tpl">整/整 = 整（向零取整，<code>-5/3 = -1</code>）；有浮点参与就按浮点算（<code>5/2.0 = 2.5</code>）；<code>%</code> 两侧<b>必须整型</b>。出现：26.4-6、25.4-24。</div></div>
+  <div class="card"><h3>📊 二维数组按行存放</h3><div class="tpl"><code>int a[3][4]</code>：第 i 行是 a[i][0..3]，初始化列表<b>按行填满</b>。看清 <code>printf</code> 在内层还是外层循环——写输出题常在这里设套。出现：25.10-28、25.4-29。</div></div>
+</div>
+
+<h2 class="sec">四、📌 8 个"闭眼默写"模板（配三套真题实解）</h2>
+<div class="sub">第 30–34 题的答案几乎都是这几个模板的变形。练熟这 8 个 ≈ 30 分到手。</div>
+
+<div class="card">
+  <h3><span class="n">1</span>字符串连接（strcat）</h3>
+  <div class="tpl"><b>套路：</b>① <code>i</code> 走到 s1 末尾 → ② 把 s2 逐字符搬到 <code>s1[i]</code> 并同步 <code>i++ j++</code> → ③ <b>补 <code>'\0'</code></b>。</div>
+<pre class="code">void strcat(char s1[], char s2[])
+{   int i = 0, j = 0;
+    while (s1[i] != '\0') i++;      /* 定位 s1 尾部 */
+    while (s2[j] != '\0') {
+        s1[i] = s2[j];
+        i++; j++;
+    }
+    s1[i] = '\0';                   /* 别忘了结束符 */
+}</pre>
+  <div class="ex"><span class="h">真题 2026.4 第30题：</span>s1="abcd#"、s2="efg" → 三空分别是 <code>s2[j]</code>、<code>'\0'</code>、<code>strcat(s1,s2)</code>，结果 "abcd#efg"。</div>
+</div>
+
+<div class="card">
+  <h3><span class="n">2</span>子串复制 / 删除子串（整体左移）</h3>
+  <div class="tpl"><b>套路：</b>复制——起点 <code>m-1</code>、走到 <code>strlen(s1)</code>；删除——<b>跨过 n 个</b>：<code>a[i]=a[i+n]</code>，循环到 <code>strlen(a)-n</code>，最后 <code>a[i]='\0'</code>。</div>
+<pre class="code">/* 从第 m 个字符起复制到 s2 */
+for (i = m-1; i &lt; strlen(s1); i++, j++)
+    s2[j] = s1[i];
+s2[j] = '\0';
+
+/* 从第 k 个字符起删除 n 个（25.4 第34题） */
+for (i = k; i &lt; strlen(a) - n; i++)
+    a[i] = a[i+n];
+a[i] = '\0';</pre>
+  <div class="ex"><span class="h">真题 2026.4 第31题：</span>三空 <code>s1</code>、<code>strlen(s1)</code>、<code>s1[i]</code>。<span style="color:var(--muted);font-size:13px">同型 · 2025.4 第34题（删除子串）。</span></div>
+</div>
+
+<div class="card">
+  <h3><span class="n">3</span>子串逆序（首尾指针交换）</h3>
+  <div class="tpl"><b>套路：</b>p 从 <code>str+a</code> 起步，q 从 <code>str+b-1</code> 起步，<b><code>while(p&lt;q)</code> 交换后 p++、q--</b>。注意参数 <code>b</code> 是"末字符下标+1"。</div>
+<pre class="code">void fun(char *str, int a, int b)   /* 逆序下标 a ~ b-1 */
+{   char *p = str + a, *q = str + b - 1, t;
+    while (p &lt; q) {
+        t = *p; *p = *q; *q = t;
+        p++; q--;
+    }
+}
+/* 调用：fun(s, 2, 6) 把 "like" 逆成 "ekil" */</pre>
+  <div class="ex"><span class="h">真题 2025.10 第31题：</span>三空 <code>str+b-1</code>、<code>q--</code>、<code>s,2,6</code>。<span style="color:var(--muted);font-size:13px">⚠ 传 5 只会逆 "lik"，这是最容易错的一处。</span></div>
+</div>
+
+<div class="card">
+  <h3><span class="n">4</span>结构体数组求最值（打擂台）</h3>
+  <div class="tpl"><b>套路：</b>先定义数组 <code>w[5]</code>；<code>max=w[0].age</code> 当擂主；从 <code>i=1</code> 起逐个比，<b>更新 <code>max=w[i].age</code></b>；最后输出 max。</div>
+<pre class="code">struct worker { int no; int age; } w[5];
+int i, max;
+max = w[0].age;
+for (i = 1; i &lt; 5; i++)
+    if (max &lt; w[i].age)
+        max = w[i].age;
+printf("max age:%d\n", max);</pre>
+  <div class="ex"><span class="h">真题 2026.4 第32题：</span>三空 <code>w[5]</code>、<code>w[i].age</code>、<code>max1</code>。<span style="color:var(--muted);font-size:13px">同型 · 2025.4 第32题（结构体求平均 + <code>flag==0</code> 判空）。</span></div>
+</div>
+
+<div class="card">
+  <h3><span class="n">5</span>结构体数组查找（strcmp + 判未命中）</h3>
+  <div class="tpl"><b>套路：</b><code>strcmp(a,b)==0</code> 才是相等；找到了就 <code>break</code>；循环结束后<b>用 <code>j==i</code> 判断"没找到"</b>（比另设 flag 简洁）。</div>
+<pre class="code">for (j = 0; j &lt; i; j++)
+    if (strcmp(person[j].name, na) == 0) {
+        printf("%s:%s\n", person[j].name, person[j].tel);
+        break;
+    }
+if (j == i) printf("No match!\n");   /* 走到头 = 没找到 */</pre>
+  <div class="ex"><span class="h">真题 2025.10 第32题：</span>三空 <code>!=</code>、<code>i++</code>、<code>j==i</code>。<span style="color:var(--muted);font-size:13px">⚠ 循环条件 <code>strcmp(...,"#")!=0</code> 表示"姓名不等于 # 就继续读"。</span></div>
+</div>
+
+<div class="card">
+  <h3><span class="n">6</span>多分支区间判断（if-else 阶梯）</h3>
+  <div class="tpl"><b>套路：</b>区间从低到高写；<b>"含端点"用 <code>&lt;=</code>、"不含"用 <code>&lt;</code></b>；最后一定留 <code>else</code> 处理非法输入；条件之间用 <code>&amp;&amp;</code> 连。</div>
+<pre class="code">if (x &gt;= 0 &amp;&amp; x &lt; 35)        printf("优\n");
+else if (x &gt;= 35 &amp;&amp; x &lt;= 75) printf("良\n");
+else if (x &gt; 75)             printf("污染\n");
+else                         printf("输入不合法\n");</pre>
+  <div class="ex"><span class="h">真题 2026.4 第33题：</span>PM2.5 空气质量分级（0~35 优 / 35~75 良 / 75 以上污染），8 分题，只要分支不漏就满分。</div>
+</div>
+
+<div class="card">
+  <h3><span class="n">7</span>循环枚举 + 求余判断（整除类求和）</h3>
+  <div class="tpl"><b>套路：</b><code>sum</code> 必须先置 0；枚举 1~k（<b><code>i&lt;=k</code></b> 含端点）；"或"用 <code>||</code>，<b>别拆成两个 if</b>（公倍数会加两次）。<code>%</code> 判整除：<code>i%3!=0</code> 即不能被 3 整除。</div>
+<pre class="code">int sum = 0, i;
+for (i = 1; i &lt;= k; i++)
+    if (i % 13 == 0 || i % 17 == 0)   /* 或，不是且 */
+        sum += i;</pre>
+  <div class="ex"><span class="h">真题：</span>2025.10-33（13 或 17 的倍数之和）、2025.4-33（m~n 间不能被 3 整除之和，条件写 <code>i%3!=0</code>）。</div>
+</div>
+
+<div class="card">
+  <h3><span class="n">8</span>数组递推（项号 vs 下标，最容易差一）</h3>
+  <div class="tpl"><b>套路：</b>前两项手写定值；从 <code>i=2</code> 起推；<b>"第 i+1 项"的下标是 i</b>——题里说"奇数项/偶数项"时，判的是 <code>(i+1)%2</code>，<b>不是 <code>i%2</code></b>。</div>
+<pre class="code">a[0] = 0;  a[1] = 1;                 /* 第1、2项 */
+for (i = 2; i &lt; 20; i++)
+    if ((i+1) % 2 != 0)  a[i] = a[i-1] + a[i-2];  /* 奇数项求和 */
+    else                 a[i] = a[i-1] - a[i-2];  /* 偶数项求差 */</pre>
+  <div class="ex"><span class="h">真题 2025.10 第34题：</span>正确序列 0 1 1 0 1 1 2 1 3 2 5 3 8 5 13 8 21 13 34 21。<span style="color:var(--muted);font-size:13px">⚠ 网络版用 <code>i%2==1</code> 从第 3 项起就全错，是典型案例。</span></div>
+</div>
+
+<h2 class="sec">五、⚠️ 最容易记错的 12 个坑（年年考）</h2>
+<div class="sub">这些不是"知识点"，是"阅卷老师就等着你错"的陷阱。考前扫两遍。</div>
+<table>
+  <tr><th style="width:34%">陷阱</th><th>正确结论</th></tr>
+  <tr><td><code>'\0'</code> vs <code>'0'</code> vs <code>0</code></td><td><code>'\0'</code> 值 0（串结束符）；<code>'0'</code> 值 48（字符零）；数字 <code>0</code> 和 <code>'\0'</code> 等价</td></tr>
+  <tr><td><code>++x</code> vs <code>x++</code></td><td>前缀<b>先加后用</b>、后缀<b>先用后加</b>；用在下标/循环里最容易差一</td></tr>
+  <tr><td><code>&amp;&amp;</code> / <code>||</code> 短路</td><td>左边已定结果，<b>右边根本不执行</b>，所以右边的 <code>i++</code> 不会发生</td></tr>
+  <tr><td>数组下标</td><td><b>从 0 开始</b>！第 3 个字符是 <code>a[2]</code>，"第 m 个"对应下标 <code>m-1</code></td></tr>
+  <tr><td>整型除法</td><td><code>5/2=2</code>、<code>-5/3=-1</code>（向零取整），<b>不是四舍五入</b>；<code>5/2.0=2.5</code></td></tr>
+  <tr><td><code>%</code> 的两侧</td><td>只能是<b>整型</b>，写 <code>5.0%2</code> 直接编译错误</td></tr>
+  <tr><td>switch 的 break</td><td>没有 <code>break</code> 就<b>继续往下执行所有 case</b>（落穿），程序分析题必考</td></tr>
+  <tr><td><code>printf("%2d")</code></td><td>是<b>宽度 2、右对齐补空格</b>，不是保留 2 位小数（<code>%.2f</code> 才是小数位）</td></tr>
+  <tr><td><code>static</code> 局部变量</td><td><b>只初始化一次</b>，程序运行期间一直存在，未赋值自动为 0 → 程序分析必考</td></tr>
+  <tr><td>结构体 vs 结构体指针</td><td>变量用 <code>p.age</code>；指针用 <code>p-&gt;age</code> 或 <code>(*p).age</code>；<b>定义类型不分配内存</b>，定义变量才分配</td></tr>
+  <tr><td>类型转换写法</td><td>只有 <code>(double)x</code> / <code>(double)(a+3)</code>，<b>没有 <code>double(x)</code></b>（那是 C++）</td></tr>
+  <tr><td>文件函数</td><td><code>fopen</code> 返回 <code>FILE*</code>；<code>FILE</code> 定义在 <b>stdio.h</b>；按存储分文本/二进制、按内容分程序/数据</td></tr>
+</table>
+
+<h2 class="sec">六、🎯 考场抢分策略</h2>
+<ul class="tips">
+  <li><b>先扫第 32 题</b>：三套卷这一题全是结构体数组，先看它考"求最值"还是"查找"，心里有底再回头做客观题。</li>
+  <li><b>程序分析题一定动笔打草稿</b>：把每次循环后的变量值列成小表格（i、j、m 各一列），别在脑子里算——短路、落穿、static 三件事最容易算错。</li>
+  <li><b>写输出题注意格式</b>：<code>%2d</code> 有前导空格、<code>"%d "</code> 有尾随空格、<code>\n</code> 会换行。<b>按原样把空格也写出来</b>，别自己"美化"。</li>
+  <li><b>程序填空题每空都填</b>：填错不扣分。常见坑位就是"<code>'\0'</code>""<code>strlen()</code>""<code>&amp;</code>""<code>i++</code>"这几个，宁可猜也别空。</li>
+  <li><b>程序设计题写完整骨架</b>：<code>#include</code> + <code>main</code> + 变量定义 + 输入 + 处理 + 输出 + <code>return 0</code>，即使算法只写一半，<b>结构分也能拿 3–4 分</b>；评分说明明确写"程序不完整可酌情给分"。</li>
+  <li><b>时间分配</b>：单选 20 分钟、填空 15 分钟、程序分析 20 分钟、程序填充 20 分钟、程序设计 25 分钟，留 10 分钟检查拼写（<code>printf</code> 写成 <code>print</code>、少了分号最亏）。</li>
+  <li><b>目标管理</b>：客观 35 + 分析 10 + 填充 9 + 设计 8 ≈ <b>62</b>，够及格。别死磕最后一道 8 分难题而丢掉前面的送分题。</li>
+</ul>
+
+<div class="note">
+  📌 <b>关于本页数据来源</b>：统计基于本站收录的 <b>2026.4</b>（文字详解，34 题全）与 <b>2025.10</b>（扫描件全文转录，34 题全）两套，以及 <b>2025.4</b> 的官方《答案及评分参考》（16–34 题答案完整，单选部分题号未逐题比对）。三套卷的大题结构与分值完全一致，这是本页"及格算式"成立的前提。
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../index.html">🏠 返回首页</a>
+    <a href="真题/index.html">📝 历年真题</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>统计基于三套全国卷逐题核对 · 仅供考前冲刺参考 · 打印或 Ctrl+P 存 PDF 带走</div>
+</footer>
+
+</div>
+</body>
+</html>

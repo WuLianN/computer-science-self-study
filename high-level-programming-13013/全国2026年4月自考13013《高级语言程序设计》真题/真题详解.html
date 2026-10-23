@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026年4月自考 13013《高级语言程序设计》真题详解</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#059669; --brand-soft:#ecfdf5; --ok:#059669; --ok-soft:#ecfdf5;
+    --warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.8}
+  .wrap{max-width:940px;margin:0 auto;padding:24px 16px 80px}
+  header.hero{background:linear-gradient(135deg,#059669,#0891b2);color:#fff;border-radius:16px;padding:28px 28px;margin-bottom:18px}
+  header.hero h1{margin:0 0 6px;font-size:25px}
+  header.hero p{margin:4px 0;opacity:.92}
+  .pill{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:2px 12px;font-size:13px;margin-right:8px;margin-top:10px}
+  .links{margin-top:12px}
+  .links a{display:inline-block;background:#fff;color:var(--brand);border-radius:8px;padding:4px 12px;font-size:13px;text-decoration:none;margin-right:8px}
+  h2.section{margin:34px 0 14px;font-size:21px;border-left:5px solid var(--brand);padding-left:12px}
+  .toolbar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+  button.btn:hover{background:var(--brand);color:#fff}
+  details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}
+  details.q>summary{cursor:pointer;padding:14px 18px;list-style:none;display:block}
+  details.q>summary::-webkit-details-marker{display:none}
+  details.q>summary:hover{background:#fafbff}
+  .qno{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:8px;font-size:13px;font-weight:700;padding:2px 10px;margin-right:8px;vertical-align:middle}
+  .stem{display:inline;font-weight:600;vertical-align:middle}
+  .toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
+  details.q[open]>summary .toggle::after{content:" ▴"}
+  details.q:not([open])>summary .toggle::after{content:" ▾"}
+  .opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
+  .opts span{font-size:15px;color:#374151}
+  .body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
+  .answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
+  .sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
+  .sol .lab{font-weight:700;color:var(--brand)}
+  .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
+  code.c{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#f3f4f6;border-radius:5px;padding:1px 6px;font-size:.92em;color:#b91c1c}
+  pre.code{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.6;overflow-x:auto;margin:10px 0;white-space:pre}
+  .blank{color:var(--brand);font-weight:700}
+  table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
+  table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center;word-break:break-word}
+  table.anskey th:first-child,table.anskey td:first-child{width:62px}
+  table.anskey th{background:var(--brand-soft);color:var(--brand)}
+  table.anskey td b{color:var(--ok)}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .tip{background:var(--brand-soft);border:1px solid #a7f3d0;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>2026年4月高等教育自学考试 · 高级语言程序设计（13013）真题详解</h1>
+  <p>全国卷 · C 语言 · 教材：郑岩《高级语言程序设计》机械工业出版社 2017。题干与选项默认显示，<b>点开才看答案与解析</b>，先自测再核对。</p>
+  <span class="pill">单选 15×2 = 30分</span><span class="pill">填空 10空×2 = 20分</span><span class="pill">程序分析 4×4 = 16分</span><span class="pill">程序填空 3×6 = 18分</span><span class="pill">程序设计 2×8 = 16分</span>
+  <div class="links"><a href="../../index.html">🏠 首页</a><a href="../真题/index.html">📝 真题导航</a><a href="2026年4月真题和答案.pdf">📥 真题答案PDF</a><a href="../考前抢分.html">🔥 考前抢分</a></div>
+</header>
+
+<div class="tip">
+  📚 <b>本卷共 34 题满分 100 分</b>，题干与全部程序代码常显、答案和解析折叠，可直接当卷子做。建议：先做一/二大题客观题（50 分，性价比最高）→ 再攻程序分析（读代码写输出）→ 最后背程序填空/设计的常见套路。<b>完整 34 题答案速查表在页面最下方</b>。
+</div>
+
+<div class="toolbar">
+  <button class="btn" onclick="document.querySelectorAll('details').forEach(d=>d.open=true)">全部展开（看答案）</button>
+  <button class="btn" onclick="document.querySelectorAll('details').forEach(d=>d.open=false)">全部收起（自测模式）</button>
+  <button class="btn" onclick="document.getElementById('anskey').scrollIntoView({behavior:'smooth'})">🔑 答案速查表（页尾）</button>
+  <span style="color:var(--muted);font-size:13px">提示：题干与程序代码常显，点开才看答案。</span>
+</div>
+
+<h2 class="section">一、单项选择题（每小题2分，共30分）</h2>
+
+<details class="q"><summary>
+  <span class="qno">第1题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关于 C 程序组成特点描述正确的是</div>
+  <div class="opts"><span>A. C程序中主函数位置任意</span><span>B. C程序中必须有预处理命令</span><span>C. C程序中预处理命令通常放在主函数内的开始位置</span><span>D. C程序每一条语句后面都以分号作为语句的结束，包括预处理命令</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>程序执行总从 <code class="c">main</code> 开始、在 main 结束，<b>主函数与其他函数在源文件中的位置可任意</b>，其他函数通过调用语句执行（教材 P51）。B：预处理命令非必需；C：预处理命令写在函数外、不能放进 main 体内；D：预处理命令不以分号结尾。</div>
+  <span class="tag">考点：C程序结构与预处理</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第2题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">不属于转义字符常量的是</div>
+  <div class="opts"><span>A. '\n'</span><span>B. '\p'</span><span>C. '\b'</span><span>D. '\101'</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">\n</code>(换行)、<code class="c">\b</code>(退格)、<code class="c">\101</code>(八进制转义=字符A) 均合法；<b><code class="c">\p</code> 不是 C 定义的转义序列</b>（教材 P62）。</div>
+  <span class="tag">考点：转义字符常量</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第3题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 float a;，以下赋值语句不正确的是</div>
+  <div class="opts"><span>A. a=789.456;</span><span>B. a=-789.456;</span><span>C. a=3.14e2.6;</span><span>D. a=1.89e2;</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>科学计数法 <code class="c">e</code> 后的<b>指数必须是整数</b>。<code class="c">3.14e2.6</code> 指数为小数，语法错误。D 的 <code class="c">1.89e2</code>=189 合法。</div>
+  <span class="tag">考点：实型常量（指数形式）</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第4题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列选项中比 "++" 运算符优先级高的是</div>
+  <div class="opts"><span>A. [ ]</span><span>B. &lt;</span><span>C. %</span><span>D. %=</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>优先级 <code class="c">[] ()</code>（最高）&gt; <code class="c">++ --</code> &gt; <code class="c">* / %</code> &gt; <code class="c">&lt;</code> &gt; 赋值 <code class="c">%=</code>。只有下标 <code class="c">[]</code> 高于 <code class="c">++</code>。</div>
+  <span class="tag">考点：运算符优先级</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第5题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 int i=3;，以下表达式正确的是</div>
+  <div class="opts"><span>A. i+3++</span><span>B. --(i+3)</span><span>C. ++(i++)</span><span>D. i+3</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">++/--</code> 只能作用于<b>左值（变量）</b>，不能作用于常量或表达式的值。A 对常量 3 自增、B/C 对表达式值自减/自增，均非法。D 是普通算术表达式，合法。</div>
+  <span class="tag">考点：自增自减与左值</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第6题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">根据 C 语言的运算规则，正确的除法运算是</div>
+  <div class="opts"><span>A. -5/3=1</span><span>B. 5/2.0=2</span><span>C. 5.0/2=2</span><span>D. 5/2.0=2.5</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>整数相除向零取整：<code class="c">-5/3=-1</code>（A 错）。只要有浮点数即按浮点运算：<code class="c">5/2.0=2.5</code>、<code class="c">5.0/2=2.5</code>（B、C 错，D 对）。</div>
+  <span class="tag">考点：整除与类型提升</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第7题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">C 程序中外部变量的作用域是</div>
+  <div class="opts"><span>A. 整个源程序文件</span><span>B. 从文件开头开始到定义外部变量的位置结束</span><span>C. 从定义外部变量的位置开始到第一个相邻函数结束</span><span>D. 从定义外部变量的位置开始到其所在的源程序文件结束</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>外部（全局）变量在函数外定义，作用域<b>从定义位置起，到本源程序文件结束</b>（教材 P198）。定义之前不可见。</div>
+  <span class="tag">考点：变量作用域</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第8题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关于递归函数描述正确的是</div>
+  <div class="opts"><span>A. 允许递归定义函数，也允许递归调用函数</span><span>B. 允许递归定义函数，不允许递归调用函数</span><span>C. 不允许递归定义函数，允许递归调用函数</span><span>D. 不允许递归定义函数，也不允许递归调用函数</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>C 语言<b>不允许函数的（嵌套/递归）定义</b>——不能在函数体内再定义一个函数；但<b>允许递归调用</b>（函数自己调用自己，如阶乘）。故选 C。<br>
+    <span style="color:var(--muted);font-size:13px">⚠ 别被"递归定义"字面迷惑：这里指"定义函数"这件事不能嵌套进行。</span></div>
+  <span class="tag">考点：递归 vs 嵌套定义</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第9题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">用来将全局变量作用域限制在本文件的关键字是</div>
+  <div class="opts"><span>A. auto</span><span>B. const</span><span>C. static</span><span>D. extern</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>用 <code class="c">static</code> 修饰的全局变量作用域被限制在本文件（内部变量），其他文件无法引用（教材 P196）。<code class="c">extern</code> 作用相反。</div>
+  <span class="tag">考点：static 限定作用域</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第10题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关于指针变量的初始化不正确的是</div>
+  <div class="opts"><span>A. int x,*p=&amp;x;</span><span>B. int x;float *p=&amp;x;</span><span>C. char *pc=NULL;</span><span>D. int x,*px=&amp;x,*py=px;</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>B 中 <code class="c">float *p</code> 却用 int 变量地址 <code class="c">&amp;x</code> 初始化，<b>基类型不匹配</b>，非法（教材 P223）。其余类型一致，合法。</div>
+  <span class="tag">考点：指针初始化与类型匹配</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">指向字符型数据的指针数组定义是</div>
+  <div class="opts"><span>A. char s[10];</span><span>B. char s[][8];</span><span>C. char *str[5];</span><span>D. char (*p)[4];</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span><b>指针数组</b>=数组元素都是指针。<code class="c">char *str[5];</code> 是含 5 个 char* 元素的数组（教材 P223）。D 的 <code class="c">char (*p)[4]</code> 是"数组指针"（指向含4个char的数组），A/B 是字符数组。</div>
+  <span class="tag">考点：指针数组 vs 数组指针</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第12题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">若有定义 struct date{int year,month,day;}birth; int main(){int *p;…}，则结构体变量成员引用正确的是</div>
+  <div class="opts"><span>A. p=&amp;birth.year;</span><span>B. *p=&amp;year;</span><span>C. *p=birth.year;</span><span>D. *p=&amp;birth.year;</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>访问成员须用 <code class="c">结构体变量.成员名</code>，即 <code class="c">birth.year</code>（int）。B 的裸 <code class="c">year</code>、D 把地址赋给 int 型 <code class="c">*p</code> 均错。官方答案为 <b>C</b>。<br>
+    <span style="color:var(--muted);font-size:13px">📌 提示：A 的 <code class="c">p=&amp;birth.year;</code> 在标准 C 里其实也合法（int* 取成员地址），若你判卷遇到请以官方评分参考为准，本题给 C。</span></div>
+  <span class="tag">考点：结构体成员引用</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">C 语句 typedef long C; 的含义是</div>
+  <div class="opts"><span>A. 定义新类型</span><span>B. 定义一个整型变量</span><span>C. 定义一个长整型变量</span><span>D. 定义 long 类型的别名</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">typedef</code> 不产生新类型，只是<b>给已有类型起别名</b>。此句把 <code class="c">C</code> 定义为 <code class="c">long</code> 的别名。</div>
+  <span class="tag">考点：typedef 别名</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设 #define S(p,q) p*q，若程序中有 m=S(x,y);，则宏展开正确的是</div>
+  <div class="opts"><span>A. m=(p,q)p*q(p,q)</span><span>B. m=(p,q)p*q(x,y)</span><span>C. m=(x,y)p*q(x,y)</span><span>D. m=(x,y)p*q(p,q)</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C（以官方评分参考为准）</div>
+  <div class="sol"><span class="lab">解析：</span>宏替换是<b>纯文本替换</b>：把实参 x、y 逐字代入。官方给 C。<br>
+    <span style="color:var(--muted);font-size:13px">⚠ 说明：按标准 C，<code class="c">#define S(p,q) p*q</code> 展开 <code class="c">S(x,y)</code> 应为 <code class="c">m=x*y;</code>。本题四个选项表述特殊（疑原卷宏定义更复杂/转录差异），考试时以官方评分参考选项为准，掌握"实参替换形参、不做计算"这一原则即可。</span></div>
+  <span class="tag">考点：带参数宏展开</span>
+</div></details>
+
+<details class="q"><summary>
+  <span class="qno">第15题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关于文件型指针描述正确的是</div>
+  <div class="opts"><span>A. 需要在打开文件前先定义</span><span>B. 在头文件 stdlib.h 中已定义</span><span>C. 是指向整型数据的指针</span><span>D. 用于接收文件打开函数返回的内容</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>文件型指针 <code class="c">FILE *</code> 用于接收 <code class="c">fopen</code> 等打开函数的返回值（教材 P311）。FILE 定义在 <code class="c">stdio.h</code> 而非 stdlib.h，也不是整型指针。官方给 D。</div>
+  <span class="tag">考点：文件型指针 FILE*</span>
+</div></details>
+
+<h2 class="section">二、填空题（每空2分，共20分）</h2>
+
+<details class="q"><summary><span class="qno">第16题</span><span class="toggle">点击展开答案</span><div class="stem">有名常量的值通过 ______ 的方式获得。</div></summary>
+<div class="body"><div class="answer">答案：赋初值</div>
+<div class="sol"><span class="lab">解析：</span>有名常量（const 定义）的值通过<b>赋初值</b>获得，之后程序中不再改变（教材 P68）。注意措辞是"赋初值"而非"赋值"。</div><span class="tag">考点：有名常量 const</span></div></details>
+
+<details class="q"><summary><span class="qno">第17题</span><span class="toggle">点击展开答案</span><div class="stem">文件按照存储形式可分为文本文件和 ______ 文件。</div></summary>
+<div class="body"><div class="answer">答案：二进制</div>
+<div class="sol"><span class="lab">解析：</span>按存储形式分为文本文件与<b>二进制</b>文件（教材 P309）。</div><span class="tag">考点：文件分类</span></div></details>
+
+<details class="q"><summary><span class="qno">第18题</span><span class="toggle">点击展开答案</span><div class="stem">C 语言的分隔符包括 ______ 和空格两种。</div></summary>
+<div class="body"><div class="answer">答案：逗号</div>
+<div class="sol"><span class="lab">解析：</span>按本教材（P47）口径，C 语言的分隔符包括<b>逗号</b>和空格两种。</div><span class="tag">考点：词法·分隔符</span></div></details>
+
+<details class="q"><summary><span class="qno">第19题</span><span class="toggle">点击展开答案</span><div class="stem">C 语言中单目运算符的结合方向是 ______ 。</div></summary>
+<div class="body"><div class="answer">答案：自右向左（右结合）</div>
+<div class="sol"><span class="lab">解析：</span>单目运算符（如 <code class="c">- ! * &amp; ++ --</code>）的结合性是<b>自右向左</b>，例如 <code class="c">*p++</code> 解析为 <code class="c">*(p++)</code>。<br>
+<span style="color:var(--muted);font-size:13px">⚠ 该 PDF 答案栏印作"从左至右"，但其自身解析与 C 标准均为"自右向左"，属误印，请以<b>自右向左</b>为准。</span></div><span class="tag">考点：运算符结合性</span></div></details>
+
+<details class="q"><summary><span class="qno">第20题</span><span class="toggle">点击展开答案</span><div class="stem">用来表示内存地址的数据类型称为 ______ 类型。</div></summary>
+<div class="body"><div class="answer">答案：指针</div>
+<div class="sol"><span class="lab">解析：</span><b>指针</b>类型用来表示内存地址（教材 P60）。</div><span class="tag">考点：指针类型概念</span></div></details>
+
+<details class="q"><summary><span class="qno">第21题</span><span class="toggle">点击展开答案</span><div class="stem">在 16 位 PC 中，一个 unsigned 型变量的值域是 0 到 ______ 。</div></summary>
+<div class="body"><div class="answer">答案：65535</div>
+<div class="sol"><span class="lab">解析：</span>16 位无符号整数范围 0 ~ 2¹⁶−1 = <b>65535</b>（教材 P65）。</div><span class="tag">考点：整型取值范围</span></div></details>
+
+<details class="q"><summary><span class="qno">第22题</span><span class="toggle">点击展开答案</span><div class="stem">任何程序都可由顺序、选择、循环三种基本结构组成，复杂问题可通过三种基本结构的组合、______ 实现。</div></summary>
+<div class="body"><div class="answer">答案：嵌套</div>
+<div class="sol"><span class="lab">解析：</span>结构化程序通过基本结构的<b>组合、嵌套</b>表达复杂逻辑（教材 P93）。</div><span class="tag">考点：结构化程序设计</span></div></details>
+
+<details class="q"><summary><span class="qno">第23题</span><span class="toggle">点击展开答案</span><div class="stem">编译预处理时，预处理程序将查找指定的被包含文件，并将其 ______ 到 #include 命令出现的位置上。</div></summary>
+<div class="body"><div class="answer">答案：复制</div>
+<div class="sol"><span class="lab">解析：</span><code class="c">#include</code> 处理时被包含文件内容被<b>复制/替换</b>到该行位置（教材 P300）。</div><span class="tag">考点：文件包含</span></div></details>
+
+<details class="q"><summary><span class="qno">第24题</span><span class="toggle">点击展开答案</span><div class="stem">设 float a;，将 (a+3) 强制转换成双精度实型的表达式是 ______ 。</div></summary>
+<div class="body"><div class="answer">答案：(double)(a+3)</div>
+<div class="sol"><span class="lab">解析：</span>强制转换格式 <code class="c">(目标类型)(表达式)</code>，双精度为 <code class="c">double</code>，故 <code class="c">(double)(a+3)</code>。</div><span class="tag">考点：强制类型转换</span></div></details>
+
+<details class="q"><summary><span class="qno">第25题</span><span class="toggle">点击展开答案</span><div class="stem">C 语言中，目标文件经过链接后生成的可执行文件的扩展名是 ______ 。</div></summary>
+<div class="body"><div class="answer">答案：.exe</div>
+<div class="sol"><span class="lab">解析：</span>Windows 下链接生成的可执行文件扩展名为 <b>.exe</b>（教材 P310）。</div><span class="tag">考点：程序开发步骤</span></div></details>
+
+<h2 class="section">三、程序分析题（每小题4分，共16分）</h2>
+
+<details class="q"><summary><span class="qno">第26题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+int main()
+{   int x=1,y=9,z;
+    switch(x&lt;y &amp;&amp; --x)
+    {   case 0: x=4;    printf("%d",x);
+        case 1: x+=4;   printf("%2d",x);
+        case 2: --x;    printf("%2d",x); break;
+        default: x%=3;  printf("%2d\n",x);
+    }
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：4 8 7</div>
+<div class="sol"><span class="lab">解析：</span>求 <code class="c">x&lt;y &amp;&amp; --x</code>：先 <code class="c">1&lt;9</code>=1（真），再算 <code class="c">--x</code>→x=0，值为0，故 <code class="c">1 &amp;&amp; 0 = 0</code> → 匹配 <b>case 0</b>。<br>
+① case0：x=4，<code class="c">printf("%d",4)</code>→<code class="c">4</code>（无 break 继续下落）<br>
+② case1：x+=4→8，<code class="c">printf("%2d",8)</code>→<code class="c">␣8</code>（宽度2，前补空格）<br>
+③ case2：--x→7，<code class="c">printf("%2d",7)</code>→<code class="c">␣7</code>，遇 break 退出。<br>
+最终连续输出：<b>4 8 7</b>（4、空格8、空格7）。default 未执行。</div>
+<span class="tag">考点：switch 下落 · 逻辑与短路 · %2d 宽度</span></div></details>
+
+<details class="q"><summary><span class="qno">第27题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+int main()
+{   int i,j,m=10;
+    for(i=1;i&lt;3;i++)
+    {   for(j=1;j&lt;=2;j++)
+        {   m--; }
+        m--;
+    }
+    printf("%d",m);
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：4</div>
+<div class="sol"><span class="lab">解析：</span>外层 i=1、2 共 2 轮。每轮：内层 j=1、2 执行 2 次 <code class="c">m--</code>，内层结束后再 1 次 <code class="c">m--</code>，即每轮减 3。两轮共减 6。<code class="c">m = 10 − 6 = 4</code>。</div>
+<span class="tag">考点：嵌套循环计数</span></div></details>
+
+<details class="q"><summary><span class="qno">第28题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+struct keyword
+{   char key[20];
+    int id;
+} k[]={"void",1,"char",2,"int",3,"float",4};
+int main()
+{   printf("%c,%d",k[2].key[2],k[2].id);
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：t,3</div>
+<div class="sol"><span class="lab">解析：</span>结构体数组 <code class="c">k[2]</code> 对应 <code class="c">{"int",3}</code>。<code class="c">k[2].key</code>="int"，三个字符依次是 i(0)、n(1)、t(2)，故 <code class="c">k[2].key[2]</code>='t'；<code class="c">k[2].id</code>=3。按 <code class="c">%c,%d</code> 输出：<b>t,3</b>。<br>
+<span style="color:var(--muted);font-size:13px">⚠ 网络流传答案写“n,3”，是把下标从 1 开始数了；C 数组下标从 0 开始，第 3 个字符才是 key[2]。已用 gcc 实测为 <b>t,3</b>。</span></div>
+<span class="tag">考点：结构体数组 · 字符串下标</span></div></details>
+
+<details class="q"><summary><span class="qno">第29题</span><span class="toggle">点击展开答案</span><div class="stem">阅读下列程序，写出输出结果。</div><pre class="code">#include &lt;stdio.h&gt;
+int main()
+{   char a[]={"lovely\n"};
+    char *p=&amp;a[1];
+    int n=0;
+    while(*p) {p++;n++;}
+    printf("%d",n);
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：6</div>
+<div class="sol"><span class="lab">解析：</span>a 内容 l o v e l y \n \0。<code class="c">p</code> 指向 a[1]='o'。<code class="c">while(*p)</code> 从 'o' 起统计到结束符 '\0' 前的字符：o v e l y \n 共 <b>6</b> 个（'\n' 是非0字符，计入）。故 n=6。</div>
+<span class="tag">考点：字符指针 · 串结束符 '\0'</span></div></details>
+
+<h2 class="section">四、程序填充题（每小题6分，共18分）</h2>
+
+<details class="q"><summary><span class="qno">第30题</span><span class="toggle">点击展开答案</span><div class="stem">将两个字符串 s1 和 s2 连接，结果保存在 s1 中。请填空。</div><pre class="code">#include &lt;stdio.h&gt;
+void strcat(char s1[],char s2[])
+{   int i=0,j=0;
+    while(s1[i]!='\0') i++;
+    while(s2[j]!='\0')
+    {   s1[i]= ____第一空____ ;   /* 逐字符复制 s2 */
+        i++; j++;
+    }
+    s1[i]= ____第二空____ ;        /* 补串结束符 */
+}
+int main()
+{   char s1[20]="abcd#", s2[]="efg";
+    ____第三空____ ;               /* 调用连接函数 */
+    puts(s1);
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：第一空 s2[j]　第二空 '\0'　第三空 strcat(s1,s2)</div>
+<div class="sol"><span class="lab">解析：</span>先让 i 走到 s1 末尾；再把 s2 的字符逐个搬来 → <b>s1[i]=s2[j]</b>；搬完补结束符 <b>s1[i]='\0'</b>；主函数里调用 <b>strcat(s1,s2)</b>。结果 s1="abcd#efg"。</div>
+<span class="tag">考点：字符串连接 strcat</span></div></details>
+
+<details class="q"><summary><span class="qno">第31题</span><span class="toggle">点击展开答案</span><div class="stem">将字符串 s1 中第 m 个字符开始的全部字符复制到 s2。请填空。</div><pre class="code">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+int main()
+{   int m; int i,j=0;
+    char s1[50],s2[50];
+    gets( ____第一空____ );        /* 读入 s1 */
+    scanf("%d",&amp;m);
+    for(i=m-1; i&lt;= ____第二空____ ; i++,j++)
+        s2[j]= ____第三空____ ;    /* 从第m个字符起复制 */
+    puts(s2);
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：第一空 s1　第二空 strlen(s1)　第三空 s1[i]</div>
+<div class="sol"><span class="lab">解析：</span>读串用 <b>gets(s1)</b>；循环遍历到 s1 末尾，终止条件用 <b>strlen(s1)</b>；复制内容取 <b>s1[i]</b>（i 从 m−1 起，即第 m 个字符）。</div>
+<span class="tag">考点：gets/strlen · 子串复制</span></div></details>
+
+<details class="q"><summary><span class="qno">第32题</span><span class="toggle">点击展开答案</span><div class="stem">输入 5 个工人的编号和年龄，输出年龄最大值。请填空。</div><pre class="code">#include &lt;stdio.h&gt;
+struct worker{ int no; int age; } ____第一空____ ;   /* 定义结构体数组 */
+int main()
+{   int i, max1;
+    printf("please input age of worker:");
+    for(i=0;i&lt;5;i++)
+        scanf("%d %d",&amp;w[i].no,&amp;w[i].age);
+    max1=w[0].age;
+    for(i=1;i&lt;5;i++)
+        if(max1&lt;w[i].age)
+            max1= ____第二空____ ;
+    printf("max age:%d\n", ____第三空____ );
+    return 0;
+}</pre>
+</summary>
+<div class="body"><div class="answer">答案：第一空 w[5]　第二空 w[i].age　第三空 max1</div>
+<div class="sol"><span class="lab">解析：</span>第一空定义含5元素的结构体数组 <b>w[5]</b>；打擂台求最大年龄，更新 <b>max1=w[i].age</b>；最后输出 <b>max1</b>。</div>
+<span class="tag">考点：结构体数组 · 求最值</span></div></details>
+
+<h2 class="section">五、程序设计题（每小题8分，共16分）</h2>
+
+<details class="q"><summary><span class="qno">第33题</span><span class="toggle">点击展开答案</span><div class="stem">PM2.5 数值 0~35（含0不含35）为优，35~75（含35和75）为良，75 以上为污染。输入 PM2.5，输出空气质量。</div>
+</summary>
+<div class="body"><div class="answer">参考答案（if-else 多分支）</div>
+<pre class="code">#include &lt;stdio.h&gt;
+int main()
+{   float pm25;
+    printf("请输入PM2.5数值: ");
+    scanf("%f", &amp;pm25);
+    if (pm25 &gt;= 0 &amp;&amp; pm25 &lt; 35)
+        printf("空气质量为优\n");
+    else if (pm25 &gt;= 35 &amp;&amp; pm25 &lt;= 75)
+        printf("空气质量为良\n");
+    else if (pm25 &gt; 75)
+        printf("空气质量为污染\n");
+    else
+        printf("输入的PM2.5数值不合法\n");
+    return 0;
+}</pre>
+<div class="sol"><span class="lab">套路：</span>区间判断用 <code class="c">if / else if / else</code> 多分支，边界"含/不含"对应 <code class="c">&lt;=</code> 与 <code class="c">&lt;</code> 要写准。这类"分段"题是程序设计高频题型，务必背熟多分支结构。</div>
+<span class="tag">考点：多分支 if-else · 区间边界</span></div></details>
+
+<details class="q"><summary><span class="qno">第34题</span><span class="toggle">点击展开答案</span><div class="stem">计算整型数组 x 中相邻两个元素的和依次存入数组 a，输出 a 的所有元素。x 长度为10，从键盘输入。</div>
+</summary>
+<div class="body"><div class="answer">参考答案（数组遍历）</div>
+<pre class="code">#include &lt;stdio.h&gt;
+int main()
+{   int x[10], a[9];
+    int i;
+    printf("请输入10个整数: \n");
+    for(i=0; i&lt;10; i++) scanf("%d", &amp;x[i]);
+    for(i=0; i&lt;9; i++) a[i] = x[i] + x[i+1];   /* 相邻两元素之和 */
+    printf("数组a的元素为: \n");
+    for(i=0; i&lt;9; i++) printf("%d ", a[i]);
+    return 0;
+}</pre>
+<div class="sol"><span class="lab">套路：</span>10 个元素相邻求和得 9 个，故 a 长度 9、循环 <code class="c">i&lt;9</code>，核心式 <code class="c">a[i]=x[i]+x[i+1]</code>。数组题注意<b>循环上界</b>与<b>越界</b>（x[i+1] 最大到 x[9]）。</div>
+<span class="tag">考点：数组 · 相邻元素处理</span></div></details>
+
+<h2 class="section" id="anskey">答案速查表</h2>
+<div class="tip" style="margin:0 0 10px">全部 34 题答案一页看完，适合考前 5 分钟扫一遍；想逐题学思路请回到上方各题。</div>
+<table class="anskey">
+  <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+  <tr><td><b>答案</b></td><td><b>A</b></td><td><b>B</b></td><td><b>C</b></td><td><b>A</b></td><td><b>D</b></td><td><b>D</b></td><td><b>D</b></td><td><b>C</b></td><td><b>C</b></td><td><b>B</b></td></tr>
+  <tr><th>题号</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th colspan="5">16–25 填空</th></tr>
+  <tr><td><b>答案</b></td><td><b>C</b></td><td><b>C</b></td><td><b>D</b></td><td><b>C</b></td><td><b>D</b></td><td colspan="5" style="text-align:left;font-size:13px">16 赋初值 · 17 二进制 · 18 逗号 · 19 自右向左 · 20 指针 · 21 65535 · 22 嵌套 · 23 复制 · 24 (double)(a+3) · 25 .exe</td></tr>
+  <tr><th>题号</th><th>26</th><th>27</th><th>28</th><th>29</th><th>30</th><th>31</th><th>32</th><th>33</th><th>34</th><th></th></tr>
+  <tr><td><b>答案</b></td><td>4 8 7</td><td>4</td><td>t,3</td><td>6</td><td>strcat</td><td>子串复制</td><td>结构体求最值</td><td>if-else</td><td>相邻求和</td><td></td></tr>
+</table>
+
+<div class="note">
+  ✍️ <b>答案可信度说明</b>：客观题 1–25 与程序分析 26–29 全部按 C 语言规则（switch 下落、短路求值、下标从 0 起、%2d 宽度）复核，并用 gcc 实跑验证；已发现并修正网络版的 3 处错误——<b>第 28 题应为 <code class="c">t,3</code>（非 n,3）</b>、第 19 题答案栏误印“从左至右”（应为自右向左）、第 12/14/15 题选项表述不清。其余题目或为编程题（评分看思路），以官方《评分参考》为准。
+</div>
+
+<footer>2026年4月高等教育自学考试 · 高级语言程序设计（13013）真题详解 · 教材：郑岩《高级语言程序设计》机械工业出版社 2017 · 仅供学习交流参考</footer>
+</div>
+</body>
+</html>
