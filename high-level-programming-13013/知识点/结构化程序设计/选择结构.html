@@ -6,7 +6,7 @@
 <title>13013 · 选择结构（第 4 章·中）｜if 三种形式 / 悬空 else / switch 下落</title>
 <meta name="description" content="高级语言程序设计 13013 第 4 章中：if 单分支双分支多分支、条件非 0 即真、悬空 else 配对、switch 的表达式与 case 常量要求、忘记 break 导致的下落、区间判断写法，附 2026.4 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔀</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#1e40af,#4f46e5)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -135,7 +135,7 @@ case 3: printf("C ");      <span class="cm">/* 没有 break → 继续下落 */<
 default: printf("D ");
 }
 printf("\n");</pre>
-  <div class="out">B C</div>
+  <pre class="out">B C</pre>
   <b>推法：</b>x = 2 → 从 <code>case 2</code> 进入 → 打印 B → 没有 break → 落进 <code>case 3</code> 打印 C → 遇到 break 跳出。<b>匹配只决定"从哪儿进"，不决定"到哪儿停"。</b>
 </div>
 <div class="note">

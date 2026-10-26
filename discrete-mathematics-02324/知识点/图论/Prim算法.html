@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 图论知识点：Prim(普里姆)算法求最小生成树</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
   .lab2{font-size:13px;color:var(--muted);margin:4px 0 10px}
@@ -31,6 +31,11 @@
   .ans b{color:var(--ink)}
   .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:6px}
   .legend i{display:inline-block;width:20px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+  /* 移动端：viewBox 400 的动画图窄屏缩到 ≈0.76，12px 边权有效字号≈ 9.2px；窄屏抬到 ≥16px（顶点名 17px），白色描边光晕避让线条 */
+  @media (max-width:640px){
+    svg text, svg .edge text, svg .edge .ord{font-size:16px}
+    svg text.v{font-size:17px}
+  }
 </style>
 </head>
 <body>

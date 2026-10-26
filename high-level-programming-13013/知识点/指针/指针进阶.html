@@ -6,7 +6,7 @@
 <title>13013 · 指针进阶（第 7 章·下）｜指针数组 / 数组指针 / 二级指针 / 动态内存</title>
 <meta name="description" content="高级语言程序设计 13013 第 7 章下半：指针数组与数组指针的辨析总则、char *s[5] 与 char (*p)[5] 的读法、二级指针 **p 的两层解引用、返回指针的函数与函数指针、malloc 与 free 动态内存、链表结点的 next 自引用指针，附 2026.4 与 2025.10 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧷</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#9f1239,#db2777)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -85,10 +85,10 @@ int main(void)
     printf("%c\n", *(name[1] + 2));       <span class="hl"><span class="cm">/* a —— 第 2 个字符串的第 3 个字符 */</span></span>
     return 0;
 }</pre>
-  <div class="out">Li
+  <pre class="out">Li
 Zhang
 Wang
-a</div>
+a</pre>
   <table class="law">
     <tr><th>对比</th><th><code>char name[3][8]</code>（二维字符数组）</th><th><code>char *name[3]</code>（指针数组）</th></tr>
     <tr><td class="nm">占用空间</td><td>3 × 8 = 24 字节，每行<b>定长</b>，短名字浪费</td><td>3 个指针（16 位机 6 字节）+ 字符串常量</td></tr>
@@ -115,7 +115,7 @@ p = a;                           <span class="cm">/* a 的类型正是 int (*)[4
 for (i = 0; i &lt; 3; i++)
     for (j = 0; j &lt; 4; j++)
         printf("%d ", p[i][j]);  <span class="cm">/* 等价 a[i][j]、*(*(p+i)+j) */</span></pre>
-  <div class="out">1 2 3 4 5 6 7 8 9 10 11 12</div>
+  <pre class="out">1 2 3 4 5 6 7 8 9 10 11 12</pre>
   <table class="law">
     <tr><th>写法</th><th>含义</th><th>步长（16 位机）</th></tr>
     <tr><td class="nm"><code>p = a;</code>　<code>int (*p)[4]</code></td><td>p 指向第 0 行</td><td><code>p+1</code> 跳 <b>1 行</b> = 4×2 = 8 字节</td></tr>
@@ -136,8 +136,8 @@ int **pp = &amp;p;          <span class="hl"><span class="cm">/* 二级：pp 里
 
 printf("%d %d %d\n", x, *p, **pp);    <span class="cm">/* 10 10 10 */</span>
 printf("%d\n", *pp == p);              <span class="cm">/* 1 —— *pp 就是 p */</span></pre>
-  <div class="out">10 10 10
-1</div>
+  <pre class="out">10 10 10
+1</pre>
   <table class="mem">
     <tr><th>变量</th><th>地址</th><th>内容</th><th>说明</th></tr>
     <tr><td>int x</td><td>2000</td><td>10</td><td>普通变量</td></tr>

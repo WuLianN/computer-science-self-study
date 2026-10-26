@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 谓词逻辑知识点（量词 / 符号化 / 前束范式 / 推理）</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
 header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -19,6 +19,13 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}
   .fig svg{display:block;margin:0 auto}
   .fig .cap{font-size:13px;color:var(--ink);margin-top:4px;font-weight:700}
   .fig .cap small{display:block;color:var(--muted);font-weight:400}
+  /* 移动端：viewBox 320 的逻辑方阵图等窄屏缩到 ≈0.91，11.5–12px 文字有有效字号不足 11px 的风险，窄屏抬到 ≥13px */
+  @media (max-width:640px){
+    .fig svg text[font-size="11.5"]{font-size:13px}
+    .fig svg text[font-size="12"]{font-size:13.5px}
+    .fig svg g[font-size="11.5"] text{font-size:13px}
+    .fig .cap small{font-size:12px}
+  }
 </style>
 </head>
 <body>

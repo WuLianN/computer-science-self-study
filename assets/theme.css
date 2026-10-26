@@ -29,7 +29,7 @@ a.inline:hover{text-decoration:underline}
 .toc a:last-child{border-bottom:none}
 .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
 .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
-.m sub{font-size:11px}
+.m sub{font-size:12px}  /* 移动端复测：11px 下标在小屏贴线难认，上提到 12px */
 .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
 .law th{background:var(--brand-soft);color:var(--brand)}
 .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
@@ -48,6 +48,10 @@ a.inline:hover{text-decoration:underline}
   .m{white-space:normal}
   /* 一整串行内 code（如 "rb"、"wb"、"ab"… 被顿号连着）在中文里没合法断点，允许强制断行 */
   .rule,.card{overflow-wrap:anywhere}
+  /* 图注里的补充说明（<small>）默认 0.8em ≈10.8px，窄屏提到 12px（.cap 各页语义一致） */
+  .fig .cap small{font-size:12px}
+  /* 行内交叉链接（正文跳转链）触控高度只有一行字的 ≈19px，加内边距撑到 ≥28px，不改变行高节奏 */
+  a.inline{padding:4px 6px;border-radius:6px;margin:0 -6px}
 }
 
 /* 跟随系统「减少动态效果」设置：关掉平滑滚动与过渡/动画 */

@@ -6,7 +6,7 @@
 <title>13013 · 一维与二维数组（第 5 章·上）｜定义 / 初始化 / 遍历 / 排序 / 二维地址</title>
 <meta name="description" content="高级语言程序设计 13013 第 5 章上半：一维数组定义与初始化（部分初始化自动补 0）、下标越界、sizeof 求元素个数、遍历求和最值逆序冒泡排序、二维数组按行存储与 a[i][j] 地址换算，附 2025.10 / 2026.4 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#4338ca,#7c3aed)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -199,9 +199,9 @@ for (i = 0; i &lt; 3; i++) {
         printf("%d ", a[i][j]);
     printf("\n");                 <span class="cm">/* 每输出完一行要换行 */</span>
 }</pre>
-  <div class="out">0 1 2 3
+  <pre class="out">0 1 2 3
 4 5 6 7
-8 9 10 11</div>
+8 9 10 11</pre>
 </div>
 <div class="rule">
   <b>地址换算：</b><code>a[i][j]</code> 的地址 = 首地址 + <b>(i × 列数 + j)</b> × sizeof(元素类型)。<br>

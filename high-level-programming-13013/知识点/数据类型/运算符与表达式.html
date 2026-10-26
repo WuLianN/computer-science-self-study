@@ -6,7 +6,7 @@
 <title>13013 · 运算符与表达式（第 3 章·下）｜优先级 / 结合性 / 整除求余 / 自增自减 / 短路求值</title>
 <meta name="description" content="高级语言程序设计 13013 第 3 章下半：9 类运算符、优先级与结合性总表、整数除法与求余符号规则、自增自减的四种写法、逻辑与或的短路求值、逗号与条件表达式，附 2026.4 / 2025.10 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>➗</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#0369a1,#4f46e5)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -161,7 +161,7 @@ c = i-- + --i;  <span class="cm">/* ✗ 别这么写：同一表达式中对同�
 <pre class="src">int i = 1, r;
 r = (i &gt; 5) &amp;&amp; (i++);        <span class="cm">/* i&gt;5 为假 → i++ 不执行 */</span>
 printf("%d,%d\n", r, i);</pre>
-  <div class="out">0,1　　← r 为 0（假），i 仍是 1；若把 &amp;&amp; 换成 ||，i++ 也不会执行而 r 为 1</div>
+  <pre class="out">0,1　　← r 为 0（假），i 仍是 1；若把 &amp;&amp; 换成 ||，i++ 也不会执行而 r 为 1</pre>
   <div class="th" style="border-left:3px solid var(--brand-soft);background:#fafbff;padding:8px 12px;border-radius:6px;margin-top:8px">
     <a class="qref" href="../../全国2025年10月自考13013《高级语言程序设计》真题/真题详解.html#q26">2025.10 真题·第 26 题</a> 与 <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q26">2026.4 真题·第 26 题</a> 都是"自增 + 短路"的连环题：推的时候<b>每算一步就把变量的新值写在旁边</b>，遇到 <code>&amp;&amp;</code> 左边为假 / <code>||</code> 左边为真，立刻跳过后面的所有自增。
   </div>

@@ -49,6 +49,12 @@
   table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center}
   table.anskey th{background:var(--brand-soft);color:var(--brand)}
   table.anskey td b{color:var(--ok)}
+  /* 移动端适配：16 列速查表固定宽约 470px，窄屏会顶破整页，改为表内横滑；第32题固定宽 SVG 等比缩 */
+  .sol svg{max-width:100%;height:auto}
+  @media (max-width:640px){
+    table.anskey{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    table.anskey th,table.anskey td{padding:5px 6px}
+  }
   table.vt{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0;text-align:center}
   table.vt th{background:var(--brand-soft)}
   table.vt th,table.vt td{border:1px solid var(--line);padding:5px 6px}

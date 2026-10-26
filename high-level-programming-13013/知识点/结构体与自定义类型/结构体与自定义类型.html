@@ -6,7 +6,7 @@
 <title>13013 · 结构体 · 共用体 · 枚举 · typedef（第 8 章）｜成员引用 / 结构体数组 / 自引用</title>
 <meta name="description" content="高级语言程序设计 13013 第 8 章：结构体类型定义与三种变量声明、成员引用点号与箭头的区别、结构体数组的初始化与扁平写法、嵌套定义与自引用指针、共用体共享同一块内存、枚举值从 0 递增、typedef 与 define 的本质区别，附 2026.4 与 2025.10 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#b45309,#db2777)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -109,9 +109,9 @@ struct student *p = &amp;s;
 printf("%d %s %.1f\n", s.no, s.name, s.score);      <span class="cm">/* 变量用 . */</span>
 printf("%d %s %.1f\n", p-&gt;no, p-&gt;name, p-&gt;score);   <span class="hl"><span class="cm">/* 指针用 -> */</span></span>
 printf("%d\n", (*p).no);                             <span class="cm">/* 与 p->no 完全等价 */</span></pre>
-  <div class="out">1 Li 90.5
+  <pre class="out">1 Li 90.5
 1 Li 90.5
-1</div>
+1</pre>
   <div class="th">
     <a class="qref" href="../../全国2026年4月自考13013《高级语言程序设计》真题/真题详解.html#q12">2026.4 真题·第 12 题</a> 已定义 <code>struct date{int year,month,day;} birth;</code> 和 <code>int *p;</code>，成员引用正确的是 <code>*p = birth.year;</code>（答案 C）——<b>引用成员的标准写法就是"结构体变量.成员名"</b>。
   </div>

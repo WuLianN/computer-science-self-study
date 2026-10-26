@@ -6,7 +6,7 @@
 <title>13013 · 指针与数组（第 7 章·上）｜取地址 / 解引用 / 指针遍历 / 指针作参数</title>
 <meta name="description" content="高级语言程序设计 13013 第 7 章上半：指针变量与地址、& 和 * 的互逆关系、指针初始化必须类型匹配、指针加减与两指针相减、a[i] 等价于 *(a+i)、指针遍历字符串、指针作函数参数真正交换两个数，附 2026.4 / 2025.10 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📍</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#9f1239,#db2777)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -88,7 +88,7 @@ p = &amp;x;          <span class="cm">/* p 指向 x */</span>
 y = *p;          <span class="cm">/* 读：y = 10 */</span>
 *p = 99;         <span class="hl"><span class="cm">/* 写：x 也变成 99 —— 通过指针改了变量 */</span></span>
 printf("%d %d\n", x, y);</pre>
-  <div class="out">99 10</div>
+  <pre class="out">99 10</pre>
 </div>
 
 <h2 class="section" id="s3">三、初始化：类型必须匹配</h2>
@@ -186,7 +186,7 @@ int main(void)
     printf("%d %d\n", x, y);
     return 0;
 }</pre>
-  <div class="out">2 1</div>
+  <pre class="out">2 1</pre>
   <table class="law">
     <tr><th>需求</th><th>形参写法</th><th>调用写法</th></tr>
     <tr><td class="nm">改一个变量的值</td><td><code>int *p</code></td><td><code>f(&amp;x)</code></td></tr>

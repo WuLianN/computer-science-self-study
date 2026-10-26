@@ -6,7 +6,7 @@
 <title>13013 · 顺序结构与输入输出（第 4 章·上）｜printf / scanf / getchar / gets 全表</title>
 <meta name="description" content="高级语言程序设计 13013 第 4 章上半：顺序结构、printf 格式符与宽度精度、scanf 的地址表与分隔符陷阱、getchar/putchar/gets/puts、缓冲区残留回车问题，附真题用法。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⌨️</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#1d4ed8,#0891b2)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -85,9 +85,9 @@
 <pre class="src">printf("%d|%5d|%-5d|%05d|\n", 42, 42, 42, 42);
 printf("%f|%.2f|%8.2f\n", 3.14159, 3.14159, 3.14159);
 printf("%s|%5s|%-5s|%.2s\n", "abc", "abc", "abc", "abc");</pre>
-  <div class="out">42|   42|42   |00042|
+  <pre class="out">42|   42|42   |00042|
 3.141590|3.14|    3.14
-abc|  abc|abc  |ab</div>
+abc|  abc|abc  |ab</pre>
   <b>关键：</b><code>%5d</code> 输出 42 时<b>左边补 3 个空格</b>；<code>%-5d</code> 补在右边；<code>%05d</code> 补 0。<code>%2d</code> 输出 487 时宽度不够，<b>按实际 3 位输出，不会截断</b>。
 </div>
 <div class="note">

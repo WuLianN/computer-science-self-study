@@ -6,7 +6,7 @@
 <title>13013 · 变量作用域与存储类别（第 6 章·下）｜auto / static / register / extern 三列对照</title>
 <meta name="description" content="高级语言程序设计 13013 第 6 章下半：局部变量与全局变量的作用域、auto / static / register / extern 四种类别的作用域与生存期与初值对照表、static 局部只初始化一次、static 全局限本文件、extern 声明与定义的区别、同名屏蔽，附 2026.4 / 2025.10 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏳</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#7c3aed,#db2777)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -116,7 +116,7 @@ int main(void)
     <tr><td>3</td><td>2</td><td>3</td><td>13</td></tr>
     <tr><td>4</td><td>3</td><td>4</td><td>14</td></tr>
   </table>
-  <div class="out">11 12 13 14</div>
+  <pre class="out">11 12 13 14</pre>
   <b>对比：</b>如果把 <code>static</code> 去掉，每次调用都是新的 k（垃圾值），结果就完全不是这个序列了。
 </div>
 <div class="note">
@@ -170,9 +170,9 @@ int main(void)
     printf("%d\n", x);         <span class="cm">/* 回到 20 */</span>
     return 0;
 }</pre>
-  <div class="out">20
+  <pre class="out">20
 30
-20</div>
+20</pre>
   <b>register 变量（补充）：</b>建议把变量放在 CPU 寄存器里以提高速度，<b>不能对它取地址</b>（<code>&amp;n</code> 非法），实际编译器可能忽略这个建议。考试只考"它属于局部变量、不能取地址、无自动初值"。
 </div>
 

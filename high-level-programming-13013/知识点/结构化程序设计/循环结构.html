@@ -6,7 +6,7 @@
 <title>13013 · 循环结构（第 4 章·下）｜while / do-while / for / break / continue / 嵌套</title>
 <meta name="description" content="高级语言程序设计 13013 第 4 章下：while 与 do-while 的区别、for 三表达式的执行顺序、break 与 continue 的差别、嵌套循环与缺少花括号的陷阱、累加累乘素数穷举递推五类套路，附 2026.4 / 2025.10 真题题号。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔁</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   header.hero{background:linear-gradient(135deg,#3730a3,#7c3aed)}
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
@@ -14,8 +14,8 @@
   pre.src{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
   pre.src .cm{color:#94a3b8}
   pre.src .hl{background:rgba(250,204,21,.20);border-radius:4px}
-  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre}
-  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:0 7px;font-size:12.5px;font-weight:700;white-space:nowrap}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+  .qref{display:inline-block;text-decoration:none;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:4px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;line-height:1.7}
   a.qref:hover{text-decoration:underline}
   table.law td.y{color:#047857;font-weight:700}
   table.law td.n{color:#b91c1c;font-weight:700}
@@ -129,7 +129,7 @@ for (i = 1; i &lt;= 10; i++) {
     printf("%d ", i);
 }
 printf("\n");                 <span class="hl"><span class="cm">/* 输出：1 2 4 5 */</span></span></pre>
-  <div class="out">1 2 4 5</div>
+  <pre class="out">1 2 4 5</pre>
   <b>嵌套时的关键：</b>break 和 continue 都<b>只管自己所在的最内层循环</b>，不能一次跳出两层（要跳两层得用 <code>goto</code> 或加标志变量）。
 </div>
 
@@ -154,7 +154,7 @@ printf("%d\n", w);</pre>
     <tr><td>2</td><td>1</td><td>+1</td><td>10</td></tr>
     <tr><td>1</td><td>不进入（1 &lt; 1 假）</td><td>0</td><td><b>10</b></td></tr>
   </table>
-  <div class="out">10</div>
+  <pre class="out">10</pre>
   <b>注意：</b>这里没写花括号，<b>内层 for 就是外层唯一的循环体</b>，语法完全正确；但如果在外层里面还想写一条别的语句，就必须加 <code>{ }</code>，否则那条语句只在<u>外层结束之后</u>执行一次。
 </div>
 

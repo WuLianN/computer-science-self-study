@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 代数系统知识点（半群 / 群 / 环 / 域）</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
   .ok b{color:var(--ok)}
@@ -16,6 +16,12 @@
   .figrow{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:14px 0}
   .fig{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 10px 6px;text-align:center;max-width:100%}
   .fig svg{display:block;margin:0 auto;max-width:100%;height:auto}
+  /* 移动端：宽链条图（648/680）若随容器缩到 0.5 倍，内部 14px 文字只剩 ≈7px 不可读；
+     改为保持原宽、由 .fig 的 overflow-x:auto 横滑（theme 窄屏已给 .fig 开启滑动） */
+  @media (max-width:640px){
+    .fig svg.chain{max-width:none;width:auto}  /* 保持 648/680 原宽，超出部分由 .fig 横滑 */
+    .fig figcaption,.fig .cap{font-size:13px}
+  }
   .fig .cap{margin-top:4px;font-size:13px;color:var(--ink);font-weight:700}
   .fig .cap small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
   table.cayley{border-collapse:collapse;font-size:14px;margin:8px auto}
@@ -103,7 +109,7 @@
 
 <div class="figrow">
   <div class="fig">
-    <svg width="648" height="150" viewBox="0 0 648 150" role="img" aria-label="单运算结构谱系">
+    <svg class="chain" width="648" height="150" viewBox="0 0 648 150" role="img" aria-label="单运算结构谱系">
       <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#6b7280"/></marker></defs>
       <rect x="4" y="56" width="112" height="64" rx="10" fill="#f3f4f6" stroke="#9ca3af" stroke-width="1.5"/>
       <text x="60" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">代数系统</text>
@@ -321,7 +327,7 @@
 
 <div class="figrow">
   <div class="fig">
-    <svg width="680" height="150" viewBox="0 0 680 150" role="img" aria-label="双运算结构谱系">
+    <svg class="chain" width="680" height="150" viewBox="0 0 680 150" role="img" aria-label="双运算结构谱系">
       <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 Z" fill="#6b7280"/></marker></defs>
       <rect x="6" y="56" width="150" height="64" rx="10" fill="#eef2ff" stroke="#a5b4fc" stroke-width="1.5"/>
       <text x="81" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">环</text>

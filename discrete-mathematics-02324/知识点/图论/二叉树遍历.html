@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 图论知识点：二叉树遍历专项练习</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026">
 <style>
   .tree{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:16px 0;overflow:hidden}
   .tree>summary{cursor:pointer;padding:14px 18px;list-style:none;font-weight:700;font-size:16px}
@@ -39,6 +39,10 @@
   .ans{margin-top:10px;font-size:13.5px;color:var(--muted);display:none}
   .ans.show{display:block}
   .ans b{color:var(--ink)}
+  /* 移动端：viewBox 400 的二叉树图窄屏缩到 ≈0.76，14px 结点标签有效字号≈ 10.7px；窄屏抬到 19px 保持 ≥ 14px 可读 */
+  @media (max-width:640px){
+    svg text{font-size:19px}
+  }
 </style>
 </head>
 <body>
