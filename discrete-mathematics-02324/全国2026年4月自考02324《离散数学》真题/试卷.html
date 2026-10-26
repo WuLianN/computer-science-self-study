@@ -24,11 +24,16 @@
   .sheet img{display:block;width:100%;height:auto;background:#fff;cursor:zoom-in}
   .tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:8px 0 4px;font-size:14px}
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
-  /* 灯箱 */
-  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.86);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
-  .lightbox.show{display:flex}
-  .lightbox img{max-width:96%;max-height:92%;border-radius:6px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
-  .lightbox .close{position:absolute;top:18px;right:24px;color:#fff;font-size:34px;cursor:pointer;line-height:1;user-select:none}
+  /* 灯箱：双指/滚轮缩放、拖动平移、双击放大、点空白关闭 */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;z-index:100;overflow:hidden;touch-action:none}
+  .lightbox.show{display:block}
+  .lb-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .lightbox img{max-width:96%;max-height:92%;border-radius:6px;box-shadow:0 8px 40px rgba(0,0,0,.5);transform-origin:center center;will-change:transform;cursor:grab;user-select:none;-webkit-user-drag:none}
+  .lightbox img.grabbing{cursor:grabbing}
+  .lightbox .close{position:absolute;top:16px;right:20px;width:44px;height:44px;line-height:44px;text-align:center;color:#fff;font-size:30px;cursor:pointer;user-select:none;background:rgba(255,255,255,.14);border-radius:50%;z-index:6}
+  .lb-bar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);display:flex;gap:10px;z-index:6}
+  .lb-bar button{width:46px;height:46px;border-radius:10px;border:1px solid rgba(255,255,255,.45);background:rgba(0,0,0,.45);color:#fff;font-size:20px;cursor:pointer;line-height:1}
+  .lb-hint{position:absolute;top:18px;left:50%;transform:translateX(-50%);color:#fff;opacity:.72;font-size:12.5px;z-index:6;white-space:nowrap}
   @media print{
     body{background:#fff}
     .topbar,.lightbox,.tip{display:none!important}
@@ -52,7 +57,7 @@
 
 <div class="wrap">
   <div class="tip">
-    这是试卷的原始扫描件，供直接对照阅读、自测。<b>点击任意一页可放大查看</b>；需要纸质手感可点右上角"打印 / 存 PDF"（每页自动分页）。做完后点"查看详解"核对答案与解析。
+    这是试卷的原始扫描件，供直接对照阅读、自测。<b>点击任意一页可放大查看</b>，放大后支持<b>双指 / 滚轮缩放、拖动平移、双击放大</b>，看清 A4 密排文字；需要纸质手感可点右上角"打印 / 存 PDF"（每页自动分页）。做完后点"查看详解"核对答案与解析。
   </div>
 
   <section class="sheet">
@@ -73,21 +78,92 @@
   <footer>2026年4月高等教育自学考试全国统一命题考试 · 离散数学（02324）原卷 · 仅供学习交流参考</footer>
 </div>
 
-<div class="lightbox" id="lb" onclick="this.classList.remove('show')">
-  <span class="close">&times;</span>
-  <img id="lbimg" src="" alt="放大查看">
+<div class="lightbox" id="lb">
+  <div class="lb-stage"><img id="lbimg" src="" alt="放大查看"></div>
+  <span class="lb-hint">双指 / 滚轮缩放 · 拖动平移 · 双击放大 · 点空白关闭</span>
+  <div class="lb-bar"><button type="button" data-z="out" aria-label="缩小">−</button><button type="button" data-z="fit" aria-label="复位">1:1</button><button type="button" data-z="in" aria-label="放大">＋</button></div>
+  <span class="close" id="lbclose" aria-label="关闭">&times;</span>
 </div>
 
 <script>
-  document.querySelectorAll('.sheet img').forEach(function(img){
-    img.addEventListener('click', function(){
-      document.getElementById('lbimg').src = this.src;
-      document.getElementById('lb').classList.add('show');
+  (function(){
+    var lb=document.getElementById('lb'),
+        img=document.getElementById('lbimg'),
+        bar=lb.querySelector('.lb-bar'),
+        closeBtn=document.getElementById('lbclose');
+    var scale=1,tx=0,ty=0;
+    function apply(){img.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';}
+    function reset(){scale=1;tx=0;ty=0;apply();}
+    function clamp(){if(scale<1)scale=1;if(scale>6)scale=6;if(scale===1){tx=0;ty=0;}}
+    function openPage(src){img.src=src;reset();lb.classList.add('show');}
+    function close(){lb.classList.remove('show');reset();}
+
+    document.querySelectorAll('.sheet img').forEach(function(t){
+      t.addEventListener('click',function(){openPage(this.src);});
     });
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') document.getElementById('lb').classList.remove('show');
-  });
+    closeBtn.addEventListener('click',close);
+    document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+    bar.addEventListener('click',function(e){
+      var z=e.target.getAttribute('data-z');if(!z)return;
+      if(z==='in')scale=Math.min(6,scale*1.4);
+      else if(z==='out')scale=Math.max(1,scale/1.4);
+      else{reset();return;}
+      clamp();apply();
+    });
+
+    /* 滚轮缩放（桌面） */
+    lb.addEventListener('wheel',function(e){
+      e.preventDefault();
+      var f=e.deltaY<0?1.15:1/1.15;
+      scale=Math.max(1,Math.min(6,scale*f));
+      if(scale===1){tx=0;ty=0;}
+      apply();
+    },{passive:false});
+
+    /* 指针：单指拖动平移 / 双指捏合缩放 / 轻点空白关闭 */
+    var pts=new Map(),lastD=0,lx=0,ly=0,moved=0,t0=0;
+    function inCtrl(t){return t.closest&&(t.closest('.close')||t.closest('.lb-bar'));}
+    lb.addEventListener('pointerdown',function(e){
+      if(inCtrl(e.target))return;
+      pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      moved=0;t0=Date.now();
+      if(pts.size===1){lx=e.clientX;ly=e.clientY;img.classList.add('grabbing');}
+      if(pts.size===2){var p=Array.from(pts.values());lastD=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);}
+      try{lb.setPointerCapture(e.pointerId);}catch(_){}
+      e.preventDefault();
+    });
+    lb.addEventListener('pointermove',function(e){
+      if(!pts.has(e.pointerId))return;
+      pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+      if(pts.size>=2){
+        var p=Array.from(pts.values()),d=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);
+        if(lastD){scale=Math.max(1,Math.min(6,scale*d/lastD));apply();}
+        lastD=d;moved+=10;
+      }else{
+        var dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;
+        moved+=Math.abs(dx)+Math.abs(dy);
+        if(scale>1){tx+=dx;ty+=dy;apply();}
+      }
+    });
+    function up(e){
+      if(!pts.has(e.pointerId))return;
+      pts.delete(e.pointerId);
+      if(pts.size<2)lastD=0;
+      if(pts.size===0){
+        img.classList.remove('grabbing');
+        clamp();apply();
+        if(moved<8&&Date.now()-t0<300&&scale<=1&&e.target!==img)close();
+      }
+    }
+    lb.addEventListener('pointerup',up);
+    lb.addEventListener('pointercancel',up);
+
+    /* 双击 / 双 tap 在 1x 与 2.6x 间切换 */
+    lb.addEventListener('dblclick',function(e){
+      if(inCtrl(e.target))return;
+      if(scale>1)reset();else{scale=2.6;apply();}
+    });
+  })();
 </script>
 </body>
 </html>
