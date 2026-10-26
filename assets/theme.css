@@ -52,6 +52,14 @@ a.inline:hover{text-decoration:underline}
   .fig .cap small{font-size:12px}
   /* 行内交叉链接（正文跳转链）触控高度只有一行字的 ≈19px，加内边距撑到 ≥28px，不改变行高节奏 */
   a.inline{padding:4px 6px;border-radius:6px;margin:0 -6px}
+  /* hero 头部：手机上原本能吃掉小半屏——26/28px 大内边距 + 标题/描述继承了 body 的 1.85 行高（23px×1.85≈43px/行，长描述换 4 行≈118px）+ 多枚 pill 与导航链换行堆叠，整块常达 ~420px。窄屏整体压扁，让正文卡片尽早进入首屏。（.gotos 用 !important 只为覆盖 5 个给导航链写了行内 padding 的图论/真题详解页；仅改尺寸不改配色，无串色风险） */
+  .wrap{padding-top:14px}
+  header.hero{padding:15px 16px;margin-bottom:12px;border-radius:14px}
+  header.hero h1{font-size:18px;line-height:1.35;margin-bottom:4px}
+  header.hero p{font-size:13px;line-height:1.6}
+  .pill{font-size:12px;padding:1px 9px;margin-top:6px;margin-right:6px}
+  .gotos{margin-top:4px!important;gap:8px}
+  .gotos a{padding:4px 10px!important;font-size:12.5px!important;line-height:1.5!important}
 }
 
 /* 跟随系统「减少动态效果」设置：关掉平滑滚动与过渡/动画 */

@@ -62,11 +62,16 @@
   footer .fl a:hover{border-color:var(--primary);background:var(--primary-soft);transform:translateY(-1px)}
   footer .copy{margin-top:12px;font-size:.76rem;color:var(--muted);opacity:.85}
   @media (max-width:640px){
-    .hero{padding:24px 0 12px}
-    .hero-card{padding:26px 20px 22px;border-radius:18px}
-    .hero h1{font-size:1.55rem}
+    .hero{padding:16px 0 10px}
+    .hero-card{padding:20px 16px 18px;border-radius:16px}
+    .hero h1{font-size:1.35rem;margin-bottom:4px}
+    .hero .tagline{font-size:.88rem;margin-bottom:10px}
+    .hero .stats{gap:8px;margin-top:10px}
+    .hero .stats .chip{flex:1 1 100%;padding:7px 12px}
+    .hero .stats .chip b{font-size:.88rem}
+    .hero .stats .chip span{font-size:.74rem}
+    .stats-sum{font-size:.74rem;margin-top:8px}
     .entries{grid-template-columns:1fr}
-    .hero .stats .chip{flex:1 1 100%}
     .subject{padding:20px}
   }
   @media (prefers-reduced-motion:reduce){
