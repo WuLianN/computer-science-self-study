@@ -60,6 +60,9 @@
   footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   footer .fl a{color:var(--primary-deep);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:.82rem;transition:.15s}
   footer .fl a:hover{border-color:var(--primary);background:var(--primary-soft);transform:translateY(-1px)}
+      /* 移动端触控：点按即时反馈 + 窄屏取消 hover 抬升粘滞 */
+      a:active,.entry:active,.chip:active{opacity:.6;transition:opacity .12s}
+      @media (hover:none){.entry:hover,.chip:hover,footer .fl a:hover{transform:none}}
   footer .copy{margin-top:12px;font-size:.76rem;color:var(--muted);opacity:.85}
   @media (max-width:640px){
     .hero{padding:16px 0 10px}

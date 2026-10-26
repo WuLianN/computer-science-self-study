@@ -62,6 +62,23 @@ a.inline:hover{text-decoration:underline}
   .gotos a{padding:4px 10px!important;font-size:12.5px!important;line-height:1.5!important}
 }
 
+/* ===== 移动端触控体验：点按反馈 + 取消触屏粘滞 hover + 浮动回顶 =====
+   触屏没有 hover：原有 .gotos/:hover 等悬停态点完会"粘"在上面（白底/左移不消失）。
+   这里用 @media(hover:none) 撤销悬停态，改由 :active 给即时点按反馈；桌面 hover 行为不变。 */
+html{scroll-behavior:smooth}
+a:active,button:active,.btn:active{opacity:.55;transition:opacity .12s}
+@media (hover:none){
+  .gotos a:hover{background:rgba(255,255,255,.16);color:#fff}
+  .toc a:hover{color:var(--ink);padding-left:0}
+  a.inline:hover{text-decoration:none}
+}
+/* 长内容页浮动"回到顶部"：页面 </body> 前放 <a href="#" class="totop">↑</a>，样式统一在此；仅窄屏显示、桌面隐藏 */
+.totop{position:fixed;right:14px;bottom:16px;z-index:60;width:44px;height:44px;border-radius:50%;
+  background:var(--brand);color:#fff;text-decoration:none;font-size:20px;line-height:44px;text-align:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.22);opacity:.82;display:none}
+.totop:active{opacity:.5;transform:scale(.94)}
+@media (max-width:640px){.totop{display:block}}
+
 /* 跟随系统「减少动态效果」设置：关掉平滑滚动与过渡/动画 */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
