@@ -67,7 +67,7 @@ a.inline:hover{text-decoration:underline}
 /* ===== 移动端触控体验：点按反馈 + 取消触屏粘滞 hover + 浮动回顶 =====
    触屏没有 hover：原有 .gotos/:hover 等悬停态点完会"粘"在上面（白底/左移不消失）。
    这里用 @media(hover:none) 撤销悬停态，改由 :active 给即时点按反馈；桌面 hover 行为不变。 */
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 a:active,button:active,.btn:active{opacity:.55;transition:opacity .12s}
 @media (hover:none){
   .gotos a:hover{background:rgba(255,255,255,.16);color:#fff}
