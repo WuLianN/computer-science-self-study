@@ -519,7 +519,7 @@
     ⑤ (c,e,5) ✘ 与已选边 c–a–e 构成回路，舍弃<br>
     ⑥ 选 (c,d,6) ✔ → 全部连通（5 个结点已选 4 条边，结束）<br><br>
     最小生成树的边集为 {<b>a–b, b–c, a–e, c–d</b>}，权 W = 1+2+4+6 = <b>13</b>。
-    <div style="margin:10px 0"><img src="题31图.png" alt="题31图" style="max-width:440px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
+    <div style="margin:10px 0"><img loading="lazy" src="题31图.png" alt="题31图" style="max-width:440px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
     <span style="color:var(--muted);font-size:13px">（原图：最小生成树即上方选取的 4 条边，未入选的 a–c、c–e、e–d 为成回路的冗余边。）</span>
   </div>
   <span class="tag">考点：Kruskal 算法</span><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
@@ -533,7 +533,7 @@
   <div class="answer">答案见解析（已折叠）</div>
   <div class="sol">
     <span class="lab">树的结构（见题32图）：</span>根 a；a 的左孩子 b、右孩子 c；c 的左孩子 d、右孩子 e；d 的左孩子 f、右孩子 g（b、e、f、g 是叶）。
-    <div style="margin:10px 0"><img src="题32图.png" alt="题32图" style="max-width:320px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
+    <div style="margin:10px 0"><img loading="lazy" src="题32图.png" alt="题32图" style="max-width:320px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
     <b>先根（根—左—右）：</b>a, b, c, d, f, g, e<br>
     <b>中根（左—根—右）：</b>b, a, f, d, g, c, e<br>
     <b>后根（左—右—根）：</b>b, f, g, d, e, c, a</div>

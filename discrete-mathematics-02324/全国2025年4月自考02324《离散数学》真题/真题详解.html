@@ -521,7 +521,7 @@
     ⑦ (a,c,4) ✘ 同块成回路，舍弃；(c,e,4) ✘ 同块成回路，舍弃<br>
     ⑧ 选 (a,d,5) ✔ 加入 d，7 个顶点全连通（已选 6 条边，结束）<br><br>
     最小生成树边集 = {<b>f&ndash;g, a&ndash;f, b&ndash;c, e&ndash;f, a&ndash;b, a&ndash;d</b>}，权 W = 1+2+2+2+3+5 = <b>15</b>。
-    <div style="margin:10px 0"><img src="题31图.png" alt="题31图" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
+    <div style="margin:10px 0"><img loading="lazy" src="题31图.png" alt="题31图" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
     <span style="color:var(--muted);font-size:13px">（d 只能靠 a-d=5 接入（其余 c-d=6、d-e=7、d-f=8 都更大），故 W=15 为最优。）</span></div>
   <span class="tag">考点：Kruskal 算法</span><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
 </div></details>
