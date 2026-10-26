@@ -6,7 +6,7 @@
 <title>离散数学 02324 · 考前抢分一页纸（目标 60+）</title>
 <meta name="description" content="基于 2025.4 / 2025.10 / 2026.4 三套全国真题逐题统计的核心考点频率表、每套必考模板、考场答题策略，专为考前及格 60+ 冲刺设计。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
-<link rel="stylesheet" href="../assets/theme.css?v=20261026c">
+<link rel="stylesheet" href="../assets/theme.css?v=20261026d">
 <style>
   :root{
     --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
@@ -91,17 +91,17 @@
 
 <h2 class="sec">一、分数结构与及格路线</h2>
 <div class="sub">总分 100，及格 60。按"性价比"从高到低投入时间。</div>
-<table>
+<div class="tscroll"><table>
   <tr><th>题型</th><th class="c">题量×分</th><th class="c">合计</th><th>抢分定位</th></tr>
   <tr><td>简答题 26–32</td><td class="c">7×5</td><td class="c"><span class="tag hot">35 分</span></td><td>⭐⭐⭐ 最模板化，<b>优先攻克，是及格基本盘</b></td></tr>
   <tr><td>选择题 1–15</td><td class="c">15×2</td><td class="c">30 分</td><td>⭐⭐ 靠"见过套路"，记概念即可，目标 18+</td></tr>
   <tr><td>填空题 16–25</td><td class="c">10×2</td><td class="c">20 分</td><td>⭐⭐ 与选择题同源，重复率高，目标 12+</td></tr>
   <tr><td>证明题 33–35</td><td class="c">3×5</td><td class="c">15 分</td><td>⭐ 只攻 CP 推理 + 图论证明，保底 6–10</td></tr>
-</table>
+</table></div>
 
 <h2 class="sec">二、🔴 每套必考（三套全中）——先背这 8 个</h2>
 <div class="sub">下面每一个都在三套卷里都出现，是"不背就亏分"的硬通货。</div>
-<table>
+<div class="tscroll"><table>
   <tr><th>核心考点</th><th>常出现在</th><th class="c">约分值</th><th>去哪页看（都有图/动画）</th></tr>
   <tr><td><b>Kruskal 求最小生成树</b></td><td>简答 <b>第31题</b>（三套全是它）</td><td class="c"><span class="tag score">5</span></td><td><a href="知识点/图论/Kruskal算法.html">图论·Kruskal（选边动画）</a></td></tr>
   <tr><td><b>主析取 / 主合取范式</b></td><td>简答 26/27 + 单选"小项大项个数"</td><td class="c"><span class="tag score">5+</span></td><td><a href="知识点/数理逻辑/命题逻辑.html">命题逻辑·主范式</a></td></tr>
@@ -111,7 +111,7 @@
   <tr><td><b>握手定理 / 度数序列判图</b></td><td>单选（每套 2–3 题）</td><td class="c"><span class="tag score">6+</span></td><td><a href="知识点/图论/基本概念.html">图论·基本概念</a></td></tr>
   <tr><td><b>重言式 / 矛盾式判定</b></td><td>单选 <b>第2题</b>（三套同款）</td><td class="c"><span class="tag score">4</span></td><td><a href="知识点/数理逻辑/命题逻辑.html">命题逻辑·等值演算</a></td></tr>
   <tr><td><b>集合基本运算</b>（并交差/幂集/笛卡尔积/对称差）</td><td>单选+填空+简答</td><td class="c"><span class="tag score">6+</span></td><td><a href="知识点/集合论/集合与函数.html">集合与函数</a></td></tr>
-</table>
+</table></div>
 
 <h2 class="sec">三、🟡 高频（2/3 套出现）——有余力再抓</h2>
 <div class="sub">这些不是每年必考，但近三套出现两次，投入产出比高。</div>
@@ -187,7 +187,7 @@
   <div class="tpl"><b>套路：</b>结论是"蕴含式 R&rarr;S"时，把 <b>R 当附加前提</b>，只用它推出 S，最后写"由 CP 得 R&rarr;S"。</div>
   <div class="ex"><span class="h">真题 2026.4 第35题（下方步骤即对应本套）：</span>前提 P&rarr;¬Q、P&and;R、Q&or;S；结论 R&rarr;S。<span style="color:var(--muted);font-size:13px">同型题 · 2025.4 第35题（前提 P&or;Q、&not;P&or;&not;R、Q&rarr;S，亦用 CP）；2025.10 未考。</span></div>
   <details class="ans"><summary style="cursor:pointer;color:var(--brand);font-size:13px">▼ 展开可抄步骤</summary>
-    <table style="margin-top:6px;font-size:13px"><tr><th class="c">序</th><th>公式</th><th>根据</th></tr>
+    <div class="tscroll"><table style="margin-top:6px;font-size:13px"><tr><th class="c">序</th><th>公式</th><th>根据</th></tr>
       <tr><td class="c">1</td><td>R</td><td>附加前提（CP）</td></tr>
       <tr><td class="c">2</td><td>P&and;R</td><td>前提引入</td></tr>
       <tr><td class="c">3</td><td>P</td><td>2 化简律</td></tr>
@@ -196,7 +196,7 @@
       <tr><td class="c">6</td><td>Q&or;S</td><td>前提引入</td></tr>
       <tr><td class="c">7</td><td>S</td><td>5,6 析取三段论</td></tr>
       <tr><td class="c">8</td><td>R&rarr;S</td><td>1,7 CP 规则 ∎</td></tr>
-    </table>
+    </table></div>
   </details>
 </div>
 

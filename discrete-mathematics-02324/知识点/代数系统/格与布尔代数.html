@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>离散数学 · 代数系统知识点：格与布尔代数</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css?v=20261026c">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261026d">
 <style>
   .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:14px 18px;margin:14px 0;font-size:14.5px}
   .ok b{color:var(--ok)}
@@ -68,13 +68,13 @@
   <b>为什么用 ∨、∧ 表示最小上界 / 最大下界？</b><br>
   ① <b>符号来源</b>：∨ 来自拉丁语 <i>vel</i>（“或”），逻辑里是 OR；∧ 叫 wedge，逻辑里是 AND。<br>
   ② <b>统一记号</b>：在幂集格 (P(U),⊆) 中 <code>A∨B = A∪B</code>（并/或）、<code>A∧B = A∩B</code>（交/与），于是四类结构被同一对符号统一：
-  <table style="border-collapse:collapse;width:100%;margin:8px 0;font-size:13.5px">
+  <div class="tscroll"><table style="border-collapse:collapse;width:100%;margin:8px 0;font-size:13.5px">
     <tr style="background:#fff7ed"><th style="border:1px solid #fde68a;padding:4px 8px">结构</th><th style="border:1px solid #fde68a;padding:4px 8px">∨（并 / join）</th><th style="border:1px solid #fde68a;padding:4px 8px">∧（交 / meet）</th></tr>
     <tr><td style="border:1px solid #fde68a;padding:4px 8px">格（偏序）</td><td style="border:1px solid #fde68a;padding:4px 8px">最小上界 lub</td><td style="border:1px solid #fde68a;padding:4px 8px">最大下界 glb</td></tr>
     <tr><td style="border:1px solid #fde68a;padding:4px 8px">集合</td><td style="border:1px solid #fde68a;padding:4px 8px">并集 ∪</td><td style="border:1px solid #fde68a;padding:4px 8px">交集 ∩</td></tr>
     <tr><td style="border:1px solid #fde68a;padding:4px 8px">逻辑</td><td style="border:1px solid #fde68a;padding:4px 8px">或 OR</td><td style="border:1px solid #fde68a;padding:4px 8px">与 AND</td></tr>
     <tr><td style="border:1px solid #fde68a;padding:4px 8px">布尔代数</td><td style="border:1px solid #fde68a;padding:4px 8px">同上</td><td style="border:1px solid #fde68a;padding:4px 8px">同上</td></tr>
-  </table>
+  </table></div>
   ③ <b>形状记忆</b>：∨ 尖朝上 = 两元素“往上汇合”到公共上界（join）；∧ 尖朝下 = “往下汇合”到公共下界（meet）。<br>
   ④ <b>对偶原理</b>：∨ 与 ∧ 镜像对称，故任意格定理交换 <code>∨↔∧</code>、<code>0↔1</code>、<code>≤↔≥</code> 后仍成立。
 </div>

@@ -34,6 +34,8 @@ a.inline:hover{text-decoration:underline}
 .law th{background:var(--brand-soft);color:var(--brand)}
 .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
 .law td.nm{white-space:nowrap;font-weight:700}
+/* 密集表窄屏兜底：包一层横滑容器，表格保持正常 display:table（能放下就无滚动条、居中小矩阵不受影响），仅内容超宽时整表横滑、不撑破页面 */
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 /* 窄屏：表格改成横向滑动，不要撑破整页。
    诱因是单元格里不可断行的长串（如 p->no　等价于　(*p).no 中的全角空格），
