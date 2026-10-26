@@ -37,6 +37,7 @@
   .sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
   .sol .lab{font-weight:700;color:var(--brand)}
   .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
+  a.tag{text-decoration:none;cursor:pointer;transition:.15s}a.tag:hover{background:var(--warn);color:#fff}
   .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
   table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px}
   table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center}
@@ -86,7 +87,7 @@
 <div class="body">
   <div class="answer">答案：B&nbsp; P∧Q</div>
   <div class="sol"><span class="lab">解析：</span>"且/都" 表示合取（同时成立），故符号化为 <span class="m">P∧Q</span>。写成 P∨Q 表示"至少有一人是篮球运动员"，与题意不符。</div>
-  <span class="tag">考点：联接词与自然语言对应</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s1">考点：联接词与自然语言对应 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -101,7 +102,7 @@
     B：= (¬P∨Q)∧(¬P∨¬Q) = ¬P∨(Q∧¬Q) = ¬P，可满足式。<br>
     C：= (¬P∨¬Q)∧(P∨Q) = ¬(P↔Q)，可满足式。<br>
     <b>D：= (¬P∨¬P)∧(P∨P) = ¬P∧P ≡ 0</b>，矛盾式。</div>
-  <span class="tag">考点：矛盾式判定</span><span class="tag">等值演算</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s3">考点：矛盾式判定 →</a><span class="tag">等值演算</span>
 </div></details>
 
 <details class="q"><summary>
@@ -112,7 +113,7 @@
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span>小项个数 = 使公式为真的赋值个数。P∧Q→Q 仅当 P∧Q 真且 Q 假时才为假，而"P∧Q 真而 Q 假"不可能发生，故公式为<b>重言式</b>，4 组赋值全为真，主析取范式含全部 2²=4 个小项。</div>
-  <span class="tag">考点：主析取范式与真值表</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s5">考点：主析取范式与真值表 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -123,7 +124,7 @@
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span>全称量词消去规则：在有限论域 {a,b} 上，<span class="m">∀x¬P(x) ⇔ ¬P(a)∧¬P(b)</span>。即把每个个体代入 ¬P，再用"合取"连接（对每个个体都成立）。同理 ∃x¬P(x) ⇔ ¬P(a)∨¬P(b)。</div>
-  <span class="tag">考点：量词消去</span><span class="tag">注意：公式带 ¬ 时别漏掉</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s4">考点：量词消去 →</a><span class="tag">注意：公式带 ¬ 时别漏掉</span>
 </div></details>
 
 <details class="q"><summary>
@@ -140,7 +141,7 @@
     <b>D.</b> ∀xP(x)→∃yQ(x,y)：注意 ∀x 后面无括号，其辖域只到紧邻的原子公式 P(x)，所以 <b>x 在 P(x) 中被约束</b>；虽然 x 在 Q(x,y) 中是自由出现，但 x <b>既有约束出现又有自由出现</b>，并非"所有出现都自由"，不符合本题"x 是自由变元"的要求 → 排除。<br><br>
     故唯一符合的是 <b>C</b>。<br><br>
     <span style="color:var(--warn)">📌 说明：</span>严格按某些教材定义——"变元在公式中至少有一次自由出现，即称其为自由变元"——则 D 中 x 有自由出现，会出现 C、D 两个正确项。但本题是单选题，标准答案采用"自由变元须全部出现自由"的约定，因此选 C。考试时按此约定作答即可。</div>
-  <span class="tag">考点：约束变元与自由变元</span><span class="tag">约定：自由变元要求所有出现均自由</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s2">考点：约束变元与自由变元 →</a><span class="tag">约定：自由变元要求所有出现均自由</span>
 </div></details>
 
 <details class="q"><summary>
@@ -153,7 +154,7 @@
   <div class="sol"><span class="lab">解析：</span>对称：若 &lt;x,y&gt;∈R 则必有 &lt;y,x&gt;∈R。<br>
     A 中 &lt;1,2&gt; 与 &lt;2,1&gt;、&lt;3,4&gt; 与 &lt;4,3&gt; 成对出现，&lt;1,1&gt;、&lt;3,3&gt; 自反位置无妨 → 满足对称。<br>
     B 中 &lt;1,3&gt; 无 &lt;3,1&gt;；C 中 &lt;1,2&gt; 无 &lt;2,1&gt;；D 中 &lt;1,2&gt; 无 &lt;2,1&gt;，均不对称。</div>
-  <span class="tag">考点：关系性质判定</span>
+  <a class="tag" href="../知识点/关系/关系.html#s2">考点：关系性质判定 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -164,7 +165,7 @@
 <div class="body">
   <div class="answer">答案：A</div>
   <div class="sol"><span class="lab">解析：</span>每个 x∈X 都有唯一像且像不同 → 是映射且是<b>单射</b>；但 |X|=4 &lt; |Y|=5，元素 9 没有原像，不是满射（|X|≠|Y| 时不可能双射）。</div>
-  <span class="tag">考点：单射、满射、双射</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s6">考点：单射、满射、双射 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -179,7 +180,7 @@
     A：(x−y)−z ≠ x−(y−z)（如 1,2,3：−4 ≠ 2）。<br>
     C：x=1,y=2,z=3 时，||1−2|−3| = 2，|1−|2−3|| = 0，不等。<br>
     D：(x+2y)+2z = x+2y+2z，而 x+2(y+2z) = x+2y+4z，不等。</div>
-  <span class="tag">考点：运算性质验证</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s1">考点：运算性质验证 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -190,7 +191,7 @@
 <div class="body">
   <div class="answer">答案：C</div>
   <div class="sol"><span class="lab">解析：</span>并集取两集合所有元素：{1,2,3,4}。注意区分：A∩B={2,3}（选项B）、A−B={1}、B−A={4}。</div>
-  <span class="tag">考点：集合运算</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s3">考点：集合运算 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -201,7 +202,7 @@
 <div class="body">
   <div class="answer">答案：C</div>
   <div class="sol"><span class="lab">解析：</span>A、B 无公共元素（不相交），|A∪B| = 3+4 = 7。一般公式：|A∪B| = |A|+|B|−|A∩B| = 3+4−0 = 7。</div>
-  <span class="tag">考点：容斥原理</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s5">考点：容斥原理 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -221,7 +222,7 @@
     ② → 1、2 同块互相等价且各自自反，R₂ = {&lt;1,1&gt;, &lt;1,2&gt;, &lt;2,1&gt;, &lt;2,2&gt;}（全关系 A×A）<br>
     两者都满足自反、对称、传递，且无法造出第三种分块 → 共 <b>2</b> 个。<br><br>
     <span style="color:var(--muted);font-size:13px">💡 这类"n 元集的划分总数"叫贝尔数 Bell(n)；Bell(2)=2。若考 A={1,2,3}，Bell(3)=5，对应 5 个等价关系。</span></div>
-  <span class="tag">考点：等价关系与划分</span><span class="tag">等价关系个数 = 划分个数</span><span class="tag">贝尔数 Bell(2)=2</span>
+  <a class="tag" href="../知识点/关系/关系.html#s4">考点：等价关系与划分 →</a><span class="tag">等价关系个数 = 划分个数</span><span class="tag">贝尔数 Bell(2)=2</span>
 </div></details>
 
 <details class="q"><summary>
@@ -233,7 +234,7 @@
   <div class="answer">答案：A</div>
   <div class="sol"><span class="lab">解析：</span>右零元 θ 需满足：对任意 x，<b>x*θ = θ</b>。但本题 x*θ = x，要 x*θ=θ 需 x=θ 对一切 x 成立，|A|=3&gt;1 时不可能 → 右零元个数 <b>0</b>。<br>
     反向注意：θ*x = θ 对一切 x 都成立（左零元），故 <b>每个元素都是左零元</b>（3个），但右零元一个也没有。</div>
-  <span class="tag">考点：零元（左/右零元）</span><span class="tag">易错题</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s1">考点：零元（左/右零元） →</a><span class="tag">易错题</span>
 </div></details>
 
 <details class="q"><summary>
@@ -254,7 +255,7 @@
     B. M={1,2,3,6}：2 与 3 的 lcm=6∈M，其余任意两元素均能找到上、下界 → 是格。<br>
     C. N={3,6,12}、D. Q={1,5}：都是<b>全序（链）</b>，而任意链必是格 → 是格。<br><br>
     故不能构成格的只有 A。</div>
-  <span class="tag">考点：格的判定</span><span class="tag">整除偏序：下界=gcd，上界=lcm</span><span class="tag">缺某个 lcm 即非格</span>
+  <a class="tag" href="../知识点/代数系统/格与布尔代数.html#s2">考点：格的判定 →</a><span class="tag">整除偏序：下界=gcd，上界=lcm</span><span class="tag">缺某个 lcm 即非格</span>
 </div></details>
 
 <details class="q"><summary>
@@ -266,7 +267,7 @@
   <div class="answer">答案：B</div>
   <div class="sol"><span class="lab">解析：</span>先看<b>度数和必为偶数</b>（握手定理）：A 和=9、C 和=7、D 和=5，都是奇数，直接排除。<br>
     B 和=4（偶数），且可具体构造：两条独立边 (v₁v₂)、(v₃v₄)，每个点度数为1 → 可构成。</div>
-  <span class="tag">考点：握手定理</span><span class="tag">度数序列</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#handshake">考点：握手定理 →</a><span class="tag">度数序列</span>
 </div></details>
 
 <details class="q"><summary>
@@ -277,7 +278,7 @@
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span>n 阶<b>简单图</b>中每个结点至多与其余 n−1 个结点各连一条边（无环、无重边），最大度数 = n−1 = 6−1 = <b>5</b>（完全图 K₆ 时达到）。</div>
-  <span class="tag">考点：简单图最大度</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#s4">考点：简单图最大度 →</a>
 </div></details>
 
 <h2 class="section">二、填空题（每小题2分，共20分）</h2>
@@ -289,7 +290,7 @@
 <div class="body">
   <div class="answer">答案：{a, b, c}</div>
   <div class="sol"><span class="lab">解析：</span>ranR（值域）= 所有有序对第二分量构成的集合 = <span class="m">{a, b, c}</span>（a、b 重复只算一次）。</div>
-  <span class="tag">考点：关系的定义域与值域</span>
+  <a class="tag" href="../知识点/关系/关系.html#s1">考点：关系的定义域与值域 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -299,7 +300,7 @@
 <div class="body">
   <div class="answer">答案：1</div>
   <div class="sol"><span class="lab">解析：</span>幺元 e 满足 e*x = x*e = x。乘法下只有 <span class="m">e = 1</span>。（注意：0*x=0≠x，0 不是幺元。）</div>
-  <span class="tag">考点：幺元（单位元）</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s1">考点：幺元（单位元） →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -319,7 +320,7 @@
     a⁻¹·(a·a) = a⁻¹·a ⇒ (a⁻¹·a)·a = e ⇒ e·a = e ⇒ <b>a = e</b>。<br>
     所以群中唯一幂等元是<b>单位元</b>。<br>
     <span style="color:var(--muted);font-size:13px">💡 对比：普通运算（如乘法）幂等元可有多个（0、1）；群因"人人有逆元"能把 a 消去，只剩 e。</span></div>
-  <span class="tag">考点：群的性质</span><span class="tag">幂等元：a*a=a</span><span class="tag">群中幂等元只有 e</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s2">考点：群的性质 →</a><span class="tag">幂等元：a*a=a</span><span class="tag">群中幂等元只有 e</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -333,7 +334,7 @@
     <b>推演：</b>用分配律与补余律：<br>
     b∨(a∧b′) = (b∨a)∧(b∨b′) = (a∨b)∧1 = <span class="m">a∨b</span>。<br>
     <span style="color:var(--muted);font-size:13px">（其中 b∨b′=1 即补余律，再与 1 相"交"不变。）</span></div>
-  <span class="tag">考点：布尔代数恒等式</span><span class="tag">′ 是补运算</span><span class="tag">分配律 + 补余律</span>
+  <a class="tag" href="../知识点/代数系统/格与布尔代数.html#s4">考点：布尔代数恒等式 →</a><span class="tag">′ 是补运算</span><span class="tag">分配律 + 补余律</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -343,7 +344,7 @@
 <div class="body">
   <div class="answer">答案：割边（桥）</div>
   <div class="sol"><span class="lab">解析：</span>割边（桥）的等价刻画：<b>e 是割边 ⇔ e 不在 G 的任何回路中</b>。删除割边会使图的连通分支数增加。</div>
-  <span class="tag">考点：割边与回路</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#s6">考点：割边与回路 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -353,7 +354,7 @@
 <div class="body">
   <div class="answer">答案：0（假）</div>
   <div class="sol"><span class="lab">解析：</span>P∧¬Q = 1∧¬0 = 1∧1 = 1；¬R = ¬1 = 0。故 <span class="m">1→0 = 0</span>（前件真后件假，蕴含式为假）。</div>
-  <span class="tag">考点：蕴含式真值</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s2">考点：蕴含式真值 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -372,7 +373,7 @@
     <b>本题实战：</b>(P∧Q)→¬Q = ¬(P∧Q)∨¬Q = ¬P∨¬Q∨¬Q = <span class="m">¬P∨¬Q</span>。<br>
     真值：P Q = 00,01,10 时为真，<b>仅 11 时为假</b>。故主合取范式只含这一组对应的极大项 <b>M₃ = ¬P∨¬Q</b>。<br>
     <span style="color:var(--muted);font-size:13px">（注：M 的下标"3"=二进制 11；有的书写作 M₁₁，即下标写二进制串，意思相同。）</span></div>
-  <span class="tag">考点：主合取/主析取范式</span><span class="tag">极小项 mᵢ / 极大项 Mᵢ</span><span class="tag">析取连极小·合取连极大</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s5">考点：主合取/主析取范式 →</a><span class="tag">极小项 mᵢ / 极大项 Mᵢ</span><span class="tag">析取连极小·合取连极大</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -383,7 +384,7 @@
   <div class="answer">答案：0（假）</div>
   <div class="sol"><span class="lab">解析：</span>∃y∀x 要求：存在一个<b>固定的</b> y，使<b>一切</b>自然数 x 都满足 x+y=10。x 可以取任意自然数（0,1,2,…），一个固定 y 不可能对所有 x 成立 → 命题为<b>假</b>，真值 0。<br>
     对比：若量词次序换成 ∀x∃y(x+y=10) 则为真（取 y=10−x）——量词顺序不可随意交换。</div>
-  <span class="tag">考点：多重量词</span><span class="tag">易错题</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s1">考点：多重量词 →</a><span class="tag">易错题</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -393,7 +394,7 @@
 <div class="body">
   <div class="answer">答案：{2,4,6,8}</div>
   <div class="sol"><span class="lab">解析：</span>正偶数且 &lt;10：2,4,6,8 → <span class="m">{2,4,6,8}</span>。集合表示法也可写 {x | x∈N⁺, x为偶数, x&lt;10}。</div>
-  <span class="tag">考点：集合的表示</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s1">考点：集合的表示 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -403,7 +404,7 @@
 <div class="body">
   <div class="answer">答案：{1,3}</div>
   <div class="sol"><span class="lab">解析：</span>A−B = 属于 A 但不属于 B 的元素 = <span class="m">{1,3}</span>（去掉 A 中的 2、4）。</div>
-  <span class="tag">考点：差集</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s3">考点：差集 →</a>
 </div></details>
 
 <h2 class="section">三、简答题（每小题5分，共35分）</h2>
@@ -431,7 +432,7 @@
     故 R² = {&lt;1,1&gt;, <b>&lt;1,2&gt;</b>, &lt;1,3&gt;, &lt;2,2&gt;, &lt;3,2&gt;}。<br>
     再算 R³ = R²∘R 不再产生新元素（R² 已传递）。<br>
     t(R) = {&lt;1,1&gt;, <b>&lt;1,2&gt;</b>, &lt;1,3&gt;, &lt;2,2&gt;, &lt;3,2&gt;}</div>
-  <span class="tag">考点：三种闭包</span><span class="tag">公式：r=R∪I，s=R∪R⁻¹，t=R∪R²∪…∪Rⁿ</span>
+  <a class="tag" href="../知识点/关系/关系.html#s3">考点：三种闭包 →</a><span class="tag">公式：r=R∪I，s=R∪R⁻¹，t=R∪R²∪…∪Rⁿ</span>
 </div></details>
 
 <details class="q"><summary>
@@ -445,7 +446,7 @@
     R=1 的四行中：P=0,Q=0,R=1 ✓；P=0,Q=1,R=1 ✓；P=1,Q=0,R=1 ✗（P→Q 假）；P=1,Q=1,R=1 ✓<br>
     主析取范式：<br>
     <span class="m">(¬P∧¬Q∧R) ∨ (¬P∧Q∧R) ∨ (P∧Q∧R)</span>，即 <span class="m">m₁ ∨ m₃ ∨ m₇</span>。</div>
-  <span class="tag">考点：主析取范式</span><span class="tag">真值表法</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s5">考点：主析取范式 →</a><span class="tag">真值表法</span>
 </div></details>
 
 <details class="q"><summary>
@@ -462,7 +463,7 @@
     所以前束范式为：<br>
     <span class="m">∃x∃z(¬P(x,y) ∨ Q(x,z))</span><br>
     （y 保持自由出现，不受量词约束。）</div>
-  <span class="tag">考点：前束范式</span><span class="tag">换名规则</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s5">考点：前束范式 →</a><span class="tag">换名规则</span>
 </div></details>
 
 <details class="q"><summary>
@@ -472,7 +473,7 @@
 <div class="body">
   <div class="answer">答案：A∪B={1,2,3,4,5,6}，A∩B={2,4,5}</div>
   <div class="sol"><span class="lab">解答：</span>并集取全部元素：<span class="m">A∪B = {1,2,3,4,5,6}</span>；交集取公共元素：<span class="m">A∩B = {2,4,5}</span>。</div>
-  <span class="tag">考点：集合基本运算</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s3">考点：集合基本运算 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -501,7 +502,7 @@
     在子集 B = {2,3,6} 中：<br>
     <b>极大元集 = {6}</b>（B 中没有比 6 更"大"的元素；2|6、3|6，故 2、3 都不是极大元）。<br>
     <b>极小元集 = {2, 3}</b>（B 中没有比 2、3 更"小"的元素；6 不是极小元）。</div>
-  <span class="tag">考点：哈斯图</span><span class="tag">极大元/极小元（在子集B内找，不是全集合A）</span>
+  <a class="tag" href="../知识点/关系/关系.html#s5">考点：哈斯图 →</a><span class="tag">极大元/极小元（在子集B内找，不是全集合A）</span>
 </div></details>
 
 <details class="q"><summary>
@@ -522,7 +523,7 @@
     <div style="margin:10px 0"><img loading="lazy" src="题31图.png" alt="题31图" style="max-width:440px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
     <span style="color:var(--muted);font-size:13px">（原图：最小生成树即上方选取的 4 条边，未入选的 a–c、c–e、e–d 为成回路的冗余边。）</span>
   </div>
-  <span class="tag">考点：Kruskal 算法</span><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
+  <a class="tag" href="../知识点/图论/Kruskal算法.html">考点：Kruskal 算法 →</a><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
 </div></details>
 
 <details class="q"><summary>
@@ -537,7 +538,7 @@
     <b>先根（根—左—右）：</b>a, b, c, d, f, g, e<br>
     <b>中根（左—根—右）：</b>b, a, f, d, g, c, e<br>
     <b>后根（左—右—根）：</b>b, f, g, d, e, c, a</div>
-  <span class="tag">考点：二叉树三种遍历</span><span class="tag">口诀：先根/中根/后根指的是"根"被访问的位置</span>
+  <a class="tag" href="../知识点/图论/二叉树遍历.html">考点：二叉树三种遍历 →</a><span class="tag">口诀：先根/中根/后根指的是"根"被访问的位置</span>
 </div></details>
 
 <h2 class="section">四、证明题（每小题5分，共15分）</h2>
@@ -558,7 +559,7 @@
       <tr><td>其他</td><td>全真</td><td>半对</td><td>半对</td><td>✘ 两人半对</td></tr>
     </table>
     只有矿样为<b>铁</b>时恰有一人全对（丙）、一人全错（乙）、一人对一半（甲），故上述说法是存在的，且<b>此矿样是铁</b>。</div>
-  <span class="tag">考点：命题逻辑推理</span><span class="tag">真值枚举</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s6">考点：命题逻辑推理 →</a><span class="tag">真值枚举</span>
 </div></details>
 
 <details class="q"><summary>
@@ -578,7 +579,7 @@
     &nbsp;&nbsp;= b　<span style="color:#6b7280">（吸收律）</span><br>
     故 a = b。∎<br>
     <span style="color:var(--warn)">注意：</span>"分配格"条件必不可少（在一般的模格/五边形格中结论不成立，这正是判断分配格的经典方法）。</div>
-  <span class="tag">考点：分配格</span><span class="tag">吸收律+分配律演算</span>
+  <a class="tag" href="../知识点/代数系统/格与布尔代数.html#s3">考点：分配格 →</a><span class="tag">吸收律+分配律演算</span>
 </div></details>
 
 <details class="q"><summary>
@@ -593,7 +594,7 @@
     由 <b>Dirac 定理（狄拉克定理）</b>：设 G 是 n（n≥3）阶简单图，若每个结点的度数均不小于 n/2，则 G 中存在哈密顿回路。<br>
     故 G 中存在哈密顿回路 v₁v₂…v₃₀v₁，它经过每个结点恰好一次且相邻结点间都有边（都是朋友）。让 30 人按此回路的顺序 v₁, v₂, …, v₃₀ 围圆桌入座，则任意相邻两人都是朋友。∎<br>
     <span style="color:var(--muted);font-size:13px">（Dirac 定理是本课程图论部分的标准定理，直接引用即可；其证明思路是"度数最大的路不断延长，再用交换法封口成圈"。）</span></div>
-  <span class="tag">考点：哈密顿回路</span><span class="tag">Dirac 定理</span><span class="tag">图建模</span>
+  <a class="tag" href="../知识点/图论/欧拉图与哈密顿图.html">考点：哈密顿回路 →</a><span class="tag">Dirac 定理</span><span class="tag">图建模</span>
 </div></details>
 
 <h2 class="section">附：选择题答案速查表</h2>

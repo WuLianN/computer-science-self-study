@@ -38,6 +38,7 @@
   .sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
   .sol .lab{font-weight:700;color:var(--brand)}
   .tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0}
+  a.tag{text-decoration:none;cursor:pointer;transition:.15s}a.tag:hover{background:var(--warn);color:#fff}
   .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
   .matwrap{display:inline-flex;align-items:center;vertical-align:middle;margin:0 3px;font-family:"Cambria Math",Cambria,Georgia,serif}
   .matwrap .par{font-size:3.1em;font-weight:300;line-height:0;color:#475569}
@@ -91,7 +92,7 @@
   <div class="answer">答案：A&nbsp; ¬P→Q</div>
   <div class="sol"><span class="lab">解析：</span>"如果…就…"是<b>蕴含</b>联结词。前件"今天不下雨"= ¬P，后件"我去登山"= Q，整句 = <span class="m">¬P→Q</span>。<br>
     对照：B 的 P→Q 是"如果下雨就去"，把条件弄反；C 是合取、D 是析取，都不是"如果…就…"。</div>
-  <span class="tag">考点：联结词与自然语言对应</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s1">考点：联结词与自然语言对应 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -106,7 +107,7 @@
     B：P=1、Q=0 时 (1∨0)→0 = 0，但 P=0 时为 1，是可满足式，非永假。<br>
     C：P=0、Q=1 时 (0→1)∧1 = 1，非永假。<br>
     <b>D：</b>含 P∧¬Q 就要求 P=1 且 Q=0，此时 P→Q = 1→0 = 0，整个合取式必为 0 → <b>矛盾式</b>。</div>
-  <span class="tag">考点：矛盾式判定</span><span class="tag">等值演算</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s3">考点：矛盾式判定 →</a><span class="tag">等值演算</span>
 </div></details>
 
 <details class="q"><summary>
@@ -119,7 +120,7 @@
   <div class="sol"><span class="lab">解析：</span>n 个变元共 2ⁿ 个小项（极小项）；<b>主析取范式由"使公式为 1 的赋值"对应的小项析取而成</b>。<br>
     A 为重言式 ⇒ 全部 2³ = <b>8</b> 组赋值都使 A 为 1 ⇒ 主析取范式含 8 个小项。<br>
     <b>对照记：</b>重言式 → 主析取范式取满（2ⁿ 个小项）、主合取范式为空；矛盾式 → 主合取范式取满（2ⁿ 个大项）、主析取范式为空。</div>
-  <span class="tag">考点：主析取范式</span><span class="tag">n 变元共 2ⁿ 个小项/大项</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s5">考点：主析取范式 →</a><span class="tag">n 变元共 2ⁿ 个小项/大项</span>
 </div></details>
 
 <details class="q"><summary>
@@ -135,7 +136,7 @@
     C（假）：完全平方数 mod 4 只能为 0 或 1，x²+y²=3 需两个奇平方和=2(mod4)，无整数解。<br>
     D（假）：一个固定 x 不可能对<b>所有</b> y 都满足 x+y=18。<br>
     <span style="color:var(--muted);font-size:13px">💡 全称命题找反例即假；存在命题举一例即真；"∀∃"型常靠"取 y=…(x)"构造。</span></div>
-  <span class="tag">考点：谓词命题真值</span><span class="tag">量词含义</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s1">考点：谓词命题真值 →</a><span class="tag">量词含义</span>
 </div></details>
 
 <details class="q"><summary>
@@ -149,7 +150,7 @@
     "没有最大的质数" = <b>对任意质数 x，都存在比它更大的质数 y</b>，即 <span class="m">∀x(R(x)→∃y(R(y)∧G(y,x)))</span>；其中 G(y,x) 表示"y 大于 x"，正是"更大"。<br><br>
     <b>排除法：</b>是对<b>每个</b>质数的全称陈述，主量词必须 ∀x 且"是质数"作前件用 →，只可能形如 ∀x(R(x)→…)，排除 C、D。<br>
     A 用 G(x,y)（x 大于 y）说的是"存在更小的质数"，方向反了；<b>B 用 G(y,x)</b>（y 大于 x）才对应"没有最大"。</div>
-  <span class="tag">考点：命题的谓词符号化</span><span class="tag">全称配 →、存在配 ∧</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s3">考点：命题的谓词符号化 →</a><span class="tag">全称配 →、存在配 ∧</span>
 </div></details>
 
 <details class="q"><summary>
@@ -165,7 +166,7 @@
     <b>对称？✘</b>&lt;a,c&gt;∈R 但 &lt;c,a&gt;∉R → 不对称。<br>
     <b>传递？✘</b>&lt;a,b&gt;∈R 且 &lt;b,a&gt;∈R，应有 &lt;a,a&gt;∈R，但 &lt;a,a&gt;∉R → 不传递。<br><br>
     故 R 唯一满足的是<b>反自反性</b> → 选 <b>B</b>。</div>
-  <span class="tag">考点：关系性质判定</span><span class="tag">反自反：无任何 &lt;x,x&gt;</span>
+  <a class="tag" href="../知识点/关系/关系.html#s2">考点：关系性质判定 →</a><span class="tag">反自反：无任何 &lt;x,x&gt;</span>
 </div></details>
 
 <details class="q"><summary>
@@ -179,7 +180,7 @@
     <b>满射？✔</b>B 中每个元素都有原像：a 的原像 {1,2}，b 的原像 {3}，c 的原像 {4} → 是满射。<br>
     <b>单射？✘</b>1≠2 但 f(1)=f(2)=a → 不是单射（排除 A、C）。<br>
     <span style="color:var(--muted);font-size:13px">💡 |A|=4 &gt; |B|=3，从 A 到 B 不可能单射（鸽巢原理），却可以满射。</span></div>
-  <span class="tag">考点：单射/满射/双射</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s6">考点：单射/满射/双射 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -193,7 +194,7 @@
     <b>容斥法：</b>函数总数 2³ = 8，减去"值域只占 Y 的某个 1 元子集"的常数函数 2 个 → 8 − 2 = <b>6</b>。<br>
     <b>公式法：</b>满射数 = 2!·S(3,2) = 2×3 = 6（S 为第二类 Stirling 数）。<br>
     <span style="color:var(--muted);font-size:13px">💡 选项 D 的 8 是全部函数个数，不是满射。</span></div>
-  <span class="tag">考点：特殊函数计数</span><span class="tag">满射数 = n!·S(m,n)</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s7">考点：特殊函数计数 →</a><span class="tag">满射数 = n!·S(m,n)</span>
 </div></details>
 
 <details class="q"><summary>
@@ -208,7 +209,7 @@
     <b>最小元：</b>1 整除所有元素 → 1 是唯一最小元，故 B（无最小元）错。<br>
     <b>最大元：</b>需被 A 中所有元素整除，不存在这样的元 → 无最大元，C 错。<br>
     <span style="color:var(--muted);font-size:13px">💡 极大元可多个；最大元（若有）唯一。7 是极大元但不是最大元。</span></div>
-  <span class="tag">考点：偏序集极大/最大/最小元</span>
+  <a class="tag" href="../知识点/关系/关系.html#s5">考点：偏序集极大/最大/最小元 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -221,7 +222,7 @@
   <div class="sol"><span class="lab">解析：</span>3 元集合的划分数 = 第二类 Stirling 数之和，即 Bell 数 B₃ = <b>5</b>。逐一列出：<br>
     ① {{1,2,3}}；② {{1},{2,3}}；③ {{2},{1,3}}；④ {{3},{1,2}}；⑤ {{1},{2},{3}}，共 5 种。<br>
     <span style="color:var(--muted);font-size:13px">💡 Bell 数前几项：B₀=1,B₁=1,B₂=2,B₃=5,B₄=15。每个划分唯一对应一个等价关系。</span></div>
-  <span class="tag">考点：集合划分与 Bell 数</span>
+  <a class="tag" href="../知识点/关系/关系.html#s4">考点：集合划分与 Bell 数 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -236,7 +237,7 @@
     B：x*y=y，y*x=x → 不交换。<br>
     <b>C：max{x,y} = max{y,x} 恒成立 → 满足交换律 ✔</b><br>
     D：x*y=2x+y，y*x=2y+x，不等 → 不交换。</div>
-  <span class="tag">考点：运算交换律验证</span><span class="tag">max/min 天然交换</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s1">考点：运算交换律验证 →</a><span class="tag">max/min 天然交换</span>
 </div></details>
 
 <details class="q"><summary>
@@ -249,7 +250,7 @@
   <div class="sol"><span class="lab">解析：</span>Klein 四元群中，除单位元 e（阶 1）外，其余三个元素 a、b、c <b>都满足 x²=e 且 x≠e</b>，即每个的阶都是 2。<br>
     故阶为 2 的元素有 <b>3</b> 个（a、b、c）。<br>
     <span style="color:var(--muted);font-size:13px">💡 Klein 群是唯一一个"每个非单位元都是 2 阶"的 4 阶群，也是 4 阶群中唯一的非循环群（循环群 C₄ 有 1 个 2 阶、2 个 4 阶元素）。</span></div>
-  <span class="tag">考点：群的元素阶</span><span class="tag">Klein 四元群</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s5">考点：群的元素阶 →</a><span class="tag">Klein 四元群</span>
 </div></details>
 
 <details class="q"><summary>
@@ -263,7 +264,7 @@
     由<b>握手定理</b> Σdeg = 2|E| = 2×11 = 22：<br>
     3x + 2(8−x) = 22 ⟹ 3x + 16 − 2x = 22 ⟹ <span class="m">x = 6</span>。<br>
     验证：6 个 3 度 + 2 个 2 度，度数和 = 18+4 = 22 = 2×11 ✔。</div>
-  <span class="tag">考点：握手定理</span><span class="tag">Σdeg = 2m</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#handshake">考点：握手定理 →</a><span class="tag">Σdeg = 2m</span>
 </div></details>
 
 <details class="q"><summary>
@@ -278,7 +279,7 @@
     <b>C：</b>和 = 1+1+3+4+4 = 13 为<b>奇数</b> → 排除。<br>
     <b>D：</b>和 = 2+2+2+2+3 = 11 为<b>奇数</b> → 排除。<br>
     <b>A ✔：</b>和 = 12（偶数），最大度 4 ⩽ 4。Havel–Hakimi 判定可图化：4,3,2,2,1 → 去掉 4 后各减 1 得 2,1,1,0 → 再去 2 得 0,0 → 全 0，可图。</div>
-  <span class="tag">考点：度数序列可图化</span><span class="tag">握手定理 + 最大度 n−1</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#handshake">考点：度数序列可图化 →</a><span class="tag">握手定理 + 最大度 n−1</span>
 </div></details>
 
 <details class="q"><summary>
@@ -290,7 +291,7 @@
   <div class="answer">答案：A&nbsp; 1</div>
   <div class="sol"><span class="lab">解析：</span>任何结点数 ⩾ 2 的树<b>至少有 2 个叶子</b>（把树拉成一条最长路径，两端点必为叶子）。故 1 个叶子不可能 → 选 A。<br>
     其余都可构造：叶子 2 个 = 一条路径链；叶子 5 个 = 星形 K₁,₅（中心 1 个、叶 5 个）；叶子 3、4 个也可由中间形态得到。</div>
-  <span class="tag">考点：树的叶子数</span><span class="tag">树(≥2点)至少2个叶子</span>
+  <a class="tag" href="../知识点/图论/树与最小生成树.html">考点：树的叶子数 →</a><span class="tag">树(≥2点)至少2个叶子</span>
 </div></details>
 
 <h2 class="section">二、填空题（每小题2分，共20分）</h2>
@@ -303,7 +304,7 @@
   <div class="answer">答案：重言式（永真式）</div>
   <div class="sol"><span class="lab">解析：</span>P 与 Q 等价（P≡Q）意为<b>任何赋值下 P、Q 真值相同</b>，故双条件 P↔Q 在任何赋值下都为 1 → P↔Q 是<b>重言式</b>。<br>
     <span style="color:var(--muted);font-size:13px">💡 这正是“等价”与“双条件”的桥梁：P≡Q ，即得 P↔Q 为重言式。</span></div>
-  <span class="tag">考点：公式等价与重言式</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s3">考点：公式等价与重言式 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -315,7 +316,7 @@
   <div class="sol"><span class="lab">解析：</span>小项（极小项）mᵢ 的性质：n 个变元共 2ⁿ 个小项，每个小项<b>恰在唯一一组赋值下为 1</b>，其余赋值下为 0；不同小项对应的“为1”赋值不同。<br>
     取两个不同小项（i≠j）：它们不可能同时为 1 → 二者之合取恒为 0，是<b>矛盾式</b>。<br>
     <b>对偶记：</b>任意两个<b>不同大项</b>的<b>析取</b>式为<b>重言式</b>。</div>
-  <span class="tag">考点：大项/小项性质</span><span class="tag">不同小项之合取=永假</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s5">考点：大项/小项性质 →</a><span class="tag">不同小项之合取=永假</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -326,7 +327,7 @@
   <div class="answer">答案：(F(x,y)→G(y))</div>
   <div class="sol"><span class="lab">解析：</span>量词的<b>辖域</b>是紧跟在它后面的那个最小公式（括号部分）。∀x 后面紧跟 (F(x,y)→G(y))，这就是 ∀x 的辖域。<br>
     <span style="color:var(--muted);font-size:13px">💡 后半部分的 ∃x H(x,z) 中的 x 受 ∃x 约束，与前面的 ∀x 无关（两个 x 是不同约束变元，可改名避免混淆）。</span></div>
-  <span class="tag">考点：量词辖域</span>
+  <a class="tag" href="../知识点/数理逻辑/谓词逻辑.html#s2">考点：量词辖域 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -338,7 +339,7 @@
   <div class="sol"><span class="lab">解析：</span>对称差 A⊕B = (A−B)∪(B−A) = 属于 A 或 B 但<b>不同时属于两者</b>的元素。<br>
     A−B = {1,4,5}（剔除 A∩B={2,3}）；B−A = {6}。并集 = <b>{1,4,5,6}</b>。<br>
     <span style="color:var(--muted);font-size:13px">💡 也可记 A⊕B = (A∪B)−(A∩B) = {1,2,3,4,5,6}−{2,3} = {1,4,5,6}。</span></div>
-  <span class="tag">考点：集合运算</span><span class="tag">对称差 ⊕</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s3">考点：集合运算 →</a><span class="tag">对称差 ⊕</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -349,7 +350,7 @@
   <div class="answer">答案：{a,b,c}</div>
   <div class="sol"><span class="lab">解析：</span>R⁻¹ = {&lt;2,a&gt;,&lt;3,b&gt;,&lt;1,c&gt;}（把每个有序对颠倒）。ran R⁻¹ 是 R⁻¹ 中所有有序对的<b>第二分量</b>（值域）= {a,b,c}。<br>
     <span style="color:var(--muted);font-size:13px">💡 恒等关系：ran R⁻¹ = dom R。R 的定义域 dom R = {a,b,c}，直接得答案。</span></div>
-  <span class="tag">考点：关系的逆、定义域与值域</span>
+  <a class="tag" href="../知识点/关系/关系.html#s1">考点：关系的逆、定义域与值域 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -362,7 +363,7 @@
     <b>单位元：</b>e=1（因为 1·x mod 5 = x）。求 4 的逆元即找 y 使 4·y ≡ 1 (mod 5)。<br>
     4·4 = 16 = 3×5+1 ≡ 1 (mod 5) → 4 的逆元是 <b>4</b>（自身）。<br>
     <span style="color:var(--muted);font-size:13px">💡 验证：4⊗4 = 16 mod 5 = 1 = e ✔。</span></div>
-  <span class="tag">考点：群中逆元</span><span class="tag">模5乘法群</span>
+  <a class="tag" href="../知识点/代数系统/代数系统.html#s2">考点：群中逆元 →</a><span class="tag">模5乘法群</span>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -374,7 +375,7 @@
   <div class="sol"><span class="lab">解析：</span>笛卡尔积 A×B = {&lt;x,y&gt; | x∈A ∧ y∈B}，第一位取 A、第二位取 B 的所有有序对：<br>
     a→a、a→c、b→a、b→c，即 {&lt;a,a&gt;,&lt;a,c&gt;,&lt;b,a&gt;,&lt;b,c&gt;}，|A×B| = 2×2 = 4。<br>
     <span style="color:var(--muted);font-size:13px">💡 笛卡尔积不交换：B×A 的元素不同（如 &lt;c,b&gt;）。元素是<b>有序对</b>。</span></div>
-  <span class="tag">考点：笛卡尔积</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s4">考点：笛卡尔积 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -386,7 +387,7 @@
   <div class="sol"><span class="lab">解析：</span>用分配律展开：<br>
     a∧(a′∨b) = (a∧a′)∨(a∧b) = 0∨(a∧b) = <b>a∧b</b>。<br>
     <span style="color:var(--muted);font-size:13px">💡 a∧a′=0（互补律），0∨x=x（同一律）。这就是布尔代数中的“简化/吸收”常用变形。</span></div>
-  <span class="tag">考点：布尔代数运算律</span>
+  <a class="tag" href="../知识点/代数系统/格与布尔代数.html#s4">考点：布尔代数运算律 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -398,7 +399,7 @@
   <div class="sol"><span class="lab">解析：</span>格的<b>对偶原理</b>：将 ≼ 与 ≽ 互换、∧ 与 ∨ 互换（0↔1），所得即对偶式。<br>
     对 a&#x2228;(a&#x2227;b)&#x227D;a：将 &#x2228; 与 &#x2227; 互换、&#x227D; 与 &#x227C; 互换 → <span class="m">a&#x2227;(a&#x2228;b)&#x227C;a</span>。<br>
     <span style="color:var(--muted);font-size:13px">💡 对偶式与原式在任意格中同真同假（对偶原理）。本例两边其实都是吸收律，恒成立。</span></div>
-  <span class="tag">考点：格的对偶原理</span>
+  <a class="tag" href="../知识点/代数系统/格与布尔代数.html#s2">考点：格的对偶原理 →</a>
 </div></details>
 
 <details class="q fillblank"><summary>
@@ -409,7 +410,7 @@
   <div class="answer">答案：3</div>
   <div class="sol"><span class="lab">解析：</span>彼得森（Petersen）图有 10 个顶点、15 条边，每个顶点的度数都是 <b>3</b> → 是 3-正则图。<br>
     <span style="color:var(--warn);font-size:13px">📌 连带高频考点：彼得森图是连通、无桥、非汉密尔顿图（有哈密顿通路但无哈密顿回路），常作反例。</span></div>
-  <span class="tag">考点：正则图</span><span class="tag">彼得森图</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#s3">考点：正则图 →</a><span class="tag">彼得森图</span>
 </div></details>
 
 <h2 class="section">三、简答题（每小题5分，共35分）</h2>
@@ -429,7 +430,7 @@
     故主析取范式 = <span class="m">m&#8320;&or;m&#8325;&or;m&#8326;&or;m&#8327; = &Sigma;(0,5,6,7)</span><br>
     &nbsp;&nbsp;= (&not;P&and;&not;Q&and;&not;R) &or; (P&and;&not;Q&and;R) &or; (P&and;Q&and;&not;R) &or; (P&and;Q&and;R)。<br>
     <span style="color:var(--muted);font-size:13px">💡 主析取范式：把使公式为 <b>1</b> 的那几行对应小项（每个变元按取值写原变量/否定）用 &or; 连接。</span></div>
-  <span class="tag">考点：主析取范式</span><span class="tag">析取"为1"赋值对应的小项</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s5">考点：主析取范式 →</a><span class="tag">析取"为1"赋值对应的小项</span>
 </div></details>
 
 <details class="q"><summary>
@@ -443,7 +444,7 @@
     &nbsp;&nbsp;· 取 P=0,Q=0,R=0：公式=0（存在成0赋值&rarr;非重言式）<br>
     结果列<b>既有1又有0</b> &rarr; <b>可满足式</b>。<br>
     <span style="color:var(--muted);font-size:13px">💡 判定类型三问：全为1？重言式。全为0？矛盾式。有1有0？可满足式。</span></div>
-  <span class="tag">考点：真值表法判定公式类型</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s2">考点：真值表法判定公式类型 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -472,7 +473,7 @@
     </svg><br>
     <b>Cov A</b>（盖住关系的集合表示）= {&lt;1,2&gt;,&lt;1,3&gt;,&lt;2,6&gt;,&lt;3,6&gt;,&lt;3,9&gt;,&lt;6,18&gt;,&lt;9,18&gt;}，共 7 对。<br>
     <span style="color:var(--muted);font-size:13px">💡 写盖住关系时，先列出所有整除对，再剔去能被"中转"得到的（传递）那些。</span></div>
-  <span class="tag">考点：哈斯图与盖住关系</span>
+  <a class="tag" href="../知识点/关系/关系.html#s5">考点：哈斯图与盖住关系 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -489,7 +490,7 @@
     <b>对称闭包 s(R)</b> = R &cup; R&#8315;&sup1;，R&#8315;&sup1;={&lt;a,a&gt;,&lt;c,a&gt;,&lt;a,b&gt;,&lt;c,c&gt;}，并集需补上 &lt;c,a&gt;、&lt;a,b&gt;：<br>
     M<sub>s(R)</sub> = <span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>1</i><i>1</i><i>0</i><i>0</i><i>1</i><i>0</i><i>1</i></span><span class="par">)</span></span><br>
     <span style="color:var(--muted);font-size:13px">💡 自反闭包=对角线置1；对称闭包=沿主对角线镜像（M 与 Mᵀ 取或）。</span></div>
-  <span class="tag">考点：关系闭包与关系矩阵</span>
+  <a class="tag" href="../知识点/关系/关系.html#s3">考点：关系闭包与关系矩阵 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -502,7 +503,7 @@
     块 {a,b} 内部产生 a,b 的 4 个有序对；块 {c,d} 内部产生 c,d 的 4 个有序对。<br>
     R<sub>S</sub> = {&lt;a,a&gt;,&lt;a,b&gt;,&lt;b,a&gt;,&lt;b,b&gt;,&lt;c,c&gt;,&lt;c,d&gt;,&lt;d,c&gt;,&lt;d,d&gt;}，共 8 个有序对。<br>
     <span style="color:var(--muted);font-size:13px">💡 划分与等价关系一一对应：每个划分唯一确定一个等价关系，其等价类恰好就是各块。</span></div>
-  <span class="tag">考点：划分与等价关系</span>
+  <a class="tag" href="../知识点/关系/关系.html#s4">考点：划分与等价关系 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -523,7 +524,7 @@
     最小生成树边集 = {<b>f&ndash;g, a&ndash;f, b&ndash;c, e&ndash;f, a&ndash;b, a&ndash;d</b>}，权 W = 1+2+2+2+3+5 = <b>15</b>。
     <div style="margin:10px 0"><img loading="lazy" src="题31图.png" alt="题31图" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
     <span style="color:var(--muted);font-size:13px">（d 只能靠 a-d=5 接入（其余 c-d=6、d-e=7、d-f=8 都更大），故 W=15 为最优。）</span></div>
-  <span class="tag">考点：Kruskal 算法</span><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
+  <a class="tag" href="../知识点/图论/Kruskal算法.html">考点：Kruskal 算法 →</a><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
 </div></details>
 
 <details class="q"><summary>
@@ -549,7 +550,7 @@
     <b>先序（根&mdash;左&mdash;右）：</b>+ , * , + , x , y , z , &divide; , u , v　（即前缀式 +*+xyz&divide;uv）<br>
     <b>后序（左&mdash;右&mdash;根）：</b>x , y , + , z , * , u , v , &divide; , +　（即后缀式 xy+z*uv&divide;+）<br>
     <span style="color:var(--muted);font-size:13px">💡 先序=前缀式，后序=后缀（逆波兰）式，中序加括号可还原原中缀式。</span></div>
-  <span class="tag">考点：表达式二叉树</span><span class="tag">先序/后序遍历</span>
+  <a class="tag" href="../知识点/图论/二叉树遍历.html">考点：表达式二叉树 →</a><span class="tag">先序/后序遍历</span>
 </div></details>
 
 <h2 class="section">四、证明题（每小题5分，共15分）</h2>
@@ -565,7 +566,7 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&Sigma;deg(v) &le; n&middot;2k = 2kn &lt; 2kn+2 = 2|E|，<br>
     与"度数之和 = 2|E|"矛盾。故假设不成立，&Delta;(G) &#8805; 2k+1。&#8718;<br>
     <span style="color:var(--muted);font-size:13px">💡 等价说法：平均度 = 2|E|/n = 2k+2/n &gt; 2k，而最大度 &ge; 平均度，取整数即 &ge; 2k+1。</span></div>
-  <span class="tag">考点：握手定理</span><span class="tag">最大度 &ge; 平均度</span>
+  <a class="tag" href="../知识点/图论/基本概念.html#handshake">考点：握手定理 →</a><span class="tag">最大度 &ge; 平均度</span>
 </div></details>
 
 <details class="q"><summary>
@@ -583,7 +584,7 @@
     |A&cup;B&cup;C| = |A|+|B|+|C| &minus; |A&cap;B| &minus; (|A&cap;C|+|B&cap;C|&minus;|A&cap;B&cap;C|)<br>
     &nbsp;&nbsp;= <b>|A|+|B|+|C|&minus;|A&cap;B|&minus;|A&cap;C|&minus;|B&cap;C|+|A&cap;B&cap;C|</b>。&#8718;<br>
     <span style="color:var(--muted);font-size:13px">💡 关键两步：(A&cup;B)&cap;C=(A&cap;C)&cup;(B&cap;C)（分配律）与 (A&cap;C)&cap;(B&cap;C)=A&cap;B&cap;C。</span></div>
-  <span class="tag">考点：容斥原理</span>
+  <a class="tag" href="../知识点/集合论/集合与函数.html#s5">考点：容斥原理 →</a>
 </div></details>
 
 <details class="q"><summary>
@@ -606,7 +607,7 @@
     </table>
     由 CP 规则，从 R 能推出 S，故 R&rarr;S 成立。&#8718;<br>
     <span style="color:var(--muted);font-size:13px">💡 CP 规则：若把 X 作附加前提能推出 Y，则 X&rarr;Y 必为结论。当结论是蕴含式时首选 CP。</span></div>
-  <span class="tag">考点：CP 规则</span><span class="tag">自然推理系统</span>
+  <a class="tag" href="../知识点/数理逻辑/命题逻辑.html#s6">考点：CP 规则 →</a><span class="tag">自然推理系统</span>
 </div></details>
 
 <h2 class="section">附：选择题答案速查表</h2>
