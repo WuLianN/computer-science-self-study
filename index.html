@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>自考 CS 学习笔记 · 离散数学 02324 / 高级语言程序设计 13013</title>
 <meta name="description" content="计算机科学与技术专业自学笔记：《离散数学 02324》14 页知识点详解 + 3 套全国历年真题详解，《高级语言程序设计 13013》16 页知识点详解 + 2 套真题逐题详解 + 考前抢分，全站内嵌 SVG 图示与算法动画，静态托管 GitHub Pages，免登录开放共享。">
 <meta property="og:title" content="自考 CS 学习笔记 · 离散数学 02324 / 高级语言程序设计 13013">
@@ -24,7 +24,7 @@
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     background:var(--bg);color:var(--text);line-height:1.65;
-    padding:0 16px 60px;-webkit-font-smoothing:antialiased;
+    padding:env(safe-area-inset-top) max(16px,env(safe-area-inset-right)) calc(60px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));-webkit-font-smoothing:antialiased;
   }
   .hero{max-width:960px;margin:0 auto;padding:36px 0 20px}
   .hero-card{background:linear-gradient(135deg,#4c1d95 0%,#4338ca 45%,#0891b2 100%);color:#fff;border-radius:22px;padding:36px 30px 30px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}

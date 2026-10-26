@@ -2,10 +2,10 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>2026年4月自考 02324《离散数学》真题详解</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
-<link rel="stylesheet" href="../../assets/theme.css?v=20261026e">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261026f">
 <style>
   :root{
     --bg:#f6f7fb; --card:#ffffff; --ink:#1f2430; --muted:#6b7280;
@@ -532,7 +532,7 @@
 
 <details class="q"><summary>
   <span class="qno">第29题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">已知集合 A={x,y,z} 上的二元关系 R₁ 和 R₂ 的关系矩阵 M<sub>R₁</sub>、M<sub>R₂</sub> 如下图所示，求 R₁∪R₂ 的集合表达式以及自反闭包 r(R₁∪R₂) 的关系矩阵。<div style="margin:10px 0"><img loading="lazy" src="题29图.png" alt="题29图 关系矩阵" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div></div>
+  <div class="stem">已知集合 A={x,y,z} 上的二元关系 R₁ 和 R₂ 的关系矩阵 M<sub>R₁</sub>、M<sub>R₂</sub> 如下图所示，求 R₁∪R₂ 的集合表达式以及自反闭包 r(R₁∪R₂) 的关系矩阵。<div style="margin:10px 0"><img width="353" height="123" loading="lazy" src="题29图.png" alt="题29图 关系矩阵" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div></div>
 </summary>
 <div class="body">
   <div class="answer">答案：R₁∪R₂={&lt;x,x&gt;,&lt;x,y&gt;,&lt;y,x&gt;,&lt;y,z&gt;,&lt;z,x&gt;,&lt;z,y&gt;,&lt;z,z&gt;}；自反闭包矩阵为<span class="matwrap"><span class="par">(</span><span class="mat"><i>1</i><i>1</i><i>0</i><i>1</i><i>1</i><i>1</i><i>1</i><i>1</i><i>1</i></span><span class="par">)</span></span></div>
@@ -581,7 +581,7 @@
     ⑥ 选 (c,f,4) ✔ → 加入 c，6 个结点全连通（已选 5 条边，结束）<br>
     <span style="color:var(--muted);font-size:13px">（后面的 (f,d,5)、(b,c,8)、(c,d,8) 都会成回路，无需再考）</span><br><br>
     最小生成树边集 = {<b>a–b, d–e, e–f, a–f, c–f</b>}，权 W = 1+1+2+3+4 = <b>11</b>。
-    <div style="margin:10px 0"><img loading="lazy" src="题31图.png" alt="题31图" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
+    <div style="margin:10px 0"><img width="312" height="318" loading="lazy" src="题31图.png" alt="题31图" style="max-width:360px;width:100%;border:1px solid #e5e7eb;border-radius:8px"></div>
     <span style="color:var(--muted);font-size:13px">（最小生成树即上方选取的 5 条边；舍弃的 b–f 及未取的 f–d、b–c、c–d 均为冗余边。）</span></div>
   <a class="tag" href="../知识点/图论/Kruskal算法.html">考点：Kruskal 算法 →</a><span class="tag">避圈法：从最小权边开始，不成回路才选</span>
 </div></details>

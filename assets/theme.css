@@ -3,7 +3,7 @@
    因引入顺序在后而覆盖本文件。改主题色/字体：改本文件 :root 即可全站生效。 */
 :root{--bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;--brand:#4f46e5; --brand-soft:#eef2ff; --ok:#059669; --ok-soft:#ecfdf5;--warn:#d97706; --warn-soft:#fffbeb; --line:#e5e7eb;}
 *{box-sizing:border-box}
-body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85}
+body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.85;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
 .wrap{max-width:900px;margin:0 auto;padding:24px 16px 80px}
 header.hero{background:var(--hero,linear-gradient(135deg,#4f46e5,#7c3aed));color:#fff;border-radius:16px;padding:26px 28px;margin-bottom:18px}
 header.hero h1{margin:0 0 6px;font-size:23px}
@@ -75,7 +75,7 @@ a:active,button:active,.btn:active{opacity:.55;transition:opacity .12s}
   a.inline:hover{text-decoration:none}
 }
 /* 长内容页浮动"回到顶部"：页面 </body> 前放 <a href="#" class="totop">↑</a>，样式统一在此；仅窄屏显示、桌面隐藏 */
-.totop{position:fixed;right:14px;bottom:16px;z-index:60;width:44px;height:44px;border-radius:50%;
+.totop{position:fixed;right:calc(14px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;width:44px;height:44px;border-radius:50%;
   background:var(--brand);color:#fff;text-decoration:none;font-size:20px;line-height:44px;text-align:center;
   box-shadow:0 4px 14px rgba(0,0,0,.22);opacity:.82;display:none}
 .totop:active{opacity:.5;transform:scale(.94)}
