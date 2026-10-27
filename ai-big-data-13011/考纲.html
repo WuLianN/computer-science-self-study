@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13011《人工智能与大数据》考纲 · 广东省高等教育自学考试</title>
+<link rel="stylesheet" href="../assets/theme.css?v=20261027c">
+<style>
+header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
+.lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+.lvl.a{background:#e0f2fe;color:#0369a1}
+.lvl.b{background:#dcfce7;color:#15803d}
+.lvl.c{background:#fef3c7;color:#b45309}
+.lvl.d{background:#fce7f3;color:#be185d}
+.rule .kd{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🤖 人工智能与大数据 · 考试大纲</h1>
+  <p>广东省高等教育自学考试 · 课程代码 13011 · 计算机科学与技术（专升本）</p>
+  <span class="pill">6 学分</span>
+  <span class="pill">闭卷笔试 150 分钟</span>
+  <span class="pill">满分 100 · 60 及格</span>
+  <span class="pill">建议自学 ≥ 66 学时</span>
+  <div class="gotos">
+    <a href="#book">📕 自学教材（先看这里）</a>
+    <a href="#target">考核目标</a>
+    <a href="#chapters">课程内容与考核要求</a>
+    <a href="#impl">自学方法与命题规定</a>
+    <a href="#types">附录·题型举例</a>
+  </div>
+</header>
+
+<div class="note"><b>⏰ 考纲会变，请以官方最新发布为准：</b>本页为 <b>2026 年 10 月收集</b>的考纲快照。省教育考试院可能修订考试大纲（课程名称、<b>指定教材及版本</b>、考核范围、学分与题型比例均可能调整）。<b>每次报考前</b>请先到<a class="inline" href="https://www.eeagd.cn" target="_blank">广东省教育考试院</a>核对当期考试通知与指定教材，发现版本不同请以最新为准。</div>
+
+<!-- ================= 自学教材：醒目区 ================= -->
+<div class="card" id="book" style="border:2px solid var(--brand);box-shadow:0 0 0 3px var(--brand-soft)">
+  <h3>📕 关于自学教材 —— 备考先看这里，别看错书！</h3>
+  <div class="note" style="margin-top:4px">
+    ⚠️ <b>教材名与课程名顺序相反</b>：课程叫《人工智能与<b>大数据</b>》（13011），指定教材书名是<b>《大数据与人工智能》</b>——大数据在前。找书时别按课程名顺序搜错。
+  </div>
+  <div class="rule">
+    <b>指定教材：</b><code>《大数据与人工智能》</code> 郏东耀 主编，<b>清华大学出版社、北京交通大学出版社，2022 年第 1 版</b>。
+  </div>
+  <div class="note">
+    🚫 <b>整章不考：仅教材第 13、14 两章</b>；另跳 6 个小节：4.6、4.8、5.5、5.6、8.3、15.4（逐章见下表）。<br>
+    🔑 <b>教材章号 ≠ 考纲章号</b>，且考纲正文引用的是<b>教材节号</b>。三个易混点：<br>
+    　① <b>考纲第 13 章「机器学习算法实验」仍要考</b>（用教材 13.1～13.3 节内容，与「教材第 13 章不考」是两回事，以节内容为准）；<br>
+    　② Spark 考核标注<b>教材 4.7 节</b>（不是考纲内容清单里的 4.6！4.6 不考）；<br>
+    　③ 云数据库考核标注<b>教材 5.7 节</b>（5.5、5.6 不考）、图像特征考核标注<b>教材 8.4 节</b>（8.3 不考）。
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>教材章</th><th>考不考</th><th>教材章</th><th>考不考</th></tr>
+    <tr><td>第 1 章</td><td>✅ 整章考</td><td>第 9 章</td><td>✅ 整章考</td></tr>
+    <tr><td>第 2 章</td><td>✅ 整章考</td><td>第 10 章</td><td>✅ 整章考</td></tr>
+    <tr><td>第 3 章</td><td>✅ 整章考</td><td>第 11 章</td><td>✅ 整章考</td></tr>
+    <tr><td>第 4 章</td><td>✂️ 跳 4.6、4.8</td><td>第 12 章</td><td>✅ 整章考</td></tr>
+    <tr><td>第 5 章</td><td>✂️ 跳 5.5、5.6</td><td>第 13 章</td><td>❌ 整章不考</td></tr>
+    <tr><td>第 6 章</td><td>✅ 整章考</td><td>第 14 章</td><td>❌ 整章不考</td></tr>
+    <tr><td>第 7 章</td><td>✅ 整章考</td><td>第 15 章</td><td>✂️ 跳 15.4</td></tr>
+    <tr><td>第 8 章</td><td>✂️ 跳 8.3</td><td></td><td></td></tr>
+  </table></div>
+</div>
+
+<div class="toc">
+  <div class="toc-h">📑 本页目录</div>
+  <a href="#nature">Ⅰ 课程性质与课程目标（含重点难点）</a>
+  <a href="#target">Ⅱ 考核目标（四个能力层次）</a>
+  <a href="#chapters">Ⅲ 课程内容与考核要求（13 章）</a>
+  <a href="#impl">Ⅳ 大纲说明与考核实施要求（自学方法 / 建议学时 / 命题规定）</a>
+  <a href="#types">附录 题型举例</a>
+</div>
+
+<!-- ================= Ⅰ ================= -->
+<h2 class="section" id="nature">Ⅰ · 课程性质与课程目标</h2>
+<div class="rule">
+  <div class="th"><b>课程性质和特点</b></div>
+  理解人工智能的基础与应用、大数据技术原理与应用，初步掌握二者综合应用；培养对 AI 核心算法、最新进展与发展方向、大数据重要概念和处理架构的认识，建立 AI 与大数据关系及综合应用的总体认识，掌握 AI 领域主流研究方向。
+  <div class="th"><b>课程目标（5 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>理解人工智能基本概念和历史发展，对 AI 有全面了解和认识。</li>
+    <li>掌握 AI 基本算法和模型（特征提取、机器学习等）的基本原理。</li>
+    <li>熟悉 AI 典型应用（自然语言理解、目标检测等），能在实际应用中掌握这些技术。</li>
+    <li>掌握大数据基本概念，熟悉大数据处理架构及分布式存储系统，熟悉大数据应用及发展趋势。</li>
+    <li>发展人工智能思维，提高综合运用 AI 与大数据解决实际问题的能力。</li>
+  </ol>
+  <div class="th"><b>与相关课程的联系</b></div>
+  学习前需掌握<b>高级语言程序设计、数据结构与算法、数据库原理与技术</b>等相关课程基本知识。
+  <div class="th"><b>课程重点和难点</b></div>
+  <b>重点</b>：AI 核心理论和算法、分布式存储和大数据处理架构（大数据基本概念与处理架构、HDFS、机器学习算法、自然语言处理、目标检测等）。<br>
+  <b>难点</b>：需一定编程和应用基础，复杂案例实现需掌握平台操作和应用实现；需跨学科思维能力，将技术应用于实际问题。
+</div>
+
+<!-- ================= Ⅱ ================= -->
+<h2 class="section" id="target">Ⅱ · 考核目标（四个能力层次）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span>掌握 AI 和大数据的基本概念、原理和算法，了解机器学习、自然语言处理等领域基本知识和 Hadoop 大数据处理架构。</div>
+  <div class="kd"><span class="lvl b">领会</span>理解领域发展历程、技术趋势和未来方向，理解 AI 各研究领域典型方法和原理，理解大数据处理架构中各种工具和分布式存储系统。</div>
+  <div class="kd"><span class="lvl c">简单应用</span>具备一定程序设计能力，能用图示描述大数据处理平台各组成部件/工具的逻辑结构，能为 AI 应用选择合适解决方案和相关算法。</div>
+  <div class="kd"><span class="lvl d">综合应用</span>结合实际问题，选取适当大数据结构和 AI 算法，实现基于大数据的人工智能应用。</div>
+</div>
+
+<!-- ================= Ⅲ ================= -->
+<h2 class="section" id="chapters">Ⅲ · 课程内容与考核要求（13 章）</h2>
+
+<div class="card"><h3>第 1 章 大数据的来源、采集与基本概念（建议 4 学时）</h3>
+  <b>课程内容</b>：1.1 来源与发展 ｜ 1.2 何为大数据 ｜ 1.3 特点 ｜ 1.4 分类和采集方法 ｜ 1.5 基本概念
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）来源与发展（教材 1.1 节）：<span class="lvl b">领会</span>大数据的起源和发展历程。</div>
+  <div class="kd">（二）基本概念（教材 1.2～1.5 节）：<span class="lvl a">识记</span>大数据的定义和特点；<span class="lvl b">领会</span>分类与数据采集方法、大数据技术的内容、关键问题与关键技术。</div>
+  <div class="th"><b>重点</b>：大数据概念和关键技术。<b>难点</b>：分类与数据采集方法。</div>
+</div>
+
+<div class="card"><h3>第 2 章 大数据处理架构 Hadoop（建议 6 学时）⭐ 生态体系必考</h3>
+  <b>课程内容</b>：2.1 Hadoop 概述 ｜ 2.2 Hive ｜ 2.3 HBase ｜ 2.4 Pig ｜ 2.5 ZooKeeper ｜ 2.6 资源管理与调度
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述（教材 2.1）：<span class="lvl a">识记</span>Hadoop 生态体系主要产品；<span class="lvl b">领会</span>要解决的问题和应用场景。</div>
+  <div class="kd">（二）Hive（教材 2.2）：<span class="lvl b">领会</span>特点、与数据库的区别；<span class="lvl c">简单应用</span>执行流程和编译器组成。</div>
+  <div class="kd">（三）HBase（教材 2.3）：<span class="lvl b">领会</span>传统数据库问题、table 与 region 关系、-ROOT- 表和 .META. 表记录的信息和关系；<span class="lvl c">简单应用</span>HBase 数据的逻辑存储模型。</div>
+  <div class="kd">（四）Pig（教材 2.4）：<span class="lvl a">识记</span>Pig Latin 数据组织形式；<span class="lvl b">领会</span>Pig、Hive 和数据库的区别。</div>
+  <div class="kd">（五）ZooKeeper（教材 2.5）：<span class="lvl a">识记</span>设计目标；<span class="lvl c">简单应用</span>集群五种角色及其功能。</div>
+  <div class="kd">（六）资源管理与调度（教材 2.6）：<span class="lvl b">领会</span>三种常见调度器的调度原理。</div>
+  <div class="th"><b>重点</b>：生态体系组成及各部分功能与特点。<b>难点</b>：各组成部分之间的关联和区别。</div>
+</div>
+
+<div class="card"><h3>第 3 章 Hadoop 分布式文件系统 HDFS（建议 6 学时）</h3>
+  <b>课程内容</b>：3.1 由来 ｜ 3.2 设计思想 ｜ 3.3 主要特性 ｜ 3.4 架构 ｜ 3.5 主要流程 ｜ 3.6 异构存储 ｜ 3.7 擦除码技术
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）由来：<span class="lvl a">识记</span>分布式文件系统 DFS 概念和主流产品；<span class="lvl b">领会</span>产品选择因素、文件系统发展三个阶段。</div>
+  <div class="kd">（二）设计思想（教材 3.2、3.3）：<span class="lvl a">识记</span>核心设计思路"分而治之"；<span class="lvl b">领会</span>设计目标、主要策略；<span class="lvl c">简单应用</span>HDFS 中解决各类问题的方法。</div>
+  <div class="kd">（三）架构（教材 3.4）：<span class="lvl a">识记</span>架构结构及组成；<span class="lvl b">领会</span>数据块设计及优点；<span class="lvl c">简单应用</span>整体架构图描述。</div>
+  <div class="kd">（四）主要流程（教材 3.5）：<span class="lvl d">综合应用</span>客户端↔名字节点的文件与目录操作、读文件、写文件、数据节点启动和心跳。</div>
+  <div class="kd">（五）异构存储与擦除码（教材 3.6、3.7）：<span class="lvl a">识记</span>支持的存储介质和存储策略；<span class="lvl b">领会</span>擦除码概念、原理和优缺点。</div>
+  <div class="th"><b>重点</b>：设计思想和具体实现。<b>难点</b>：主要流程的实现方法。</div>
+</div>
+
+<div class="card"><h3>第 4 章 MapReduce 与 Spark（建议 6 学时）⭐ 计算/流程分析高发</h3>
+  <b>课程内容</b>：4.1 设计思想 ｜ 4.2 组成 ｜ 4.3 工作流程 ｜ 4.4 计算过程详解 ｜ 4.5 使用案例 ｜（Spark 见教材 4.7 节；<b>教材 4.6、4.8 不考</b>）
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）设计思想（教材 4.1）：<span class="lvl b">领会</span>Mapping 与 Reducing 涵义、设计思想三个方面。</div>
+  <div class="kd">（二）组成和工作流程（教材 4.2、4.3）：<span class="lvl a">识记</span>主从结构和组成部分；<span class="lvl b">领会</span>处理过程、任务执行过程、任务进度和状态更新；<span class="lvl c">简单应用</span>作业提交过程、任务执行过程。</div>
+  <div class="kd">（三）计算过程（教材 4.4、4.5）：<span class="lvl d">综合应用</span>MapReduce 计算过程分析。</div>
+  <div class="kd">（四）Spark 概述（<b>教材 4.7 节</b>）：<span class="lvl b">领会</span>Spark 的优势、Spark 的架构。</div>
+  <div class="th"><b>重点</b>：设计思想和运作流程。<b>难点</b>：计算过程。</div>
+</div>
+
+<div class="card"><h3>第 5 章 NoSQL 数据库、分布式数据库 HBase、云数据库（建议 6 学时）</h3>
+  <b>课程内容</b>：5.1 数据库 ｜ 5.2 非关系型数据库 NoSQL ｜ 5.3 体系框架 ｜ 5.4 分类 ｜ 5.5 云数据库及其产品（<b>教材 5.5、5.6 不考</b>，云数据库考核对应教材 <b>5.7 节</b>）
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）数据库（教材 5.1）：<span class="lvl a">识记</span>数据库的概念。</div>
+  <div class="kd">（二）NoSQL（教材 5.2～5.4）：<span class="lvl a">识记</span>体系架构层次、分类；<span class="lvl b">领会</span>与关系数据库的区别和关系。</div>
+  <div class="kd">（三）云数据库及其产品（<b>教材 5.7 节</b>）：<span class="lvl a">识记</span>云数据库概念和特点；<span class="lvl b">领会</span>UMP 系统架构中的角色及功能。</div>
+  <div class="th"><b>重点</b>：NoSQL 和云数据库的概念与架构。<b>难点</b>：UMP 系统架构设计。</div>
+</div>
+
+<div class="card"><h3>第 6 章 大数据的应用与展望（建议 4 学时）</h3>
+  <b>课程内容</b>：6.1 应用方向 ｜ 6.2 成功应用 ｜ 6.3 分析技术应用 ｜ 6.4 挖掘技术应用实例 ｜ 6.5 展望
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）应用方向和成功应用（教材 6.1、6.2）：<span class="lvl a">识记</span>判断大数据应用成功的指标；<span class="lvl b">领会</span>应用方向、成功应用领域。</div>
+  <div class="kd">（二）分析技术（教材 6.3）：<span class="lvl b">领会</span>应用场景。<span class="kd" style="display:inline">（三）挖掘技术（教材 6.4）：<span class="lvl b">领会</span>应用场景。</span></div>
+  <div class="kd">（四）展望（教材 6.5）：<span class="lvl b">领会</span>大数据发展的挑战和机遇。</div>
+  <div class="th"><b>重点</b>：大数据技术的应用。</div>
+</div>
+
+<div class="card"><h3>第 7 章 人工智能的基本概念（建议 4 学时）</h3>
+  <b>课程内容</b>：7.1 什么是人工智能 ｜ 7.2 历史 ｜ 7.3 图灵测试 ｜ 7.4 中文屋理论 ｜ 7.5 未来
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）基本概念（教材 7.1～7.4）：<span class="lvl a">识记</span>人工智能的概念；<span class="lvl b">领会</span>语音识别系统关键问题、当前 AI 研究两大方向、图灵测试方法、中文屋理论思想。</div>
+  <div class="kd">（二）未来（教材 7.5）：<span class="lvl a">识记</span>自动驾驶汽车的智能分级；<span class="lvl b">领会</span>AI 对哪些社会领域产生重大影响；<span class="lvl d">综合应用</span>AI 对行业的综合影响分析。</div>
+  <div class="th"><b>重点</b>：对人工智能的各种认识。<b>难点</b>：AI 对社会影响的正负面认知。</div>
+</div>
+
+<div class="card"><h3>第 8 章 特征提取（建议 6 学时）⚠️ 教材 8.3 不考</h3>
+  <b>课程内容</b>：8.1 特征提取基础 ｜ 8.2 数学方法入门 ｜（图像特征对应<b>教材 8.4 节</b>，8.3 不纳入考核）
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）特征提取基础（教材 8.1）：<span class="lvl b">领会</span>特征选择的作用、特征提取方法；<span class="lvl c">简单应用</span>数据预处理内容和方法。</div>
+  <div class="kd">（二）数学方法入门（教材 8.2）：<span class="lvl c">简单应用</span>相关性及其计算方法；<span class="lvl d">综合应用</span>前向选择算法和后向选择算法。</div>
+  <div class="kd">（三）图像特征（<b>教材 8.4 节</b>）：<span class="lvl a">识记</span>图像主要特征、最常用颜色空间；<span class="lvl b">领会</span>形状与二值图像表示、基于形状特征的应用、有效形状特征特性、纹理特征作用/属性/提取方法、空间关系特征提取方法、姿态估计方法分类、图像特征分类；<span class="lvl c">简单应用</span>灰度图像获取二值形状图像的方法。</div>
+  <div class="th"><b>重点</b>：对象特征的提取方法。<b>难点</b>：图像表示与各种特征提取方法。</div>
+</div>
+
+<div class="card"><h3>第 9 章 机器学习（建议 6 学时）⭐ 核心章</h3>
+  <b>课程内容</b>：9.1 基本概念 ｜ 9.2 强化学习 ｜ 9.3 推荐系统 ｜ 9.4 神经网络 ｜ 9.5 深度学习
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）基本概念（教材 9.1、9.2）：<span class="lvl b">领会</span>应用场景和应用方向、机器学习的分类、有监督与无监督的区别、强化学习原理。</div>
+  <div class="kd">（二）推荐系统（教材 9.3）：<span class="lvl b">领会</span>推荐系统的过滤算法。</div>
+  <div class="kd">（三）神经网络（教材 9.4）：<span class="lvl b">领会</span>人工神经元原理、神经网络机器学习三个基础、神经网络的局限性。</div>
+  <div class="kd">（四）深度学习（教材 9.5）：<span class="lvl b">领会</span>AI/机器学习/深度学习/神经网络概念区别、基本前馈神经网络、Sigmoid 激活函数、几种常用深度学习网络、深度学习的缺点；<span class="lvl c">简单应用</span>全连接神经网络结构。</div>
+  <div class="th"><b>重点</b>：机器学习、深度学习和神经网络的概念与原理。<b>难点</b>：人工神经元原理和神经网络结构。</div>
+</div>
+
+<div class="card"><h3>第 10 章 自然语言理解（建议 4 学时）</h3>
+  <b>课程内容</b>：10.1 概述 ｜ 10.2 语言认知模型 ｜ 10.3 理解模型 ｜ 10.4 语言及汉语特点 ｜ 10.5 思维及思维规律特点 ｜ 10.6 什么是自然语言理解 ｜ 10.7 计算机识字和理解
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）自然语言和思维（教材 10.2、10.4、10.5）：<span class="lvl b">领会</span>自然语言功能模型、语言认知模型及层次；自然语言基本特征、汉语特点；思维规律、思维结构特点；<span class="lvl c">简单应用</span>直言推理和换位法的思维推理。</div>
+  <div class="kd">（二）理解概念和模型（教材 10.1、10.3、10.6）：<span class="lvl a">识记</span>自然语言理解概念、语言理解的标志；<span class="lvl b">领会</span>自然语言工程目标、任务模型、层次模型原理、理解的难点。</div>
+  <div class="kd">（三）计算机识字和理解（教材 10.7）：<span class="lvl b">领会</span>人类识字模型、计算机识字一般原理、识字后处理方法。</div>
+  <div class="th"><b>重点</b>：自然语言特点和模型、理解概念和计算机识字。<b>难点</b>：计算机识字原理和实现。</div>
+</div>
+
+<div class="card"><h3>第 11 章 人工智能方法在目标检测中的应用（建议 4 学时）</h3>
+  <b>课程内容</b>：11.1 智能视频监控系统 ｜ 11.2 人脸识别系统
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）智能视频监控系统：<span class="lvl a">识记</span>贝叶斯网络基本概念；<span class="lvl b">领会</span>视频监控系统框架、多视角目标识别及消失/重现目标识别方法、异常行为描述方法。</div>
+  <div class="kd">（二）人脸识别系统：<span class="lvl c">简单应用</span>人脸识别系统流程、多视角人脸检测算法、多视角人脸跟踪算法、多任务决策融合编程架构。</div>
+  <div class="th"><b>重点</b>：多智能体的概念、实现及其协商方式。<b>难点</b>：投票策略的计算机实现。</div>
+</div>
+
+<div class="card"><h3>第 12 章 云计算、大数据与人工智能（建议 6 学时）</h3>
+  <b>课程内容</b>：12.1 云计算的概念 ｜ 12.2 云计算、物联网、大数据与人工智能的融合
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）云计算及其融合（教材 12.1、12.2）：<span class="lvl b">领会</span>云计算的优势、云计算与基础架构兼容、适合进行云端迁移的用例。</div>
+  <div class="th"><b>重点</b>：云计算和人工智能各技术的融合。</div>
+</div>
+
+<div class="card"><h3>第 13 章 大数据背景下机器学习算法实验（建议 6 学时）⭐⭐ 决策树大题必备</h3>
+  <b>课程内容</b>：13.1 距离的度量方法 ｜ 13.2 聚类、回归、分类 ｜ 13.3 决策树<br>
+  ⚠️ 此处为<b>考纲</b>第 13 章，考核内容<b>正常考</b>；被排除的是<b>教材</b>的第 13、14 整章——教材与考纲章号在此错位，务必以节号核对（考核要求标注的教材 13.1～13.3 节仍需学习）。
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）距离度量（教材 13.1）：<span class="lvl c">简单应用</span>各种距离度量的计算。</div>
+  <div class="kd">（二）聚类、回归、分类（教材 13.2）：<span class="lvl a">识记</span>常用聚类算法、最常用回归、分类合理判断两个常用指标及概念；<span class="lvl b">领会</span>线性回归原理；<span class="lvl c">简单应用</span>K-均值聚类算法原理。</div>
+  <div class="kd">（三）决策树（教材 13.3）：<span class="lvl b">领会</span>决策树基本思想、信息增益和熵；<span class="lvl d">综合应用</span>基于信息增益的决策树生成。</div>
+  <div class="th"><b>重点</b>：聚类、回归和分类基础算法。<b>难点</b>：熵的理解和应用。</div>
+</div>
+
+<!-- ================= Ⅳ ================= -->
+<h2 class="section" id="impl">Ⅳ · 大纲说明与考核实施要求</h2>
+<div class="rule">
+  <div class="th"><b>大纲与教材的关系</b></div>
+  大纲是学习和考核的依据；教材内容比大纲有扩展与发挥。大纲里的考核知识点教材里一般都有；教材里有的内容，大纲不一定体现。（<b>复习以大纲考核知识点标注的教材节号为准</b>，务必先核对页首排除清单。）
+  <div class="th"><b>自学方法建议（4 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>学教材前先通读本大纲，熟知基本要求。</li>
+    <li>每章学习前先读对应章节的学习目的与考核要求。</li>
+    <li>基本理论与分析解决实际问题结合，将知识转化为能力。</li>
+    <li>目的在掌握机器学习算法基本原理、了解各 AI 技术应用场景，增强 AI 时代竞争力。</li>
+  </ol>
+  <div class="th"><b>学分与学时</b>：本课程共 6 学分，建议业余自学不低于 66 学时。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>章次</th><th>学习内容</th><th>建议学时</th></tr>
+    <tr><td>第 1 章</td><td>大数据的来源、采集与基本概念</td><td>4</td></tr>
+    <tr><td>第 2 章</td><td>大数据处理架构 Hadoop</td><td>6</td></tr>
+    <tr><td>第 3 章</td><td>Hadoop 分布式文件系统 HDFS</td><td>6</td></tr>
+    <tr><td>第 4 章</td><td>MapReduce 与 Spark</td><td>6</td></tr>
+    <tr><td>第 5 章</td><td>NoSQL 数据库、HBase、云数据库</td><td>6</td></tr>
+    <tr><td>第 6 章</td><td>大数据的应用与展望</td><td>4</td></tr>
+    <tr><td>第 7 章</td><td>人工智能的基本概念</td><td>4</td></tr>
+    <tr><td>第 8 章</td><td>特征提取</td><td>6</td></tr>
+    <tr><td>第 9 章</td><td>机器学习</td><td>6</td></tr>
+    <tr><td>第 10 章</td><td>自然语言理解</td><td>4</td></tr>
+    <tr><td>第 11 章</td><td>AI 方法在目标检测中的应用</td><td>4</td></tr>
+    <tr><td>第 12 章</td><td>云计算、大数据与人工智能</td><td>6</td></tr>
+    <tr><td>第 13 章</td><td>大数据背景下机器学习算法实验</td><td>6</td></tr>
+  </table></div>
+  <div class="th"><b>考试命题规定</b></div>
+  闭卷笔试，150 分钟，满分 100 分，60 分及格。<br>
+  <b>能力层次分值比例</b>：识记 20% ｜ 领会 30% ｜ 简单应用 30% ｜ 综合应用 20%。<br>
+  <b>难易比例</b>：易 20% ｜ 较易 30% ｜ 较难 30% ｜ 难 20%。<br>
+  命题不超出考核知识点范围，不出偏题怪题；考试日前 6 个月内颁布/修订的法律法规列入考试范围。
+</div>
+
+<!-- ================= 附录 ================= -->
+<h2 class="section" id="types">附录 · 题型举例</h2>
+<div class="rule">
+  <div class="th">一、单项选择题</div>
+  （　）就是在已知输入和输出的情况下训练出一个模型，将输入映射到输出。<br>A. 监督学习　B. 无监督学习　C. 聚类　D. 专家系统
+  <div class="th">二、名词解释题</div>1. 机器学习
+  <div class="th">三、简答题</div>1. 美国认知心理学家 G.M.Olson 提出的语言理解的标志是什么？
+  <div class="th">四、综合分析题</div>
+  以下表数据作为训练数据，构造一棵决策树用于判断水果的类别并画出来（对应教材 13.3 节·信息增益）：
+  <div class="tscroll"><table class="law">
+    <tr><th>编号</th><th>颜色</th><th>形状</th><th>大小</th><th>类别</th></tr>
+    <tr><td>1</td><td>红</td><td>球</td><td>一般</td><td>苹果</td></tr>
+    <tr><td>2</td><td>黄</td><td>弯月</td><td>一般</td><td>香蕉</td></tr>
+    <tr><td>3</td><td>红</td><td>球</td><td>轻</td><td>樱桃</td></tr>
+    <tr><td>4</td><td>绿</td><td>椭球</td><td>重</td><td>西瓜</td></tr>
+    <tr><td>5</td><td>橘</td><td>球</td><td>一般</td><td>橘子</td></tr>
+  </table></div>
+</div>
+
+<div class="note">📌 本页面根据广东省考纲原文（docx，2026 年 10 月收集）整理，考纲可能修订，以官方最新为准；购书请认准 <b>《大数据与人工智能》郏东耀主编 · 清华大学出版社/北京交通大学出版社 · 2022 年第 1 版</b>；教材第 4 章 4.6/4.8、第 5 章 5.5/5.6、第 8 章 8.3、第 13/14 整章、第 15 章 15.4 <b>不纳入考核</b>。</div>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

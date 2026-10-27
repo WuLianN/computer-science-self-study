@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13009《数据库原理与技术》考纲 · 广东省高等教育自学考试</title>
+<link rel="stylesheet" href="../assets/theme.css?v=20261027b">
+<style>
+header.hero{background:linear-gradient(135deg,#7c3aed,#4f46e5)}
+.lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+.lvl.a{background:#e0f2fe;color:#0369a1}
+.lvl.b{background:#dcfce7;color:#15803d}
+.lvl.c{background:#fef3c7;color:#b45309}
+.lvl.d{background:#fce7f3;color:#be185d}
+.rule .kd{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🗄️ 数据库原理与技术（教材：数据库原理与应用 · 基于 MySQL）· 课程考试大纲</h1>
+  <p>广东省高等教育自学考试 · 课程代码 13009 · 计算机科学与技术（专升本）</p>
+  <span class="pill">闭卷笔试 150 分钟</span>
+  <span class="pill">满分 100 · 60 及格</span>
+  <span class="pill">建议自学 ≥ 64 学时</span>
+  <span class="pill">只允许携带笔 · 蓝/黑色钢笔或签字笔作答</span>
+  <div class="gotos">
+    <a href="#book">📕 自学教材（先看这里）</a>
+    <a href="#target">考核目标</a>
+    <a href="#chapters">课程内容与考核要求</a>
+    <a href="#impl">自学方法与命题规定</a>
+    <a href="#types">附录·题型举例</a>
+  </div>
+</header>
+
+<div class="note"><b>⏰ 考纲会变，请以官方最新发布为准：</b>本页为 <b>2026 年 10 月收集</b>的考纲快照。省教育考试院可能修订考试大纲（课程名称、<b>指定教材及版本</b>、考核范围、学分与题型比例均可能调整）。<b>每次报考前</b>请先到<a class="inline" href="https://www.eeagd.cn" target="_blank">广东省教育考试院</a>核对当期考试通知与指定教材，发现版本不同请以最新为准。</div>
+
+<!-- ================= 自学教材：醒目区 ================= -->
+<div class="card" id="book" style="border:2px solid var(--brand);box-shadow:0 0 0 3px var(--brand-soft)">
+  <h3>📕 关于自学教材 —— 备考先看这里，别看错书！</h3>
+  <div class="note" style="margin-top:4px">
+    ⚠️ 课程名是《数据库原理<b>与技术</b>》，指定教材却是《数据库原理<b>与应用（基于 MySQL）</b>》——买书按教材名搜，且必须带「基于 MySQL」字样。
+  </div>
+  <div class="rule">
+    <b>指定教材：</b><code>《数据库原理与应用（基于 MySQL）》</code> 赵明渊 主编，<b>清华大学出版社，2022 年版</b>。
+  </div>
+  <div class="note">
+    🚫 <b>这 7 本教材章次「整章不考」，直接跳过</b>：第 3 · 9 · 10 · 11 · 13 · 14 · 17 章<br>
+    ✂️ <b>另：第 16 章只跳 2 节</b>：6.1～6.5 对应部分照常考，<b>第 6 节、第 7 节不考</b>。<br>
+    🔑 关键：这些是<b>教材</b>的章号！教材共 17 章、考纲只有 10 章，<b>章号对不上</b>，翻书前先查下面两张表。
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>教材章</th><th>考不考</th><th>教材章</th><th>考不考</th><th>教材章</th><th>考不考</th></tr>
+    <tr><td>第 1 章</td><td>✅ 考</td><td>第 7 章</td><td>✅ 考</td><td>第 13 章</td><td>❌ 不考</td></tr>
+    <tr><td>第 2 章</td><td>✅ 考</td><td>第 8 章</td><td>✅ 考</td><td>第 14 章</td><td>❌ 不考</td></tr>
+    <tr><td>第 3 章</td><td>❌ 不考</td><td>第 9 章</td><td>❌ 不考</td><td>第 15 章</td><td>✅ 考</td></tr>
+    <tr><td>第 4 章</td><td>✅ 考</td><td>第 10 章</td><td>❌ 不考</td><td>第 16 章</td><td>✂️ 部分考（第 6、7 节不考）</td></tr>
+    <tr><td>第 5 章</td><td>✅ 考</td><td>第 11 章</td><td>❌ 不考</td><td>第 17 章</td><td>❌ 不考</td></tr>
+    <tr><td>第 6 章</td><td>✅ 考</td><td>第 12 章</td><td>✅ 考</td><td></td><td></td></tr>
+  </table></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>考纲章（试卷按这个组织）</th><th>翻到教材哪一章</th></tr>
+    <tr><td>第 1 章 数据库概论</td><td>教材第 1 章</td></tr>
+    <tr><td>第 2 章 关系数据库系统模型</td><td>教材第 2 章</td></tr>
+    <tr><td>第 3～8 章（MySQL 和表 / 表数据操作 / 数据查询 / 视图和索引 / 数据完整性 / 安全管理）</td><td>依次对应教材第 4～8、12 章中未被排除的 MySQL 操作章节</td></tr>
+    <tr><td>第 9 章 关系数据库设计理论</td><td>教材第 15 章</td></tr>
+    <tr><td>第 10 章 数据库设计</td><td>教材第 16 章（<b>第 6、7 节除外</b>）</td></tr>
+  </table></div>
+</div>
+
+<div class="toc">
+  <div class="toc-h">📑 本页目录</div>
+  <a href="#nature">Ⅰ 课程性质与课程目标（含重点难点）</a>
+  <a href="#target">Ⅱ 考核目标（四个能力层次）</a>
+  <a href="#chapters">Ⅲ 课程内容与考核要求（10 章）</a>
+  <a href="#impl">Ⅳ 大纲说明与考核实施要求（自学方法 / 建议学时 / 命题规定）</a>
+  <a href="#types">附录 题型举例</a>
+</div>
+
+<!-- ================= Ⅰ ================= -->
+<h2 class="section" id="nature">Ⅰ · 课程性质与课程目标</h2>
+<div class="rule">
+  <div class="th"><b>课程性质和特点</b></div>
+  通过本课程学习掌握数据库基本原理和相应的设计能力、编程能力，为后继课程、课程设计及应用系统开发提供数据管理技术支撑。实践性强：既要掌握数据库系统安装、配置、管理和维护技能，又要具备<b>数据库设计能力</b>和 <b>SQL 编程能力</b>。
+  <div class="th"><b>课程目标（5 条）</b></div>
+  课程以 <b>MySQL</b> 为平台，系统介绍数据库原理及应用，并涵盖大数据、NoSQL 等前沿内容。考生应：
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>掌握数据库技术的基本概念、原理、方法和技术。</li>
+    <li>掌握 SQL 语言查询和编程的基本技术，具备 SQL 编程能力。</li>
+    <li>掌握数据库系统安装、配置和数据库管理和维护的基本技能。</li>
+    <li>掌握设计数据库的基本方法，具备数据库设计能力。</li>
+    <li>了解数据库技术的最新发展。</li>
+  </ol>
+  <div class="th"><b>课程重点和难点</b></div>
+  <b>重点</b>：数据模型与关系型数据库概念，数据库和表数据操作、数据查询、视图和索引、数据完整性、关系数据库设计理论和数据库设计。<br>
+  <b>难点</b>：关系模式规范化（目的、原则、方法及实操）；依据需求分析进行概念设计和逻辑设计（画 E-R 图并转化为关系模式）；编写 SQL 查询语句。
+</div>
+
+<!-- ================= Ⅱ ================= -->
+<h2 class="section" id="target">Ⅱ · 考核目标（四个能力层次）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span>识别记忆知识点的概念性内容（基本定义、语法格式、步骤方法、限定规则、特点等），能正确表述、选择和判断。</div>
+  <div class="kd"><span class="lvl b">领会</span>领悟知识点内涵和外延，熟悉知识点间区别与联系，学习数据库发展历程与数据管理技术新发展，能对数据处理领域相关问题做简单分析。</div>
+  <div class="kd"><span class="lvl c">简单应用</span>运用少量知识点解决一般应用问题：分析执行结果、编写简单 SQL、验证给定 SQL 语句的正确性和运行结果等。</div>
+  <div class="kd"><span class="lvl d">综合应用</span>综合运用多个知识点解决较复杂数据处理问题：独立进行数据库概念结构设计和逻辑结构设计，编写和调试 SQL 语句。</div>
+</div>
+
+<!-- ================= Ⅲ ================= -->
+<h2 class="section" id="chapters">Ⅲ · 课程内容与考核要求（考纲 10 章）</h2>
+
+<div class="card"><h3>第 1 章 数据库概论（建议 4 学时）</h3>
+  <b>学习目的与要求</b>：从基本概念出发，介绍数据模型、数据库系统结构、大数据简介；重点理解数据模型的概念、分类和组成要素。
+  <div class="th"><b>课程内容</b>：1. 基本概念 ｜ 2. 数据模型 ｜ 3. 数据库系统结构 ｜ 4. 大数据简介</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）基本概念：<span class="lvl a">识记</span>数据库 DB、数据库管理系统 DBMS、数据库系统 DBS 的概念；<span class="lvl b">领会</span>数据管理技术的发展。</div>
+  <div class="kd">（二）数据模型：<span class="lvl a">识记</span>数据模型的概念、分类、组成要素；<span class="lvl b">领会</span>概念模型、实体间联系、实体-联系方法和 E-R 图，逻辑模型（层次/网状/关系模型）；<span class="lvl c">简单应用</span>根据有关信息设计 E-R 图。</div>
+  <div class="kd">（三）系统结构：<span class="lvl a">识记</span>数据库系统的系统结构、三级模式；<span class="lvl b">领会</span>二级映像和数据独立性。</div>
+  <div class="kd">（四）大数据简介：<span class="lvl a">识记</span>大数据基本概念；<span class="lvl b">领会</span>大数据的处理过程、数据管理技术的发展。</div>
+  <div class="th"><b>重点</b>：DB/DBMS/DBS 概念、概念模型、逻辑模型。<b>难点</b>：根据信息设计 E-R 图。</div>
+</div>
+
+<div class="card"><h3>第 2 章 关系数据库系统模型（建议 6 学时）⭐ 关系代数必考</h3>
+  <b>学习目的与要求</b>：掌握关系模型的数据结构、关系的完整性、关系操作与关系代数运算规则。
+  <div class="th"><b>课程内容</b>：1. 关系模型 ｜ 2. 关系代数 ｜ 3. SQL 简介</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）关系模型：<span class="lvl a">识记</span>三个组成部分、关系操作组成及关系操作语言特点；<span class="lvl b">领会</span>完整性规则、关系数据结构的形式化定义。</div>
+  <div class="kd">（二）关系代数：<span class="lvl a">识记</span>概念、运算三要素、运算分类；<span class="lvl b">领会</span>运算规则、等值连接与自然连接的区别；<span class="lvl c">简单应用</span>进行简单的关系代数运算。</div>
+  <div class="kd">（三）SQL 简介：<span class="lvl a">识记</span>SQL 语言的分类、特点。</div>
+  <div class="th"><b>重点</b>：关系数据结构、完整性、关系操作、关系代数运算规则。<b>难点</b>：关系代数运算。</div>
+</div>
+
+<div class="card"><h3>第 3 章 MySQL 数据库和表（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：掌握数据库与表的创建、选择、修改、删除，掌握 CREATE/ALTER/DROP DATABASE 和 CREATE/ALTER/DROP TABLE/SHOW TABLES 语句。
+  <div class="th"><b>课程内容</b>：1. MySQL 简介 ｜ 2. 定义数据库 ｜ 3. 表的基本概念 ｜ 4. 数据类型 ｜ 5. 定义表</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）简介：<span class="lvl a">识记</span>SHOW DATABASES 查看已有数据库。</div>
+  <div class="kd">（二）定义数据库：<span class="lvl a">识记</span>CREATE/ALTER/DROP DATABASE、USE 语句；<span class="lvl c">简单应用</span>四类语句的使用。</div>
+  <div class="kd">（三）表的基本概念：<span class="lvl a">识记</span>表的概念与组成；<span class="lvl b">领会</span>表结构含义、表/列/属性关系、表结构组成。</div>
+  <div class="kd">（四）数据类型：<span class="lvl a">识记</span>MySQL 常用数据类型；<span class="lvl b">领会</span>类型含义、数字类型选择、类型选择遵循的原则。</div>
+  <div class="kd">（五）定义表：<span class="lvl a">识记</span>创建/查看/修改/删除表语句；<span class="lvl c">简单应用</span>CREATE TABLE、ALTER TABLE、DROP TABLE、SHOW TABLES 的使用。</div>
+  <div class="th"><b>重点</b>：建表、改表、删表、查看表的语句和方法。<b>难点</b>：上述语句的实际使用。</div>
+</div>
+
+<div class="card"><h3>第 4 章 表数据操作（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：掌握用 INSERT / UPDATE / DELETE 对表数据进行增加、修改、删除。
+  <div class="th"><b>课程内容</b>：1. 插入数据 ｜ 2. 修改数据 ｜ 3. 删除数据</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）插入：<span class="lvl a">识记</span>插入语句的概念与类别；<span class="lvl b">领会</span>全列插入、指定列插入、多条记录插入、REPLACE 语句、插入查询结果语句的含义；<span class="lvl c">简单应用</span>正确编写上述插入语句。</div>
+  <div class="kd">（二）修改：<span class="lvl a">识记</span>修改全部记录与修改指定记录两种方法；<span class="lvl c">简单应用</span>UPDATE 语句完成记录修改。</div>
+  <div class="kd">（三）删除：<span class="lvl a">识记</span>删除数据的两种方法、删除全部记录的两种方式；<span class="lvl b">领会</span>删除指定记录与删除全部记录的区别；<span class="lvl c">简单应用</span>DELETE 语句完成记录删除。</div>
+  <div class="th"><b>重点/难点</b>：INSERT、UPDATE、DELETE 的用法。</div>
+</div>
+
+<div class="card"><h3>第 5 章 数据查询（建议 12 学时）⭐⭐ 全课程最高学时·核心大题</h3>
+  <b>学习目的与要求</b>：掌握 SELECT / WHERE / GROUP BY / HAVING / ORDER BY / LIMIT 子句进行投影、选择、分组、排序、限制行数查询，掌握多表查询。
+  <div class="th"><b>课程内容</b>：1. SELECT 语句 ｜ 2. 投影查询 ｜ 3. 选择查询 ｜ 4. 分组查询和统计计算 ｜ 5. 排序查询和限制结果数量 ｜ 6. 连接查询 ｜ 7. 子查询 ｜ 8. 联合查询</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）SELECT 语句：<span class="lvl a">识记</span>包含的子句及各子句功能。</div>
+  <div class="kd">（二）投影查询：<span class="lvl a">识记</span>含义；<span class="lvl c">简单应用</span>SELECT 子句投影指定列/全部列、改列标题、计算列值、去重等。</div>
+  <div class="kd">（三）选择查询：<span class="lvl a">识记</span>含义；<span class="lvl b">领会</span>LIKE 与 REGEXP 的异同；<span class="lvl c">简单应用</span>WHERE 子句：表达式比较、指定范围、空值判断、LIKE 字符串匹配、正则表达式查询。</div>
+  <div class="kd">（四）分组查询与统计：<span class="lvl a">识记</span>聚合函数、GROUP BY、HAVING 含义；<span class="lvl c">简单应用</span>分组查询和统计计算。</div>
+  <div class="kd">（五）排序与限制：<span class="lvl a">识记</span>ORDER BY、LIMIT 语法格式；<span class="lvl c">简单应用</span>排序查询、限制返回行数。</div>
+  <div class="kd">（六）连接查询：<span class="lvl a">识记</span>连接方式、交叉连接、等值/非等值/自然/自连接含义；<span class="lvl b">领会</span>单表与多表查询异同、内连接与外连接区别、左/右/全外连接区别、INNER JOIN 与 WHERE 的异同；<span class="lvl c">简单应用</span>内连接、外连接、交叉连接查询。</div>
+  <div class="kd">（七）子查询：<span class="lvl a">识记</span>含义；<span class="lvl b">领会</span>IN、比较、EXISTS 子查询含义；<span class="lvl c">简单应用</span>IN 谓词连接父子查询、比较子查询关联、EXISTS 测试子查询是否返回行。</div>
+  <div class="kd">（八）联合查询：<span class="lvl a">识记</span>概念与遵循规则；<span class="lvl c">简单应用</span>UNION 将多个查询合成一条 SQL。</div>
+  <div class="th"><b>重点</b>：六大子句 + 连接/子查询/联合查询。<b>难点</b>：SELECT/WHERE/GROUP BY/HAVING/ORDER BY/LIMIT 及联合查询语句的综合运用。</div>
+</div>
+
+<div class="card"><h3>第 6 章 视图和索引（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：理解视图和索引概念与作用，掌握视图的创建/修改/删除/查询/更新，掌握三种创建索引方法与两种删除索引语句。
+  <div class="th"><b>课程内容</b>：1. 视图及其作用 ｜ 2. 视图操作 ｜ 3. 索引及其作用 ｜ 4. 索引操作</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）视图及作用：<span class="lvl a">识记</span>视图含义；<span class="lvl b">领会</span>视图优点。</div>
+  <div class="kd">（二）视图操作：<span class="lvl a">识记</span>操作内容；<span class="lvl b">领会</span>CREATE/ALTER/DROP VIEW 及 SELECT 查询视图、更新视图的含义；<span class="lvl c">简单应用</span>创建/修改/删除/查询视图，通过视图插入、删除、修改数据。</div>
+  <div class="kd">（三）索引及作用：<span class="lvl a">识记</span>索引概念与分类；<span class="lvl b">领会</span>正确使用索引的优点、建立索引的建议。</div>
+  <div class="kd">（四）索引操作：<span class="lvl a">识记</span>三种创建索引方法；<span class="lvl b">领会</span>两种删除索引方法；<span class="lvl c">简单应用</span>CREATE INDEX / ALTER TABLE 建索引（含建表同时建索引）、SHOW INDEX 查看、DROP INDEX / ALTER TABLE 删除。</div>
+  <div class="th"><b>重点</b>：视图四类操作 + 更新，索引创建与删除。<b>难点</b>：视图/索引相关语句的熟练运用。</div>
+</div>
+
+<div class="card"><h3>第 7 章 数据完整性（建议 6 学时）⭐ 约束语句必考</h3>
+  <b>学习目的与要求</b>：掌握用 CREATE TABLE / ALTER TABLE 创建与删除 PRIMARY KEY、UNIQUE、FOREIGN KEY、CHECK 约束。
+  <div class="th"><b>课程内容</b>：1. 概述 ｜ 2. 实体完整性 ｜ 3. 参照完整性 ｜ 4. 用户定义的完整性</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>数据完整性概念、约束机制优点；<span class="lvl b">领会</span>MySQL 完整性类型（实体/参照/用户定义）及约束含义。</div>
+  <div class="kd">（二）实体完整性：<span class="lvl b">领会</span>主键约束、唯一性约束含义及区别；<span class="lvl d">综合应用</span>数据库设计中正确用语句实现实体完整性。</div>
+  <div class="kd">（三）参照完整性：<span class="lvl a">识记</span>定义外键需遵守的规则；<span class="lvl b">领会</span>参照完整性规则、外键约束含义；<span class="lvl c">简单应用</span>SQL 创建/删除/修改外键约束；<span class="lvl d">综合应用</span>设计中实现参照完整性。</div>
+  <div class="kd">（四）用户定义的完整性：<span class="lvl a">识记</span>检查约束和非空约束含义；<span class="lvl b">领会</span>可使用的语句；<span class="lvl d">综合应用</span>设计中实现用户定义完整性。</div>
+  <div class="th"><b>重点/难点</b>：四类约束（PK/UK/FK/CHECK）的创建与删除语句。</div>
+</div>
+
+<div class="card"><h3>第 8 章 安全管理（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：掌握 MySQL 权限表、用户管理、权限管理语句。
+  <div class="th"><b>课程内容</b>：1. 权限表 ｜ 2. 用户管理 ｜ 3. 权限管理</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）权限表：<span class="lvl a">识记</span>权限表所在数据库名、包含哪些表。</div>
+  <div class="kd">（二）用户管理：<span class="lvl a">识记</span>操作及语句；<span class="lvl c">简单应用</span>CREATE USER / DROP USER / RENAME USER / SET PASSWORD。</div>
+  <div class="kd">（三）权限管理：<span class="lvl a">识记</span>操作及语句；<span class="lvl b">领会</span>可授予权限的组类及含义、权限级别值的格式及含义；<span class="lvl c">简单应用</span>GRANT / REVOKE 授予与撤销权限。</div>
+  <div class="th"><b>重点/难点</b>：用户管理与权限管理六条语句的正确有效使用。</div>
+</div>
+
+<div class="card"><h3>第 9 章 关系数据库设计理论（建议 8 学时）⭐⭐ 规范化大题高发</h3>
+  <b>学习目的与要求</b>：掌握关系模式规范化的目的、原则和方法，具备对关系模式进行规范化的能力。
+  <div class="th"><b>课程内容</b>：1. 设计理论概述 ｜ 2. 关系模式规范化 ｜ 3. 数据依赖的公理系统</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）理论概述：<span class="lvl a">识记</span>关系数据库概念、理论包含内容；<span class="lvl b">领会</span>各内容间关系、如何判断好的关系模式。</div>
+  <div class="kd">（二）规范化：<span class="lvl a">识记</span>规范化含义、数据依赖类型和含义、码与范式含义；<span class="lvl b">领会</span>函数依赖、完全/部分/传递函数依赖，1NF/2NF/3NF/BCNF/4NF 与多值依赖含义，规范化的目的、方法和过程；<span class="lvl c">简单应用</span>分析模式主码、写出函数依赖关系；<span class="lvl d">综合应用</span>用 1NF/2NF/3NF 规范化方法解决应用问题。</div>
+  <div class="kd">（三）公理系统：<span class="lvl a">识记</span>Armstrong 公理系统含义；<span class="lvl b">领会</span>闭包及其计算；<span class="lvl c">简单应用</span>确定候选码。</div>
+  <div class="th"><b>重点</b>：规范化的目的、原则和方法。<b>难点</b>：规范化关系模式。</div>
+</div>
+
+<div class="card"><h3>第 10 章 数据库设计（建议 4 学时）⭐ E-R 图综合题</h3>
+  <b>学习目的与要求</b>：理解数据库设计方法和步骤，掌握概念结构设计与逻辑结构设计，能画 E-R 图并转化为关系模式。
+  <div class="th"><b>课程内容</b>：1. 设计概述 ｜ 2. 需求分析 ｜ 3. 概念结构设计 ｜ 4. 逻辑结构设计 ｜ 5. 物理结构设计</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>设计的特点与方法；<span class="lvl b">领会</span>基本步骤。</div>
+  <div class="kd">（二）需求分析：<span class="lvl a">识记</span>任务；<span class="lvl b">领会</span>方法。</div>
+  <div class="kd">（三）概念结构设计：<span class="lvl a">识记</span>概念结构含义；<span class="lvl b">领会</span>方法和步骤；<span class="lvl c">简单应用</span>局部 E-R 模型设计；<span class="lvl d">综合应用</span>全局 E-R 模型设计。</div>
+  <div class="kd">（四）逻辑结构设计：<span class="lvl a">识记</span>任务；<span class="lvl b">领会</span>步骤；<span class="lvl d">综合应用</span>E-R 模型向关系模型转换。</div>
+  <div class="kd">（五）物理结构设计：<span class="lvl a">识记</span>任务。</div>
+  <div class="th"><b>重点</b>：概念结构与逻辑结构设计方法。<b>难点</b>：根据需求画 E-R 图并转化为关系模式。</div>
+</div>
+
+<!-- ================= Ⅳ ================= -->
+<h2 class="section" id="impl">Ⅳ · 大纲说明与考核实施要求</h2>
+<div class="rule">
+  <div class="th"><b>大纲与教材的关系</b></div>
+  大纲是学习和考核的依据；教材内容比大纲有扩展与发挥。大纲里的考核知识点教材里一般都有；教材里有的内容，大纲不一定体现。（<b>复习以大纲考核知识点为准</b>，务必先核对页首「教材不纳入考核范围」的章号清单。）
+  <div class="th"><b>自学方法建议（4 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>学教材前先通读本大纲，熟知基本要求。</li>
+    <li>每章学习前先读对应章节的学习目的与考核要求。</li>
+    <li>基本理论与分析解决实际问题结合，将知识转化为能力。</li>
+    <li>综合分析与设计开发能力的培养除书本知识外，<b>上机实践是最有效途径</b>，要能在计算机上解答教材习题。</li>
+  </ol>
+  <div class="th"><b>助学提示</b>：重点深入数据库理论、关系数据库系统模型、表操作和查询、视图和索引、数据完整性、关系数据库设计理论；通过验证性实验培养调试 SQL 语句的能力。</div>
+  <div class="th"><b>学时</b>：建议业余自学不低于 64 学时。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>章次</th><th>学习内容</th><th>建议学时</th></tr>
+    <tr><td>第 1 章</td><td>数据库概论</td><td>4</td></tr>
+    <tr><td>第 2 章</td><td>关系数据库系统模型</td><td>6</td></tr>
+    <tr><td>第 3 章</td><td>MySQL 数据库和表</td><td>6</td></tr>
+    <tr><td>第 4 章</td><td>表数据操作</td><td>6</td></tr>
+    <tr><td>第 5 章</td><td>数据查询</td><td>12</td></tr>
+    <tr><td>第 6 章</td><td>视图和索引</td><td>6</td></tr>
+    <tr><td>第 7 章</td><td>数据完整性</td><td>6</td></tr>
+    <tr><td>第 8 章</td><td>安全管理</td><td>6</td></tr>
+    <tr><td>第 9 章</td><td>关系数据库设计理论</td><td>8</td></tr>
+    <tr><td>第 10 章</td><td>数据库设计</td><td>4</td></tr>
+  </table></div>
+  <div class="th"><b>考试命题规定</b></div>
+  闭卷笔试，150 分钟，满分 100 分，60 分及格。<b>考试只允许携带笔，答卷必须使用蓝色或黑色钢笔/签字笔</b>。<br>
+  <b>能力层次分值比例</b>：识记 20% ｜ 领会 30% ｜ 简单应用 30% ｜ 综合应用 20%。<br>
+  <b>难易比例</b>：易 20% ｜ 较易 30% ｜ 较难 30% ｜ 难 20%。<br>
+  命题不超出考核知识点范围，不出偏题怪题；考试日前 6 个月内颁布/修订的法律法规列入考试范围。
+</div>
+
+<!-- ================= 附录 ================= -->
+<h2 class="section" id="types">附录 · 题型举例</h2>
+<div class="rule">
+  <div class="th">一、单项选择题</div>
+  数据库(DB)、数据库系统(DBS)和数据库管理系统(DBMS)的关系是（　）<br>
+  A. DBMS 包括 DBS 和 DB　B. DBS 包括 DBMS 和 DB　C. DB 包括 DBS 和 DBMS　D. DBS 就是 DBMS，也就是 DB
+  <div class="th">二、简答题</div>1. 简述数据库管理系统的功能。
+  <div class="th">三、简单设计题</div>
+  某图书管理系统含三个关系：图书（条形码，书名，作者姓名，出版社，单价）、读者（借书证号，姓名，性别）、借阅（借书证号，条形码，借书日期，还书日期）。<br>
+  (1) 用<b>关系代数</b>查询"数据库系统原理"书的作者姓名；(2) 用 <b>SQL</b> 查询每个出版社出版的图书总数量。
+  <div class="th">四、综合题</div>
+  某医院病房计算机管理需如下信息：科室（科室名，地址，电话）、医生（工作证号，姓名，职称，年龄，科室名）、病人（病历号，姓名，性别，主治医生工作证号）。约束：一个科室有多名医生，一个医生只属于一个科室但可负责多个病人，一个病人的主治医生只有一个。<br>
+  (1) 画出上述实体联系的 E-R 图（不必画实体属性）；(2) 转换成关系模式并指出每个关系模式的主码和外码（主码下画直线、外码下画波浪线）；(3) 用 SQL 语句建立"科室"表。
+</div>
+
+<div class="note">📌 本页面根据广东省考纲原文（docx，2026 年 10 月收集）整理，考纲可能修订，以官方最新为准；购书请认准 <b>《数据库原理与应用（基于 MySQL）》赵明渊主编 · 清华大学出版社 · 2022 年版</b>；教材第 3/9/10/11/13/14/17 章及第 16 章第 6、7 节<b>不纳入考核</b>。</div>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>03344《信息与网络安全管理》考纲 · 广东省高等教育自学考试</title>
+<link rel="stylesheet" href="../assets/theme.css?v=20261027c">
+<style>
+header.hero{background:linear-gradient(135deg,#0d9488,#0891b2)}
+.lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+.lvl.a{background:#e0f2fe;color:#0369a1}   /* 识记 */
+.lvl.b{background:#dcfce7;color:#15803d}   /* 领会 */
+.lvl.c{background:#fef3c7;color:#b45309}   /* 简单应用 */
+.lvl.d{background:#fce7f3;color:#be185d}   /* 综合应用 */
+.rule .kd{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🛡️ 信息与网络安全管理 · 课程考试大纲</h1>
+  <p>广东省高等教育自学考试 · 课程代码 03344 · 计算机科学与技术（专升本）</p>
+  <span class="pill">5 学分（含实践 2 学分）</span>
+  <span class="pill">闭卷笔试 150 分钟</span>
+  <span class="pill">满分 100 · 60 及格</span>
+  <span class="pill">建议自学 ≥ 60 学时</span>
+  <div class="gotos">
+    <a href="#book">📕 自学教材（先看这里）</a>
+    <a href="#target">考核目标</a>
+    <a href="#chapters">课程内容与考核要求</a>
+    <a href="#impl">自学方法与命题规定</a>
+    <a href="#types">附录·题型举例</a>
+  </div>
+</header>
+
+<div class="note"><b>⏰ 考纲会变，请以官方最新发布为准：</b>本页为 <b>2026 年 10 月收集</b>的考纲快照。省教育考试院可能修订考试大纲（课程名称、<b>指定教材及版本</b>、考核范围、学分与题型比例均可能调整）。<b>每次报考前</b>请先到<a class="inline" href="https://www.eeagd.cn" target="_blank">广东省教育考试院</a>核对当期考试通知与指定教材，发现版本不同请以最新为准。</div>
+
+<!-- ================= 自学教材：醒目区 ================= -->
+<div class="card" id="book" style="border:2px solid var(--brand);box-shadow:0 0 0 3px var(--brand-soft)">
+  <h3>📕 关于自学教材 —— 备考先看这里，别看错书！</h3>
+  <div class="note" style="margin-top:4px">
+    ⚠️ <b>课程名 ≠ 教材名</b>：课程叫《信息与网络安全管理》（03344），但指定教材书名是<b>《网络空间信息安全》</b>，买书/找书时不要按课程名去搜。
+  </div>
+  <div class="rule">
+    <b>指定教材：</b><code>《网络空间信息安全》</code> 苏永红、蒋天发 主编，<b>电子工业出版社，2022 年第 2 版</b>。
+  </div>
+  <div class="note">
+    🚫 <b>整章不考的只有 1 章</b>：教材第 11 章；其余不考内容都是<b>按节跳过</b>，逐章见下表（备考时间别花在这些节上）。<br>
+    🔑 <b>考纲 10 章与教材章号一一对应</b>（考纲第 N 章 ↔ 教材第 N 章），但教材多出一个<b>第 11 章：整章不考</b>。
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>教材章（=考纲章）</th><th>本章不考的节</th><th>教材章（=考纲章）</th><th>本章不考的节</th></tr>
+    <tr><td>第 1 章</td><td>✂️ 1.4</td><td>第 7 章</td><td>✂️ 7.3、7.4</td></tr>
+    <tr><td>第 2 章</td><td>✅ 整章考</td><td>第 8 章</td><td>✂️ 8.3、8.4</td></tr>
+    <tr><td>第 3 章</td><td>✂️ 3.3、3.4</td><td>第 9 章</td><td>✅ 整章考</td></tr>
+    <tr><td>第 4 章</td><td>✅ 整章考</td><td>第 10 章</td><td>✂️ 10.3、10.5、10.6</td></tr>
+    <tr><td>第 5 章</td><td>✂️ 5.2</td><td>第 11 章</td><td>❌ 整章不考</td></tr>
+    <tr><td>第 6 章</td><td>✂️ 6.6</td><td></td><td></td></tr>
+  </table></div>
+</div>
+
+<div class="toc">
+  <div class="toc-h">📑 本页目录</div>
+  <a href="#nature">Ⅰ 课程性质与课程目标（含重点难点）</a>
+  <a href="#target">Ⅱ 考核目标（四个能力层次）</a>
+  <a href="#chapters">Ⅲ 课程内容与考核要求（10 章）</a>
+  <a href="#impl">Ⅳ 大纲说明与考核实施要求（自学方法 / 建议学时 / 命题规定）</a>
+  <a href="#types">附录 题型举例</a>
+</div>
+
+<!-- ================= Ⅰ ================= -->
+<h2 class="section" id="nature">Ⅰ · 课程性质与课程目标</h2>
+<div class="rule">
+  <div class="th"><b>课程性质和特点</b></div>
+  本课程为满足计算机应用领域及相关专业对应用人才的需要而开设。通过学习掌握信息安全和网络安全的基本原理、安全策略的制定、安全管理的方法和技术，能为日后工作中的信息与网络安全提供保障；并掌握其现状和趋势，能进行安全风险评估和安全策略制定。
+  <div class="th"><b>课程目标（10 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>理解网络信息安全基本概念，了解网络空间面临的信息安全问题、主要防范技术与发展趋势。</li>
+    <li>掌握病毒防范技术，熟悉常见病毒的特点、判别、检测和清除方法。</li>
+    <li>掌握远程控制与黑客入侵技术原理，熟悉网络安全防范措施。</li>
+    <li>掌握网络空间信息密码体系，能通过密码管理策略保护信息安全。</li>
+    <li>了解数字签名的实现过程和用户验证原理。</li>
+    <li>了解网络安全协议的分类和常见网络安全协议的原理和应用。</li>
+    <li>掌握无线网络通信技术，熟悉无线网络安全的防范措施。</li>
+    <li>理解访问控制原理和防火墙原理，掌握网络地址转换技术和防火墙部署方法。</li>
+    <li>了解网络入侵防御系统的原理和安全策略。</li>
+    <li>掌握网络数据库安全技术和数据库备份技术。</li>
+  </ol>
+  <div class="th"><b>与相关课程的联系</b></div>
+  学习前需掌握计算机网络技术、操作系统概论、数据库及其应用等相关课程的基本知识。
+  <div class="th"><b>课程重点和难点</b></div>
+  <b>重点</b>：网络信息安全基础（各种信息安全问题及防范技术的概念和原理）；常见安全协议（SSL/TLS、IPSec、应用层安全协议的原理和应用）。<br>
+  <b>难点</b>：理论知识繁杂、内容较多，需结合实践操作加强理解和应用。
+</div>
+
+<!-- ================= Ⅱ ================= -->
+<h2 class="section" id="target">Ⅱ · 考核目标（四个能力层次）</h2>
+<div class="rule">
+  考试范围以本大纲限定内容为准。四个层次为<b>递进关系</b>，下方知识条目用彩色标签标注所属层次：
+  <div class="kd"><span class="lvl a">识记</span>识别记忆网络安全基本概念、威胁类型、防御措施、TCP/IP 分层中的安全协议名称等，能简单描述定义与特点。</div>
+  <div class="kd"><span class="lvl b">领会</span>领悟网络安全重要性，分析安全问题的原因和影响，掌握安全策略和方法，了解攻击技巧，具备初步安全管理规划能力。</div>
+  <div class="kd"><span class="lvl c">简单应用</span>应用安全技术和工具实现基本防护策略设计，能进行简单杀毒、入侵检测和防范部署，具备初步安全事件响应处理能力。</div>
+  <div class="kd"><span class="lvl d">综合应用</span>综合分析解决较复杂网络安全问题，能设计实现较复杂的安全方案和体系结构，有效应对攻击和威胁。</div>
+</div>
+
+<!-- ================= Ⅲ ================= -->
+<h2 class="section" id="chapters">Ⅲ · 课程内容与考核要求（10 章）</h2>
+
+<div class="card"><h3>第 1 章 网络空间信息安全概论（建议 4 学时）</h3>
+  <b>学习目的与要求</b>：掌握网络空间信息安全基本概念，初步认识安全风险的产生和防范，理解研究意义，展望发展趋势，具备初步信息安全意识和能力。
+  <div class="th"><b>课程内容</b>：1.1 重要意义 ｜ 1.2 面临的信息安全问题 ｜ 1.3 主要内容 ｜ 1.4 七大趋势</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）重要意义：<span class="lvl a">识记</span>网络空间信息安全的概念；<span class="lvl b">领会</span>所包含的两部分内容。</div>
+  <div class="kd">（二）面临的问题：<span class="lvl a">识记</span>当前主要七类问题；<span class="lvl b">领会</span>电子邮件的安全漏洞和防范措施、FTP 的安全漏洞和防范措施；<span class="lvl c">简单应用</span>根据对 Web 站点安全问题的理解制定 Web 站点安全防范措施。</div>
+  <div class="kd">（三）主要内容：<span class="lvl a">识记</span>主要涉及的 9 种技术领域。</div>
+  <div class="kd">（四）七大趋势：<span class="lvl b">领会</span>网络安全立法的重要性、网络信息安全对国家安全的重要意义。</div>
+  <div class="th"><b>重点</b>：面临的问题和主要技术发展内容。<b>难点</b>：针对邮件 / 文件传输 / Web 站点安全的漏洞提出相应防范措施。</div>
+</div>
+
+<div class="card"><h3>第 2 章 病毒防范技术（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：掌握网络病毒的种类和传播方式，了解危害和防范措施，掌握检测和清除技术，提高识别与应对能力。
+  <div class="th"><b>课程内容</b>：2.1 计算机病毒及病毒防范技术概述 ｜ 2.2 恶意代码 ｜ 2.3 典型计算机病毒的检测与清除 ｜ 2.4 病毒现象与其他故障的判别</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>计算机病毒的特点和分类。</div>
+  <div class="kd">（二）恶意代码：<span class="lvl a">识记</span>常见恶意代码的类型；<span class="lvl b">领会</span>不同类型恶意代码的共同特征和各自特点；<span class="lvl c">简单应用</span>木马类和蠕虫类病毒的检测方法，制定防范方法和措施。</div>
+  <div class="kd">（三）典型病毒的检测与清除：<span class="lvl d">综合应用</span>U 盘、手机等移动设备的病毒防范、检测和清除方法。</div>
+  <div class="kd">（四）病毒与其他故障的判别：<span class="lvl c">简单应用</span>根据异常现象或运行错误提示，判断是病毒还是软硬件故障。</div>
+  <div class="th"><b>重点</b>：病毒分类、特征、传播途径和传染对象；木马和蠕虫类病毒的防治。<b>难点</b>：病毒和其他故障的判别、检测清除与应急处理。</div>
+</div>
+
+<div class="card"><h3>第 3 章 远程控制与黑客入侵（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：了解远程控制和黑客入侵的概念与原理，熟悉方法和工具，掌握防范技术和策略。
+  <div class="th"><b>课程内容</b>：3.1 远程控制技术 ｜ 3.2 黑客入侵 ｜ 3.3 日常网络及网站的安全防范措施</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）远程控制技术：<span class="lvl a">识记</span>基本概念和应用范畴。</div>
+  <div class="kd">（二）黑客入侵：<span class="lvl a">识记</span>网络空间入侵基本过程、黑客入侵的基本过程；<span class="lvl b">领会</span>黑客入侵的层次与种类。</div>
+  <div class="kd">（三）日常网络及网站防范措施：<span class="lvl b">领会</span>服务器端对攻击、病毒和木马软件、故障等的防范；<span class="lvl d">综合应用</span>网站维护终端对攻击、病毒和木马软件、故障等的防范措施。</div>
+  <div class="th"><b>重点</b>：远程控制概念及应用；黑客入侵过程；不同种类入侵方法。<b>难点</b>：网站服务端及维护终端的黑客攻击防范。</div>
+</div>
+
+<div class="card"><h3>第 4 章 网络空间信息密码技术（建议 8 学时）⭐ 计算题高发章</h3>
+  <b>学习目的与要求</b>：了解密码学基本概念和原理，掌握常用加密算法和解密技术，了解密码管理和保护知识。
+  <div class="th"><b>课程内容</b>：4.1 密码技术概述 ｜ 4.2 对称密码体系 ｜ 4.3 非对称密码体系 ｜ 4.4 密码管理</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>各种术语概念和密码体系分类；<span class="lvl b">领会</span>安全密码体制具备的功能、对称与非对称体系的优缺点比较。</div>
+  <div class="kd">（二）对称密码体系：<span class="lvl a">识记</span>概念、DES 和 AES 名称、古典密码体系包含的算法；<span class="lvl b">领会</span>DES 工作原理；<span class="lvl c">简单应用</span>用古典密码算法由明文求密文。</div>
+  <div class="kd">（三）非对称密码体系：<span class="lvl c">简单应用</span>理解 RSA 密钥生成原理，能根据给定设置计算公钥和私钥。</div>
+  <div class="kd">（四）密码管理：<span class="lvl b">领会</span>密码管理体制的常见步骤。</div>
+  <div class="th"><b>重点</b>：密码学基础、对称密码体制与常用加密算法、公钥密码体制与 RSA 算法。<b>难点</b>：DES 加解密原理、RSA 加解密过程。</div>
+</div>
+
+<div class="card"><h3>第 5 章 数字签名与验证技术（建议 4 学时）</h3>
+  <b>学习目的与要求</b>：了解数字签名和验证的基本原理、常见算法和应用场景，掌握数字签名和 PKI 验证技术并灵活运用。
+  <div class="th"><b>课程内容</b>：5.1 数字签名 ｜ 5.2 验证技术</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）数字签名：<span class="lvl a">识记</span>性质、DSA 和 SHA 算法；<span class="lvl b">领会</span>作用和意义、实现过程。</div>
+  <div class="kd">（二）验证技术：<span class="lvl a">识记</span>非对称密钥系统的用户验证协议、数字证书概念和用途、PKI 主要功能和基本组成；<span class="lvl b">领会</span>口令验证协议与非对称密钥系统验证协议的优缺点、PKI 原理和核心；<span class="lvl d">综合应用</span>基于 PKI 的角色访问控制模型及实现过程。</div>
+  <div class="th"><b>重点</b>：数字签名和验证的基本原理、常见算法、应用场景与安全性。<b>难点</b>：PKI 技术和数字证书的原理与应用。</div>
+</div>
+
+<div class="card"><h3>第 6 章 网络安全协议（建议 8 学时）⭐ 课程重点章</h3>
+  <b>学习目的与要求</b>：了解各种网络安全协议的原理、功能、应用场景及优缺点，并能应用解决实际网络安全问题。
+  <div class="th"><b>课程内容</b>：6.1 概述 ｜ 6.2 类型 ｜ 6.3 网络层安全协议 IPSec ｜ 6.4 传输层安全协议 SSL/TLS ｜ 6.5 应用层安全协议</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>概念、特点和基于功能的分类；<span class="lvl b">领会</span>TCP/IP 协议的不安全因素。</div>
+  <div class="kd">（二）类型：<span class="lvl a">识记</span>各网络层下的经典安全协议。</div>
+  <div class="kd">（三）IPSec：<span class="lvl a">识记</span>组成和体系结构；<span class="lvl b">领会</span>功能和工作原理、如何用于加密/认证/数据完整性保护，SA 的概念和两种工作模式。</div>
+  <div class="kd">（四）SSL/TLS：<span class="lvl a">识记</span>三种基本安全功能服务；<span class="lvl b">领会</span>SSL 握手协议、SSL 记录协议、TLS 在 SSL 上改进后的优点；<span class="lvl d">综合应用</span>基于 SSL/TLS 工作原理保证数据传输安全性。</div>
+  <div class="kd">（五）应用层安全协议：<span class="lvl b">领会</span>SSH 的组成和启动方法；<span class="lvl c">简单应用</span>S/MIME 两种安全服务（数字签名、邮件加密）在邮件系统中的工作流程；<span class="lvl d">综合应用</span>SET 协议的应用系统框架设计及分析。</div>
+  <div class="th"><b>重点</b>：各层安全协议的工作原理、应用场景和优缺点。<b>难点</b>：具体实现方式及如何用它们解决网络安全问题。</div>
+</div>
+
+<div class="card"><h3>第 7 章 无线网络安全机制（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：了解无线网络的安全机制，掌握基本理论、技术和方法，具备独立分析和解决无线网络安全问题的能力。
+  <div class="th"><b>课程内容</b>：7.1 无线网络 ｜ 7.2 短程无线通信 ｜ 7.3 无线网络的安全性</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）无线网络：<span class="lvl a">识记</span>基本概念和分类。</div>
+  <div class="kd">（二）短程无线通信：<span class="lvl a">识记</span>常见四种短程无线通信技术名称；<span class="lvl b">领会</span>四种技术的适用场景和优缺点；<span class="lvl c">简单应用</span>无线网络存在的各种安全隐患。</div>
+  <div class="kd">（三）无线网络的安全性：<span class="lvl a">识记</span>常见无线网络安全加密技术；<span class="lvl b">领会</span>黑客入侵无线网络的方法；<span class="lvl c">简单应用</span>防范无线网络入侵的安全策略制定。</div>
+  <div class="th"><b>重点</b>：基本概念、基本原理、常见攻击及防范方法。<b>难点</b>：理解基本原理并应用到实际无线安全问题中。</div>
+</div>
+
+<div class="card"><h3>第 8 章 访问控制与防火墙技术（建议 6 学时）⭐ 课程重点章</h3>
+  <b>学习目的与要求</b>：掌握网络中的访问控制和防火墙技术，理解其原理、技术和应用，能进行网络安全的分析和设计。
+  <div class="th"><b>课程内容</b>：8.1 访问控制技术 ｜ 8.2 防火墙技术 ｜ 8.3 虚拟防火墙技术</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）访问控制技术：<span class="lvl a">识记</span>概念、机制层次、3 个要素、安全策略实施原则、自主访问控制实现方式、强制访问控制访问模式、基于角色访问控制特点、相关术语定义；<span class="lvl b">领会</span>自主与强制访问控制策略的区别和优缺点。</div>
+  <div class="kd">（二）防火墙技术：<span class="lvl a">识记</span>定义、组成和分类；<span class="lvl b">领会</span>含义理解、各类防火墙特点和优缺点；<span class="lvl d">综合应用</span>防火墙的安全策略及应用。</div>
+  <div class="kd">（三）虚拟防火墙技术：<span class="lvl b">领会</span>虚拟系统的特点；<span class="lvl c">简单应用</span>大中型企业虚拟防火墙网络隔离应用和云计算安全网关应用。</div>
+  <div class="th"><b>重点</b>：访问控制概念及分类、ACL 与 RBAC 的实现和应用、防火墙原理和应用。<b>难点</b>：运用防火墙设计和配置安全策略。</div>
+</div>
+
+<div class="card"><h3>第 9 章 入侵防御系统（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：了解入侵防御系统的原理和安全策略，能解决实际网络安全问题。
+  <div class="th"><b>课程内容</b>：9.1 概述 ｜ 9.2 网络入侵防御系统 ｜ 9.3 主机入侵防御系统</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>入侵手段、入侵防御系统的分类；<span class="lvl b">领会</span>网络/主机入侵防御系统的工作过程。</div>
+  <div class="kd">（二）网络入侵防御系统：<span class="lvl a">识记</span>结构；<span class="lvl b">领会</span>入侵检测机制分类、信息捕获机制、各种检测方法原理；<span class="lvl c">简单应用</span>基于统计机制和规则机制的异常检测实施、安全策略制定。</div>
+  <div class="kd">（三）主机入侵防御系统：<span class="lvl a">识记</span>保护对象主机资源；<span class="lvl b">领会</span>截获机制的实现；<span class="lvl c">简单应用</span>访问控制安全策略制定。</div>
+  <div class="th"><b>重点</b>：基本原理和分类、网络与主机入侵防御系统。<b>难点</b>：两类系统的工作流程和应用。</div>
+</div>
+
+<div class="card"><h3>第 10 章 网络数据库安全与备份技术（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：掌握网络数据库安全技术和数据库备份技术。
+  <div class="th"><b>课程内容</b>：10.1 网络数据库安全技术 ｜ 10.2 访问控制模型 ｜ 10.3 数据库服务器安全 ｜ 10.4 备份技术</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）安全技术：<span class="lvl a">识记</span>安全策略；<span class="lvl b">领会</span>安全需求。</div>
+  <div class="kd">（二）访问控制模型：<span class="lvl a">识记</span>强制访问控制的两种强制策略、基于完整性强制策略的两条控制原则；<span class="lvl b">领会</span>多级安全模型的多实例问题、完整性锁的作用。</div>
+  <div class="kd">（三）数据库服务器安全：<span class="lvl b">领会</span>服务器安全漏洞。</div>
+  <div class="kd">（四）备份技术：<span class="lvl a">识记</span>系统备份方案组成、备份方法和分类；<span class="lvl b">领会</span>应用需求与备份方法选择、软件备份功能组成；<span class="lvl c">简单应用</span>物理热备份和冷备份的实施方法和特点。</div>
+  <div class="th"><b>重点</b>：安全需求与策略、自主/强制访问控制、数据备份技术。<b>难点</b>：安全策略的应用和实施。</div>
+</div>
+
+<!-- ================= Ⅳ ================= -->
+<h2 class="section" id="impl">Ⅳ · 大纲说明与考核实施要求</h2>
+<div class="rule">
+  <div class="th"><b>大纲与教材的关系</b></div>
+  大纲是学习和考核的依据；教材内容比大纲有扩展与发挥。大纲里的考核知识点教材里一般都有；教材里有的内容，大纲不一定体现。（<b>以大纲圈定的考核范围为准复习</b>，另见页首「不纳入考核范围」清单。）
+  <div class="th"><b>自学方法建议（5 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>学教材前先通读本大纲，熟知基本要求。</li>
+    <li>每章学习前先读对应章节的「学习目的与要求、考核知识点与考核要求」。</li>
+    <li>基本理论与分析解决实际问题结合，将知识转化为能力。</li>
+    <li>考前梳理概念、理论和方法间的关系（如第 6 章先明确各层次安全协议及其原理）。</li>
+    <li>加强动手实践，不仅能解答教材习题，还要能处理实际应用中的安全问题。</li>
+  </ol>
+  <div class="th"><b>学分与学时</b>：本课程共 5 学分（含实践 2 学分），建议业余自学不低于 60 学时。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>章次</th><th>学习内容</th><th>建议学时</th></tr>
+    <tr><td>第 1 章</td><td>网络空间信息安全概论</td><td>4</td></tr>
+    <tr><td>第 2 章</td><td>病毒防范技术</td><td>6</td></tr>
+    <tr><td>第 3 章</td><td>远程控制与黑客入侵</td><td>6</td></tr>
+    <tr><td>第 4 章</td><td>网络空间信息密码技术</td><td>8</td></tr>
+    <tr><td>第 5 章</td><td>数字签名与验证技术</td><td>4</td></tr>
+    <tr><td>第 6 章</td><td>网络安全协议</td><td>8</td></tr>
+    <tr><td>第 7 章</td><td>无线网络安全机制</td><td>6</td></tr>
+    <tr><td>第 8 章</td><td>访问控制与防火墙技术</td><td>6</td></tr>
+    <tr><td>第 9 章</td><td>入侵防御系统</td><td>6</td></tr>
+    <tr><td>第 10 章</td><td>网络数据库安全与备份技术</td><td>6</td></tr>
+  </table></div>
+  <div class="th"><b>考试命题规定</b></div>
+  闭卷笔试，150 分钟，满分 100 分，60 分及格。<br>
+  <b>能力层次分值比例</b>：识记 20% ｜ 领会 30% ｜ 简单应用 30% ｜ 综合应用 20%。<br>
+  <b>难易比例</b>：易 20% ｜ 较易 30% ｜ 较难 30% ｜ 难 20%（难易≠能力层次）。<br>
+  命题不超出考核知识点范围，考核目标不高于大纲规定的最高能力层次；考试日前 6 个月内颁布/修订的法律法规列入考试范围。
+</div>
+
+<!-- ================= 附录 ================= -->
+<h2 class="section" id="types">附录 · 题型举例</h2>
+<div class="rule">
+  <div class="th">一、单项选择题</div>
+  （　）是非对称密码体系中的经典算法。<br>A. 凯撒密码　B. RSA 算法　C. DES 算法　D. AES 算法
+  <div class="th">二、名词解释题</div>1. 访问控制
+  <div class="th">三、简答题</div>1. 短距离无线通信网络的关键技术有哪些？
+  <div class="th">四、应用题</div>1. 基于 RSA 算法生成密钥，若 p=13，q=31，e=7，求 d 是多少？公钥、私钥是多少？
+  <div class="th">五、案例分析题</div>1. 某银行为信用卡电子支付设计了 SET 协议的应用系统框架：(1) 补全 SET 协议应用系统框架图；(2) 完成一次基于 SET 机制的信用卡安全电子支付流程，各实体要完成什么关键操作？(3) 分析 SET 协议和 SSL 协议的区别。
+</div>
+
+<div class="note">📌 本页面根据广东省考纲原文（docx，2026 年 10 月收集）整理，考纲可能修订，以官方最新为准；「不纳入考核范围」的教材节次以原文为准，购书请认准 <b>《网络空间信息安全》电子工业出版社 2022 年第 2 版</b>。</div>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

@@ -177,6 +177,70 @@ const subjects = [
         url: "high-level-programming-13013/真题/index.html"
       },
     ]
+  },
+  {
+    code: "03344",
+    name: "信息与网络安全管理",
+    icon: "🛡️",
+    brief: "考纲已整理",
+    desc: "广东省考《信息与网络安全管理》· 考纲整理页（注意：指定教材是《网络空间信息安全》电子工业出版社 2022 第 2 版，与课程名不同）",
+    entries: [
+      {
+        icon: "📋",
+        title: "考纲整理页",
+        desc: "10 章考核知识点与要求（识记/领会/应用四级标签）+ 建议学时 + 题型举例",
+        meta: "❌ 整章不考仅教材第 11 章；其余按节跳过（页首速查表）",
+        url: "information-network-security-management-03344/考纲.html"
+      }
+    ]
+  },
+  {
+    code: "08074",
+    name: "计算机高级程序设计（Python）",
+    icon: "🐍",
+    brief: "考纲已整理",
+    desc: "广东省考《计算机高级程序设计》· 考纲整理页（注意：本门是 Python，指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版；C 语言是另一门 13013）",
+    entries: [
+      {
+        icon: "📋",
+        title: "考纲整理页",
+        desc: "9 章考核知识点与要求 + 建议学时 + 题型举例（正则表达式不考）",
+        meta: "✅ 无整章豁免：只跳 5.1.4、5.3.3、6.3、7.3 四节（正则表达式不考）",
+        url: "advanced-computer-programming-08074/考纲.html"
+      }
+    ]
+  },
+  {
+    code: "13009",
+    name: "数据库原理与应用",
+    icon: "🗄️",
+    brief: "考纲已整理",
+    desc: "广东省考《数据库原理与技术》· 考纲整理页（指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版）",
+    entries: [
+      {
+        icon: "📋",
+        title: "考纲整理页",
+        desc: "考纲 10 章考核知识点与要求 + 建议学时 + 题型举例",
+        meta: "❌ 教材第 3/9/10/11/13/14/17 章整章不考 + 16 章跳 2 节（页首双表速查）",
+        url: "database-principles-applications-13009/考纲.html"
+      }
+    ]
+  },
+  {
+    code: "13011",
+    name: "人工智能与大数据",
+    icon: "🤖",
+    brief: "考纲已整理",
+    desc: "广东省考《人工智能与大数据》· 考纲整理页（注意：指定教材书名顺序相反，是《大数据与人工智能》郏东耀主编，清华大学出版社 2022 第 1 版）",
+    entries: [
+      {
+        icon: "📋",
+        title: "考纲整理页",
+        desc: "13 章考核知识点与要求（标注教材节号）+ 建议学时 + 题型举例",
+        meta: "❌ 教材第 13/14 整章不考 + 跳 6 小节；考纲第 13 章仍考（页首速查表）",
+        url: "ai-big-data-13011/考纲.html"
+      }
+    ]
   }
   /* 示例：后续新增学科，照抄一段即可
   ,
@@ -200,7 +264,7 @@ nav.innerHTML = subjects.map(s =>
   `<a class="chip" href="#sub-${s.code}"><b>${s.icon || "📘"} ${s.name}</b><span>${s.code} · ${s.brief || "整理中"}</span></a>`
 ).join("");
 document.getElementById("stats-sum").textContent =
-  `共 ${subjects.length} 个科目 · 30 页知识点 · 5 套真题详解 · 100+ SVG 图示`;
+  `共 ${subjects.length} 个科目 · 30 页知识点 · 5 套真题详解 · 4 份考纲整理 · 100+ SVG 图示`;
 
 subjects.forEach(s => {
   const sec = document.createElement("section");

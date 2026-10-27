@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>08074《计算机高级程序设计》考纲 · 广东省高等教育自学考试</title>
+<link rel="stylesheet" href="../assets/theme.css?v=20261027c">
+<style>
+header.hero{background:linear-gradient(135deg,#0284c7,#4f46e5)}
+.lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+.lvl.a{background:#e0f2fe;color:#0369a1}
+.lvl.b{background:#dcfce7;color:#15803d}
+.lvl.c{background:#fef3c7;color:#b45309}
+.lvl.d{background:#fce7f3;color:#be185d}
+.rule .kd{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🐍 计算机高级程序设计（Python）· 课程考试大纲</h1>
+  <p>广东省高等教育自学考试 · 课程代码 08074 · 计算机科学与技术（专升本）</p>
+  <span class="pill">4 学分</span>
+  <span class="pill">闭卷笔试 150 分钟</span>
+  <span class="pill">满分 100 · 60 及格</span>
+  <span class="pill">建议自学 ≥ 64 学时</span>
+  <div class="gotos">
+    <a href="#book">📕 自学教材（先看这里）</a>
+    <a href="#target">考核目标</a>
+    <a href="#chapters">课程内容与考核要求</a>
+    <a href="#impl">自学方法与命题规定</a>
+    <a href="#types">附录·题型举例</a>
+  </div>
+</header>
+
+<div class="note"><b>⏰ 考纲会变，请以官方最新发布为准：</b>本页为 <b>2026 年 10 月收集</b>的考纲快照。省教育考试院可能修订考试大纲（课程名称、<b>指定教材及版本</b>、考核范围、学分与题型比例均可能调整）。<b>每次报考前</b>请先到<a class="inline" href="https://www.eeagd.cn" target="_blank">广东省教育考试院</a>核对当期考试通知与指定教材，发现版本不同请以最新为准。</div>
+
+<!-- ================= 自学教材：醒目区 ================= -->
+<div class="card" id="book" style="border:2px solid var(--brand);box-shadow:0 0 0 3px var(--brand-soft)">
+  <h3>📕 关于自学教材 —— 备考先看这里，别看错书！</h3>
+  <div class="note" style="margin-top:4px">
+    ⚠️ <b>课程名 ≠ 教材名</b>：课程叫《计算机高级程序设计》（08074），但指定教材书名是<b>《Python语言程序设计基础教程》</b>。本门是 <b>Python</b>，不是 C 语言（C 语言是另一门 13013《高级语言程序设计》，指定教材也不同，别混淆）。
+  </div>
+  <div class="rule">
+    <b>指定教材：</b><code>《Python语言程序设计基础教程》</code> 傅清平、李雪斌、徐文胜 编著，<b>清华大学出版社，2022 年第 1 版</b>。
+  </div>
+  <div class="note">
+    🚫 <b>没有整章不考的内容</b>，只跳 4 个小节：5.1.4、5.3.3、6.3、7.3（下表标 ✂️ 的三章）。<br>
+    🔑 <b>考纲 9 章 = 教材 9 章，章号一一对应</b>，按下面的表翻书即可。
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>章（考纲/教材同序）</th><th>考核内容</th><th>不考部分</th></tr>
+    <tr><td>第 1 章 Python 概述</td><td>✅ 整章考</td><td></td></tr>
+    <tr><td>第 2 章 数据类型、表达式和内置函数</td><td>✅ 整章考</td><td></td></tr>
+    <tr><td>第 3 章 程序控制结构</td><td>✅ 整章考</td><td></td></tr>
+    <tr><td>第 4 章 组合数据类型</td><td>✅ 整章考</td><td></td></tr>
+    <tr><td>第 5 章 函数</td><td>大部分考</td><td>✂️ 5.1.4、5.3.3</td></tr>
+    <tr><td>第 6 章 字符串和正则表达式</td><td>只考 6.1、6.2</td><td>✂️ 6.3（正则表达式整体不在考核知识点内）</td></tr>
+    <tr><td>第 7 章 文件</td><td>大部分考</td><td>✂️ 7.3</td></tr>
+    <tr><td>第 8 章 面向对象编程</td><td>✅ 整章考</td><td></td></tr>
+    <tr><td>第 9 章 科学计算与可视化</td><td>✅ 整章考</td><td></td></tr>
+  </table></div>
+</div>
+
+<div class="toc">
+  <div class="toc-h">📑 本页目录</div>
+  <a href="#nature">Ⅰ 课程性质与课程目标（含重点难点）</a>
+  <a href="#target">Ⅱ 考核目标（四个能力层次）</a>
+  <a href="#chapters">Ⅲ 课程内容与考核要求（9 章）</a>
+  <a href="#impl">Ⅳ 大纲说明与考核实施要求（自学方法 / 建议学时 / 命题规定）</a>
+  <a href="#types">附录 题型举例</a>
+</div>
+
+<!-- ================= Ⅰ ================= -->
+<h2 class="section" id="nature">Ⅰ · 课程性质与课程目标</h2>
+<div class="rule">
+  <div class="th"><b>课程性质和特点</b></div>
+  通过本课程学习掌握 Python 语言程序设计技术，提前适应企业开发技术要求。课程实践性很强：不仅要掌握 Python 基本语法、字符串处理、文件处理，还要能用<b>面向对象思想</b>设计程序及完成<b>数据分析处理</b>。应切实掌握 Python 基础语法、文件、面向对象、科学计算与可视化等知识。
+  <div class="th"><b>课程目标（8 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>掌握 Python 基本数据类型、表达式及常见内置函数。</li>
+    <li>掌握 Python 程序控制结构。</li>
+    <li>掌握 Python 异常处理。</li>
+    <li>掌握组合数据类型的使用。</li>
+    <li>掌握 Python 函数编写及使用。</li>
+    <li>掌握文件处理方法。</li>
+    <li>掌握面向对象编程方法。</li>
+    <li>掌握使用科学计算与可视化技术进行数据分析处理。</li>
+  </ol>
+  <div class="th"><b>与相关课程的联系</b></div>
+  要求考生已具备一定程序设计基础，已学习过 <b>C 语言、数据库编程</b>相关知识。
+  <div class="th"><b>课程重点和难点</b></div>
+  <b>重点</b>：Python 语言基础（基础语法、程序结构控制、组合数据类型）。<b>难点</b>：面向对象程序设计、科学计算与可视化。
+</div>
+
+<!-- ================= Ⅱ ================= -->
+<h2 class="section" id="target">Ⅱ · 考核目标（四个能力层次）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span>识别记忆课程知识点的概念性内容（基本定义、语法格式、步骤方法、限定规则、特点等），能正确表述、选择和判断。</div>
+  <div class="kd"><span class="lvl b">领会</span>领悟各知识点的内涵和外延，熟悉知识点之间的区别与联系，能根据知识点特性解决不同问题并进行简单分析。</div>
+  <div class="kd"><span class="lvl c">简单应用</span>运用少量知识点分析解决一般应用问题：分析执行结果、补充程序空白、编写简单程序等。</div>
+  <div class="kd"><span class="lvl d">综合应用</span>综合运用多个知识点解决较复杂应用问题：程序设计、分析执行结果、补全程序空白、针对应用问题编写程序等。</div>
+</div>
+
+<!-- ================= Ⅲ ================= -->
+<h2 class="section" id="chapters">Ⅲ · 课程内容与考核要求（9 章）</h2>
+
+<div class="card"><h3>第 1 章 Python 概述（建议 4 学时）</h3>
+  <b>学习目的与要求</b>：了解程序基本概念和执行方式，熟练掌握开发环境安装与使用，掌握 Python 基本语法规则，了解模块概念，掌握库的安装及使用。
+  <div class="th"><b>课程内容</b>：1. 程序 ｜ 2. Python 简介、环境的安装和使用 ｜ 3. 基本语法规则 ｜ 4. Python 模块</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）程序：<span class="lvl a">识记</span>程序设计语言类型、程序执行方式；<span class="lvl b">领会</span>模块的导入和使用。</div>
+  <div class="kd">（二）简介与环境：<span class="lvl a">识记</span>IDLE 中 Python 程序运行方式。</div>
+  <div class="kd">（三）基本语法规则：<span class="lvl b">领会</span>注释、标识符、关键字、强制缩进、多行语句、同一行执行多条语句。</div>
+  <div class="kd">（四）Python 模块：<span class="lvl a">识记</span>模块概念、扩展库安装；<span class="lvl b">领会</span>math 模块常用成员、random 模块常用函数。</div>
+  <div class="th"><b>重点</b>：基本语法规则。<b>难点</b>：Python 模块的使用。</div>
+</div>
+
+<div class="card"><h3>第 2 章 Python 基本数据类型、表达式和内置函数（建议 8 学时）</h3>
+  <b>学习目的与要求</b>：了解基本数据类型、常量、变量概念，掌握运算符和表达式使用，了解内置函数概念并掌握常用内置函数。
+  <div class="th"><b>课程内容</b>：1. 数据类型 ｜ 2. 运算符与表达式 ｜ 3. 常用内置函数</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）数据类型：<span class="lvl a">识记</span>组合数据类型定义、常量与变量概念；<span class="lvl b">领会</span>整型、浮点型、复数型、布尔型数据的描述方法，常量及变量的定义与使用。</div>
+  <div class="kd">（二）运算符与表达式：<span class="lvl a">识记</span>运算符优先级和结合性；<span class="lvl b">领会</span>位运算符、身份运算符的使用；<span class="lvl c">简单应用</span>算数、关系、逻辑、成员测试运算符的使用。</div>
+  <div class="kd">（三）常用内置函数：<span class="lvl a">识记</span>迭代器函数；<span class="lvl c">简单应用</span>常用数学运算函数、类型转换函数、基本输入输出函数、range、len、type 函数。</div>
+  <div class="th"><b>重点</b>：数值型数据描述方法、运算符使用。<b>难点</b>：常用内置函数的使用。</div>
+</div>
+
+<div class="card"><h3>第 3 章 程序控制结构（建议 8 学时）⭐ 设计题高发</h3>
+  <b>学习目的与要求</b>：了解传统流程图和 N-S 流程图表示问题求解的方法，掌握单/双/多/嵌套分支结构程序设计、循环结构程序设计，掌握异常处理方法。
+  <div class="th"><b>课程内容</b>：1. 控制结构概述 ｜ 2. 选择结构 ｜ 3. 循环控制结构 ｜ 4. 异常处理结构</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>传统流程图、N-S 流程图描述方法。</div>
+  <div class="kd">（二）选择结构：<span class="lvl d">综合应用</span>单分支、双分支、多分支、嵌套分支结构程序设计。</div>
+  <div class="kd">（三）循环结构：<span class="lvl c">简单应用</span>break、continue、else 语句的使用；<span class="lvl d">综合应用</span>while、for 循环进行简单循环及多重循环结构程序设计。</div>
+  <div class="kd">（四）异常处理：<span class="lvl a">识记</span>异常的分类；<span class="lvl c">简单应用</span>try...except、try...except...else、try...except...else...finally 异常处理程序设计。</div>
+  <div class="th"><b>重点</b>：选择结构、循环结构程序设计。<b>难点</b>：异常处理结构。</div>
+</div>
+
+<div class="card"><h3>第 4 章 组合数据类型（建议 8 学时）⭐ 设计题高发</h3>
+  <b>学习目的与要求</b>：了解组合数据类型概念，掌握列表、元组、集合、字典的创建、访问与运用。
+  <div class="th"><b>课程内容</b>：1. 概述 ｜ 2. 列表 ｜ 3. 元组 ｜ 4. 集合 ｜ 5. 字典</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>组合数据类型分类。</div>
+  <div class="kd">（二）列表：<span class="lvl b">领会</span>创建、访问、切片、操作；<span class="lvl d">综合应用</span>运用列表解决实际问题。</div>
+  <div class="kd">（三）元组：<span class="lvl b">领会</span>创建、访问、切片、操作；<span class="lvl d">综合应用</span>运用元组解决实际问题。</div>
+  <div class="kd">（四）集合：<span class="lvl b">领会</span>创建、访问、操作；<span class="lvl d">综合应用</span>运用集合解决实际问题。</div>
+  <div class="kd">（五）字典：<span class="lvl b">领会</span>创建、访问、操作；<span class="lvl d">综合应用</span>运用字典解决实际问题。</div>
+  <div class="th"><b>重点</b>：列表、元组、集合、字典的创建、访问及操作方法。<b>难点</b>：四者的综合运用。</div>
+</div>
+
+<div class="card"><h3>第 5 章 函数（建议 6 学时）</h3>
+  <b>学习目的与要求</b>：掌握函数定义与调用、参数传递、变量作用域，了解 lambda 函数。
+  <div class="th"><b>课程内容</b>：1. 定义与调用 ｜ 2. 参数传递 ｜ 3. 变量作用域 ｜ 4. lambda 表达式函数</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）定义与调用：<span class="lvl a">识记</span>函数概念与作用；<span class="lvl b">领会</span>定义方法、调用及返回、嵌套调用和递归调用；<span class="lvl c">简单应用</span>递归函数解决问题；<span class="lvl d">综合应用</span>运用函数进行模块化程序设计。</div>
+  <div class="kd">（二）参数传递：<span class="lvl a">识记</span>形参、实参概念；<span class="lvl b">领会</span>参数传递方法、可变长形参；<span class="lvl c">简单应用</span>实参解包。</div>
+  <div class="kd">（三）变量作用域：<span class="lvl a">识记</span>作用域类型；<span class="lvl b">领会</span>全局变量与局部变量的作用域和使用。</div>
+  <div class="kd">（四）lambda：<span class="lvl b">领会</span>lambda 表达式函数的定义和调用。</div>
+  <div class="th"><b>重点</b>：函数定义及调用、参数传递。<b>难点</b>：运用函数进行模块化程序设计。</div>
+</div>
+
+<div class="card"><h3>第 6 章 字符串和正则表达式（建议 6 学时）⚠️ 正则不考</h3>
+  <b>学习目的与要求</b>：了解字符串编码解码，掌握字符串运算、字符串处理内置函数、str 类对象及相关处理方法。
+  <div class="th"><b>课程内容</b>：1. 字符串概述 ｜ 2. 字符串处理的函数和方法（<b>正则表达式部分不列入考核</b>，教材 6.3 节不考）</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）概述：<span class="lvl a">识记</span>常见转义字符含义；<span class="lvl b">领会</span>字符串的表示；<span class="lvl c">简单应用</span>字符串的运算。</div>
+  <div class="kd">（二）处理函数和方法：<span class="lvl b">领会</span>常用内置函数；<span class="lvl c">简单应用</span>字符串对象的拆分与连接、查找与替换、测试串、格式化数据、大小写转换和字符映射。</div>
+  <div class="th"><b>重点</b>：字符串运算、常用内置函数。<b>难点</b>：字符串对象的使用方法。</div>
+</div>
+
+<div class="card"><h3>第 7 章 文件（建议 8 学时）</h3>
+  <b>学习目的与要求</b>：了解文件概念和分类，掌握文件打开、关闭、读写、定位方法，掌握数据维度概念。
+  <div class="th"><b>课程内容</b>：1. 文件基本处理 ｜ 2. 数据维度</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）文件基本处理：<span class="lvl a">识记</span>文件类型、基本处理流程；<span class="lvl b">领会</span>文件打开模式；<span class="lvl d">综合应用</span>文件打开、关闭、读写方法。</div>
+  <div class="kd">（二）数据维度：<span class="lvl a">识记</span>一维、二维、高维数据；<span class="lvl b">领会</span>CSV 文件格式、JSON 格式。</div>
+  <div class="th"><b>重点</b>：文件处理流程、打开模式。<b>难点</b>：文件读写方法。</div>
+</div>
+
+<div class="card"><h3>第 8 章 Python 面向对象编程（建议 8 学时）⭐ 课程难点章</h3>
+  <b>学习目的与要求</b>：了解面向对象编程特点、对象型数据特点和成员构成，掌握类和实例的关系与创建方法，了解继承与多态。
+  <div class="th"><b>课程内容</b>：1. 面向对象概述 ｜ 2. 类对象与实例对象 ｜ 3. 对象成员 ｜ 4. 继承和多态</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）面向对象概述：<span class="lvl a">识记</span>面向过程、面向对象、对象、类、封装、继承、多态。</div>
+  <div class="kd">（二）类对象与实例对象：<span class="lvl a">识记</span>对象的结构；<span class="lvl b">领会</span>类的定义方法、构造方法、实例创建与访问方法。</div>
+  <div class="kd">（三）对象成员：<span class="lvl a">识记</span>私有方法与公有方法；<span class="lvl b">领会</span>类方法、静态方法；<span class="lvl c">简单应用</span>类的属性成员定义、实例属性成员访问、实例方法。</div>
+  <div class="kd">（四）继承和多态：<span class="lvl a">识记</span>继承概念、多态概念、常用重载方法；<span class="lvl b">领会</span>继承的定义、方法重载。</div>
+  <div class="th"><b>重点</b>：面向对象概念、类的定义。<b>难点</b>：类方法、静态方法。</div>
+</div>
+
+<div class="card"><h3>第 9 章 科学计算与可视化（建议 8 学时）⭐ 课程难点章</h3>
+  <b>学习目的与要求</b>：了解 numpy 数组概念，掌握其创建、运算、访问及常用成员方法；了解 pandas 的 Series 与 DataFrame，掌握两种类型的创建和访问；了解 matplotlib 绘图方法。
+  <div class="th"><b>课程内容</b>：1. 数值计算模块 ｜ 2. 数据分析模块 ｜ 3. 数据可视化模块</div>
+  <div class="th"><b>考核知识点与要求</b></div>
+  <div class="kd">（一）数值计算（numpy）：<span class="lvl a">识记</span>ndarray 基本属性；<span class="lvl b">领会</span>数组运算、数组方法；<span class="lvl c">简单应用</span>常用数组创建函数、访问数组元素。</div>
+  <div class="kd">（二）数据分析（pandas）：<span class="lvl a">识记</span>Series、DataFrame 数据结构；<span class="lvl b">领会</span>DataFrame 统计、排序；<span class="lvl c">简单应用</span>Series/DataFrame 的创建与访问。</div>
+  <div class="kd">（三）数据可视化（matplotlib）：<span class="lvl a">识记</span>图像制作过程步骤；<span class="lvl b">领会</span>折线图、柱形图、散点图绘制。</div>
+  <div class="th"><b>重点</b>：DataFrame 数据创建及访问。<b>难点</b>：可视化图形绘制。</div>
+</div>
+
+<!-- ================= Ⅳ ================= -->
+<h2 class="section" id="impl">Ⅳ · 大纲说明与考核实施要求</h2>
+<div class="rule">
+  <div class="th"><b>大纲与教材的关系</b></div>
+  大纲是学习和考核的依据；教材内容比大纲有扩展与发挥。大纲里的考核知识点教材里一般都有；教材里有的内容，大纲不一定体现。（<b>复习以大纲考核知识点为准</b>，另见页首「不纳入考核范围」清单。）
+  <div class="th"><b>自学方法建议（4 条）</b></div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li>学教材前先通读本大纲，熟知基本要求。</li>
+    <li>每章学习前先读对应章节的学习目的与考核要求。</li>
+    <li>程序设计能力的培养除书本知识外，<b>上机实践是最有效途径</b>，要能在计算机上解答教材习题。</li>
+    <li>学习过程可结合一个具体项目需求，利用软件工程相关知识逐步实践。</li>
+  </ol>
+  <div class="th"><b>学分与学时</b>：本课程共 4 学分，建议业余自学不低于 64 学时。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>章次</th><th>学习内容</th><th>建议学时</th></tr>
+    <tr><td>第 1 章</td><td>Python 概述</td><td>4</td></tr>
+    <tr><td>第 2 章</td><td>基本数据类型、表达式和内置函数</td><td>8</td></tr>
+    <tr><td>第 3 章</td><td>程序控制结构</td><td>8</td></tr>
+    <tr><td>第 4 章</td><td>组合数据类型</td><td>8</td></tr>
+    <tr><td>第 5 章</td><td>函数</td><td>6</td></tr>
+    <tr><td>第 6 章</td><td>字符串和正则表达式</td><td>6</td></tr>
+    <tr><td>第 7 章</td><td>文件</td><td>8</td></tr>
+    <tr><td>第 8 章</td><td>Python 面向对象编程</td><td>8</td></tr>
+    <tr><td>第 9 章</td><td>科学计算与可视化</td><td>8</td></tr>
+  </table></div>
+  <div class="th"><b>考试命题规定</b></div>
+  闭卷笔试，150 分钟，满分 100 分，60 分及格。<br>
+  <b>能力层次分值比例</b>：识记 20% ｜ 领会 30% ｜ 简单应用 30% ｜ 综合应用 20%。<br>
+  <b>难易比例</b>：易 20% ｜ 较易 30% ｜ 较难 30% ｜ 难 20%。<br>
+  命题不超出考核知识点范围，考核目标不高于大纲规定的最高能力层次；考试日前 6 个月内颁布/修订的法律法规列入考试范围。
+</div>
+
+<!-- ================= 附录 ================= -->
+<h2 class="section" id="types">附录 · 题型举例</h2>
+<div class="rule">
+  <div class="th">一、单项选择题</div>
+  下列选项中正确的变量名是（　）<br>A. 2sum　B. if　C. sum2　D. a*b
+  <div class="th">二、简答题</div>1. 请描述面向对象和面向过程的区别。
+  <div class="th">三、简单设计题</div>1. 如果一个数恰好等于它的因子之和，这个数就称为"完数"（如 28=1+2+4+7+14）。编写程序，输出 1000 以内的所有完数个数。
+  <div class="th">四、综合设计题</div>编写程序，按行读取数据文件中的字符串，输出每一行字符串中大写字母的个数。<br>
+  要求：① 数据文件名为 data.txt；② 使用相对路径读取文件，数据文件与源代码文件在同一文件夹；③ 求大写字母个数以<b>函数方式</b>实现。
+</div>
+
+<div class="note">📌 本页面根据广东省考纲原文（docx，2026 年 10 月收集）整理，考纲可能修订，以官方最新为准；购书请认准 <b>《Python语言程序设计基础教程》清华大学出版社 2022 年第 1 版</b>，第 5 章 5.1.4/5.3.3、第 6 章 6.3、第 7 章 7.3 不纳入考核。</div>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>
