@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 第 5 章 NoSQL 数据库与云数据库｜四类 NoSQL · CAP/BASE · UMP 架构角色</title>
+<meta name="description" content="人工智能与大数据 13011 第 5 章速记卡：数据库的概念；NoSQL 的由来与体系架构层次、四种分类（键值/列族/文档/图形）、与关系数据库的区别与联系；CAP 定理与 BASE 理论；云数据库的概念与特点、主流云数据库产品；阿里 UMP（Unified MySQL Platform）系统的设计原则、架构中的七种角色及功能、依赖的开源组件与七项系统功能。含考纲能力层次标注与建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#0369a1,#6d28d9)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .rule .kd{margin:4px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 5 章 · NoSQL 数据库、HBase 与云数据库 🧩</h1>
+  <p>本章回答一个核心问题：<b>关系数据库为什么撑不住大数据，替代方案长什么样</b>。考点集中在三张清单——<b>NoSQL 四类</b>、<b>CAP/BASE</b>、<b>UMP 的角色与功能</b>（后者是"教材 5.7 节"专属内容，最容易失分）。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">难度 ★★★☆☆</span><span class="pill">题型：单选 / 名解 / 简答 / 对比</span><span class="pill">重点：NoSQL 与云数据库概念架构</span><span class="pill">难点：UMP 系统架构设计</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../计算框架/MapReduce与Spark.html">← 第 4 章</a>
+    <a href="../应用与展望/大数据的应用与展望.html">→ 第 6 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、数据库的概念（识记）</a>
+  <a href="#s2">二、NoSQL 的由来与体系架构层次（识记）⭐</a>
+  <a href="#s3">三、NoSQL 的四种分类（识记）⭐⭐</a>
+  <a href="#s4">四、NoSQL 与关系数据库的区别与关系（领会）⭐</a>
+  <a href="#s5">五、CAP 定理与 BASE 理论（领会）</a>
+  <a href="#s6">六、云数据库的概念与特点（识记）⭐</a>
+  <a href="#s7">七、UMP 系统：架构角色与功能（领会）⭐⭐ 难点</a>
+  <a href="#s8">八、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、数据库的概念（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据库的概念。</div>
+  <div class="th"><b>数据库（Database, DB）：</b>是<b>长期存储在计算机内的、有组织的、可共享的、统一管理的数据集合</b>。四个限定词一个都不能漏：<b>长期存储、有组织（按数据模型组织）、共享（多用户多应用共用）、统一管理（由 DBMS 控制）</b>。</div>
+  <div class="th"><b>相关概念：</b><b>DBMS（数据库管理系统）</b>——位于用户与操作系统之间的<b>数据管理软件</b>，负责定义、建立、操纵、维护与控制数据（MySQL、Oracle）；<b>DBS（数据库系统）</b>= 数据库 + DBMS + 应用 + 数据库管理员（DBA）+ 硬件；<b>关系数据库</b>——以<b>关系（二维表）</b>模型组织数据，用 <b>SQL</b> 操作，遵守<b>ACID</b>（原子性、一致性、隔离性、持久性）与三范式。</div>
+  <div class="note">🔗 与 13009 的衔接：三级模式两级映像、完整性约束等在《数据库原理与应用》里已学过；本章只需<b>把关系数据库当作"被挑战的对象"</b>来对比记忆。</div>
+</div>
+
+<h2 class="section" id="s2">二、NoSQL 的由来与体系架构层次（识记）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> NoSQL 的体系架构层次。</div>
+  <div class="th"><b>名称：</b>NoSQL = <b>"Not Only SQL"（不仅仅是 SQL）</b>，指<b>非关系型的、分布式的、一般不保证强一致性的</b>数据库系统，也常直接理解为"非关系型数据库"。</div>
+  <div class="th"><b>为什么需要 NoSQL（应对关系数据库的四类瓶颈）：</b>①<b>海量数据</b>（TB/PB 级）单机存不下、垂直扩容成本指数上升；②<b>高并发读写</b>（如秒上万次的电商/社交访问）受本地磁盘与锁竞争限制；③<b>数据类型多样</b>（半/非结构化、字段动态变化）难以用固定表结构表达；④<b>需要在线水平扩展与高可用</b>，而传统主从复制与 ACID 强一致成为扩展瓶颈。</div>
+  <div class="th"><b>NoSQL 的一般特点：</b>①<b>可扩展</b>（去共享、水平扩展、支持动态模式）；②<b>支持多种数据类型</b>（键值、文档、列族、图形）；③<b>支持分布式计算与存储</b>，靠<b>框架</b>而非单机；④<b>高可用性</b>（提供 BASE 而非 ACID，最终一致）；⑤<b>数据模型简单</b>（无复杂表关系、通常不支持或不强调 Join、无完整事务）；⑥<b>性能高</b>（键值直接寻址、内存/缓存友好）。</div>
+  <div class="th"><b>体系架构层次（自下而上四层，识记框架）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>层次</th><th>解决什么</th><th>典型机制</th></tr>
+    <tr><td class="nm">① <b>分布式存储层</b></td><td>数据放在哪、如何容错</td><td>底层分布式文件系统（<b>HDFS</b>）、对象存储；<b>副本复制</b>、日志与检查点</td></tr>
+    <tr><td class="nm">② <b>数据分布与扩展层</b></td><td>怎么水平扩展</td><td><b>数据分片/分区</b>（哈希、范围、一致性哈希）、虚拟节点、自动再平衡、无共享（Shared-Nothing）架构</td></tr>
+    <tr><td class="nm">③ <b>数据模型层</b></td><td>用什么结构表达数据</td><td><b>键值 / 列族 / 文档 / 图形</b>四种模型；模式灵活（schema-free）、多版本</td></tr>
+    <tr><td class="nm">④ <b>一致性与服务层</b></td><td>读写语义与协调</td><td><b>CAP/BASE</b> 取舍、Quorum（N/R/W）、向量时钟、<b>ZooKeeper</b> 协调选主；接口层（API、类 SQL 查询、MapReduce 访问）</td></tr>
+  </table></div>
+  <div class="note">⚠️ 若教材把"体系架构"表述为三层（<b>存储层 / 数据模型层 / 访问接口层</b>），按三层答也得分——记住"<b>存储在下、模型在中、接口在上，一致性贯穿其中</b>"这条主线即可。</div>
+</div>
+
+<h2 class="section" id="s3">三、NoSQL 的四种分类（识记）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> NoSQL 的分类。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>数据模型</th><th>优点</th><th>缺点</th><th>代表产品</th><th>典型场景</th></tr>
+    <tr><td class="nm"><b>① 键值（Key-Value）</b></td><td>哈希表：<code>key → value</code>，value 不解析</td><td><b>结构最简单、读写最快</b>、易扩展</td><td>无法按内容查询（只能按 key）、无复杂约束</td><td><b>Redis</b>、Memcached、Voldemort、Dynamo、LevelDB</td><td>缓存、会话、计数器、购物车</td></tr>
+    <tr><td class="nm"><b>② 列族 / 列存储（Column-Family / Column-Oriented）</b></td><td>按<b>列族</b>存储，行键 + 列族 + 列限定符 + 时间戳</td><td><b>适合海量分布式数据、列聚合查询高效、稀疏存储省空间</b></td><td>不支持复杂关联与事务、跨行原子性差</td><td><b>HBase</b>、Cassandra、Hive（列式存储思想）</td><td>日志、监控指标、用户行为、消息存储</td></tr>
+    <tr><td class="nm"><b>③ 文档型（Document-Oriented）</b></td><td>以 <b>JSON/BSON/XML</b> 自包含文档为单位</td><td><b>模式灵活、贴近对象模型、可嵌套</b>、查询能力较强</td><td>事务与关联弱、文档过大有性能问题</td><td><b>MongoDB</b>、CouchDB、Couchbase</td><td>内容管理、商品目录、用户画像、移动后端</td></tr>
+    <tr><td class="nm"><b>④ 图形（Graph）</b></td><td><b>顶点 + 边（关系）+ 属性</b>，关系是一等公民</td><td><b>擅长表达与查询复杂网络关系</b>，遍历效率高（免"图计算爆炸"）</td><td>生态较小、超大规模分析不如批处理</td><td><b>Neo4j</b>、InfoGrid、JanusGraph、GraphDB</td><td>社交网络、推荐关系、知识图谱、风控关联</td></tr>
+  </table></div>
+  <div class="note">🎯 单选口诀：<b>"键值最快、列族最能扛量、文档最灵活、图形最懂关系"</b>。题目给产品名让你选类型：Redis→键值；HBase/Cassandra→列族；MongoDB/CouchDB→文档；Neo4j→图形。</div>
+</div>
+
+<h2 class="section" id="s4">四、NoSQL 与关系数据库的区别与关系（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> NoSQL 与关系数据库的区别和关系。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>比较维度</th><th>关系数据库（MySQL/Oracle）</th><th>NoSQL（HBase/MongoDB/Redis）</th></tr>
+    <tr><td class="nm">数据模型</td><td><b>二维表</b>，行列表结构固定</td><td><b>键值 / 列族 / 文档 / 图形</b>，模型多样</td></tr>
+    <tr><td class="nm">模式 Schema</td><td><b>强模式</b>（写时模式，先定义列与约束）</td><td><b>弱模式 / 无模式</b>（读时模式，可动态增列）</td></tr>
+    <tr><td class="nm">一致性 / 事务</td><td><b>ACID 强一致</b>，支持多行事务</td><td><b>BASE 最终一致</b>，多为单行/单文档原子（弱事务）</td></tr>
+    <tr><td class="nm">扩展方式</td><td><b>垂直扩展</b>（换更强单机），分库分表复杂</td><td><b>水平扩展</b>（加节点、自动分片）</td></tr>
+    <tr><td class="nm">查询语言</td><td><b>SQL</b>，支持复杂 Join、聚合、子查询</td><td>各自 <b>API/类 SQL</b>，<b>不支持或弱支持 Join</b></td></tr>
+    <tr><td class="nm">性能侧重</td><td>复杂事务与关联查询、中小规模</td><td><b>海量数据的高并发读写与扫描</b></td></tr>
+    <tr><td class="nm">规范化</td><td>遵循<b>三范式</b>减少冗余</td><td>常<b>反范式</b>、用冗余换性能</td></tr>
+    <tr><td class="nm">典型用途</td><td>OLTP 业务系统、财务、订单</td><td>大数据、实时 Web、移动、IoT、缓存</td></tr>
+  </table></div>
+  <div class="th"><b>两者的"关系"（不要只答区别，这半问常被漏掉）：</b>①<b>不是替代而是互补</b>：NoSQL 解决的是关系数据库不擅长的<b>海量、高并发、灵活模式</b>场景，业务核心事务仍由关系库承担；②<b>常混合部署</b>：典型架构是"关系库（业务）+ 缓存（Redis）+ NoSQL（日志/行为）"分层，或用 ETL/Sqoop 在两者间搬数据；③<b>技术上互相借鉴</b>：NoSQL 借鉴关系库的索引、SQL 化查询（Hive/HQL、CQL），关系库也吸收分布式与 NoSQL 特性（NewSQL、MySQL 支持 JSON）；④<b>底层可复用</b>：HBase 构建在 <b>HDFS</b> 之上、Hive 用关系式接口访问 Hadoop 数据。</div>
+</div>
+
+<h2 class="section" id="s5">五、CAP 定理与 BASE 理论（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> NoSQL 的理论基础（与关系数据库的区别）。</div>
+  <div class="th"><b>CAP 定理：</b>一个分布式系统最多只能同时满足以下<b>三项中的两项</b>——<b>C 一致性（Consistency）</b>：所有节点同一时刻看到的数据相同；<b>A 可用性（Availability）</b>：每个请求都能得到（非错误）响应；<b>P 分区容错性（Partition tolerance）</b>：网络分区发生时系统仍能继续运行。由于分布式环境中<b>网络分区不可避免，P 必选</b>，所以实际是在 <b>CP 与 AP</b> 之间取舍。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>取舍</th><th>含义</th><th>代表系统</th></tr>
+    <tr><td class="nm"><b>CP</b>（弃可用性）</td><td>分区时<b>宁可拒绝服务</b>也要保证数据一致</td><td><b>ZooKeeper</b>、<b>HBase</b>、MongoDB（默认写关注）、关系型分布式数据库</td></tr>
+    <tr><td class="nm"><b>AP</b>（弃强一致）</td><td>分区时<b>仍可读写</b>，事后收敛到一致（最终一致）</td><td><b>Cassandra</b>、Dynamo、Eureka、多数键值缓存</td></tr>
+    <tr><td class="nm">AC（不分区）</td><td>单机/强同步环境，实际分布式中<b>不可取</b></td><td>传统单机关系数据库（严格说不是分布式场景）</td></tr>
+  </table></div>
+  <div class="th"><b>BASE 理论（对 ACID 的放松，NoSQL 的设计哲学）：</b><b>BA</b>sically <b>A</b>vailable（<b>基本可用</b>：整体性能可下降但保证核心功能，如降级、限流、超时返回）；<b>S</b>oft <b>s</b>tate（<b>软状态</b>：允许中间状态存在，状态间同步可有延迟）；<b>E</b>ventually consistent（<b>最终一致</b>：经过一段时间后数据达到一致，不要求即时一致）。</div>
+  <div class="note">🔑 记忆：<b>ACID 是"事务级强一致"，BASE 是"柔性可用 + 最终一致"</b>；BASE 不是放弃一致性，而是<b>用可用性换取可扩展性与性能</b>，把一致性推迟到"最终"。</div>
+</div>
+
+<h2 class="section" id="s6">六、云数据库的概念与特点（识记）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 云数据库的概念和特点。</div>
+  <div class="th"><b>概念：</b>云数据库是<b>部署和虚拟化在云计算环境中的数据库</b>，是在云计算大背景下发展起来的一种<b>新兴的共享基础架构</b>方法——它<b>极大增强了数据库的存储能力</b>，<b>消除了人员、硬件、软件的重复配置</b>，让软硬件升级变得容易。用户<b>按需申请、通过网络访问、按使用量付费</b>，无需自建与维护底层设施。</div>
+  <div class="th"><b>特点（识记·八条）：</b>①<b>动态可扩展 / 高可扩展性</b>（弹性伸缩，随业务增删节点）；②<b>高可用性</b>（多副本、自动故障切换，消除单点）；③<b>多租户</b>（资源共享又相互隔离）；④<b>较低的使用成本</b>（按需付费、免初始硬件投入）；⑤<b>易用性</b>（提供管理界面与标准接口，兼容既有 SQL/协议）；⑥<b>高性能</b>（读写分离、缓存、并行）；⑦<b>免维护</b>（备份、升级、监控由服务商完成）；⑧<b>安全</b>（SSL 连接、IP 白名单、访问控制、操作审计）；另常加"<b>支持资源有效分发</b>"。</div>
+  <div class="th"><b>主流云数据库产品（识记，能配对厂商）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>厂商</th><th>产品</th><th>要点</th></tr>
+    <tr><td class="nm">Amazon</td><td><b>RDS</b>、<b>DynamoDB</b>、Aurora、Redshift、SimpleDB/S3</td><td>RDS 托管关系库；DynamoDB 是<b>键值/文档型 NoSQL</b>（CAP 中 AP 代表）</td></tr>
+    <tr><td class="nm">Microsoft</td><td><b>SQL Azure / Azure SQL Database</b></td><td>属<b>关系型</b>云数据库，支持 <b>T-SQL</b> 管理创建与操作，可在本地开发后部署上云；支持大量典型数据类型；<b>支持云中局部事务但不支持分布式事务</b></td></tr>
+    <tr><td class="nm">Google</td><td><b>Bigtable</b>、Cloud SQL、Spanner、BigQuery</td><td>Bigtable 是<b>列族</b>分布式存储，HBase 的原型</td></tr>
+    <tr><td class="nm">阿里 / 腾讯 / 华为</td><td>UMP（早期）、<b>RDS / PolarDB / OceanBase</b>；TDSQL/CDB；GaussDB</td><td>本章 UMP 即阿里核心系统数据库团队设计的<b>低成本高性能 MySQL 云数据库方案</b></td></tr>
+  </table></div>
+  <div class="note">⚠️ 易错：云数据库<b>没有专属于自己的数据模型</b>——它可以采用关系模型，也可以是非关系模型（键值/文档/列族）；很多云数据库后端直接复用现有关系库或 NoSQL 引擎。判断"云数据库 = NoSQL"是<b>错误</b>的。</div>
+</div>
+
+<h2 class="section" id="s7">七、UMP 系统：架构角色与功能（领会）⭐⭐ 本章难点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> UMP 系统架构中的角色及功能。</div>
+  <div class="th"><b>概述：</b><b>UMP（Unified MySQL Platform）</b>由<b>阿里集团核心系统数据库团队</b>设计与实现，是一个<b>低成本、高性能的 MySQL 云数据库</b>方案，<b>关键模块用 Erlang 实现</b>。开发者<b>通过网络从平台申请 MySQL 实例资源</b>，用<b>单一入口</b>访问数据；系统把服务器资源划分为<b>资源池</b>，以资源池为单位分配给 MySQL 实例，从而<b>实现资源虚拟化、降低整体成本</b>。用户按规模分<b>三类</b>：小数据量/小流量用户（<b>多用户共享一个实例</b>）、中等规模用户（<b>独占一个实例</b>）、需要分库分表的用户（<b>多个实例共享同一物理机</b>）。</div>
+  <div class="th"><b>架构设计原则（四条）：</b>①<b>保持单一的系统对外入口</b>，内部维护<b>单一的资源池</b>；②<b>消除单点故障</b>，保证服务<b>高可用</b>；③保证系统具有<b>良好的可伸缩性</b>，能动态增删计算与存储节点；④保证<b>用户资源弹性可伸缩、资源之间相互隔离</b>，确保应用与数据安全。</div>
+  <div class="th"><b>（一）系统中的七种角色及其功能（难点·必背清单）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>角色</th><th>功能</th></tr>
+    <tr><td class="nm"><b>① Controller 服务器</b></td><td><b>提供各种管理服务</b>：集群成员管理、<b>元数据存储</b>、MySQL 实例管理、<b>故障恢复</b>、备份、迁移、扩容。其上运行一组 <b>Mnesia 分布式数据库</b>保存元数据（集群成员、用户配置与状态、<b>用户名→后端 MySQL 实例地址的"路由表"</b>）；部署<b>多台</b>避免单点，由 <b>ZooKeeper 分布式锁选出一个"总管"</b>负责调度与监控</td></tr>
+    <tr><td class="nm"><b>② Proxy 服务器</b></td><td><b>向用户提供访问 MySQL 的服务（唯一数据入口）</b>：除<b>数据路由</b>基本功能外，还实现<b>屏蔽 MySQL 实例故障、读写分离、分库分表、资源隔离（限制 QPS）、记录用户访问日志</b>等</td></tr>
+    <tr><td class="nm"><b>③ Agent 服务器</b></td><td><b>部署在 MySQL 实例所在机器上的"探针/执行者"</b>：接收 Controller 指令，<b>负责本机 MySQL 实例的创建、配置、启停、监控与状态上报</b>（心跳），执行备份、迁移等本地操作</td></tr>
+    <tr><td class="nm"><b>④ Web 控制台</b></td><td><b>给用户和管理员的操作界面</b>：申请/管理实例、查看状态与性能、执行运维操作，并<b>提供 API 接口</b>（与 Controller 交互）</td></tr>
+    <tr><td class="nm"><b>⑤ 日志分析服务器</b></td><td><b>收集并分析 Proxy 记录的用户访问日志</b>：统计 SQL 执行次数、耗时、错误等，用于<b>问题定位、性能分析与计费</b>（常借助 <b>RabbitMQ</b> 消息队列异步传输）</td></tr>
+    <tr><td class="nm"><b>⑥ 信息统计服务器</b></td><td><b>统计系统整体运行信息</b>：各实例的容量、性能、资源使用与业务指标，供<b>监控、报表与资源调度决策</b></td></tr>
+    <tr><td class="nm"><b>⑦ 愚公系统</b></td><td><b>数据迁移/同步工具</b>：负责把原有（如 Oracle/其他 MySQL 实例）数据<b>迁移到 UMP</b>，以及实例间的数据搬迁、扩容时的数据重分布</td></tr>
+  </table></div>
+  <div class="th"><b>（二）依赖的四个开源组件：</b><b>Mnesia</b>（Erlang 自带的分布式数据库，存元数据）、<b>LVS</b>（Linux 虚拟服务器，做<b>负载均衡</b>、保证 Proxy 单一入口高可用）、<b>RabbitMQ</b>（消息队列，<b>异步传递日志与控制消息</b>）、<b>ZooKeeper</b>（<b>分布式锁/选主</b>，从多台 Controller 中选出"总管"）。</div>
+  <div class="th"><b>（三）系统功能（对用户透明的七项）：</b><b>容灾</b>（主从热备、故障自动切换）、<b>读写分离</b>（Proxy 按 SQL 类型路由）、<b>分库分表</b>、<b>资源管理</b>、<b>资源调度</b>、<b>资源隔离</b>（Cgroup 限制 CPU/内存/IO + Proxy 限制 QPS）、<b>数据安全</b>（SSL 连接、IP 白名单、操作日志、SQL 拦截）。</div>
+  <div class="fig">
+    <svg viewBox="0 0 820 214" role="img" aria-label="UMP 架构：用户经 Web 控制台与 LVS 负载均衡访问 Proxy 集群，Proxy 依据 Controller 中 Mnesia 保存的路由表访问多个 MySQL 实例，Agent 负责实例管理，日志分析服务器经 RabbitMQ 收集日志，信息统计服务器汇总运行信息，愚公系统负责数据迁移，ZooKeeper 负责选主">
+      <g font-size="12.5" font-weight="700" text-anchor="middle">
+        <rect x="16" y="20" width="118" height="42" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/><text x="75" y="46" fill="#0369a1">用户 / 应用</text>
+        <rect x="168" y="20" width="118" height="42" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/><text x="227" y="46" fill="#6d28d9">Web 控制台</text>
+        <rect x="320" y="20" width="118" height="42" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/><text x="379" y="46" fill="#15803d">LVS 负载均衡</text>
+        <rect x="472" y="20" width="130" height="42" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="2"/><text x="537" y="46" fill="#b45309">Proxy 服务器</text>
+        <rect x="636" y="20" width="166" height="42" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2"/><text x="719" y="46" fill="#be185d">MySQL 实例 × N</text>
+        <rect x="472" y="98" width="130" height="42" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/><text x="537" y="124" fill="#0369a1">Controller</text>
+        <rect x="636" y="98" width="166" height="42" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/><text x="719" y="124" fill="#15803d">Agent 服务器</text>
+        <rect x="168" y="98" width="118" height="42" rx="9" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/><text x="227" y="124" fill="#c2410c">日志分析</text>
+        <rect x="16" y="98" width="118" height="42" rx="9" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/><text x="75" y="124" fill="#1d4ed8">信息统计</text>
+        <rect x="320" y="98" width="118" height="42" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/><text x="379" y="124" fill="#6d28d9">愚公系统</text>
+      </g>
+      <g stroke="#9ca3af" stroke-width="1.8" fill="none">
+        <line x1="134" y1="41" x2="166" y2="41"/><line x1="286" y1="41" x2="318" y2="41"/><line x1="438" y1="41" x2="470" y2="41"/><line x1="602" y1="41" x2="634" y2="41"/>
+        <line x1="537" y1="62" x2="537" y2="96"/><line x1="602" y1="119" x2="634" y2="119"/><line x1="472" y1="119" x2="440" y2="119"/><line x1="320" y1="119" x2="288" y2="119"/><line x1="168" y1="119" x2="136" y2="119"/>
+      </g>
+      <text x="20" y="176" font-size="11.5" fill="#6b7280">元数据：<tspan font-weight="700">Mnesia</tspan> 存于 Controller（集群成员、用户配置、用户名 → MySQL 实例地址的"路由表"）；Proxy 依路由表把请求送到正确实例。</text>
+      <text x="20" y="196" font-size="11.5" fill="#6b7280">协调组件：<tspan font-weight="700">ZooKeeper 选主（总管）· RabbitMQ 传日志 · LVS 保证单一入口高可用 · 愚公负责迁移</tspan></text>
+    </svg>
+    <div class="cap">UMP 系统架构与角色关系（简答"UMP 架构中的角色及功能"按七角色逐条写）</div>
+  </div>
+  <div class="note">🧠 记忆法：把 UMP 想成一个"云上 DBA 团队"——<b>Controller 是领导（管元数据与决策）、Proxy 是前台（唯一入口 + 路由）、Agent 是现场工人（本机实例操作）、Web 控制台是门面（用户下单）、日志分析与信息统计是记账与体检、愚公是搬家队</b>；四个开源件是工具：<b>Mnesia 记事本、LVS 分流闸、RabbitMQ 传话筒、ZooKeeper 选班长</b>。</div>
+</div>
+
+<h2 class="section" id="s8">八、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>数据库</b>四限定：长期存储、有组织、可共享、统一管理。</li>
+    <li><b>NoSQL = Not Only SQL</b>，为<b>海量 + 高并发 + 多类型 + 水平扩展</b>而生；架构四层：<b>存储 → 分片 → 模型 → 一致性/接口</b>。</li>
+    <li><b>四类</b>：键值（Redis）、列族（HBase/Cassandra）、文档（MongoDB）、图形（Neo4j）——"最快 / 最能扛量 / 最灵活 / 最懂关系"。</li>
+    <li><b>与关系库</b>：模型、模式、ACID vs BASE、垂直 vs 水平、SQL vs API、范式 vs 反范式；<b>关系是互补混用、相互借鉴、底层复用</b>。</li>
+    <li><b>CAP</b> 三选二（P 必选 → CP / AP）；<b>BASE</b> = 基本可用 + 软状态 + 最终一致。</li>
+    <li><b>云数据库</b> = 部署并虚拟化在云中的数据库，八特点（弹性、高可用、多租户、低成本、易用、高性能、免维护、安全）；<b>无专属数据模型</b>。</li>
+    <li><b>UMP</b>：七角色（Controller / Proxy / Agent / Web 控制台 / 日志分析 / 信息统计 / 愚公）+ 四组件（Mnesia / LVS / RabbitMQ / ZooKeeper）+ 七功能（容灾 / 读写分离 / 分库分表 / 资源管理 / 调度 / 隔离 / 数据安全）+ 四原则。</li>
+  </ol>
+  <div class="note">🎯 6 学时分配：①数据库概念 + NoSQL 由来 1 学时；②<b>四类分类 + 与关系库对比 1.5 学时（单选/简答主战场）</b>；③CAP/BASE 1 学时；④云数据库概念特点与产品 1 学时；⑤<b>UMP 架构 1.5 学时（本章难点，按七角色 + 四组件 + 七功能三张清单背）</b>。⚠️ 教材 <b>5.5、5.6 不考</b>，云数据库看<b>教材 5.7 节</b>。</div>
+</div>
+
+<div class="gotos plain" style="margin-top:22px">
+  <a href="../计算框架/MapReduce与Spark.html">← 第 4 章 MapReduce 与 Spark</a>
+  <a href="../应用与展望/大数据的应用与展望.html">→ 第 6 章 大数据的应用与展望</a>
+  <a href="../index.html">📚 回到知识点导航</a>
+</div>
+
+<footer>
+  <p>13011《人工智能与大数据》· 第 5 章 NoSQL 数据库、分布式数据库 HBase、云数据库 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

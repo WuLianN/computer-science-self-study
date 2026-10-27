@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 第 4 章 MapReduce 与 Spark｜设计思想 · 组成 · 工作流程 · 计算过程</title>
+<meta name="description" content="人工智能与大数据 13011 第 4 章速记卡：MapReduce 设计思想（分而治之、移动计算而非移动数据、简化编程模型）与 Mapping/Reducing 涵义；主从结构与组成部分（JobTracker/TaskTracker 与 YARN 的 RM/NM/AM/Container）；作业提交过程与任务执行过程（Map 五步、Shuffle、Reduce 三步）；WordCount 计算过程逐步分析；典型使用案例；Spark 的优势与架构（RDD、DAG、Stage、与 MapReduce 的区别）。含考纲能力层次标注与建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#7c3aed,#db2777)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .rule .kd{margin:4px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+  code.k{background:#eef2ff;color:var(--brand);border-radius:6px;padding:1px 6px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章 · MapReduce 与 Spark ⚙️ ⭐ 计算/流程分析高发</h1>
+  <p>本章的<b>"计算过程"被标为综合应用</b>——历年最爱给一段 WordCount 或求最大值的数据，让你<b>写出 Map 输出、Shuffle 后的分组、Reduce 结果</b>。流程题只要按框图分步写就不丢分。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">难度 ★★★★☆</span><span class="pill">题型：单选 / 简答 / 流程与计算分析</span><span class="pill">重点：设计思想与运作流程</span><span class="pill">难点：计算过程</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../HDFS/分布式文件系统HDFS.html">← 第 3 章</a>
+    <a href="../分布式与云数据库/NoSQL与云数据库.html">→ 第 5 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、设计思想：Mapping 与 Reducing（领会）⭐</a>
+  <a href="#s2">二、主从结构与组成部分（识记）⭐</a>
+  <a href="#s3">三、工作流程：作业提交与任务执行（领会/简单应用）⭐</a>
+  <a href="#s4">四、计算过程详解：WordCount 逐步推演（综合应用）⭐⭐</a>
+  <a href="#s5">五、使用案例与适用边界（领会）</a>
+  <a href="#s6">六、Spark 概述：优势与架构（教材 4.7 节）⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、设计思想：Mapping 与 Reducing（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> Mapping 与 Reducing 的涵义；MapReduce 设计思想的三个方面。</div>
+  <div class="th"><b>名字来源：</b>MapReduce 借用了<b>函数式编程语言（LISP）</b>中的两个操作：<b>Map（映射）</b>与<b>Reduce（归约/化简）</b>，由 Google 于 2004 年提出，是一种<b>分布式并行计算模型/编程框架</b>。</div>
+  <div class="th"><b>两个操作的涵义：</b><b>Mapping（映射）</b>——把一批数据<b>用同一个函数进行转换</b>，输入一组 &lt;key, value&gt; 键值对，输出一组<b>中间键值对</b>（"分解 + 转换"，各元素独立、可并行）；<b>Reducing（归约）</b>——把<b>同一 key 的一组 value 汇总</b>成一个（或几个）结果（"合并 + 聚合"，如求和、计数、求最大最小）。</div>
+  <div class="th"><b>设计思想的三个方面（简答必背）：</b></div>
+  <ol class="steps">
+    <li><b>"分而治之"（Divide and Conquer）</b>：把大问题<b>拆成可并行的 Map 任务</b>处理，再用 <b>Reduce 归并</b>局部结果；"分解—计算—归并"。</li>
+    <li><b>"移动计算而非移动数据"</b>：数据量大、网络传输贵，因此把<b>计算程序调度到数据所在的节点</b>执行（数据本地性 locality），只传输小的中间结果。</li>
+    <li><b>简化编程模型、隐藏分布式细节</b>：用户只需实现 <code class="k">map()</code> 与 <code class="k">reduce()</code> 两个函数，<b>分布式存储、任务调度与监控、节点通信、负载均衡、故障处理（重试）全部由框架完成</b>。</li>
+  </ol>
+  <div class="note">🔑 三个关键词：<b>拆分（Map）— 归并（Reduce）— 就近计算（本地性）</b>。若题目问"MapReduce 最大的优点"，答<b>"编程模型简单、对海量数据高吞吐、可运行在廉价集群上、自动容错"</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、主从结构与组成部分（识记）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> MapReduce 的主从结构和组成部分。</div>
+  <div class="th"><b>主从结构（Master/Slave）：</b>一个 <b>JobTracker（主节点）</b> + 多个 <b>TaskTracker（从节点）</b>。JobTracker 是<b>全局唯一</b>的"总管家"，TaskTracker 是"干活的工人"，两者通过<b>心跳</b>保持联系。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>组成部分</th><th>所属</th><th>职责</th></tr>
+    <tr><td class="nm"><b>Client 客户端</b></td><td>提交端</td><td>提交作业（打包 jar + 配置）、计算<b>输入切片 InputSplit</b>、监控并获取作业运行状态</td></tr>
+    <tr><td class="nm"><b>JobTracker（MRv1 主节点）</b></td><td>Master</td><td><b>资源管理 + 作业/任务调度</b>（全局）：分配任务、监控进度与状态、失败重启、维护 TaskTracker 心跳；<b>不存数据</b></td></tr>
+    <tr><td class="nm"><b>TaskTracker（MRv1 从节点）</b></td><td>Slave</td><td><b>执行 Map/Reduce 任务</b>、管理本节点 CPU/内存槽位、定期向 JobTracker 发<b>心跳</b>并汇报<b>任务进度与状态</b>；启动 <b>TaskRunner</b> 子进程运行任务</td></tr>
+    <tr><td class="nm"><b>Task 任务</b></td><td>执行单元</td><td>分 <b>MapTask</b> 与 <b>ReduceTask</b> 两类，一个 InputSplit 对应一个 MapTask</td></tr>
+    <tr><td class="nm"><b>Job 配置文件</b></td><td>描述</td><td>指定输入/输出路径、map/reduce 类、分区函数、排序与组合、规约（Combiner）、Reduce 任务数等</td></tr>
+    <tr><td class="nm"><b>HDFS</b></td><td>存储</td><td>存放<b>输入数据、中间结果（本地磁盘）、最终输出（HDFS）</b></td></tr>
+    <tr><td class="nm"><b>Map / Reduce 函数</b></td><td>用户代码</td><td>用户自定义的映射与归约逻辑</td></tr>
+  </table></div>
+  <div class="th"><b>MRv2（On YARN）的对应变化（常考对比）：</b>JobTracker 的职责被<b>拆开</b>——<b>ResourceManager（全局资源管理与调度）</b>＋ 每个作业一个 <b>ApplicationMaster / MRAppMaster（该作业的任务调度、监控与失败处理）</b>；TaskTracker → <b>NodeManager（单节点资源管理，按 Container 分配）</b>；资源单位抽象为 <b>Container</b>。好处：<b>资源管理与计算框架解耦、支持多框架共享集群、JobTracker 压力被分摊、可扩展性大幅提升（可支持上千节点）</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、工作流程：作业提交与任务执行（领会 / 简单应用）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 处理过程、任务执行过程、任务进度与状态更新；<span class="lvl c">简单应用</span> 作业提交过程、任务执行过程。</div>
+  <div class="fig">
+    <svg viewBox="0 0 820 236" role="img" aria-label="MapReduce 工作流程：输入文件切分为分片，多个 Map 任务输出中间键值对，经分区、排序、合并与组合形成分区有序文件，Shuffle 由 Reduce 拉取并归并，最后 Reduce 输出写回 HDFS">
+      <g font-size="12.5" font-weight="700" text-anchor="middle">
+        <rect x="18" y="26" width="120" height="46" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/><text x="78" y="47" fill="#6d28d9">输入文件</text><text x="78" y="63" font-size="11" font-weight="400" fill="#334155">HDFS 上</text>
+        <rect x="172" y="26" width="120" height="46" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/><text x="232" y="47" fill="#0369a1">InputSplit</text><text x="232" y="63" font-size="11" font-weight="400" fill="#334155">切片·一个片一个 Map</text>
+        <rect x="326" y="26" width="120" height="46" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/><text x="386" y="47" fill="#15803d">Map 任务</text><text x="386" y="63" font-size="11" font-weight="400" fill="#334155">输出 &lt;k2,v2&gt;</text>
+        <rect x="480" y="26" width="150" height="46" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="2"/><text x="555" y="47" fill="#b45309">分区·排序·合并</text><text x="555" y="63" font-size="11" font-weight="400" fill="#334155">环形缓冲→溢写→Combine</text>
+        <rect x="664" y="26" width="138" height="46" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2"/><text x="733" y="47" fill="#be185d">Shuffle 拉取</text><text x="733" y="63" font-size="11" font-weight="400" fill="#334155">copy → 归并排序</text>
+        <rect x="480" y="120" width="150" height="46" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/><text x="555" y="141" fill="#15803d">Reduce 任务</text><text x="555" y="157" font-size="11" font-weight="400" fill="#334155">对同 key 的 value 列表归约</text>
+        <rect x="664" y="120" width="138" height="46" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/><text x="733" y="141" fill="#6d28d9">输出结果</text><text x="733" y="157" font-size="11" font-weight="400" fill="#334155">写回 HDFS</text>
+        <rect x="18" y="120" width="408" height="46" rx="9" fill="#fafbff" stroke="#e5e7eb" stroke-width="1.6"/><text x="222" y="141" font-size="12" fill="#4f46e5">JobTracker / ResourceManager：调度任务 · 心跳收集进度与状态 · 失败重试</text><text x="222" y="157" font-size="11" font-weight="400" fill="#6b7280">中间结果存本地磁盘，只有最终结果写 HDFS（减少 IO 与网络）</text>
+      </g>
+      <g stroke="#9ca3af" stroke-width="1.8" fill="none">
+        <line x1="138" y1="49" x2="170" y2="49"/><line x1="292" y1="49" x2="324" y2="49"/><line x1="446" y1="49" x2="478" y2="49"/><line x1="630" y1="49" x2="662" y2="49"/>
+        <path d="M733 72 C733 100 620 96 600 118"/><line x1="630" y1="143" x2="662" y2="143"/>
+      </g>
+      <text x="24" y="205" font-size="11.5" fill="#6b7280">三个阶段：<tspan font-weight="700" fill="#15803d">Map</tspan> → <tspan font-weight="700" fill="#b45309">Shuffle（分区/排序/合并/拉取/归并）</tspan> → <tspan font-weight="700" fill="#15803d">Reduce</tspan>；Shuffle 是性能瓶颈（大量磁盘读写与网络传输）。</text>
+      <text x="24" y="224" font-size="11.5" fill="#6b7280">Combiner（本地预聚合）是可选的"mini-Reduce"，只用于满足结合律/交换律的操作（如求和、计数），求平均不能直接用。</text>
+    </svg>
+    <div class="cap">MapReduce 处理过程总览（简答"MapReduce 工作流程"照此分步写）</div>
+  </div>
+  <div class="th"><b>（一）作业提交过程（MRv1·七步，简单应用要能默写）：</b></div>
+  <ol class="steps">
+    <li>客户端调用 <code class="k">Job.submit()</code> 把<b>作业 jar 包、配置文件、切片信息</b>提交（上传）到 HDFS 上的作业目录。</li>
+    <li>JobTracker 收到通知，<b>初始化作业</b>：把作业加入<b>调度队列</b>，创建 <b>JobInProgress</b> 并读取切片信息。</li>
+    <li>JobTracker 按<b>调度策略（默认 FIFO）</b>为作业<b>分配 Map 任务与 Reduce 任务</b>，确定任务数。</li>
+    <li>TaskTracker 通过<b>心跳</b>领任务；领取前通过<b>分布式缓存</b>从 HDFS <b>下载作业程序（jar）与配置</b>。</li>
+    <li>TaskTracker 启动 <b>TaskRunner 子进程</b>执行任务（Map 优先，遵循<b>数据本地性</b>：本地节点 → 同机架 → 其他机架）。</li>
+    <li>任务运行中，TaskRunner 把<b>进度与状态写入状态文件</b>，TaskTracker 通过<b>心跳汇报</b>给 JobTracker；JobTracker 汇总后供客户端查询（<code class="k">job.waitForCompletion</code> 轮询）。</li>
+    <li>作业完成：JobTracker <b>记录作业日志与统计信息</b>（历史服务器可查），客户端收到成功/失败状态。</li>
+  </ol>
+  <div class="th"><b>（二）Map 任务执行过程（六步）：</b>①<b>RecordReader 读取</b> InputSplit，逐条转成 &lt;k1,v1&gt;（行号→文本行）→ ②调用用户 <b>map()</b> 输出 &lt;k2,v2&gt; → ③写入<b>环形内存缓冲区</b>（<code class="k">mapreduce.task.io.sort.mb</code> 默认 100MB，<b>溢写阈值 0.8</b>）→ ④达到阈值则<b>分区（Partitioner，默认 Hash 取模）+ 快排 + （可选 Combiner 预聚合）溢写</b>到本地磁盘（可多次溢写）→ ⑤<b>合并（merge）多个溢写文件</b>为一个<b>分区且有序</b>的最终输出文件 → ⑥把输出文件路径与分区信息<b>报告给 TaskTracker/AM</b>，等待 Reduce 拉取。</div>
+  <div class="th"><b>（三）Reduce 任务执行过程（五步）：</b>①<b>Copy/拉取（shuffle）</b>：从各 Map 节点<b>并行拉取属于本分区</b>的中间数据（内存放不下则先溢写磁盘）→ ②<b>归并排序 Merge</b>：把多路已排序数据归并成按 key 有序 → ③<b>Grouping 分组</b>：同一 key 的 value 聚成一个列表 &lt;k3, list(v3)&gt; → ④调用用户 <b>reduce()</b> 归约输出 &lt;k4,v4&gt; → ⑤由 <b>RecordWriter 写入 HDFS</b>（默认生成 <code class="k">part-r-00000</code> 等文件，Reduce 任务数 = 输出文件数）。</div>
+  <div class="th"><b>（四）任务进度与状态更新机制（领会）：</b>Map 进度按<b>读入/映射/溢写</b>加权计算，Reduce 进度按<b>拉取/排序/归约/写盘</b>加权；<b>TaskRunner 定期更新状态文件 → TaskTracker 心跳上报 → JobTracker 汇总为作业进度百分比</b>。失败时 JobTracker 把任务<b>重新调度到其他节点重试</b>（默认尝试次数上限 <code class="k">mapreduce.map.maxattempts=4</code>），超过则作业失败。</div>
+  <div class="note">⚠️ 三个高频陷阱：①<b>InputSplit 是逻辑切片，不是物理文件</b>（一个 Split 对应一个 Map 任务，切片大小一般等于 HDFS 块大小 128M）；②<b>中间结果不在 HDFS 上</b>（存 TaskTracker 本地磁盘），只有输入/输出在 HDFS；③<b>Reduce 任务数为 0 时没有 Shuffle 与 Reduce</b>，Map 输出直接作为结果（相当于只做过滤/转换）。</div>
+</div>
+
+<h2 class="section" id="s4">四、计算过程详解：WordCount 逐步推演（综合应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> MapReduce 计算过程分析。</div>
+  <div class="th"><b>题目设定：</b>两个输入分片，Reduce 任务数 = 2，分区规则 <code class="k">key.hashCode() % 2</code>（此处简化为"首字母在 a~m 归 0、n~z 归 1"）。求词频。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>阶段</th><th>分片 0（内容：hello world hello）</th><th>分片 1（内容：world big data）</th></tr>
+    <tr><td class="nm">① 输入 &lt;k1,v1&gt;</td><td>&lt;0, "hello world hello"&gt;</td><td>&lt;0, "world big data"&gt;</td></tr>
+    <tr><td class="nm">② Map 输出 &lt;k2,v2&gt;</td><td>&lt;hello,1&gt; &lt;world,1&gt; &lt;hello,1&gt;</td><td>&lt;world,1&gt; &lt;big,1&gt; &lt;data,1&gt;</td></tr>
+    <tr><td class="nm">③ 分区 Partition</td><td>hello→0，world→1</td><td>world→1，big→0，data→0</td></tr>
+    <tr><td class="nm">④ 排序 + Combiner（本地预聚合）</td><td>分区0：&lt;hello,2&gt;；分区1：&lt;world,1&gt;</td><td>分区0：&lt;big,1&gt; &lt;data,1&gt;；分区1：&lt;world,1&gt;</td></tr>
+    <tr><td class="nm">⑤ Shuffle 拉取 + 归并（按 key 有序）</td><td colspan="2"><b>Reduce 0 收到：</b>&lt;big,[1]&gt; &lt;data,[1]&gt; &lt;hello,[2]&gt;　<b>Reduce 1 收到：</b>&lt;hello? 无&gt; &lt;world,[1,1]&gt;</td></tr>
+    <tr><td class="nm">⑥ Reduce 输出 &lt;k4,v4&gt;</td><td colspan="2">&lt;big,1&gt; &lt;data,1&gt; &lt;hello,2&gt;（part-r-00000）；&lt;world,2&gt;（part-r-00001）</td></tr>
+  </table></div>
+  <div class="th"><b>答题模板（拿分四步，写全就不扣分）：</b>① 写出<b>每个分片的 Map 输出</b>（键值对列表）→ ② 标明<b>分区归属与排序结果</b>（可写 Combiner 前后两版）→ ③ 写出<b>Reduce 端拉取并归并后的分组</b>&lt;key, [values]&gt; → ④ 给出<b>最终输出与所在文件</b>（part-r-0000x）。</div>
+  <div class="note"> 变式练手（同套路）：①<b>求最大值</b>——map 输出 &lt;"max", v&gt;，reduce 对列表取最大；②<b>倒排索引</b>——map 输出 &lt;word, docId&gt;，reduce 收集 docId 集合；③<b>词共现</b>——map 输出 &lt;(w1,w2), 1&gt;；④<b>Join</b>——map 端把两表按连接键打标签输出，reduce 端按标签分桶再组合。注意：这些题的<b>得分点都在②③步的"分组"是否写对</b>。</div>
+</div>
+
+<h2 class="section" id="s5">五、使用案例与适用边界（领会）</h2>
+<div class="rule">
+  <div class="th"><b>典型使用案例：</b>①<b>词频统计 WordCount</b>（入门例）；②<b>倒排索引</b>（搜索引擎建库）；③<b>分布式排序 / 二次排序</b>；④<b>矩阵乘法</b>；⑤<b>共现矩阵与关联分析</b>；⑥<b>K-Means 聚类</b>（迭代式，每轮一个 MR）；⑦<b>数据去重、抽样、统计聚合</b>（PV/UV）；⑧<b>文本压缩与 ETL</b>。</div>
+  <div class="th"><b>适用与不适用（简答）：</b>✔ 适合<b>离线、批处理、高吞吐、一次读大量数据、计算密集</b>的场景；✘ 不适合<b>实时/流式计算</b>（作业启动与磁盘开销大、延迟高）、<b>迭代式计算</b>（每轮都要读写磁盘、中间结果无法复用）、<b>交互式查询</b>、<b>依赖全局共享状态</b>的算法。</div>
+</div>
+
+<h2 class="section" id="s6">六、Spark 概述：优势与架构（教材 4.7 节）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> Spark 的优势、Spark 的架构。</div>
+  <div class="th"><b>是什么：</b>Spark 是 UC Berkeley AMPLab 开源的<b>基于内存计算的、快速通用的分布式大数据处理引擎</b>（MapReduce 的改进/替代者），提供 <b>Java/Scala/Python/R</b> API，自带<b>一体化</b>组件：<b>Spark SQL</b>（结构化查询）、<b>MLlib</b>（机器学习）、<b>GraphX</b>（图计算）、<b>Structured Streaming</b>（流计算）。</div>
+  <div class="th"><b>Spark 的优势（简答·六条）：</b></div>
+  <ol class="steps">
+    <li><b>运行速度快（内存计算）</b>：中间结果<b>放内存</b>而非落盘，迭代计算比 Hadoop MapReduce 快 <b>10～100 倍</b>。</li>
+    <li><b>使用 Java/Scala/Python/R 多语言 API</b>，并提供<b>交互式 Shell</b>，开发效率高。</li>
+    <li><b>通用性/一体化</b>：同一引擎支持 SQL、机器学习、图计算、流处理，减少系统割裂。</li>
+    <li><b>运行模式灵活</b>：可<b>独立（Standalone）</b>运行，也可跑在 <b>YARN、Mesos、K8s</b> 上，可读取 <b>HDFS、HBase、Hive、MySQL、S3</b> 等多种数据源。</li>
+    <li><b>与 Hadoop 生态兼容</b>，可直接复用 HDFS 与 YARN。</li>
+    <li><b>RDD 容错机制高效</b>：靠<b>血缘（Lineage）</b>重算丢失分区，不必像副本那样复制数据。</li>
+  </ol>
+  <div class="th"><b>核心抽象 RDD（弹性分布式数据集）——名词解释常考：</b>一个<b>只读、可分区、可并行计算</b>的<b>分布式数据集合</b>，可<b>常驻内存</b>；通过<b>转换算子（transformation，惰性）</b>生成新 RDD，通过<b>行动算子（action）</b>触发真正计算；对上游 RDD 的<b>依赖关系构成 DAG</b>，故障时按<b>血缘重算</b>恢复。</div>
+  <div class="th"><b>Spark 架构（主从 + 三层调度概念）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>概念/组件</th><th>含义</th></tr>
+    <tr><td class="nm"><b>Application</b></td><td>包含 Driver 与集群上多个 Executor 的<b>用户程序</b></td></tr>
+    <tr><td class="nm"><b>Driver（驱动程序）</b></td><td>运行 <code class="k">main()</code>、创建 <b>SparkContext</b>，负责把 RDD 操作<b>构建 DAG → 划分 Stage → 提交任务 → 收集结果</b>（内含 <b>DAGScheduler</b> 与 <b>TaskScheduler</b>）</td></tr>
+    <tr><td class="nm"><b>Cluster Manager</b></td><td>集群资源管理（Standalone Master / YARN ResourceManager / Mesos Master）</td></tr>
+    <tr><td class="nm"><b>Worker Node</b></td><td>工作节点，保存本节点 CPU/内存资源，接收 Cluster Manager 分配、启动 Executor</td></tr>
+    <tr><td class="nm"><b>Executor</b></td><td>每个节点上的<b>执行进程</b>，负责<b>运行 Task、管理内存与缓存数据</b>，向 Driver 汇报状态</td></tr>
+    <tr><td class="nm"><b>Job / Stage / Task</b></td><td>一个 <b>action 触发一个 Job</b>；Job 按 RDD 依赖（<b>宽依赖/Shuffle 为界</b>）拆成多个 <b>Stage</b>；Stage 内按分区并行拆成多个 <b>Task</b>（最小执行单元）</td></tr>
+  </table></div>
+  <div class="th"><b>Spark vs MapReduce（对比简答）：</b>①<b>中间结果</b>：MR 落盘 vs Spark 尽量驻留<b>内存</b>；②<b>计算模型</b>：MR 只有 Map/Reduce 两步、复杂任务需<b>串联多个作业</b> vs Spark 提供 <b>DAG 多算子</b>一次表达；③<b>迭代/交互/流式</b>：MR 弱 vs Spark 强；④<b>容错</b>：MR 靠<b>重跑任务/副本</b> vs Spark 靠 <b>RDD 血缘重算</b>；⑤<b>语言与生态</b>：MR 主要 Java vs Spark 多语言 + SQL/ML/Graph/Streaming 一体；⑥<b>磁盘 I/O 与延迟</b>：MR 高 vs Spark 低。<b>但 Spark 内存开销大、对内存不足的大规模 shuffle 场景不一定优于 MR，且 MR 更成熟稳定、容错粒度更粗但更稳。</b></div>
+  <div class="note">⚠️ 易错：Spark 快<b>不是因为"用了更多的机器"</b>，而是<b>避免中间结果落盘 + DAG 优化执行</b>；宽依赖（shuffle 依赖）才切 Stage，窄依赖（map 端融合）在同一 Stage 内流水线执行。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>设计思想三条</b>：分而治之、<b>移动计算而非移动数据</b>、简化编程模型（只写 map/reduce）。</li>
+    <li><b>主从组成</b>：Client、JobTracker、TaskTracker、Task、配置、HDFS；MRv2 换成 <b>RM + NM + AM + Container</b>。</li>
+    <li><b>流程</b>：提交七步；Map 六步（环形缓冲 100M、溢写阈值 0.8、分区排序合并）；Reduce 五步（拉取—归并—分组—归约—写 HDFS）。</li>
+    <li><b>计算过程</b>：WordCount 表格里 <b>②Map 输出 → ③分区 → ⑤分组</b> 是全部得分点。</li>
+    <li><b>边界</b>：MR 适合离线批处理，不适合实时、迭代、交互。</li>
+    <li><b>Spark</b>：内存计算 + RDD（只读、可分区、惰性、血缘容错）+ DAG/Stage/Task；六大优势与 MR 六项对比。</li>
+  </ol>
+  <div class="note">🎯 6 学时分配：①设计思想 + 组成 1 学时；②<b>工作流程 2 学时（提交/Map/Reduce 三段必须能分步书写）</b>；③<b>计算过程推演 1.5 学时（亲手算 WordCount + 一个变式）</b>；④使用案例 0.5 学时；⑤Spark 1 学时。⚠️ 教材 <b>4.6、4.8 不考</b>，Spark 只看 <b>4.7 节</b>。</div>
+</div>
+
+<div class="gotos plain" style="margin-top:22px">
+  <a href="../HDFS/分布式文件系统HDFS.html">← 第 3 章 Hadoop 分布式文件系统 HDFS</a>
+  <a href="../分布式与云数据库/NoSQL与云数据库.html">→ 第 5 章 NoSQL 数据库与云数据库</a>
+  <a href="../index.html">📚 回到知识点导航</a>
+</div>
+
+<footer>
+  <p>13011《人工智能与大数据》· 第 4 章 MapReduce 与 Spark 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

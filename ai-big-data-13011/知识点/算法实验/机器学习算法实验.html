@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 第 13 章 机器学习算法实验｜距离计算 · K-均值 · 回归分类指标 · 决策树信息增益</title>
+<meta name="description" content="人工智能与大数据 13011 第 13 章速记卡（全书唯一计算大题章）：各种距离度量的计算（欧氏/曼哈顿/切比雪夫/闵可夫斯基/汉明/编辑/余弦/马氏，含完整算例）；常用聚类算法（划分/层次/密度/网格/模型）、K-均值聚类原理与逐步迭代算例、聚类好坏准则与影响因素；最常用回归＝线性回归、最小二乘求回归系数与拟合优度 R²、回归评价指标 MSE/RMSE/MAE；分类合理判断的两个常用指标精确率与召回率及混淆矩阵、F1、准确率、AUC；决策树基本思想、熵与信息增益（含必备对数值速查表），完整给出大纲官方"水果分类"综合应用大题与一个热身算例。含考纲能力层次标注与建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#7e22ce,#ea580c)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .rule .kd{margin:4px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+  .calc{background:#f8fafc;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:10px 0;font-variant-numeric:tabular-nums}
+  .calc table{border-collapse:collapse;font-size:13.5px;margin:6px 0}
+  .calc th,.calc td{border:1px solid var(--line);padding:3px 9px;text-align:center}
+  .calc th{background:#f3e8ff}
+  .calc p{margin:5px 0}
+  .tree{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:13.5px;line-height:1.9;background:#faf5ff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;overflow-x:auto;white-space:pre;color:#3b0764}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 13 章 · 机器学习算法实验 🧪</h1>
+  <p><b>全书的分值重镇</b>——综合分析题（决策树）几乎必然出自本章。三块内容：<b>距离怎么算</b>、<b>聚类/回归/分类怎么做怎么评</b>、<b>决策树怎么长出来</b>。前两章靠"背"，这一章靠"<b>练</b>"：公式不多，但每一步都要能手写。⚠️ <b>章号错位提醒：</b>考纲第 13 章"机器学习算法实验"对应<b>教材第 15 章 15.1—15.3 节</b>（被排除的是教材第 13、14 整章与 15.4 节，别混淆）。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">难度 ★★★★★</span><span class="pill">题型：计算 / 算法 trace / 画决策树 / 综合应用</span><span class="pill">重点：聚类、回归和分类基础算法</span><span class="pill">难点：熵的理解和应用</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../云计算融合/云计算大数据与人工智能.html">← 第 12 章</a>
+    <a href="../index.html">→ 返回导航（本章为末章）</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、距离的度量与计算（简单应用）⭐⭐</a>
+  <a href="#s2">二、距离选择的陷阱与相似度（简单应用）</a>
+  <a href="#s3">三、常用聚类算法（识记）⭐</a>
+  <a href="#s4">四、K-均值聚类原理与迭代算例（简单应用）⭐⭐</a>
+  <a href="#s5">五、聚类好坏准则与影响因素（领会）</a>
+  <a href="#s6">六、最常用回归与线性回归原理（识记/领会）⭐⭐</a>
+  <a href="#s7">七、回归评价指标（领会）</a>
+  <a href="#s8">八、分类合理判断的两个常用指标（识记）⭐⭐</a>
+  <a href="#s9">九、决策树基本思想（领会）⭐⭐</a>
+  <a href="#s10">十、熵与信息增益（领会）⭐⭐⭐ 难点</a>
+  <a href="#s11">十一、基于信息增益生成决策树（综合应用）⭐⭐⭐ 大题</a>
+  <a href="#s12">十二、变体：增益率、基尼指数与剪枝（了解）</a>
+  <a href="#s13">十三、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、距离的度量与计算（简单应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 各种距离度量的计算（考纲第 13 章／教材 15.1 节）。</div>
+  <div class="th"><b>为什么要算距离：</b>距离（相似度）是<b>聚类、KNN 分类、协同过滤推荐、检索、异常检测</b>的共同基础——"物以类聚"要靠一个可计算的"像不像"来定义。设两个 n 维样本 <b>x = (x₁,…,xₙ)</b>、<b>y = (y₁,…,yₙ)</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>名称</th><th>公式</th><th>直觉 / 适用</th></tr>
+    <tr><td class="nm"><b>欧氏距离</b><br>（L2）</td><td>d = √[ Σ (x<sub>i</sub> − y<sub>i</sub>)² ]</td><td>直线距离，<b>最常用</b>；对量纲敏感，<b>需先标准化</b>（第 8 章 min-max / Z-score）</td></tr>
+    <tr><td class="nm"><b>曼哈顿距离</b><br>（L1 / 街区距离）</td><td>d = Σ |x<sub>i</sub> − y<sub>i</sub>|</td><td>沿坐标轴走的"城市街区"距离；<b>对异常值更稳健</b></td></tr>
+    <tr><td class="nm"><b>切比雪夫距离</b><br>（L∞ / 最大值距离）</td><td>d = max<sub>i</sub> |x<sub>i</sub> − y<sub>i</sub>|</td><td>只看<b>差异最大的那一维</b>；国际象棋 king 的步数</td></tr>
+    <tr><td class="nm"><b>闵可夫斯基距离</b><br>（Minkowski，通式）</td><td>d = ( Σ |x<sub>i</sub> − y<sub>i</sub>|<sup>p</sup> )<sup>1/p</sup></td><td><b>p=1 曼哈顿、p=2 欧氏、p→∞ 切比雪夫</b>——三者是同一族的特例（概念题常考）</td></tr>
+    <tr><td class="nm"><b>标准化欧氏距离</b></td><td>d = √[ Σ ((x<sub>i</sub> − y<sub>i</sub>)/σ<sub>i</sub>)² ]</td><td>各维先除以标准差，消除量纲与方差影响</td></tr>
+    <tr><td class="nm"><b>马氏距离</b></td><td>d = √[ (x−y)<sup>T</sup> S<sup>−1</sup> (x−y) ]，S 为协方差矩阵</td><td><b>考虑维度相关性与尺度</b>，与量纲无关；适合椭圆分布数据</td></tr>
+    <tr><td class="nm"><b>汉明距离</b></td><td>两<b>等长</b>串<b>不同位置的个数</b></td><td>二进制编码、类别序列、纠错码；不算数值差</td></tr>
+    <tr><td class="nm"><b>编辑（莱文斯坦）距离</b></td><td>把一串改成另一串所需<b>插入/删除/替换最少次数</b></td><td><b>长度可不等</b>；文本纠错、DNA 序列</td></tr>
+    <tr><td class="nm"><b>余弦距离</b></td><td>cos θ = (x·y)/(‖x‖‖y‖)；距离 = 1 − cos θ</td><td>只看<b>方向</b>不看长短，文本向量、推荐常用</td></tr>
+    <tr><td class="nm"><b>相关距离</b></td><td>1 − r（皮尔逊相关系数，见第 8 章）</td><td>衡量线性相关程度，<b>对整体平移/缩放不敏感</b></td></tr>
+  </table></div>
+  <div class="calc">
+    <b>算例：A = (1, 2, 6)、B = (4, 6, 2)，求各距离。</b>
+    <p>差值向量 <b>A−B = (−3, −4, 4)</b>。</p>
+    <table>
+      <tr><th>度量</th><th>代入</th><th>d(A, B)</th></tr>
+      <tr><td>欧氏（p=2）</td><td>√(9+16+16)</td><td>= √41 ≈ <b>6.40</b></td></tr>
+      <tr><td>曼哈顿（p=1）</td><td>3+4+4</td><td>= <b>11</b></td></tr>
+      <tr><td>切比雪夫（p=∞）</td><td>max{3,4,4}</td><td>= <b>4</b></td></tr>
+      <tr><td>闵氏 p=3</td><td>(27+64+64)<sup>1/3</sup></td><td>= ∛155 ≈ <b>5.37</b></td></tr>
+      <tr><td>汉明</td><td>三个位置都不同</td><td>= <b>3</b></td></tr>
+    </table>
+    <p>✏️ <b>再练一维（K-均值/近邻最常用）：</b>x=(2,2)、y=(0,4)、z=(1,3) 到原点比较：<b>欧氏 d(x,y)=√8≈2.83、d(x,z)=√2≈1.41</b>；<b>曼哈顿 d(x,y)=4、d(x,z)=2</b>；<b>切比雪夫 d(x,y)=2、d(x,z)=1</b>——同一批点、不同度量大小排序一般一致，但<b>换一批点就可能翻盘</b>（见第二节要点）。</p>
+  </div>
+</div>
+
+<h2 class="section" id="s2">二、距离选择的陷阱与相似度（简单应用）</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>要点</th><th>说明</th></tr>
+    <tr><td class="nm"><b>量纲必须统一</b></td><td>欧氏距离下"年龄(1~100)"会淹没"收入(0~10)"的差别；先<b>规范化/标准化</b>，或改用<b>马氏/标准化欧氏</b></td></tr>
+    <tr><td class="nm"><b>维度灾难</b></td><td>维数很高时<b>所有点对的距离趋于相等</b>，基于距离的方法失效；对策：降维（PCA）、特征选择、改用余弦</td></tr>
+    <tr><td class="nm"><b>距离 ≠ 相似</b></td><td>按<b>数据语义</b>选度量：数值连续→欧氏/曼哈顿；文本向量→余弦；类别串→汉明/编辑；考虑相关性→马氏</td></tr>
+    <tr><td class="nm"><b>相似度的性质</b></td><td>相似度量 sim 一般要求 <b>对称、0≤sim≤1、当且仅当 x=y 取 1</b>；满足三角不等式才叫<b>度量/距离</b>。⚠️ <b>余弦"距离"不满足三角不等式</b>，严格说不是度量</td></tr>
+    <tr><td class="nm"><b>非数值与混合属性</b></td><td>分类属性用<b>差异表</b>（同取值记 0、异记 1）；序数属性用秩次归一；混合属性<b>加权组合</b> d=Σ w<sub>k</sub>d<sub>k</sub>，缺失维剔除并重归一权重</td></tr>
+  </table></div>
+  <div class="note">🎯 <b>常见考法：</b>"哪种距离在 p→∞ 时退化为切比雪夫？"→<b>闵可夫斯基</b>；"衡量文本向量方向差异常用？"→<b>余弦</b>；"判断等长二进制编码差异？"→<b>汉明</b>；"变长字符串最少编辑次数？"→<b>编辑距离</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、常用聚类算法（识记）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 常用的聚类算法（考纲第 13 章／教材 15.2 节）。</div>
+  <div class="th"><b>聚类（Clustering）＝无监督学习</b>：不使用标签，按<b>样本间相似度</b>把数据分成若干"簇"，使<b>簇内相似性尽可能大、簇间差异性尽可能大</b>（这句是聚类好坏准则、也是简答必写句）。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类别</th><th>代表算法</th><th>思想</th><th>特点 / 局限</th></tr>
+    <tr><td class="nm"><b>基于划分</b></td><td><b>K-均值</b>、K-中心点(K-Medoids/PAM)、K-模态/K-原型、CLARA</td><td>预设 k 个中心，反复<b>"分配—重算中心"</b>优化 SSE</td><td>简单快速；<b>须先定 K</b>、只发现<b>球状等大小</b>簇、<b>对初值与异常值敏感</b>（K-Medoids 用真实点当中心更抗噪）</td></tr>
+    <tr><td class="nm"><b>基于层次</b></td><td><b>BIRCH</b>、CURE、ROCK、AGNES(凝聚)、DIANA(分裂)</td><td>自底向上<b>逐层合并</b>或自顶向下分裂，形成<b>树状图 dendrogram</b></td><td>不必预设 K、可视化好；<b>合并不可撤销</b>、开销大 O(n²)</td></tr>
+    <tr><td class="nm"><b>基于密度</b></td><td><b>DBSCAN</b>、OPTICS、DENCLUE</td><td>把<b>足够密集</b>的点连成簇，分核心/边界/噪声点</td><td><b>任意形状簇、自动识别噪声、不必设 K</b>；对 <b>ε 与 MinPts</b> 敏感、密度不均时差</td></tr>
+    <tr><td class="nm"><b>基于网格</b></td><td><b>STING</b>、WaveCluster、CLIQUE</td><td>空间划成<b>有限单元格</b>，在网格上统计聚类</td><td>速度极快、与数据顺序无关；精度受<b>网格粒度</b>限制</td></tr>
+    <tr><td class="nm"><b>基于模型</b></td><td><b>GMM 高斯混合＋EM</b>、隐马尔可夫、SOM、均值漂移</td><td>假设数据由若干分布生成，<b>拟合参数得软聚类</b></td><td>给出<b>属于各簇的概率</b>、统计扎实；计算复杂、假设可能不成立</td></tr>
+  </table></div>
+  <div class="note">⚠️ <b>单选：</b>"<b>不属于</b>常用聚类算法"的干扰项常是<b>逻辑回归、朴素贝叶斯、决策树</b>（监督分类）、<b>Apriori</b>（关联规则）。<b>K-均值、DBSCAN、层次聚类、均值漂移、GMM、BIRCH</b> 才是聚类。</div>
+</div>
+
+<h2 class="section" id="s4">四、K-均值聚类原理与迭代算例（简单应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> K-均值聚类算法原理。</div>
+  <div class="th"><b>算法五步（背下来 + 会 trace）：</b>① 指定聚类数 <b>K</b>；② <b>随机选 K 个初始中心</b>（或 K-均值++ 按距离加权选，改善初值）；③ <b>分配</b>——每个样本分给<b>距离最近</b>的中心，成 K 个簇；④ <b>更新</b>——把每个簇的<b>均值（质心）</b>作新中心；⑤ 重复③④ 直到<b>中心不再变化 / 目标函数收敛 / 达最大迭代次数</b>。</div>
+  <div class="th"><b>目标函数（簇内平方和 SSE，最小化）：</b>J = Σ<sub>k</sub> Σ<sub>x∈C<sub>k</sub></sub> ‖x − μ<sub>k</sub>‖²。<b>"更新为何取均值"的标准答案：均值能最小化该簇的平方误差。</b></div>
+  <div class="calc">
+    <b>算例：一维数据 {1, 2, 3, 8, 9, 10}，K = 2，初始中心 μ₁ = 1、μ₂ = 8（欧氏距离即绝对差）。</b>
+    <p><b>第 1 轮 分配：</b>各点到 μ₁=1 与 μ₂=8 的距离 (0/7)(1/6)(2/5)(7/0)(8/1)(9/2) ⇒ <b>C₁={1,2,3}，C₂={8,9,10}</b>（3 与 8 分界在 4.5）。</p>
+    <p><b>第 1 轮 更新：</b>μ₁=(1+2+3)/3=<b>2</b>；μ₂=(8+9+10)/3=<b>9</b>。中心变了（1→2、8→9），继续。</p>
+    <p><b>第 2 轮 分配：</b>到 2 与 9 的距离 (1/8)(0/7)(1/6)(6/1)(7/0)(8/1) ⇒ 归属<b>仍是 C₁={1,2,3}、C₂={8,9,10}</b>。</p>
+    <p><b>第 2 轮 更新：</b>μ₁=<b>2</b>、μ₂=<b>9</b>——与上轮<b>完全相同</b> ⇒ <b>收敛，聚类结束</b>。</p>
+    <p><b>结果评价：</b>SSE(C₁)=(1−2)²+(2−2)²+(3−2)²=<b>2</b>；SSE(C₂)=(8−9)²+(9−9)²+(10−9)²=<b>2</b>；总 <b>J=4</b>，两簇紧密且分离良好。</p>
+    <p>🔧 <b>初值敏感的直观体会：</b>若初始取 μ₁=3、μ₂=8，第 1 轮分得 C₁={1,2,3}、C₂={8,9,10} 恰好一步到位；但换一批点，初值不同会<b>收敛到 SSE 更大的局部最优</b>——这就是要用 <b>K-均值++／多次随机重启取最小 SSE</b> 的原因。</p>
+  </div>
+  <div class="th"><b>二维 trace 的通用做法（若给散点坐标）：</b>草稿列表"<b>点 → 到各中心距离 → 最近中心</b>"，逐点算完再各自求均值；<b>每轮把新旧中心都写出并比较</b>，明确写"中心不再变化 ⇒ 收敛"这句结论。</div>
+</div>
+
+<h2 class="section" id="s5">五、聚类好坏准则与影响因素（领会）</h2>
+<div class="rule">
+  <div class="th"><b>好聚类准则：</b><b>簇内相似性（紧密度）越大、簇间差异性（分离度）越大，效果越好</b>——两个方向同时优化。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>影响 K-均值效果的主要因素</th><th>说明与对策</th></tr>
+    <tr><td class="nm"><b>① K 值大小</b></td><td>太小欠拟合、太大碎簇；用<b>肘部法</b>（SSE 下降拐点）、<b>轮廓系数</b>峰值、业务含义确定</td></tr>
+    <tr><td class="nm"><b>② 初始中心选择</b></td><td>易陷<b>局部最优</b>；对策 <b>K-均值++</b>（按距离平方概率选点）、多次重启取最优</td></tr>
+    <tr><td class="nm"><b>③ 相似性测度（距离）</b></td><td>换曼哈顿后中心应取<b>中位数</b>而非均值；量纲差异会让某维主导——先标准化</td></tr>
+    <tr><td class="nm"><b>④ 数据与异常值</b></td><td><b>离群点</b>严重拉偏质心（K-Medoids 或先剔除）；簇<b>非球状/大小悬殊/密度不均</b>时失效（改 DBSCAN/GMM）</td></tr>
+    <tr><td class="nm"><b>⑤ 准则函数与终止条件</b></td><td>目标函数是否单调下降、迭代上限与阈值决定是否"假收敛"</td></tr>
+    <tr><td class="nm">评价指标</td><td><b>内部</b>（无标签）：SSE、<b>轮廓系数 SC</b>、DB 指数 DBI（越小越好）、Dunn 指数（越大越好）；<b>外部</b>（有参考标签）：<b>Jaccard 系数、FM 指数、Rand 指数</b></td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s6">六、最常用回归与线性回归原理（识记 / 领会）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 最常用的回归；<span class="lvl b">领会</span> 线性回归原理。</div>
+  <div class="th"><b>回归（Regression）＝监督学习，输出是<b>连续数值</b></b>（与分类的区别就在输出离散/连续；预测房价、销量、温度、股价属回归）。<b>最常用的回归＝线性回归</b>。</div>
+  <div class="th"><b>线性回归原理三句话：</b>①<b>模型</b> ŷ = a + b x（多元 ŷ = w₀ + w₁x₁ + … + wₙxₙ）；②<b>准则</b>——<b>最小二乘法</b>使<b>残差平方和 Σ(y<sub>i</sub> − ŷ<sub>i</sub>)² 最小</b>；③<b>求解</b>——对 a、b 求偏导并令为 0，得闭式解（也可梯度下降迭代）。</div>
+  <div class="calc">
+    <p><b>公式（必记）：</b> b = Σ(x<sub>i</sub>−x̄)(y<sub>i</sub>−ȳ) ÷ Σ(x<sub>i</sub>−x̄)² = L<sub>xy</sub>/L<sub>xx</sub>；<b>a = ȳ − b·x̄</b>（<b>回归直线必过样本中心 (x̄, ȳ)</b>——常考判断）。</p>
+    <b>算例：广告费 x 与销量 y 五次观测 x = 2,4,5,6,8；y = 30,40,60,50,70，求回归方程并预测 x=10。</b>
+    <p>x̄ = 25/5 = <b>5</b>；ȳ = 250/5 = <b>50</b>。</p>
+    <p>x 离差 −3,−1,0,1,3 ⇒ Σ(x−x̄)² = 9+1+0+1+9 = <b>20</b>。</p>
+    <p>y 离差 −20,−10,10,0,20 ⇒ Σ(y−ȳ)² = 400+100+100+0+400 = <b>1000</b>。</p>
+    <p>离差积 = (−3)(−20)+(−1)(−10)+0×10+1×0+3×20 = 60+10+0+0+60 = <b>130</b>。</p>
+    <p><b>b = 130/20 = 6.5</b>；<b>a = 50 − 6.5×5 = 17.5</b> ⇒ 回归方程 <b>ŷ = 17.5 + 6.5x</b>。<b>预测 x=10 ⇒ ŷ = 17.5 + 65 = 82.5</b>。</p>
+    <p><b>拟合优度：</b>r = 130/√(20×1000) = 130/141.42 ≈ <b>0.919</b>，<b>R² = r² ≈ 0.845</b> ⇒ 广告费可解释销量约 <b>84.5%</b> 的变动，线性关系强、可用于预测。（R² 越小越不可信；回归系数显著性 p&lt;0.05 才算该变量作用显著。）</p>
+  </div>
+  <div class="note">📌 <b>扩展口径：</b>实践中简单线性回归常被<b>带正则化的回归</b>替代——<b>LASSO(L1，可压系数为 0 顺带选特征)、Ridge(L2，治多重共线性)、Elastic Net(L1+L2)</b>；非线性用<b>多项式回归、回归树、SVR、深度学习</b>。<b>逻辑回归名字带"回归"其实是分类方法</b>（输出经 Sigmoid 映射成概率，接第 9 章）。</div>
+</div>
+
+<h2 class="section" id="s7">七、回归评价指标（领会）</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>指标</th><th>公式</th><th>读法</th></tr>
+    <tr><td class="nm">均方误差 <b>MSE</b></td><td>(1/n) Σ (y<sub>i</sub> − ŷ<sub>i</sub>)²</td><td>越小越好；对<b>大误差惩罚重</b></td></tr>
+    <tr><td class="nm">均方根误差 <b>RMSE</b></td><td>√MSE</td><td>与原始量纲一致，便于解释</td></tr>
+    <tr><td class="nm">平均绝对误差 <b>MAE</b></td><td>(1/n) Σ |y<sub>i</sub> − ŷ<sub>i</sub>|</td><td>稳健、直观，不受极端值过度影响</td></tr>
+    <tr><td class="nm">决定系数 <b>R²</b></td><td>1 − SSE/SST，SST = Σ(y<sub>i</sub> − ȳ)²</td><td>≤ 1，<b>越接近 1 拟合越好</b>＝"被模型解释的变异性比例"</td></tr>
+    <tr><td class="nm">MAPE</td><td>(1/n) Σ |(y<sub>i</sub> − ŷ<sub>i</sub>)/y<sub>i</sub>|</td><td>百分比误差，跨量级比较（真值近 0 时不适用）</td></tr>
+  </table></div>
+  <div class="calc"><p>用第六节数据复核：SST=1000、残差 = 实际−预测 = (30−30.5, 40−43.5, 60−50, 50−56.5, 70−69.5) = (−0.5,−3.5,+10,−6.5,+0.5)，<b>SSE=0.25+12.25+100+42.25+0.25=155</b> ⇒ <b>R² = 1 − 155/1000 = 0.845</b>（与 r² 吻合）。<b>MSE=31、RMSE≈5.57、MAE=(0.5+3.5+10+6.5+0.5)/5=4.2</b>。</p></div>
+</div>
+
+<h2 class="section" id="s8">八、分类合理判断的两个常用指标（识记）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 对分类的合理判断常用的两个指标及概念。</div>
+  <div class="th"><b>答案：精确率（Precision，查准率）与召回率（Recall，查全率）。</b>二者从<b>两个互相拉扯的角度</b>评价分类器，只看其一会被"全判正/全不判正"钻空子，须<b>成对使用</b>。</div>
+  <div class="calc">
+    <b>混淆矩阵（以"是否患病"为正类）：</b>
+    <table>
+      <tr><th>实际 \ 预测</th><th>预测为正</th><th>预测为负</th></tr>
+      <tr><td><b>实际为正</b></td><td>TP 真正例（查得对）</td><td>FN 假负例（<b>漏报</b>）</td></tr>
+      <tr><td><b>实际为负</b></td><td>FP 假正例（<b>误报</b>）</td><td>TN 真负例</td></tr>
+    </table>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>指标</th><th>公式</th><th>含义 / 何时更重要</th></tr>
+    <tr><td class="nm"><b>精确率 Precision</b></td><td>TP / (TP + FP)</td><td><b>"报出来的有多少是对的"</b>——误报代价高时优先（垃圾邮件拦截、精准推送）</td></tr>
+    <tr><td class="nm"><b>召回率 Recall</b></td><td>TP / (TP + FN)</td><td><b>"该找出来的找全了多少"</b>——漏报代价高时优先（疾病筛查、欺诈/入侵检测、安防布控）</td></tr>
+    <tr><td class="nm">F1 值</td><td>2PR / (P + R)</td><td>P 与 R 的<b>调和平均</b>，需兼顾时用</td></tr>
+    <tr><td class="nm">准确率 Accuracy</td><td>(TP + TN) / 总数</td><td>直观，但<b>类别不平衡时误导</b>（患病率 1% 时"全判健康"仍有 99% 准确率、召回 0）</td></tr>
+    <tr><td class="nm">ROC / AUC</td><td>横轴 FPR=FP/(FP+TN)，纵轴 TPR=召回</td><td><b>AUC 越大越好（理想 1，瞎猜 0.5）</b>；不受阈值与类别比例影响</td></tr>
+  </table></div>
+  <div class="calc">
+    <b>算例：100 人筛查（20 人实际患病），算法报警 15 条，其中 12 条确为患病者。求 P、R、F1、准确率。</b>
+    <p>TP=12、FP=15−12=<b>3</b>、FN=20−12=<b>8</b>、TN=80−3=<b>77</b>。</p>
+    <p><b>精确率=12/15=0.80</b>；<b>召回率=12/20=0.60</b>；<b>F1=2×0.8×0.6/1.4=0.686</b>；<b>准确率=(12+77)/100=0.89</b>。</p>
+    <p>🔎 <b>判读：</b>准确率 0.89 看着漂亮，却<b>漏掉 40% 病人</b>——筛查场景召回优先，应<b>降低判定阈值</b>提召回（代价是误报增多、精确率下降）。<b>"准确率虚高、召回不足"正是"只看准确率"的典型错误</b>。</p>
+  </div>
+  <div class="note">🎯 <b>必背：</b>P 分母是"<b>预测为正的总数</b>"、R 分母是"<b>实际为正的总数</b>"；一句话——<b>精确率看"报得准"、召回率看"找得全"</b>。附带 KNN 分类要点：K 取<b>奇数</b>避免平票、距离加权可缓解样本不均。</div>
+</div>
+
+<h2 class="section" id="s9">九、决策树基本思想（领会）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 决策树的基本思想（考纲第 13 章／教材 15.3 节）。</div>
+  <div class="th"><b>定义：</b>决策树（Decision Tree）是<b>用树形结构做分类（或回归）的监督学习模型</b>，由<b>根节点、内部节点（特征测试）、分支（测试取值）、叶子节点（类别结论）</b>组成；根到叶的一条路径＝一条<b>合取规则（"且"链）</b>，整棵树＝一组不相交规则的<b>析取（"或"集）</b>。</div>
+  <div class="th"><b>基本思想（简答标准答案四句）：</b>①以<b>带标签的训练样本</b>为基础；②<b>每次选一个最优属性</b>划分，把样本分成若干子集；③<b>递归地对子集重复划分</b>，直到<b>每个分支下实例同类（子集"纯"）</b>或无属性可用；④用<b>停止条件与剪枝</b>控制规模，得到可解释规则。特点：<b>每次划分都基于"最显著"特征</b>、<b>无需归一化、可处理混合类型、可解释性强</b>（远比神经网络透明，呼应第 9 章局限）。</div>
+  <div class="th"><b>三个关键要素：</b><b>特征选择</b>（用哪个属性——信息增益/增益率/基尼）、<b>树的生成</b>（递归划分到停止）、<b>树的剪枝</b>（防过拟合）。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>算法</th><th>划分准则</th><th>树形</th><th>备注</th></tr>
+    <tr><td class="nm"><b>ID3</b></td><td><b>信息增益</b>最大</td><td>多叉</td><td>只处理离散属性；<b>偏爱取值多的属性</b>（本章计算主场景）</td></tr>
+    <tr><td class="nm"><b>C4.5</b></td><td><b>信息增益率</b>最大</td><td>多叉，可连续二分</td><td>修正 ID3 偏好；能处理缺失值与连续值</td></tr>
+    <tr><td class="nm"><b>CART</b></td><td>分类用<b>基尼指数</b>、回归用平方误差</td><td><b>二叉</b></td><td>可分类可回归；随机森林/GBDT 的基学习器</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s10">十、熵与信息增益（领会）⭐⭐⭐ 难点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 信息增益和熵。<b>难点：熵的理解和应用。</b></div>
+  <div class="th"><b>信息量（自信息）：</b>事件 x 携带的信息 I(x) = −log₂ P(x)。<b>越不可能发生的事，一旦说出越"有信息"</b>（"明天下雨"信息量小，"太阳西升"信息量巨大）。</div>
+  <div class="th"><b>熵（信息不确定度，必背）：</b>样本集 D 有 k 类、第 i 类占比 p<sub>i</sub>：</div>
+  <p class="m" style="text-align:center;font-size:17px">H(D) = − Σ<sub>i=1..k</sub> p<sub>i</sub> log₂ p<sub>i</sub>　（规定 0·log₂0 = 0）</p>
+  <div class="th"><b>熵的直觉（"如何理解熵"就写三句）：</b>①类别<b>均匀分布时熵最大</b>（最难判类，二分类为 1 bit，k 类为 log₂k）；②<b>纯（同类）时熵最小 = 0</b>；③取值范围 <b>0 ≤ H ≤ log₂k</b>。熵就是"<b>消除不确定性所需的信息量 / 混乱程度</b>"。</div>
+  <div class="th"><b>条件熵：</b>给定属性 A 后剩余的不确定性＝<b>按 A 各取值分组、分组求熵再按样本比例加权平均</b>：H(D|A) = Σ<sub>v</sub> (|D<sub>v</sub>|/|D|)·H(D<sub>v</sub>)。</div>
+  <div class="th"><b>信息增益（ID3 选择标准）：</b>Gain(D,A) = H(D) − H(D|A) ＝「划分前的熵」−「划分后的条件熵」＝<b>知道属性 A 后类别不确定度减少的程度</b>；<b>选增益最大的属性做当前节点</b>。</div>
+  <div class="calc">
+    <b>必备对数值速查（考试无计算器，务必背）：</b>
+    <table>
+      <tr><th>p</th><th>log₂ p</th><th>−p log₂ p</th></tr>
+      <tr><td>1/2=0.5</td><td>−1</td><td>0.500</td></tr>
+      <tr><td>1/4=0.25</td><td>−2</td><td>0.500</td></tr>
+      <tr><td>3/4=0.75</td><td>−0.415</td><td>0.311</td></tr>
+      <tr><td>1/3=0.333</td><td>−1.585</td><td>0.528</td></tr>
+      <tr><td>2/3=0.667</td><td>−0.585</td><td>0.390</td></tr>
+      <tr><td>1/5=0.2</td><td>−2.322</td><td>0.464</td></tr>
+      <tr><td>0（同类）</td><td>—</td><td><b>0</b>（纯集熵为 0）</td></tr>
+    </table>
+    <p>推论：两纯类各半 H=1；"4 类各 1/4" H=2；"5 类各 1/5" H=log₂5=<b>2.322</b>；"2/3 与 1/3" H=0.918；"3/4 与 1/4" H=0.811。</p>
+  </div>
+  <div class="note">⚠️ <b>易错三点：</b>①熵与类别数绑定（k=2 才最大 1，k=4 最大 2）。②条件熵要<b>按分组样本数加权</b>，不是简单平均各组熵。③信息增益<b>天生偏爱取值多的属性</b>（极端如用"编号"每样本一组、增益最大却无用），这正是 C4.5 改用<b>增益率</b>的理由。</div>
+</div>
+
+<h2 class="section" id="s11">十一、基于信息增益生成决策树（综合应用）⭐⭐⭐ 大题</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 基于信息增益的决策树生成。</div>
+  <div class="th"><b>解题四步（照此书写，步骤分不丢）：</b>① 算<b>总熵 H(D)</b>；② 对每个属性算<b>条件熵 H(D|A)</b> 与<b>增益 Gain(D,A)</b>；③ <b>取增益最大者作当前节点</b>并分支；④ 对<b>非纯子集递归</b>重复①—③（纯集直接成叶），最后<b>画图 + 写 if-then 规则</b>。</div>
+
+  <div class="calc">
+    <b>【热身算例】D 有 6 个样本，4 正 2 负；属性 A 取值 a₁（3 样本全正）、a₂（3 样本 1 正 2 负），求 A 的信息增益。</b>
+    <p><b>总熵</b> H(D) = −(4/6)log₂(4/6) − (2/6)log₂(2/6) = 0.390 + 0.528 = <b>0.918</b>。</p>
+    <p><b>条件熵</b> H(D|A) = (3/6)·H(a₁) + (3/6)·H(a₂) = (3/6)(0) + (3/6)(0.918) = <b>0.459</b>（a₁ 纯→0；a₂ 是 1 正 2 负→0.918）。</p>
+    <p><b>增益</b> Gain(D,A) = 0.918 − 0.459 = <b>0.459</b>。<b>直觉：</b>用 A 划分后不确定度从 0.918 降到 0.459，减半——增益就是"省下的这部分熵"。</p>
+  </div>
+
+  <div class="calc">
+    <b>【官方大题·水果分类】（大纲附录原题）：5 个样本，属性 颜色/形状/大小，类别 苹果/香蕉/樱桃/西瓜/橘子，构造决策树并画出。</b>
+    <table>
+      <tr><th>编号</th><th>颜色</th><th>形状</th><th>大小</th><th>类别</th></tr>
+      <tr><td>1</td><td>红</td><td>球</td><td>一般</td><td>苹果</td></tr>
+      <tr><td>2</td><td>黄</td><td>弯月</td><td>一般</td><td>香蕉</td></tr>
+      <tr><td>3</td><td>红</td><td>球</td><td>轻</td><td>樱桃</td></tr>
+      <tr><td>4</td><td>绿</td><td>椭球</td><td>重</td><td>西瓜</td></tr>
+      <tr><td>5</td><td>橘</td><td>球</td><td>一般</td><td>橘子</td></tr>
+    </table>
+    <p><b>第 0 步·总熵：</b>5 样本分属 5 个不同类别（各占 1/5）⇒ H(D) = −5×(1/5)log₂(1/5) = log₂5 ≈ <b>2.322 比特</b>（类别完全均匀→满熵）。</p>
+    <p><b>第 1 步·逐个属性算条件熵与增益：</b></p>
+    <table>
+      <tr><th>属性</th><th>各取值分到的类别（纯度）</th><th>H(D|A)</th><th>Gain = 2.322 − H(D|A)</th></tr>
+      <tr><td>颜色</td><td>红{苹果,樱桃}=2、黄{香蕉}、绿{西瓜}、橘{橘子}各 1</td><td>(2/5)×1 = <b>0.400</b></td><td><b>1.922</b> ⭐最大</td></tr>
+      <tr><td>形状</td><td>球{苹果,樱桃,橘子}=3、弯月{香蕉}、椭球{西瓜}</td><td>(3/5)×log₂3 = (3/5)×1.585 = <b>0.951</b></td><td>1.371</td></tr>
+      <tr><td>大小</td><td>一般{苹果,香蕉,橘子}=3、轻{樱桃}、重{西瓜}</td><td>(3/5)×1.585 = <b>0.951</b></td><td>1.371</td></tr>
+    </table>
+    <p><b>第 2 步·定根节点 = 颜色</b>（Gain 1.922 最大）。黄→香蕉、绿→西瓜、橘→橘子 都是<b>纯叶</b>；红分支含 {苹果(一般)、樱桃(轻)} <b>不纯</b>，进入第 3 步。</p>
+    <p><b>第 3 步·红子集（2 样本，H=1）递归：</b>先看形状——苹果球、樱桃球<b>同形无法区分</b>（条件熵仍为 1、增益 0）；改看大小——一般(苹果)、轻(樱桃) 各 1 且都纯 ⇒ H(红|大小)=0、<b>Gain=1</b>。⇒ 红分支下选<b>大小</b>节点：轻→樱桃、一般→苹果。</p>
+  </div>
+  <div class="tree">水果类别？　（根节点＝颜色，Gain=1.922 最大）
+├─ 颜色=黄 → 香蕉
+├─ 颜色=绿 → 西瓜
+├─ 颜色=橘 → 橘子
+└─ 颜色=红 → 大小？（红子集 Gain=1，形状无法区分苹果/樱桃）
+         ├─ 大小=轻   → 樱桃
+         └─ 大小=一般 → 苹果</div>
+  <div class="th"><b>把树翻译回规则（综合应用题加分收尾）：</b>IF 颜色=黄 THEN 香蕉；IF 颜色=绿 THEN 西瓜；IF 颜色=橘 THEN 橘子；IF 颜色=红 AND 大小=轻 THEN 樱桃；IF 颜色=红 AND 大小=一般 THEN 苹果。</div>
+  <div class="note">🎯 <b>本题真正考到的三件事：</b>①<b>每个属性都要算一遍增益再比较</b>；②<b>不纯子集递归处理</b>；③<b>发现苹果与樱桃"同形"、形状分不开→改用大小</b>（数据本身决定可分性）。写得出第③点的思考，是"综合应用"与"死套公式"的分水岭。</div>
+</div>
+
+<h2 class="section" id="s12">十二、变体：增益率、基尼指数与剪枝（了解）</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>准则 / 技术</th><th>公式 / 做法</th><th>解决什么问题</th></tr>
+    <tr><td class="nm">增益率（C4.5）</td><td>GainRatio = Gain ÷ <b>IV(A)</b>，分裂信息 IV(A)=−Σ(|D<sub>v</sub>|/|D|)log₂(|D<sub>v</sub>|/|D|)</td><td>惩罚<b>取值过多</b>的属性（分母随取值数增大），修正 ID3 偏好</td></tr>
+    <tr><td class="nm">基尼指数（CART）</td><td>Gene(D)=1−Σ p<sub>i</sub>²，加权后取最小（近似熵但<b>无需算对数</b>，更快）</td><td>二分裂、二叉树；选<b>基尼最小</b>的划分</td></tr>
+    <tr><td class="nm">剪枝</td><td><b>预剪枝</b>划分前就停（最大深度、叶最少样本、增益阈值）；<b>后剪枝</b>先建满树再自底向上把子树换成叶</td><td>决策树<b>极易过拟合</b>；以少量训练误差换<b>泛化能力</b></td></tr>
+    <tr><td class="nm">随机森林 / GBDT</td><td>多棵树<b>投票(分类)/平均(回归)</b>；Bagging 降方差、Boosting 降偏差</td><td>单树不稳定→<b>集成</b>提升精度与稳健（接第 9 章）</td></tr>
+    <tr><td class="nm">回归树 / 模型树</td><td>叶子给<b>常数（回归树）或一段线性模型（模型树）</b>，划分准则改为<b>平方误差最小</b></td><td>让决策树也能做回归任务</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s13">十三、本章速记小结</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>考纲要点</th><th>公式 / 关键词</th></tr>
+    <tr><td class="nm">简单应用·距离计算</td><td>欧氏 √Σ差²｜曼哈顿 Σ|差|｜切比雪夫 max|差|｜<b>闵氏通式（p=1/2/∞ 退化）</b>｜汉明=不同位数｜编辑=插删改次数｜余弦=方向；<b>先标准化</b>、防维度灾难</td></tr>
+    <tr><td class="nm">识记·常用聚类算法</td><td><b>划分</b>（K-均值/K-中心点）、<b>层次</b>（BIRCH/CURE/AGNES）、<b>密度</b>（DBSCAN）、<b>网格</b>（STING）、<b>模型</b>（GMM+EM/Mean-Shift）；好坏=<b>簇内↑簇间↑</b></td></tr>
+    <tr><td class="nm">简单应用·K-均值原理</td><td><b>定 K→选初心→就近分配→重算质心(均值)→迭代至收敛</b>；目标 <b>SSE 最小</b>（均值使平方误差最小）；敏感于 K、初值、异常值、簇形状</td></tr>
+    <tr><td class="nm">识记·最常用回归</td><td><b>线性回归</b>（实践多用 Ridge/LASSO/Elastic Net 正则化版）；逻辑回归是<b>分类</b></td></tr>
+    <tr><td class="nm">领会·线性回归原理</td><td>ŷ=a+bx，<b>最小二乘</b>使 Σ残差² 最小；<b>b=L<sub>xy</sub>/L<sub>xx</sub>、a=ȳ−b·x̄</b>，直线<b>过 (x̄,ȳ)</b>；诊断看 <b>R²</b> 与系数 <b>p&lt;0.05 显著</b></td></tr>
+    <tr><td class="nm">识记·分类两指标</td><td><b>精确率 TP/(TP+FP)＝报得准</b>；<b>召回率 TP/(TP+FN)＝找得全</b>；F1＝调和平均；准确率在不平衡时误导；AUC 比模型</td></tr>
+    <tr><td class="nm">领会·决策树思想</td><td>树形监督模型；<b>选最优属性→递归划分→直到纯净或无属性→剪枝</b>；ID3 用信息增益、C4.5 用增益率、CART 用基尼</td></tr>
+    <tr><td class="nm">领会·熵与信息增益</td><td>H=−Σp log₂p（<b>纯=0、均匀最大</b>）；条件熵按样本数<b>加权</b>；<b>Gain=H(D)−H(D|A)</b>，选最大；增益偏爱多取值属性→增益率修正</td></tr>
+    <tr><td class="nm">综合应用·建树</td><td>四步：总熵→各属性增益→取最大作节点→非纯子集递归→<b>画图+写规则</b>；注意"某属性分不开要换属性"</td></tr>
+  </table></div>
+  <div class="note">✅ <b>6 学时怎么花：</b>距离计算 1 学时（背公式+练两组）→ K-均值 trace 1 学时 → 线性回归 + 分类两指标 1.5 学时 → <b>熵与信息增益 + 决策树大题 2.5 学时</b>（务必亲手算一遍水果题、把 log 值背熟）。<b>本章是"投入产出比最高"的计算章——练熟即满分，别裸考。</b></div>
+</div>
+
+<div class="gotos plain">
+  <a href="../云计算融合/云计算大数据与人工智能.html">← 第 12 章 云计算、大数据与人工智能</a>
+  <a href="../index.html">📚 返回知识点导航</a>
+</div>
+
+<footer>本卡依据广东省《人工智能与大数据》（课程代码 13011）考试大纲第 13 章考核知识点与能力层次整理，对应教材第 15 章 15.1—15.3 节（15.4 不考）；内容为「考纲驱动 ＋ 公开资料补充」，非教材原文逐字，复习请以指定教材（郏东耀主编《大数据与人工智能》）为准。</footer>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

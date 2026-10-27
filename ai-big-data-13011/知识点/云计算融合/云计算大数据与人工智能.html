@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 第 12 章 云计算、大数据与人工智能｜云的优势 · 迁移用例 · 四大技术融合</title>
+<meta name="description" content="人工智能与大数据 13011 第 12 章速记卡：云计算的概念与定义（NIST 五种基本特征、三种服务模式 IaaS/PaaS/SaaS、四种部署模式公有/私有/混合/社区云）；云计算的优势（成本、弹性、可用性与容灾、快速部署、运维轻量化、绿色节能、按需自助与按用付费）；云计算与基础架构的兼容（虚拟化与遗留系统、混合云、标准与接口、迁移评估 6R 策略、SLA 可用性指标与 99.9% 的量化含义）；适合进行云端迁移的用例与不适合的情形；云计算、物联网、大数据与人工智能四者的关系与融合（物联网产数据、云计算供算力、大数据为原料、AI 出智慧，以及云端 AI、智能云、数据闭环）。含考纲能力层次标注与建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#0891b2,#10b981 55%,#f59e0b)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .rule .kd{margin:4px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+  .calc{background:#f8fafc;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:10px 0;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 12 章 · 云计算、大数据与人工智能 ☁️</h1>
+  <p>第 3 篇"综合应用"的开篇章，也是<b>全书收束的一章</b>：把前面所有技术（Hadoop/Spark 是算力、NoSQL/云数据库是存储、机器学习是算法）在<b>云</b>这个底座上串成一条链。考纲只要求"领会"三条——<b>云计算的优势、与基础架构兼容、适合云端迁移的用例</b>，但重点写的是"<b>各技术的融合</b>"，所以论述题极可能让你讲"云—物—数—智"的关系。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">难度 ★★☆☆☆</span><span class="pill">题型：单选 / 多选 / 简答 / 论述</span><span class="pill">重点：云计算和人工智能各技术的融合</span><span class="pill">教材 12.1—12.2 两节，整章都在考</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../目标检测/AI方法在目标检测中的应用.html">← 第 11 章</a>
+    <a href="../算法实验/机器学习算法实验.html">→ 第 13 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、云计算的概念与定义（领会）⭐</a>
+  <a href="#s2">二、五种基本特征与三种服务模式（领会）⭐⭐</a>
+  <a href="#s3">三、四种部署模式（领会）⭐</a>
+  <a href="#s4">四、云计算的优势（领会）⭐⭐⭐ 考纲明文</a>
+  <a href="#s5">五、云计算与基础架构的兼容（领会）⭐⭐ 考纲明文</a>
+  <a href="#s6">六、适合云端迁移的用例（领会）⭐⭐⭐ 考纲明文</a>
+  <a href="#s7">七、物联网—云计算—大数据—AI 的关系（重点）⭐⭐⭐</a>
+  <a href="#s8">八、两两融合的具体形态（领会）⭐⭐</a>
+  <a href="#s9">九、云端 AI 与智能云的服务形态（领会）</a>
+  <a href="#s10">十、融合带来的挑战与安全（领会）</a>
+  <a href="#s11">十一、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、云计算的概念与定义（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 云计算的概念（教材 12.1）。</div>
+  <div class="th"><b>通俗理解：</b>把计算资源（服务器、存储、网络、软件）像<b>水和电</b>一样通过互联网<b>按需供给、按用付费</b>；用户<b>不必知道</b>资源在哪里、由什么设备提供、如何配置，只需"申请—使用—释放"。名字里的"云"来自网络拓扑图中用一个云形符号表示<b>互联网内部复杂的基础设施</b>。</div>
+  <div class="th"><b>NIST（美国国家标准与技术研究院）权威定义：</b>云计算是一种<b>可按需、通过网络便捷访问的共享计算资源池模型</b>，它能<b>以最小的管理代价、由服务商快速供应和释放</b>资源。定义包含<b>五基本特征、三种服务模式、四种部署模式</b>（合称"5-3-4"）。</div>
+  <div class="th"><b>关键背景（为什么会出现）：</b>①<b>数据中心资源利用率低</b>（传统机房平均仅 10%~20%，大量服务器空转）；②虚拟化技术成熟，可把一台物理机切成多个隔离的虚拟机；③<b>互联网带宽与多核硬件</b>发展；④企业 IT 支出压力大，希望<b>把资本性支出（买设备 CAPEX）转成运营性支出（按租付费 OPEX）</b>；⑤数据量与算力需求<b>波动剧烈</b>（第 1 章"4V"里的 Velocity、Variety），自建难以应对峰值。</div>
+  <div class="note">🎯 <b>名解答法：</b>云计算是<b>基于互联网的相关服务的增加、使用和交付模式，通过虚拟化把可弹性伸缩的共享软硬件资源集中起来，向用户按需、按量提供计算/存储/平台/软件服务</b>。关键词：<b>网络、共享资源池、虚拟化、按需自助、弹性、按用付费</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、五种基本特征与三种服务模式（领会）⭐⭐</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>NIST 五种基本特征</th><th>含义</th><th>与传统的差别</th></tr>
+    <tr><td class="nm"><b>按需自助服务</b><br>On-demand self-service</td><td>用户<b>无需人工联系服务商</b>，在控制台/接口上自助申请服务器、存储等</td><td>传统要写申请单、走采购流程，周期以周/月计</td></tr>
+    <tr><td class="nm"><b>广泛的网络访问</b><br>Broad network access</td><td>能力<b>通过网络提供、由标准机制访问</b>，手机、平板、笔记本、终端均可</td><td>资源被绑在特定机房与内网</td></tr>
+    <tr><td class="nm"><b>资源池化</b><br>Resource pooling</td><td>多用户的资源<b>合并成池按需求动态分配/重新分配</b>，用户<b>通常不知道</b>资源的具体物理位置（多租户模型）</td><td>一机一用、专属固定</td></tr>
+    <tr><td class="nm"><b>快速弹性</b><br>Rapid elasticity</td><td>能力可<b>快速（有时自动）弹性伸缩</b>，扩容缩容在用户看来近乎<b>无限</b>、随时可按量取消</td><td>买设备要招标、上架、装系统</td></tr>
+    <tr><td class="nm"><b>可计量的服务</b><br>Measured service</td><td>系统<b>自动控制和计量</b>使用情况（存储、带宽、活跃账户…），像水电表一样<b>按量付费、可监控可优化</b></td><td>成本一次性沉没、难以分摊</td></tr>
+  </table></div>
+  <div class="th"><b>三种服务模式（IaaS / PaaS / SaaS，必考）——按"你要自己管到哪一层"划分：</b></div>
+  <div class="fig">
+    <svg viewBox="0 0 700 232" role="img" aria-label="云计算三种服务模式的堆叠图：底层硬件与虚拟化由云服务商负责，往上依次是 IaaS 提供基础设施、PaaS 提供平台与运行时、SaaS 提供成品软件，用户管理范围自底向上逐层扩大">
+      <g font-size="13" text-anchor="middle">
+        <rect x="110" y="12" width="360" height="40" rx="7" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.6"/>
+        <text x="290" y="37" fill="#6d28d9" font-weight="700">SaaS　软件即服务（成品应用）</text>
+        <rect x="110" y="56" width="360" height="40" rx="7" fill="#fce7f3" stroke="#be185d" stroke-width="1.6"/>
+        <text x="290" y="81" fill="#be185d" font-weight="700">PaaS　平台即服务（开发运行环境）</text>
+        <rect x="110" y="100" width="360" height="40" rx="7" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.6"/>
+        <text x="290" y="125" fill="#0369a1" font-weight="700">IaaS　基础设施即服务（算力存储网络）</text>
+        <rect x="110" y="144" width="360" height="40" rx="7" fill="#dcfce7" stroke="#15803d" stroke-width="1.6"/>
+        <text x="290" y="169" fill="#15803d" font-weight="700">虚拟化 · 硬件 · 数据中心</text>
+      </g>
+      <g font-size="12" fill="#475569">
+        <text x="486" y="37">例：Web 邮箱、在线办公</text>
+        <text x="486" y="81">例：托管数据库、AI 训练平台</text>
+        <text x="486" y="125">例：云主机、对象存储</text>
+        <text x="486" y="169" fill="#94a3b8">以下全由服务商负责</text>
+      </g>
+      <g stroke="#94a3b8" stroke-width="1.4" fill="none" stroke-dasharray="5 4">
+        <line x1="90" y1="188" x2="90" y2="16"/><path d="M90 16 l-4 8 M90 16 l4 8"/>
+      </g>
+      <text x="34" y="102" font-size="11.5" fill="#6b7280" text-anchor="middle" transform="rotate(-90 34 102)">用户要管的越来越多 ↑</text>
+      <text x="110" y="212" font-size="11.5" fill="#6b7280">服务商责任由上往下递增；用户责任由下往上递增——选型是在"控制力"与"省心"之间找平衡</text>
+      <text x="110" y="228" font-size="11.5" fill="#6b7280">另有更细口径：CaaS 容器即服务、FaaS 函数即服务（事件触发、按毫秒计费）</text>
+    </svg>
+    <div class="cap">图 12-1 三种服务模式的层次关系：从"租机器"到"租平台"再到"租软件"</div>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>模式</th><th>服务商管</th><th>你管</th><th>适合谁</th><th>类比（开餐馆）</th></tr>
+    <tr><td class="nm"><b>IaaS</b></td><td>机房、硬件、虚拟化</td><td><b>操作系统、中间件、运行时、数据、应用</b></td><td>需要<b>完全控制环境</b>、要迁移已有系统的运维/技术团队</td><td>租毛坯房，自己装修</td></tr>
+    <tr><td class="nm"><b>PaaS</b></td><td>再加操作系统、中间件、运行环境</td><td><b>应用与数据</b></td><td><b>开发者</b>——只管写代码，不管搭环境</td><td>租精装店，自带菜谱</td></tr>
+    <tr><td class="nm"><b>SaaS</b></td><td>什么都管（含应用本身）</td><td><b>只用、只配置</b></td><td><b>最终用户</b>与中小企业，快速上手</td><td>直接去饭店点菜</td></tr>
+  </table></div>
+  <div class="note">⚠️ <b>单选高频：</b>"云服务商提供虚拟机、用户自己装系统和软件"＝<b>IaaS</b>；"提供数据库/中间件/开发与部署环境，用户只上传应用"＝<b>PaaS</b>；"直接用浏览器访问的成品软件（邮箱、Office、CRM）"＝<b>SaaS</b>。判据永远是<b>用户需要负责的最高一层是什么</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、四种部署模式（领会）⭐</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>部署模式</th><th>谁拥有 / 给谁用</th><th>优点</th><th>顾虑</th></tr>
+    <tr><td class="nm"><b>公有云</b> Public</td><td><b>服务商</b>拥有，面向<b>社会公众/多租户</b>出售</td><td>规模效应、<b>成本最低</b>、免运维、弹性近乎无限</td><td>数据在第三方、合规与隔离、<b>供应商锁定</b>、网络依赖</td></tr>
+    <tr><td class="nm"><b>私有云</b> Private</td><td><b>单一组织</b>专属（自建或托管），可在场内或场外</td><td><b>可控、安全、合规</b>，可深度定制、复用已有资产</td><td>投资大、建设周期长、<b>弹性受自有容量限制</b>、运维仍归自己</td></tr>
+    <tr><td class="nm"><b>混合云</b> Hybrid</td><td><b>两种及以上</b>云组合，标准/专有技术<b>互联</b>形成整体</td><td><b>稳态业务放私有、峰值与对外业务放公有</b>（burst 突发扩展），兼顾安全与弹性——<b>企业落地的主流形态</b></td><td>跨云<b>编排、数据流动与一致性、安全边界统一</b>复杂</td></tr>
+    <tr><td class="nm"><b>社区云</b> Community</td><td>若干<b>有共同需求</b>的组织共享（政务、医疗、金融行业云）</td><td>共担成本、满足<b>共同合规与领域要求</b></td><td>参与方利益协调、治理机制复杂</td></tr>
+  </table></div>
+  <div class="th"><b>补充口径：</b><b>多云 Multi-cloud</b>＝同时使用多家云服务商的产品（为避免锁定、取其所长，与"混合云"侧重不同：混合云强调<b>打通</b>，多云强调<b>并用的选择权</b>）；<b>分布式云</b>＝把云服务就近部署到边缘与本地；<b>Serverless</b> 让"部署"这一层对用户消失。</div>
+</div>
+
+<h2 class="section" id="s4">四、云计算的优势（领会）⭐⭐⭐ 考纲明文</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 云计算的优势。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>优势</th><th>说明</th></tr>
+    <tr><td class="nm"><b>① 成本效益（省钱）</b></td><td><b>免前期大额投资</b>，把 CAPEX 变 OPEX、<b>按用量付费</b>；不必为峰值备货；资源共享使<b>利用率大幅提升</b>（从 10%~20% 提升到 60%~80%）；中小组织<b>以低价获得顶尖 IT 基础设施</b></td></tr>
+    <tr><td class="nm"><b>② 弹性与可扩展</b></td><td><b>水平扩展</b>（加机器）与<b>垂直扩展</b>（升配置）灵活；<b>秒级扩容、用完即释</b>；应对业务波动不必"忙时不够、闲时浪费"</td></tr>
+    <tr><td class="nm"><b>③ 高可用与容灾备份</b></td><td>多副本、多可用区/异地容灾、自动故障迁移；服务商提供成熟的<b>备份、快照、灾备切换</b>能力，可用性可达 <b>99.9% 及以上</b></td></tr>
+    <tr><td class="nm"><b>④ 快速部署、敏捷性</b></td><td>资源<b>分钟级到位</b>，新业务<b>从想法到上线的周期大幅缩短</b>；镜像/模板/基础设施即代码（IaC）可重复拉起环境；<b>快速试错、快速验证</b></td></tr>
+    <tr><td class="nm"><b>⑤ 运维与管理工作量减少</b></td><td>硬件维护、补丁、扩容由服务商承担；<b>企业不必维持庞大的专职 IT 队伍</b>，人力转向业务与创新（自动化运维、集中监控）</td></tr>
+    <tr><td class="nm"><b>⑥ 泛在访问与协作</b></td><td><b>随时随地、任意终端</b>访问；数据集中一份、多人协同不失一致性，支撑移动办公与跨地域团队</td></tr>
+    <tr><td class="nm"><b>⑦ 易于整合与开放</b></td><td>标准 API 与服务总线，便于把<b>异构系统、新旧应用整合</b>；数据汇聚打通信息孤岛，为分析与 AI 提供统一数据源</td></tr>
+    <tr><td class="nm"><b>⑧ 安全与合规能力（可更强）</b></td><td>大型服务商的<b>安全投入与专业能力往往超过单个企业自建</b>；但注意——<b>安全责任共担</b>：云商管"云本身的安全"（基础设施），客户管"云上的安全"（数据、配置、访问控制）。<b>把"绝对安全"当优势是常见错误选项</b></td></tr>
+    <tr><td class="nm"><b>⑨ 绿色节能</b></td><td>数据中心集中供电与制冷、<b>PUE 更低</b>，闲置机器可整合下线，单位算力能耗与碳排下降</td></tr>
+    <tr><td class="nm"><b>⑩ 支撑数据智能</b></td><td>为<b>大数据与 AI 提供算力、存储与算法平台</b>（GPU 实例、托管 Hadoop/Spark、模型训练与推理服务），是本课程后半段的主题</td></tr>
+  </table></div>
+  <div class="th"><b>反面也要记（多选/判断的干扰项）：</b><b>网络依赖</b>（断网即瘫）、<b>供应商锁定与迁移成本</b>、<b>数据主权与隐私合规</b>、<b>多租户的安全边界</b>、<b>长期租用总成本可能高于自购</b>、<b>延迟敏感/超大规模本地数据业务不适合上云</b>、<b>监管受限的关键系统</b>。</div>
+  <div class="note">🎯 <b>答题口诀："省、弹、稳、快、轻、通、合、绿"</b>——省钱、弹性、稳定可用、快速部署、运维轻、泛在访问、易整合、绿色。每条展开一句即可拿满简答分。</div>
+</div>
+
+<h2 class="section" id="s5">五、云计算与基础架构的兼容（领会）⭐⭐ 考纲明文</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 云计算与基础架构兼容。</div>
+  <div class="th"><b>问题的实质：</b>企业不是从零开始，而是<b>已有机房、服务器、网络、数据库、业务系统与流程</b>（"遗留系统 / 传统 IT 基础架构"）。上云<b>不是推倒重来</b>，而是要让<b>云与既有架构共存、互通、逐步迁移</b>——这就是"兼容性"。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>兼容的关键点</th><th>怎么做</th></tr>
+    <tr><td class="nm"><b>① 虚拟化是共同语言</b></td><td>传统机房虚拟化（VMware/KVM/Hyper-V）与云主机<b>同构</b>，镜像可直接转换导入；这是"平滑迁移"的技术基础。容器化进一步屏蔽底层差异</td></tr>
+    <tr><td class="nm"><b>② 网络互通与地址规划</b></td><td>用<b>专线/VPN/SD-WAN</b>把 IDC 与云端打通；规划 <b>VPC 网段避免与内网冲突</b>；统一 DNS、路由与安全组；<b>混合云</b>因此成为主流形态</td></tr>
+    <tr><td class="nm"><b>③ 标准与接口一致</b></td><td>兼容<b>开放标准（TCP/IP、SQL、REST API、S3 接口、OSPF…）</b>与<b>统一身份认证/单点登录</b>；避免绑定厂商私有协议；必要时用<b>云联邦/多云管理平台 CMP</b>（如 OpenStack、Terraform、Kubernetes）屏蔽差异、<b>降低供应商锁定</b></td></tr>
+    <tr><td class="nm"><b>④ 操作系统、中间件与数据库版本</b></td><td>核对云端<b>支持的 OS/内核版本、数据库与中间件版本</b>是否覆盖现有依赖；不兼容则先<b>升级、替换（如商业库→开源库）、或留在本地</b></td></tr>
+    <tr><td class="nm"><b>⑤ 性能与 SLA 匹配</b></td><td>评估<b>带宽、时延、抖动</b>、存储 IOPS 与吞吐能否满足业务；签 <b>SLA</b> 明确<b>可用性、响应时间、赔偿与免责</b>。⚠️ 可用性小算式：<b>99.9% ≈ 每月允许故障 43.8 分钟</b>（30×24×60×0.001），<b>99.99% ≈ 4.4 分钟</b>——"9 越多越贵"</td></tr>
+    <tr><td class="nm"><b>⑥ 数据迁移与一致性</b></td><td>存量数据用<b>离线硬盘/专线批量搬运＋增量同步</b>；迁移期<b>双轨并行、可回滚</b>；关注数据格式、字符集、大小写敏感等细节</td></tr>
+    <tr><td class="nm"><b>⑦ 安全与合规对齐</b></td><td>落实<b>安全责任共担模型</b>；等保/行业监管要求（如数据不出境、本地留存）决定<b>哪些系统只能放私有云</b>；密钥、审计与访问控制两侧策略要一致</td></tr>
+    <tr><td class="nm"><b>⑧ 组织、流程与人员</b></td><td>运维流程（ITIL）、监控告警、成本核算方式随之调整；<b>人员培训成本常被低估</b>——迁移需要考虑"原有系统兼容性、服务商信誉、人员培训成本"，但<b>"价格是否市场最低"不是重点考量因素</b></td></tr>
+  </table></div>
+  <div class="th"><b>迁移策略 6R（判断/选择哪些系统先上、怎么上）：</b></div>
+  <ol class="steps">
+    <li><b>Rehost 直接搬迁（lift &amp; shift）</b>——不改应用，原样换成云上的虚拟机；<b>最快、兼容最好</b>，但吃不到云的红利。</li>
+    <li><b>Replatform 平台更新</b>——换成云托管数据库/中间件（如自建 MySQL→云 RDS），应用小改。</li>
+    <li><b>Refactor / Re-architect 重构</b>——为云<b>重新设计</b>（微服务、容器、无服务器），收益最大、代价最高。</li>
+    <li><b>Repurchase 替换</b>——丢掉旧系统改用 SaaS（如换用云 CRM）。</li>
+    <li><b>Retire 退役</b>——迁移前先清理<b>没人用的系统</b>，别为废弃资产付云费。</li>
+    <li><b>Retain 保留</b>——合规、性能或改造代价原因<b>暂留本地 IDC</b>。</li>
+  </ol>
+  <div class="note">📌 <b>兼容性的正确表述：</b>云计算<b>不要求抛弃现有基础架构</b>，而是通过<b>虚拟化、容器、开放接口、专线/VPN 组网与混合云编排</b>实现<b>新旧共存、逐步替换</b>；评估时看<b>技术兼容（OS/中间件/网络/数据格式）＋管理兼容（流程/权限/监控/计费）＋合规兼容（安全/监管）</b>三条线。</div>
+</div>
+
+<h2 class="section" id="s6">六、适合云端迁移的用例（领会）⭐⭐⭐ 考纲明文</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 适合进行云端迁移的用例。</div>
+  <div class="th"><b>判断准则（先记这条，再记用例）：</b><b>负载波动大、需求不确定、要快速试错、通用标准化、数据量可控、非强合规强本地约束</b>的场景 → 适合上云；<b>稳态高负载（长期满载，租不如买）、超低时延、超大存量数据、涉密监管</b>的场景 → 慎上/不上。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>适合上云的典型用例</th><th>为什么适合</th></tr>
+    <tr><td class="nm"><b>① 网站与移动应用后端</b></td><td>面向公众、<b>流量不可预测</b>（促销/热点暴涨），弹性伸缩与 CDN 分发是云端强项</td></tr>
+    <tr><td class="nm"><b>② 开发与测试环境</b></td><td><b>用完即弃</b>、频繁重建；镜像+IaC 分钟级拉起、按小时计费，成本远低于自建实验室</td></tr>
+    <tr><td class="nm"><b>③ 备份、归档与容灾</b></td><td>冷数据<b>分层存储</b>（对象存储/归档存储）单价极低；<b>异地容灾</b>天然由多区域副本实现，省去自建灾备中心</td></tr>
+    <tr><td class="nm"><b>④ 大数据处理与数据仓库/湖</b></td><td>PB 级存储＋<b>弹性算力做批处理</b>（托管 Hadoop/Spark、云数仓），<b>跑完释放</b>，避免为偶发的海量计算长期养集群</td></tr>
+    <tr><td class="nm"><b>⑤ AI 模型训练与推理</b></td><td><b>GPU/加速卡按需取用</b>，训练是典型的<b>脉冲式高算力</b>需求；云端还提供现成的算法服务（视觉、语音、NLP）与训练平台（第 9、11 章的能力即在此交付）</td></tr>
+    <tr><td class="nm"><b>⑥ 企业通用办公应用（SaaS）</b></td><td>邮箱、协同办公、CRM、HR、财务等<b>标准化程度高</b>，直接用 SaaS 最快、总成本最低</td></tr>
+    <tr><td class="nm"><b>⑦ 波峰明显/临时性业务</b></td><td>电商大促、票务抢票、政府年报申报、活动直播、短期项目、PoC 试验——<b>周期性或一次性</b>负载</td></tr>
+    <tr><td class="nm"><b>⑧ 全球化/多分支机构与远程协作</b></td><td>就近部署多区域、统一数据一份，支撑<b>跨地域协同与远程办公</b></td></tr>
+    <tr><td class="nm"><b>⑨ 初创企业与新业务快速上线</b></td><td><b>无资金买硬件、无专职运维</b>，要求"今天想、这周上线"，云是唯一现实选项</td></tr>
+    <tr><td class="nm"><b>⑩ 物联网接入与边缘—云协同</b></td><td>海量设备<b>并发连接与消息接入</b>、时序数据存储、云端分析（→第七节的融合链）</td></tr>
+    <tr><td class="nm"><b>⑪ 计算密集型离线任务</b></td><td>渲染农场、基因/气象模拟、批量转码、密码学计算等<b>可并行、时延不敏感</b>的作业</td></tr>
+  </table></div>
+  <div class="th"><b>不适合（或应先改造再上云）的情形：</b>①<b>超低时延硬实时</b>（工业控制、部分高频交易、本地实时渲染）→ 需<b>边缘计算</b>；②<b>数据量极大且几乎不动</b>（PB 级存量反复全量扫描，带宽成为瓶颈）；③<b>涉密/受强监管、数据必须本地化</b>；④<b>依赖特殊硬件或外设、老旧系统无法移植</b>（遗留大型机应用）；⑤<b>长期稳定满载</b>且已充分折旧的自建负载（<b>租比买贵</b>）；⑥<b>网络不可靠地区</b>的关键业务。</div>
+  <div class="note">⚠️ <b>多选题陷阱：</b>"某项业务<b>已经</b>完全满足性能与合规要求、设备刚采购且长期满载"——这<b>不是</b>适合迁移的用例；"需要弹性、需要快速试错、需要按用付费"才是。</div>
+</div>
+
+<h2 class="section" id="s7">七、物联网—云计算—大数据—AI 的关系（重点）⭐⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 云计算、物联网、大数据与人工智能的融合（考纲<b>重点：各技术的融合</b>）。</div>
+  <div class="th"><b>一句话定位：</b><b>物联网产生数据、云计算提供算力、大数据承载原料、人工智能产出智慧</b>——四者<b>共存共生、彼此依附</b>，缺任何一环都落不了地。</div>
+  <div class="fig">
+    <svg viewBox="0 0 700 210" role="img" aria-label="四技术融合链路：物联网设备采集数据，经网络汇入云计算平台，云计算支撑大数据的存储与处理，大数据为人工智能提供训练原料，人工智能反过来赋能物联网与各行业应用，形成闭环">
+      <g font-size="13.5" font-weight="700" text-anchor="middle">
+        <rect x="16" y="76" width="140" height="52" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.8"/>
+        <text x="86" y="99" fill="#15803d">物联网 IoT</text><text x="86" y="117" font-size="11" font-weight="400" fill="#475569">感知层·网络层·应用层</text>
+        <rect x="196" y="76" width="140" height="52" rx="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.8"/>
+        <text x="266" y="99" fill="#0369a1">云计算</text><text x="266" y="117" font-size="11" font-weight="400" fill="#475569">算力与资源池</text>
+        <rect x="376" y="76" width="140" height="52" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="1.8"/>
+        <text x="446" y="99" fill="#6d28d9">大数据</text><text x="446" y="117" font-size="11" font-weight="400" fill="#475569">存储与挖掘</text>
+        <rect x="556" y="76" width="128" height="52" rx="10" fill="#fff1ed" stroke="#b91c1c" stroke-width="1.8"/>
+        <text x="620" y="99" fill="#b91c1c">人工智能</text><text x="620" y="117" font-size="11" font-weight="400" fill="#475569">建模与决策</text>
+      </g>
+      <g stroke="#475569" stroke-width="1.8" fill="none">
+        <line x1="156" y1="102" x2="192" y2="102"/><line x1="336" y1="102" x2="372" y2="102"/><line x1="516" y1="102" x2="552" y2="102"/>
+      </g>
+      <path d="M620 128 C620 178 86 178 86 132" fill="none" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text x="290" y="196" font-size="11.5" fill="#b91c1c" text-anchor="middle">反馈闭环：AI 的决策回注设备与业务，产生新数据再入链</text>
+      <text x="74" y="52" font-size="11.5" fill="#6b7280">感知（设备）→ 传输（网络）→ 汇聚计算（云）→ 沉淀发现（大数据）→ 学习决策（AI）→ 执行优化（回到场景）</text>
+      <text x="74" y="30" font-size="11.5" fill="#475569">比喻：物联网是感官与神经末梢，云是骨架与供血，大数据是记忆，AI 是智慧</text>
+    </svg>
+    <div class="cap">图 12-2 四大技术的融合链路与闭环：任一环节缺失，智能化应用都无法成立</div>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>关系</th><th>怎么相互依赖</th></tr>
+    <tr><td class="nm">云 ⇄ 大数据</td><td><b>云计算是基础，大数据是目标与价值</b>：没有云就无法经济地存储与计算海量数据；没有大数据，云就缺少用武之地。<b>"大数据是高速跑车，云计算是高速公路"</b>——弹性与水平扩展恰好解决"闲时浪费、忙时不够"</td></tr>
+    <tr><td class="nm">云 ⇄ 物联网</td><td><b>云计算是物联网发展的基石</b>：海量设备的接入、并发、存储与分析必须靠云的资源池与弹性；无云则物联网效率大降、相对传统技术的优势不复存在。反向看，物联网是云的重要<b>需求来源与数据入口</b>；受时延与带宽限制，需<b>边缘计算＋云</b>协同（边缘预处理、云端深学习）</td></tr>
+    <tr><td class="nm">物联网 ⇄ 大数据</td><td><b>物联网产生大数据，大数据助力物联网</b>：设备上报的时序数据是大数据的重要来源，其规模、多样性直接塑造了 4V 特征；分析结果反过来优化感知策略与设备运维</td></tr>
+    <tr><td class="nm">大数据 ⇄ AI</td><td><b>数据是 AI 的燃料</b>（第 7 章"AI 成功三要素"之首）：机器学习/深度学习的性能来自大规模标注数据；AI 反过来<b>提升大数据的分析能力</b>，从"看到统计结果"升级为"能预测、能决策、能生成"</td></tr>
+    <tr><td class="nm">云 ⇄ AI</td><td><b>云提供算力（GPU/TPU 集群）、框架与数据就近性</b>，把训练与推理变成可租用服务；<b>AI 让云更智能</b>——智能调度、异常检测、容量预测、成本优化、自动化运维，形成"智能云"<b>AIOps</b>；同时 AI 应用成为云的最大增量负载之一</td></tr>
+    <tr><td class="nm">物联网 ⇄ AI</td><td>AI 下沉到端侧与边缘（<b>AIoT</b>）：智能摄像头做人脸与行为分析（第 11 章）、设备做预测性维护；端侧轻量推理＋云端大模型的<b>云边端协同</b>是主流架构</td></tr>
+  </table></div>
+  <div class="note">🎯 <b>论述题模板：</b>①一句话定位四者 → ②画/描述链路"感知→传输→计算→数据→智能→执行" → ③举一个<b>贯穿四者的实例</b>（如智慧交通：路侧摄像头与地感【IoT】把车流汇入【云】，沉淀成交通【大数据】，训练预测与信号控制模型【AI】，再下发配时方案优化通行）→ ④点出"融合不是叠加，是<b>相互成就的能力放大</b>"。</div>
+</div>
+
+<h2 class="section" id="s8">八、两两融合的具体形态（领会）⭐⭐</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>融合形态</th><th>典型做法 / 例子</th></tr>
+    <tr><td class="nm"><b>云原生大数据</b></td><td>Hadoop/Spark <b>部署在云主机或托管集群</b>上（本教材第 2~4 章的技术即在此交付）；<b>存算分离</b>——对象存储做数据湖、弹性计算做引擎，按需拉起用完释放；云数仓与实时数仓</td></tr>
+    <tr><td class="nm"><b>云 + AI（智能云服务）</b></td><td><b>GPU 云实例、深度学习训练平台（MLOps）、模型即服务 MaaS/API</b>（语音、视觉、NLP 接口开箱即用）、预训练<b>大模型云服务</b>；开发者不必自建集群即可获得第 9 章的模型能力</td></tr>
+    <tr><td class="nm"><b>云 + 物联网（物联网平台）</b></td><td>设备接入与影子、消息队列、规则引擎、时序数据库、OTA 升级、数字孪生；<b>边缘网关先行过滤、云端集中训练</b></td></tr>
+    <tr><td class="nm"><b>AIoT（智能物联网）</b></td><td>物联网 + AI，端侧推理/边缘计算；智能安防（第 11 章的视频监控与人脸识别就是典型 AIoT 系统）、智能座舱、工业质检</td></tr>
+    <tr><td class="nm"><b>大数据 + AI</b></td><td>特征工程与样本库（第 8 章的特征在这里被批量生产）、离线/实时特征平台、推荐系统闭环（第 9 章）、异常检测、决策支持</td></tr>
+    <tr><td class="nm"><b>AIOps / 智能云</b></td><td>用 AI 反过来<b>运维云本身</b>：日志异常检测、故障根因定位、容量与成本预测、智能调度、自动扩缩容</td></tr>
+    <tr><td class="nm"><b>数据要素与场景闭环</b></td><td>云让<b>数据可汇聚、可授权、可交易</b>；场景沉淀数据、数据训练模型、模型改进场景，形成<b>飞轮效应</b>——这是第 6 章"大数据五项成功指标"里"能完成以前所不能做的事"的实现路径</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s9">九、云端 AI 与智能云的服务形态（领会）</h2>
+<div class="rule">
+  <div class="th"><b>把 AI 放上云的三种姿势（从"自己搭"到"直接用"）：</b>①<b>在 IaaS 上自建</b>——租 GPU 云主机自己装框架（控制力最强、门槛最高）；②<b>用 PaaS 训练平台</b>——托管的机器学习/数据智能平台，提供数据接入、特征、训练、调参、部署流水线（<b>最省事的正经做法</b>）；③<b>调用 SaaS/MaaS 现成能力</b>——直接调 API（人脸、OCR、翻译、大模型），<b>零训练成本、最快上线</b>，但定制性与数据主权受限。</div>
+  <div class="th"><b>云对 AI 的四项关键支撑（记这四个词）：</b><b>算力</b>（GPU/TPU/大规模集群、分布式训练）、<b>数据</b>（就近存储、数据湖与治理、样本与标注）、<b>框架与工程</b>（托管 Spark/TF/PyTorch、容器与调度、模型服务化与弹性推理）、<b>成本与弹性</b>（训练脉冲式负载按用付费、推理按流量伸缩）。</div>
+  <div class="th"><b>服务化（as-a-Service）谱系：</b>IaaS → PaaS → SaaS → <b>FaaS/无服务器</b>（事件驱动、按毫秒计费，适合零散的 AI 调用）→ <b>DaaS 数据即服务</b> → <b>AI/MaaS 模型即服务</b>。趋势是<b>用户要管的层越来越少、可组合的能力越来越多</b>。</div>
+</div>
+
+<h2 class="section" id="s10">十、融合带来的挑战与安全（领会）</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>挑战</th><th>要点</th></tr>
+    <tr><td class="nm">数据与隐私合规</td><td>数据<b>跨境与本地化</b>、个人信息保护（《个人信息保护法》《数据安全法》《网络安全法》）、生物特征等<b>敏感数据</b>的最小必要与知情同意；云上一份数据多方使用易越界</td></tr>
+    <tr><td class="nm">安全责任共担</td><td><b>云商保障"云本身的安全"，客户负责"云上的安全"</b>——配置错误、密钥泄露、权限过宽是主要事故源；需要统一身份、最小权限、审计与加密</td></tr>
+    <tr><td class="nm">供应商锁定与可迁移性</td><td>私有 API、专用服务使切换成本高；对策是<b>开放标准、容器化、多云/混合云、CMP 统一管理</b></td></tr>
+    <tr><td class="nm">性能与网络依赖</td><td>时延、抖动、带宽费用；<b>边缘计算</b>与云边端协同缓解</td></tr>
+    <tr><td class="nm">成本失控（FinOps）</td><td>"按需付费"也可能是"<b>不知不觉一直在付费</b>"；资源泄漏、未释放的实例与流量费；需标签化、配额、预算告警与成本分析</td></tr>
+    <tr><td class="nm">技能与组织</td><td>缺乏云/数据/AI 复合人才；流程与文化转型慢于技术；需<b>治理机制</b>与跨部门数据权责</td></tr>
+    <tr><td class="nm">模型可信与伦理</td><td>可解释性、偏差与歧视、对抗攻击、生成内容风险、AI 服务的<b>鲁棒性与责任界定</b>（呼应第 7 章社会影响、第 11 章误报）</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s11">十一、本章速记小结</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>考纲要点</th><th>必须答出的关键词</th></tr>
+    <tr><td class="nm">云计算概念</td><td>互联网 + <b>共享可伸缩资源池</b> + <b>虚拟化</b> + 按需自助、按用付费；NIST <b>5 特征 / 3 模式 / 4 部署</b>；CAPEX→OPEX</td></tr>
+    <tr><td class="nm"><b>云计算的优势</b></td><td><b>省</b>（成本效益、利用率高）、<b>弹</b>（快速弹性、水平扩展）、<b>稳</b>（高可用容灾、SLA）、<b>快</b>（分钟级部署、敏捷试错）、<b>轻</b>（运维与人力减负）、<b>通</b>（泛在访问协作）、<b>合</b>（易整合、开放接口）、<b>绿</b>（低 PUE 节能）、<b>智</b>（支撑大数据与 AI）；同时能指出<b>网络依赖、锁定、合规、长期成本</b>等风险</td></tr>
+    <tr><td class="nm"><b>与基础架构兼容</b></td><td>新旧共存而非推倒重来：<b>虚拟化/容器共同语言</b>、<b>专线 VPN＋VPC 组网</b>、<b>开放标准 API 降锁定</b>、OS 与中间件版本核对、<b>SLA/时延/IOPS 匹配</b>、数据迁移与双轨回滚、<b>安全责任共担与合规约束</b>、流程人员培训；<b>6R 策略</b>；<b>混合云</b>是落地主流</td></tr>
+    <tr><td class="nm"><b>适合云端迁移的用例</b></td><td>网站/App 后端、<b>开发测试环境</b>、<b>备份归档容灾</b>、大数据与数仓、<b>AI 训练推理</b>、企业 SaaS、<b>波峰/临时业务</b>、多分支与远程协作、初创快速上线、物联网接入、离线计算密集作业；<b>不适合</b>：超低时延硬实时、超大不动数据、涉密监管、依赖特殊硬件、长期满载已折旧</td></tr>
+    <tr><td class="nm"><b>融合（本章重点）</b></td><td><b>物联网产数据 · 云计算供算力 · 大数据为原料 · AI 出智慧</b>；四组关系两两相互依赖；"大数据是跑车、云计算是公路"；形态：<b>云原生大数据（存算分离）、AI 云服务（GPU/MaaS）、物联网平台、AIoT 与云边端协同、AIOps</b>；闭环：场景→数据→模型→决策→反哺场景</td></tr>
+  </table></div>
+  <div class="note">✅ <b>6 学时怎么花：</b>"5-3-4 概念与服务/部署模式" 1.5 学时（单选、多选必出）→ <b>优势 + 兼容 + 迁移用例</b> 2 小时（三条考纲明文，简答主力）→ <b>四技术融合</b> 1.5 学时（论述/大题，务必练一个贯穿实例）→ 挑战与安全 1 学时（凑观点、抬分数）。全章概念熟、案例熟即可<b>接近满分</b>，是性价比最高的一章。</div>
+</div>
+
+<div class="gotos plain">
+  <a href="../目标检测/AI方法在目标检测中的应用.html">← 第 11 章 AI 方法在目标检测中的应用</a>
+  <a href="../算法实验/机器学习算法实验.html">→ 第 13 章 机器学习算法实验</a>
+  <a href="../index.html">📚 返回知识点导航</a>
+</div>
+
+<footer>本卡依据广东省《人工智能与大数据》（课程代码 13011）考试大纲第 12 章考核知识点与能力层次整理，覆盖教材 12.1—12.2 两节；内容为「考纲驱动 ＋ 公开资料补充」，非教材原文逐字，复习请以指定教材（郏东耀主编《大数据与人工智能》）为准。</footer>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

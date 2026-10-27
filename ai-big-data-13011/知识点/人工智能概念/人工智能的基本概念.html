@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 第 7 章 人工智能的基本概念｜AI 定义 · 图灵测试 · 中文屋 · 自动驾驶分级</title>
+<meta name="description" content="人工智能与大数据 13011 第 7 章速记卡：人工智能的概念与四种定义角度；AI 发展历程关键节点（达特茅斯会议、专家系统、深度学习、AlphaGo）；语音识别系统的关键问题；当前人工智能研究的两大方向；图灵测试的方法与意义；中文屋理论的思想与反驳要点；自动驾驶汽车的智能分级 L0—L5；人工智能对社会各领域的重大影响与正负面认知。含考纲能力层次标注与建议 4 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#4338ca,#0ea5e9)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .rule .kd{margin:4px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 7 章 · 人工智能的基本概念 🤖</h1>
+  <p>进入<b>第 2 篇「人工智能基础与应用」</b>。本章是整篇的地基：概念、历史、两个哲学关卡（<b>图灵测试</b>与<b>中文屋</b>）、以及最贴近生活的<b>自动驾驶分级</b>。考法以单选、名解、简答为主，最后一节会出<b>行业影响分析</b>的综合题。</p>
+  <span class="pill">建议 4 学时</span><span class="pill">难度 ★★☆☆☆</span><span class="pill">题型：单选 / 名解 / 简答 / 综合论述</span><span class="pill">重点：对人工智能的各种认识</span><span class="pill">难点：AI 对社会影响的正负面认知</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../应用与展望/大数据的应用与展望.html">← 第 6 章</a>
+    <a href="../特征提取/特征提取与图像特征.html">→ 第 8 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、人工智能的概念（识记）⭐⭐</a>
+  <a href="#s2">二、人工智能的历史（领会）⭐</a>
+  <a href="#s3">三、语音识别系统的关键问题（领会）</a>
+  <a href="#s4">四、当前 AI 研究的两大方向（领会）</a>
+  <a href="#s5">五、图灵测试（领会）⭐⭐</a>
+  <a href="#s6">六、中文屋理论（领会）⭐⭐</a>
+  <a href="#s7">七、自动驾驶汽车的智能分级（识记）⭐⭐</a>
+  <a href="#s8">八、AI 的未来：社会影响分析（综合应用）⭐</a>
+  <a href="#s9">九、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、人工智能的概念（识记）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 人工智能的概念。</div>
+  <div class="th"><b>定义（背这句）：</b>人工智能（Artificial Intelligence, AI）是<b>计算机科学的一个分支</b>，致力于研究、开发用于<b>模拟、延伸和扩展人的智能</b>的理论、方法、技术及应用系统，使机器能够<b>感知环境、获取知识、推理决策并完成任务</b>。1956 年美国<b>达特茅斯会议</b>上由<b>约翰·麦卡锡</b>等人首次正式提出"人工智能"这一术语，该会议被视为 AI 作为独立学科的诞生标志。</div>
+  <div class="th"><b>四种定义角度（罗素 &amp; 诺维格，《人工智能：一种现代方法》）：</b>①像人一样<b>思考</b>（认知建模）；②像人一样<b>行动</b>（图灵测试式）；③<b>理性</b>思考（逻辑主义、知识表示与推理）；④<b>理性</b>行动（智能体 Agent、最优化决策）。前两类以"人"为基准，后两类以"理想理性"为基准。</div>
+  <div class="th"><b>三个层次：</b><b>计算智能</b>（能存会算）→ <b>感知智能</b>（能听会说、能看会认：语音、视觉）→ <b>认知智能</b>（能理解会思考：自然语言、知识推理、决策）。</div>
+  <div class="th"><b>强 AI 与弱 AI：</b><b>弱人工智能</b>＝专注解决<b>特定任务</b>（图像分类、下棋、推荐），当前所有落地系统皆属此类；<b>强人工智能</b>＝具备<b>通用智能与自我意识</b>，能在陌生领域自主学习和推理，目前仍属目标而非现实。</div>
+  <div class="note">🧩 <b>AI 成功的三要素</b>（高频多选）：<b>大量良好的标注数据</b>＋<b>超强的计算能力</b>＋<b>形成闭环的应用场景</b>。三者缺一不可——这也解释了为什么 AI 会随大数据（数据）与云计算（算力）一起爆发。</div>
+</div>
+
+<h2 class="section" id="s2">二、人工智能的历史（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 人工智能的发展历程。</div>
+  <div class="fig">
+    <svg viewBox="0 0 780 150" role="img" aria-label="人工智能发展时间轴：1943 年 M-P 神经元模型、1950 年图灵测试、1956 年达特茅斯会议、1960 至 1980 年专家系统与反向传播、1997 年深蓝与 2006 年深度学习、2016 年 AlphaGo 与 2022 年大模型">
+      <line x1="40" y1="80" x2="740" y2="80" stroke="#94a3b8" stroke-width="2"/>
+      <g fill="#4338ca"><circle cx="70" cy="80" r="6"/><circle cx="200" cy="80" r="6"/><circle cx="330" cy="80" r="6"/><circle cx="460" cy="80" r="6"/></g>
+      <g fill="#be185d"><circle cx="590" cy="80" r="6"/><circle cx="700" cy="80" r="6"/></g>
+      <g font-size="12" font-weight="700" fill="#0f172a" text-anchor="middle">
+        <text x="70" y="36">1943</text><text x="200" y="36">1950</text><text x="330" y="36">1956</text><text x="460" y="36">1960—1980</text><text x="590" y="36">1997 / 2006</text><text x="700" y="36">2016 / 2022</text>
+      </g>
+      <g font-size="11" fill="#475569" text-anchor="middle">
+        <text x="70" y="56">M-P 神经元模型</text><text x="200" y="56">图灵测试论文</text><text x="330" y="56">达特茅斯会议</text><text x="460" y="56">专家系统与 BP</text><text x="590" y="56">深蓝·深度学习</text><text x="700" y="56">AlphaGo·大模型</text>
+      </g>
+      <text x="40" y="108" font-size="11.5" fill="#be185d">驱动力：大数据（数据）+ 云计算（算力）+ 深度学习算法（模型）三者汇聚</text>
+      <text x="40" y="128" font-size="11" fill="#6b7280">学科诞生标志：1956 年达特茅斯会议首次正式提出“人工智能”一词</text>
+    </svg>
+    <div class="cap">图 7-1 AI 发展的关键节点（"两次繁荣、两次低谷"，2006 年后进入深度学习爆发期）</div>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>阶段</th><th>标志</th><th>要记住的点</th></tr>
+    <tr><td class="nm">奠基（1940s—1956）</td><td>M-P 神经元模型、控制论、图灵《计算机器与智能》、<b>达特茅斯会议</b></td><td>学科<b>命名与诞生</b>在 1956；会议组织者含麦卡锡、明斯基、罗切斯特、香农</td></tr>
+    <tr><td class="nm">第一次繁荣（1956—1970s）</td><td>通用问题求解器、早期 Lisp 推理程序、<b>专家系统</b>（DENDRAL、MYCIN）</td><td>乐观过高 → 算力与知识不足，进入<b>寒冬</b></td></tr>
+    <tr><td class="nm">第二次繁荣（1980s）</td><td>专家系统商业化、<b>反向传播</b>（BP）算法复兴神经网络</td><td>连接主义与符号主义并行；再次因期望过高遇冷</td></tr>
+    <tr><td class="nm">复苏与爆发（1997—今）</td><td>深蓝（1997）→ <b>深度学习（2006）</b>→ AlexNet（2012）→ AlphaGo（2016）→ 大模型（2022—）</td><td>驱动力＝<b>大数据 + 算力 + 算法</b>三者汇聚</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s3">三、语音识别系统的关键问题（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 语音识别系统的关键问题。</div>
+  <div class="th"><b>语音识别（Speech Recognition）：</b>让机器把<b>连续语音信号</b>转换成<b>对应文字/语义</b>，即"能听会说"中的"听"。基本链路：<b>采集与预处理 → 特征提取 → 声学模型 → 语言模型 → 解码输出</b>。</div>
+  <div class="th"><b>四个关键问题：</b>①<b>说话人无关（非特定人）</b>——不同性别、年龄、口音、方言都要能识别；②<b>连续语音的切分与对齐</b>——词与词之间没有天然停顿，需把音流正确切分并与词条对齐；③<b>大词汇量与同音歧义</b>——需靠<b>语言模型与上下文</b>消歧（"公式/攻势/功势"）；④<b>鲁棒性与实时性</b>——噪声、信道、混响、回声下的抗干扰能力，以及识别延迟与准确率（误识率）的折衷。</div>
+  <div class="note">📌 三个传统约束常合称"<b>非特定人、连续语音、大词汇量</b>"，是语音识别从实验室走向实用的核心难点；评价指标为<b>识别率／字错误率（CER）／词错误率（WER）</b>。</div>
+</div>
+
+<h2 class="section" id="s4">四、当前 AI 研究的两大方向（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 当前人工智能研究的两大方向。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>方向</th><th>别名</th><th>核心主张</th><th>代表成果</th></tr>
+    <tr><td class="nm"><b>符号主义</b>（逻辑主义）</td><td>"知识驱动 / 推理派"</td><td>智能的本质是<b>符号表示与运算推理</b>，用知识表示、规则、逻辑推导实现智能，过程<b>可解释</b></td><td>专家系统、知识图谱、定理证明、规划</td></tr>
+    <tr><td class="nm"><b>连接主义</b>（仿生主义）</td><td>"数据驱动 / 学习派"</td><td>智能来自<b>大量简单单元（神经元）的并行连接与学习</b>，从数据中自动习得特征与规律</td><td>神经网络、深度学习、大语言模型</td></tr>
+  </table></div>
+  <div class="note">🔎 教材与公开资料也常用另一组口径描述当前 AI 研究的两大方向：<b>感知智能</b>（视觉、语音等"能看会听"）与<b>认知智能</b>（语言理解、知识推理等"能理解会思考"），后者被认为是尚未攻克的深水区；还有"<b>机器学习</b>与<b>知识工程</b>"两种提法。<b>答题时以题干的措辞为准</b>，并说明两者正走向融合（知识引导的学习、可解释的深度网络）。</div>
+</div>
+
+<h2 class="section" id="s5">五、图灵测试（领会）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 图灵测试的方法。</div>
+  <div class="th"><b>提出：</b>1950 年，英国数学家<b>阿兰·图灵（Alan Turing）</b>在论文《<b>计算机器与智能</b>》（Computing Machinery and Intelligence）中提出，用以<b>回避"机器能否思考"这一无法界定的问题</b>，改为可操作的判别方法。</div>
+  <div class="th"><b>方法（"模仿游戏"）：</b>把<b>人（A）</b>与<b>机器（B）</b>分隔在评判者（C）看不见的两侧，评判者通过<b>纯文本对话</b>向两者提问，试图分辨哪个是机器。若<b>在规定的时间内（常被引为 5 分钟）机器使评判者做出错误判断的比例达到 30% 以上</b>（即评判者无法可靠区分人与机器），就认为这台机器<b>通过了图灵测试</b>，具有人类水平的智能。</div>
+  <div class="th"><b>意义：</b>①给出了<b>可观测、可操作</b>的智能判据——<b>以行为结果代替内部机制</b>；②为 AI 树立了早期目标；③奠定了"以对话评价智能"的思想源头（今天的聊天机器人仍被拿来对照）。</div>
+  <div class="th"><b>局限：</b>①只测<b>会话表现</b>，可能奖励"会骗人"的技巧（如回避、模仿人类打字错误）而非真智能；②<b>不可证伪</b>——通过与否依赖评判者的主观与提问设计；③无法衡量<b>理解、意识、知识深度</b>（这正是中文屋的反驳点）；④把智能等同于"像人"，限制了对其他智能形态的认识。</div>
+</div>
+
+<h2 class="section" id="s6">六、中文屋理论（领会）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 中文屋理论的思想。</div>
+  <div class="th"><b>提出：</b>美国哲学家<b>约翰·塞尔（John Searle）</b>于 1980 年提出"中文屋（Chinese Room）"思想实验，用以<b>反驳强人工智能</b>与"程序即心智"的观点（其论述针对"计算机功能主义"，也常被表述为对"图灵测试式判据"的批评）。</div>
+  <div class="th"><b>实验设计：</b>一个<b>完全不懂中文</b>的人被关在房间里，手里有一本<b>英文规则书</b>，规定"收到某种形状的中文字符，就按规则送出某种形状的中文字符"。房外的中文使用者按规则递进问题、收到回答，<b>从对话上看完全以为屋里的人懂中文</b>。但屋里的人自始至终<b>只是按符号形状做形式操作</b>，对内容毫无理解。</div>
+  <div class="th"><b>结论（核心思想）：</b>①<b>运行一个程序 ≠ 理解该程序的意义</b>；②计算机只处理<b>语法（符号形式）</b>，而人类语言具有<b>语义（内容与意向性）</b>，语法本身<b>不能跨越到语义</b>；③因此<b>仅仅通过图灵测试不足以证明机器"理解"或拥有心智</b>，强 AI 的主张不成立。</div>
+  <div class="th"><b>常见回应（了解即可）：</b><b>系统答复</b>——理解发生在"人＋规则书＋纸笔"的<b>整个系统</b>而非孤立的人；<b>机器人答复</b>——把符号接地到感官与行动；<b>大脑模拟答复</b>——若程序精细到模拟神经元活动则可能产生理解；<b>多基答复</b>——心智不只有一种实现基质。</div>
+  <div class="note">⚔️ <b>必背对照：</b>图灵测试＝<b>"行为像"就算智能</b>（外部功能判据）；中文屋＝<b>"行为像"不等于"真理解"</b>（内部语义与意向性）。两者构成一对<b>正反对立场</b>，简答常要求"比较图灵测试与中文屋"。</div>
+</div>
+
+<h2 class="section" id="s7">七、自动驾驶汽车的智能分级（识记）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 自动驾驶汽车的智能分级。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>级别</th><th>名称</th><th>谁负责驾驶任务</th><th>人需要做什么</th><th>代表功能</th></tr>
+    <tr><td class="nm"><b>L0</b></td><td>无自动化</td><td><b>人 100%</b></td><td>全程操控与监控</td><td>仅有报警/辅助提示（倒车雷达、盲区警示）</td></tr>
+    <tr><td class="nm"><b>L1</b></td><td>驾驶<b>辅助</b></td><td>人 + 系统<b>单项</b></td><td>始终操控与监控</td><td>定速巡航 / 车道保持（<b>纵或横</b>二选一）</td></tr>
+    <tr><td class="nm"><b>L2</b></td><td><b>部分</b>自动化</td><td>系统<b>同时</b>管纵向+横向</td><td><b>必须持续监控</b>、随时接管</td><td>自适应巡航＋车道居中（组合辅助，仍非"无人"）</td></tr>
+    <tr><td class="nm"><b>L3</b></td><td><b>有条件</b>自动化</td><td>系统在<b>设计运行条件</b>内自动驾驶</td><td>可不盯路，但<b>被请求时必须接管</b></td><td>高速拥堵领航（分责的<b>分水岭</b>）</td></tr>
+    <tr><td class="nm"><b>L4</b></td><td><b>高度</b>自动化</td><td>系统在限定场景（ODD）内全程负责</td><td>可<b>脱眼脱手</b>，特定区域内无需接管</td><td>Robotaxi、港口/园区/公交等限定场景无人驾驶</td></tr>
+    <tr><td class="nm"><b>L5</b></td><td><b>完全</b>自动化</td><td>系统在所有条件下负责</td><td><b>无需人类干预</b>，可无方向盘</td><td>尚不存在（目标形态）</td></tr>
+  </table></div>
+  <div class="note">🧭 <b>两条分界线：</b>①<b>L2 → L3</b>：从"人负责监控"变成"系统在限定条件下负责、人只需响应接管请求"——<b>责任主体开始转移</b>；②<b>L4 → L5</b>：从"限定运行设计域（ODD）"到"任何场景"。记忆口诀：<b>0 没、1 单、2 双、3 有条件、4 高度、5 全</b>。</div>
+</div>
+
+<h2 class="section" id="s8">八、AI 的未来：社会影响分析（综合应用）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 自动驾驶汽车的智能分级；<span class="lvl b">领会</span> AI 对哪些社会领域产生重大影响；<span class="lvl d">综合应用</span> AI 对行业的综合影响分析。</div>
+  <div class="th"><b>受重大影响的社会领域（举其大者）：</b><b>制造业</b>（智能制造、质检、预测维护）、<b>医疗健康</b>（影像辅助诊断、药物研发、数据驱动医疗）、<b>交通</b>（自动驾驶、智能信号与调度）、<b>金融</b>（风控反欺诈、量化、智能客服）、<b>教育</b>（个性化学习与智能评测）、<b>公共服务与治理</b>（智慧城市、应急管理、舆情）、<b>农牧业</b>（精准农业、灾害预警）、<b>司法与安全</b>（证据分析、安防监控）、<b>就业结构</b>（岗位替代与新职业）。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>维度</th><th>正面影响（机会）</th><th>负面风险（挑战）</th></tr>
+    <tr><td class="nm">生产率</td><td>自动化重复劳动、优化决策、缩短研发周期（如药物筛选、代码生成）</td><td>转换成本、既有流程与技能贬值</td></tr>
+    <tr><td class="nm">服务与民生</td><td>个性化教育/医疗、7×24 服务、优质资源下沉</td><td>"数字鸿沟"扩大，资源分配不公</td></tr>
+    <tr><td class="nm">就业</td><td>催生新职业（数据标注、算法工程、AI 训练与治理）</td><td>流程型岗位被替代，结构性失业与再培训压力</td></tr>
+    <tr><td class="nm">安全与隐私</td><td>风险预警、事故防范、犯罪打击效率提升</td><td>个人数据过度采集、监控泛化、深度伪造</td></tr>
+    <tr><td class="nm">公平与治理</td><td>决策更透明可追溯（配合审计机制时）</td><td>算法歧视、"黑箱"不可解释、责任主体不清、信息茧房</td></tr>
+  </table></div>
+  <div class="th"><b>综合影响分析的答题模板（四步走）：</b>①<b>点明对象与场景</b>（该行业痛点是什么）；②<b>数据 + 算法 + 算力三要素如何具备</b>（说明 AI 落地的前提，回扣第 1、3、12 章）；③<b>正面收益分条列</b>（效率、质量、成本、体验、决策）；④<b>负面风险与治理对策分条列</b>（隐私、安全、公平、就业、法规），最后<b>给平衡结论</b>："技术是中性的，收益与风险取决于数据治理、算法审计、法规标准与人才转型制度。"</div>
+  <div class="note">⚠️ 本章难点就是<b>正负面认知要平衡</b>：只谈红利或只谈威胁都拿不到综合题的分。切记 <b>AI 目前没有情感与真正的理解</b>（中文屋的立场），也切记"强 AI"尚未实现。</div>
+</div>
+
+<h2 class="section" id="s9">九、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>概念</b>：AI 是<b>计算机科学的一个分支</b>，模拟/延伸/扩展人的智能；1956 <b>达特茅斯会议</b>诞生；三层次＝计算→感知→认知智能；弱 AI 已落地、强 AI 未实现。</li>
+    <li><b>成功三要素</b>：标注数据 + 计算能力 + 闭环场景。</li>
+    <li><b>语音识别关键问题</b>：非特定人、连续语音切分对齐、大词汇量与同音歧义、噪声鲁棒与实时。</li>
+    <li><b>两大方向</b>：符号主义（知识/推理、可解释）vs 连接主义（数据/学习、深度学习）；另一口径＝感知智能 vs 认知智能。</li>
+    <li><b>图灵测试</b>：1950，以<b>对话行为</b>判智能，误判率超 30% 即通过；局限在"表现 ≠ 理解"。</li>
+    <li><b>中文屋</b>：1980 塞尔，<b>语法不能跨越到语义</b>，运行程序不等于理解，反驳强 AI。</li>
+    <li><b>自动驾驶</b>：L0—L5，<b>L2→L3 是责任转移的分水岭</b>，L5 为完全自动化（尚无）。</li>
+    <li><b>社会影响</b>：制造/医疗/交通/金融/教育/治理/农业/司法/就业；正负面必须<b>成对</b>论述。</li>
+  </ol>
+  <div class="note">🎯 4 学时分配：①概念 + 历史 1 学时；②语音识别关键问题 + 两大方向 0.5 学时；③<b>图灵测试 + 中文屋 1.5 学时（名解/简答/对比高频）</b>；④<b>自动驾驶分级 0.5 学时（必背）</b>；⑤社会影响分析 0.5 学时。本章<b>整章都考</b>。</div>
+</div>
+
+<div class="gotos plain" style="margin-top:22px">
+  <a href="../应用与展望/大数据的应用与展望.html">← 第 6 章 大数据的应用与展望</a>
+  <a href="../特征提取/特征提取与图像特征.html">→ 第 8 章 特征提取</a>
+  <a href="../index.html">📚 回到知识点导航</a>
+</div>
+
+<footer>
+  <p>13011《人工智能与大数据》· 第 7 章 人工智能的基本概念 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

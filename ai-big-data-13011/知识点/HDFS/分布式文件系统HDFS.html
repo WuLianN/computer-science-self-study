@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 第 3 章 HDFS｜分而治之 · 架构 · 读写流程 · 异构存储 · 擦除码</title>
+<meta name="description" content="人工智能与大数据 13011 第 3 章速记卡：分布式文件系统 DFS 概念与主流产品、产品选择因素、文件系统发展三个阶段；HDFS 设计思想（分而治之）、设计目标与主要策略、各类问题的解决方法；HDFS 架构组成（NameNode/DataNode/SecondaryNameNode/Client/Block）、数据块设计与优点；客户端与名字节点的文件目录操作、读文件、写文件、数据节点启动与心跳流程；异构存储支持的介质与存储策略；擦除码 EC 概念、原理与优缺点。含考纲能力层次标注与建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗄️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#15803d,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .rule .kd{margin:4px 0}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 3 章 · Hadoop 分布式文件系统 HDFS 🗄️</h1>
+  <p>考纲把<b>"主要流程"列为综合应用</b>——这是全书少数会出<b>大图/大流程分析题</b>的地方：读文件、写文件、心跳三条流程必须能<b>按步骤写出来</b>。架构组成与"分而治之"则是单选与简答的基本盘。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">难度 ★★★★☆</span><span class="pill">题型：单选 / 简答 / 流程综合分析</span><span class="pill">重点：设计思想与实现</span><span class="pill">难点：主要流程的实现方法</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../Hadoop架构/Hadoop处理架构与生态组件.html">← 第 2 章</a>
+    <a href="../计算框架/MapReduce与Spark.html">→ 第 4 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、DFS 的由来：概念·主流产品·选择因素（识记/领会）</a>
+  <a href="#s2">二、设计思想：分而治之·目标·策略（识记/领会/简单应用）⭐</a>
+  <a href="#s3">三、HDFS 架构与数据块（识记/领会/简单应用）⭐</a>
+  <a href="#s4">四、主要流程（一）文件与目录操作（综合应用）</a>
+  <a href="#s5">五、主要流程（二）读文件与写文件（综合应用）⭐⭐</a>
+  <a href="#s6">六、主要流程（三）数据节点启动与心跳（综合应用）</a>
+  <a href="#s7">七、异构存储（识记）</a>
+  <a href="#s8">八、擦除码技术 EC（领会）</a>
+  <a href="#s9">九、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、DFS 的由来（识记 / 领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 分布式文件系统 DFS 的概念和主流产品；<span class="lvl b">领会</span> 产品选择因素、文件系统发展三个阶段。</div>
+  <div class="th"><b>DFS 概念：</b>分布式文件系统（Distributed File System）是指<b>管理的物理存储资源不直接连接在本地节点上，而是通过计算机网络（多台服务器）访问</b>的文件系统；它把文件<b>分散存储</b>在多台机器上，对用户<b>屏蔽底层差异</b>，提供统一的命名空间与访问接口。</div>
+  <div class="th"><b>文件系统发展的三个阶段（领会）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>阶段</th><th>形态</th><th>特点</th><th>局限</th></tr>
+    <tr><td class="nm">① <b>本地文件系统</b></td><td>单机的 FAT、NTFS、ext4</td><td>数据与计算在同一台机器，直接访问磁盘</td><td>容量与性能受单机限制，无法共享</td></tr>
+    <tr><td class="nm">② <b>网络文件系统</b></td><td>NFS、SMB/CIFS</td><td>通过<b>网络协议</b>访问远端共享目录，集中存储</td><td>服务器<b>单点瓶颈</b>，难扩展到海量</td></tr>
+    <tr><td class="nm">③ <b>分布式文件系统</b></td><td>GFS、<b>HDFS</b>、Ceph、Lustre</td><td>数据<b>分块分散到大量节点</b>，副本容错、横向扩展</td><td>一致性弱（多为最终一致）、小文件不友好</td></tr>
+  </table></div>
+  <div class="th"><b>主流产品（识记）：</b>Google <b>GFS</b>（开创者，闭源）、<b>Hadoop HDFS</b>（GFS 的开源实现，最常用）、<b>Lustre</b>（高性能计算/科研）、<b>GPFS（IBM Spectrum Scale）</b>、<b>Ceph</b>（统一存储：对象/块/文件）、<b>TFS / FastDFS</b>（互联网小文件与图片）、MogileFS、GlusterFS、Alluxion/Alluxio（内存层）。</div>
+  <div class="th"><b>选择分布式存储产品时要考虑的因素（领会·6 条）：</b>①<b>容量与扩展性</b>（能否在线扩容到 PB/EB）；②<b>性能</b>（吞吐、IOPS、延迟，是否匹配业务读写比）；③<b>可靠性与可用性</b>（副本/纠删码、故障自愈、SLA）；④<b>一致性模型</b>（强一致还是最终一致）；⑤<b>成本</b>（硬件、运维、许可）；⑥<b>生态与兼容性</b>（能否与 Hadoop/Spark/K8s 等工具链配合）；另可加上<b>安全性</b>（权限、加密、审计）与<b>对文件大小与类型的适应能力</b>。</div>
+  <div class="note">⚠️ 单选陷阱：HDFS 是<b>一次写入、多次读取（write-once / stream access）</b>的文件系统，<b>不适合</b>低延迟随机访问、<b>不适合</b>大量小文件（每个文件/块都要在 NameNode 占约 150 字节的元数据，内存是瓶颈）、<b>不支持</b>文件随机修改（只能追加 append）。</div>
+</div>
+
+<h2 class="section" id="s2">二、设计思想：分而治之 · 目标 · 策略（识记 / 领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> HDFS 的核心设计思路"分而治之"；<span class="lvl b">领会</span> 设计目标与主要策略；<span class="lvl c">简单应用</span> HDFS 解决各类问题的方法。</div>
+  <div class="th"><b>核心设计思路——"分而治之"：</b>把<b>大文件切分成固定大小的数据块（Block）</b>分散存储到<b>多台数据节点</b>上（"分"），再由<b>名字节点统一保存元数据并调度</b>、把结果汇总成完整文件（"治"）。一句话：<b>存储上分块分散、管理上集中调度、可靠性上多副本冗余</b>。</div>
+  <div class="th"><b>设计目标（领会·必背 7 条）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>设计目标</th><th>HDFS 的解决策略 / 实现方法（简单应用对应表）</th></tr>
+    <tr><td>1</td><td><b>兼容廉价（低成本）硬件</b>，运行在普通商用服务器上</td><td>组件<b>故障是常态而非异常</b> → <b>每个块默认 3 副本</b> + 机架感知放置 + 自动检测与重建副本</td></tr>
+    <tr><td>2</td><td><b>流式数据访问</b>（streaming access）</td><td>面向<b>批处理与高吞吐</b>而非低延迟：<b>一次写入、多次读取</b>，允许追加，优化顺序读，用<b>数据本地性</b>减少网络传输</td></tr>
+    <tr><td>3</td><td><b>大规模数据集</b>（GB～PB 级、上千万文件）</td><td><b>块式存储 + 元数据与数据分离</b>；NameNode 只存元数据，数据分散到 DataNode</td></tr>
+    <tr><td>4</td><td><b>简单的一致性模型</b></td><td>"<b>写前读</b>"（read-after-write）<b>强一致</b>：文件写完才对所有人可见，简化编程模型</td></tr>
+    <tr><td>5</td><td><b>跨平台可移植性</b></td><td>纯 Java 实现，可在不同操作系统与硬件间部署</td></tr>
+    <tr><td>6</td><td><b>高容错性</b></td><td>副本丢失自动恢复、数据校验和（checksum）检测损坏并读另一副本</td></tr>
+    <tr><td>7</td><td><b>高吞吐量 + 低成本</b></td><td>并行读写、就近计算（把计算移到数据所在节点）</td></tr>
+  </table></div>
+  <div class="th"><b>主要策略（关键词版，简答好写）：</b>①<b>分块存储</b>（Block 化）；②<b>元数据与数据分离、元数据集中管理</b>；③<b>多副本冗余 + 机架感知</b>；④<b>心跳与健康检查</b>；⑤<b>数据本地性 / 移动计算而非移动数据</b>；⑥<b>流式访问、追加写</b>。</div>
+  <div class="note">🔑 "分而治之"在答题时要拆成三句：<b>大文件切块（分）→ 块分布到多节点并行读写（快）→ NameNode 统一管元数据并调度副本（治）</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、HDFS 架构与数据块（识记 / 领会 / 简单应用）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> HDFS 架构的结构及组成；<span class="lvl b">领会</span> 数据块的设计及其优点；<span class="lvl c">简单应用</span> 描述 HDFS 整体架构图。</div>
+  <div class="fig">
+    <svg viewBox="0 0 820 300" role="img" aria-label="HDFS 架构：客户端与名字节点交互获取元数据，名字节点管理元数据，多个数据节点存放数据块，同一数据块以多副本形式分布在不同数据节点与机架上，虚线表示心跳与块报告">
+      <g font-size="13" font-weight="700" text-anchor="middle">
+        <rect x="20" y="24" width="140" height="46" rx="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/><text x="90" y="52" fill="#0369a1">Client 客户端</text>
+        <rect x="300" y="16" width="220" height="62" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2.4"/><text x="410" y="40" fill="#15803d">NameNode 名字节点</text><text x="410" y="60" font-size="11.5" font-weight="400" fill="#334155">命名空间 · 块映射 · 副本策略</text>
+        <rect x="560" y="96" width="150" height="44" rx="9" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.8"/><text x="635" y="123" font-size="12.5" fill="#6d28d9">SecondaryNameNode</text>
+        <rect x="30" y="96" width="150" height="44" rx="9" fill="#fff7ed" stroke="#b45309" stroke-width="1.8"/><text x="105" y="116" font-size="12.5" fill="#b45309">FsImage + EditLog</text><text x="105" y="132" font-size="11" font-weight="400" fill="#6b7280">元数据持久化/合并</text>
+      </g>
+      <g font-size="12.5" font-weight="700" text-anchor="middle">
+        <rect x="30" y="188" width="230" height="70" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/><text x="145" y="210" fill="#1d4ed8">DataNode 1（机架 A）</text><text x="145" y="232" font-size="11.5" font-weight="400" fill="#334155">Block_1 ■　Block_4 ■</text><text x="145" y="249" font-size="11.5" font-weight="400" fill="#334155">实际存放数据块</text>
+        <rect x="295" y="188" width="230" height="70" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/><text x="410" y="210" fill="#1d4ed8">DataNode 2（机架 A）</text><text x="410" y="232" font-size="11.5" font-weight="400" fill="#334155">Block_1 ■　Block_2 ■</text><text x="410" y="249" font-size="11.5" font-weight="400" fill="#334155">心跳 + 块报告</text>
+        <rect x="560" y="188" width="230" height="70" rx="10" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/><text x="675" y="210" fill="#1d4ed8">DataNode 3（机架 B）</text><text x="675" y="232" font-size="11.5" font-weight="400" fill="#334155">Block_2 ■　Block_1 ■</text><text x="675" y="249" font-size="11.5" font-weight="400" fill="#334155">副本跨机架分布</text>
+      </g>
+      <g stroke="#9ca3af" stroke-width="1.8" fill="none">
+        <line x1="160" y1="47" x2="298" y2="47"/><line x1="410" y1="80" x2="410" y2="186"/><line x1="380" y1="80" x2="150" y2="186"/><line x1="440" y1="80" x2="672" y2="186"/>
+        <line x1="182" y1="68" x2="182" y2="96" stroke-dasharray="5 4"/><line x1="300" y1="78" x2="558" y2="112" stroke-dasharray="5 4"/>
+      </g>
+      <g stroke="#be185d" stroke-width="1.5" stroke-dasharray="6 5" fill="none">
+        <path d="M262 223 L293 223"/><path d="M527 223 L558 223"/>
+      </g>
+      <g font-size="11.5" fill="#6b7280">
+        <text x="205" y="40">读写请求 / 元数据查询</text>
+        <text x="196" y="92">元数据</text>
+        <text x="452" y="150">心跳·块报告·指令</text>
+        <text x="40" y="278">实线：客户端/元数据/控制通道　·　<tspan fill="#be185d" font-weight="700">玫红虚线：副本复制管道（pipeline）</tspan>　·　Block_1 出现在 3 个节点 = 3 副本</text>
+        <text x="40" y="295">SecondaryNameNode 只是「协助合并元数据」，<tspan font-weight="700">不是 NameNode 的热备份</tspan></text>
+      </g>
+    </svg>
+    <div class="cap">HDFS 整体架构（"简单应用：架构图描述"按此六要素作答）</div>
+  </div>
+  <div class="th"><b>架构组成与职责（识记·六件套）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>组件</th><th>数量</th><th>职责</th></tr>
+    <tr><td class="nm"><b>NameNode（名字节点 / 主节点）</b></td><td>1（HA 下多活备）</td><td>管理<b>文件系统命名空间（目录树）</b>与<b>访问权限</b>；维护<b>文件↔数据块映射、数据块↔数据节点映射</b>；<b>元数据常驻内存</b>，并持久化到 FsImage + EditLog；负责副本管理、调度与心跳监控</td></tr>
+    <tr><td class="nm"><b>DataNode（数据节点 / 从节点）</b></td><td>多台</td><td><b>真正存储数据块（Block）</b>；执行客户端的读写请求；按 NameNode 指令<b>创建/删除块、复制块</b>；定期发送<b>心跳与块报告</b></td></tr>
+    <tr><td class="nm"><b>SecondaryNameNode（检查点节点）</b></td><td>1</td><td><b>定期合并 FsImage 与 EditLog</b> 生成新 FsImage（检查点），防止 EditLog 过大、缩短重启时间；<b>不是热备</b></td></tr>
+    <tr><td class="nm"><b>Client（客户端）</b></td><td>任意</td><td>向 NameNode 申请元数据，与 DataNode 直接通信完成<b>文件的实际读写</b>，切分文件为块并挑选数据节点</td></tr>
+    <tr><td class="nm"><b>Block（数据块）</b></td><td>海量</td><td>HDFS 最小的<b>存储与读写单位</b>；Hadoop 1.0 默认 <b>64 MB</b>、2.0 默认 <b>128 MB</b>；文件不足一块按实际大小存</td></tr>
+    <tr><td class="nm"><b>副本（Replication）</b></td><td>默认 <b>3</b></td><td>放置策略：<b>第 1 副本在本机/就近、第 2 副本在不同机架、第 3 副本在第 2 副本同机架的另一节点</b>（跨机架容错 + 减少机架间流量）</td></tr>
+  </table></div>
+  <div class="th"><b>为什么用"块"设计？块大小的取舍（领会）：</b>块是<b>与磁盘块无关</b>的逻辑概念。块<b>太大</b> → MapReduce 中每个任务处理的数据多、<b>并行度低</b>、传输等待久；块<b>太小</b> → <b>元数据暴涨</b>（NameNode 内存吃紧）、寻址与网络开销占比高、<b>磁盘寻道时间超过传输时间</b>。所以取一个"足够大以让<b>传输时间远大于寻址时间</b>"的折中值（128 MB）。</div>
+  <div class="th"><b>数据块设计的优点（简答）：</b>①<b>简化存储管理</b>（块大小固定，元数据量小，NameNode 只需在内存中保存少量元数据）；②<b>文件可以超过单机容量</b>，块可分布到任意节点；③<b>便于复制与负载均衡</b>（以块为单位跨节点搬迁、均衡副本）；④<b>便于容错</b>（块损坏可按副本恢复）；⑤<b>支持跨平台</b>（块与底层文件系统解耦）。</div>
+  <div class="note">⚠️ 高频考点：<b>NameNode 内存限制了文件/块总数</b>（约每个对象 150 字节）；<b>元数据丢失 = 整个文件系统不可用</b>，所以要 FsImage+EditLog 持久化、SecondaryNameNode 做检查点、生产环境配 HA（多 NameNode + JournalNode + ZooKeeper 选主）。</div>
+</div>
+
+<h2 class="section" id="s4">四、主要流程（一）文件与目录操作（综合应用）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 客户端与名字节点之间的文件与目录操作。</div>
+  <div class="th"><b>核心规律：所有"文件/目录操作"都是<b>客户端 ↔ NameNode</b> 的元数据交互，不碰真实数据；只有"读/写文件内容"才与 DataNode 通信。</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>操作</th><th>流程要点</th></tr>
+    <tr><td class="nm"><b>创建文件 / 目录</b></td><td>Client 请求 NameNode → NameNode 在<b>目录树中登记新节点（元数据）</b>并检查权限/是否重名 → 返回成功；此时<b>还没有数据块</b>，块在写入时才分配</td></tr>
+    <tr><td class="nm"><b>列出目录 / 查看属性</b></td><td>Client → NameNode 查询命名空间 → 返回该目录的子项与元数据（大小、权限、副本数、块列表）</td></tr>
+    <tr><td class="nm"><b>重命名 / 移动</b></td><td>仅修改 NameNode 中的<b>目录树结构（元数据）</b>，<b>数据块不需要移动</b> → 所以 HDFS 的 rename/mv 是<b>常数时间</b>的轻量操作</td></tr>
+    <tr><td class="nm"><b>删除文件</b></td><td>NameNode 把该文件<b>移入回收站（.Trash）</b>或删除元数据 → 异步通知相关 DataNode <b>删除对应块</b>；回收站保留期内可恢复（<code>fs.trash.interval</code>）</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s5">五、主要流程（二）读文件与写文件（综合应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 读文件、写文件的主要流程。</div>
+  <div class="th"><b>（一）读文件流程（7 步，按序背）：</b></div>
+  <ol class="steps">
+    <li>客户端调用 <b>DistributedFileSystem.open()</b> 向 <b>NameNode</b> 请求读取文件。</li>
+    <li>NameNode 校验权限后返回该文件的<b>块列表及各块的副本所在 DataNode 列表</b>（并按<b>网络拓扑/机架距离排序</b>，就近优先）。</li>
+    <li>DistributedFileSystem 返回 <b>FSDataInputStream</b>，其底层 <b>DFSInputStream</b> 保存着块位置信息。</li>
+    <li>DFSInputStream 连接<b>距离最近的那个 DataNode</b>，开始<b>逐块读取</b>数据（块内流式读取）。</li>
+    <li>当前块读完 → <b>断开该 DataNode 连接</b>，再为下一个块<b>寻找最近的 DataNode</b> 连接读取。</li>
+    <li>若读取过程中<b>发生通信错误</b>：关闭该连接，把该块位置标记为不可用，<b>从另一个副本重新读取</b>，并把错误报告给 NameNode（触发校验与修复）。</li>
+    <li>所有块读完后，客户端关闭输入流；<b>读的过程中客户端与 NameNode 不再交互</b>（元数据一次性拿全）。</li>
+  </ol>
+  <div class="th"><b>（二）写文件流程（7 步，注意"管道"与"确认反向传递"）：</b></div>
+  <ol class="steps">
+    <li>客户端调用 <b>DistributedFileSystem.create()</b>，NameNode 检查权限、在命名空间<b>登记新文件</b>（状态为"正在创建"）。</li>
+    <li>客户端把文件<b>切分成块</b>，向 NameNode <b>申请为每个块分配 DataNode</b>；NameNode 按<b>副本放置策略</b>返回一组 DataNode（如 3 个）。</li>
+    <li>DFSOutputStream 与这些 DataNode 建立<b>数据管道（pipeline）</b>：客户端 → DN1 → DN2 → DN3。</li>
+    <li>客户端把数据<b>以 packet（包）为单位写入管道</b>，写入 <b>data queue</b>；DN 收到后转发给下一个，并写入本地磁盘。</li>
+    <li>每个 DataNode 写成功后向上游返回 <b>ACK 确认</b>，确认信息<b>沿管道反向逐级回传</b>，最终进入 <b>ack queue</b>；收到全部确认后客户端才认为该包写入成功（<b>保证一致性</b>）。</li>
+    <li>若写入过程中<b>某个 DataNode 失效</b>：①管道中<b>失效节点之后的数据重新分配</b>到其他节点；②把该节点从管道中<b>移除</b>；③该块副本数减少，NameNode 会在别处<b>异步补齐副本</b>；④把失效节点上已写的数据<b>记录到别处</b>，保证块完整。</li>
+    <li>客户端写完调用 <b>close()</b> → 通知 NameNode，等待<b>所有块都已复制到位（达到最小副本数）</b>后，文件才正式可用（"写前读"强一致）。</li>
+  </ol>
+  <div class="note">🎯 读 vs 写三处关键差异（简答对比题）：①<b>读</b>是"就近选副本、块间独立"；<b>写</b>是"建管道、包级确认"。②<b>读</b>出错→换副本继续；<b>写</b>出错→剔除节点 + 事后补副本。③<b>读</b>期间不再问 NameNode；<b>写</b>每块都要向 NameNode 申请分配节点、结束时要 close 确认。</div>
+</div>
+
+<h2 class="section" id="s6">六、主要流程（三）数据节点启动与心跳（综合应用）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 数据节点的启动和心跳流程。</div>
+  <div class="th"><b>启动与注册：</b>DataNode 启动 → 扫描本地磁盘上的块文件与元数据，<b>在内存中构建"块 ↔ 存储位置"映射</b> → 向<b>集群中所有 NameNode 发起注册（register）</b>，上报自身标识（storageID）、主机与端口、资源使用情况 → 注册成功后进入服务状态。</div>
+  <div class="th"><b>心跳与块报告（三个周期，数字要记）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>机制</th><th>周期</th><th>内容与作用</th></tr>
+    <tr><td class="nm"><b>心跳 heartbeat</b></td><td>默认每 <b>3 秒</b></td><td>向 NameNode 报告"我还活着"，并携带<b>容量使用、读写队列长度、统计信息</b>；NameNode 的回复中携带<b>指令</b>（复制块、丢弃块、刷新缓存等）</td></tr>
+    <tr><td class="nm"><b>块报告 block report</b></td><td>启动时<b>立即全量上报</b>，之后默认每 <b>6 小时</b>一次</td><td>上报本节点存储的<b>全部块列表</b>，NameNode 据此核对元数据与实际副本是否一致（副本缺失/多余的判定依据）</td></tr>
+    <tr><td class="nm"><b>失效判定</b></td><td><b>10 分钟 + 30 秒</b>（10×心跳超时时间 + 30s）收不到心跳</td><td>NameNode 判定该 DataNode <b>失效</b>：把它上面的块标记为不可用 → <b>在其他节点复制补齐副本</b>，保证副本数与数据可用性</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆串：<b>"注册 → 3 秒心跳 → 6 小时块报告 → 超时 10 分半判死 → 自动补副本"</b>。这也是 HDFS "把故障当作常态"设计目标的直接体现。</div>
+</div>
+
+<h2 class="section" id="s7">七、异构存储（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> HDFS 支持的存储介质和存储策略。</div>
+  <div class="th"><b>背景：</b>早期 HDFS 只认"磁盘"这一种介质，热数据与冷数据混放，成本高、性能浪费。<b>Hadoop 2.4 起引入异构存储（Storage Policy / Type）</b>，允许按<b>介质类型</b>为不同数据选择存放位置，实现<b>性能与成本的分级平衡</b>。</div>
+  <div class="th"><b>支持的存储介质类型（Storage Type）：</b><b>RAM_DISK（内存盘）</b>、<b>SSD（固态硬盘）</b>、<b>DISK / DEFAULT（普通磁盘）</b>、<b>ARCHIVE（归档介质，如磁带/高密度盘）</b>、<b>PROVIDED（由外部/下层提供）</b>、<b>COLD（冷介质）</b>、<b>WARM（温介质）</b>、<b>HOT（热介质）</b>。</div>
+  <div class="th"><b>六种存储策略（识记·名称 + 一句话）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>策略</th><th>含义</th><th>适用</th></tr>
+    <tr><td class="nm"><b>LAZY_PERSIST</b> 延迟持久</td><td>先写<b>内存盘</b>，由 DataNode 异步<b>定期刷写到磁盘</b>；内存盘不可用时退化为普通磁盘写</td><td>高频小写、临时数据、加速中间结果</td></tr>
+    <tr><td class="nm"><b>ALL_SSD</b> 全 SSD</td><td><b>所有副本都放 SSD</b>，放不下才回退磁盘</td><td>低延迟热点数据</td></tr>
+    <tr><td class="nm"><b>ONE_SSD</b> 一副本 SSD</td><td><b>至少一个副本在 SSD</b>，其余普通磁盘（默认策略的加强版）</td><td>兼顾性能与成本的常用折中</td></tr>
+    <tr><td class="nm"><b>TOP</b> 分层（原 DEFAULT）</td><td>按<b>机架拓扑</b>优先分布副本（同机架少跨、跨机架容错），介质不限</td><td>通用默认</td></tr>
+    <tr><td class="nm"><b>WARM</b> / <b>COLD</b> 温冷</td><td><b>部分/全部副本放 ARCHIVE 归档介质</b>，热介质只留少量或不留</td><td>历史数据、备份、合规留存</td></tr>
+  </table></div>
+  <div class="th"><b>配套能力：</b>①<b>Move 命令</b>（<code>hdfs storagepolicies</code> / <code>mv</code>）可把块在不同介质间<b>迁移</b>而不改数据内容；②<b>缓存管理（Cache Directives / Alluxio 类）</b>把热点数据常驻内存；③策略可<b>按目录设置并被子目录继承</b>。</div>
+</div>
+
+<h2 class="section" id="s8">八、擦除码技术 EC（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 擦除码（Erasure Coding）的概念、原理和优缺点。</div>
+  <div class="th"><b>概念：</b>擦除码是一种<b>数据冗余与容错编码技术（纠删码）</b>：把 <b>k 个数据块</b>通过编码生成 <b>m 个校验块</b>，共 <b>n = k + m</b> 个块分散存储；当任意 <b>≤ m 个块丢失</b>时，都能用剩下的 <b>k 个块 + 编码关系</b><b>重建</b>出丢失的数据。<b>Hadoop 2.3 起在 HDFS 中支持 EC（Reed-Solomon 码）</b>。</div>
+  <div class="th"><b>原理（以 RS(6,3) 为例）：</b>把数据切成 <b>6 个数据块 d₁…d₆</b>，用 Reed-Solomon 矩阵算出 <b>3 个校验块 p₁…p₃</b>，共 <b>9 个块</b>放到 9 个不同节点/机架。任意 <b>3 个块损坏</b>（无论数据块还是校验块）都能由剩余 6 个块<b>解方程恢复</b>。HDFS 中 EC 以<b>块组（block group，策略文件）</b>为单位管理，写入时<b>先填充 k 个数据块再算校验块</b>。</div>
+  <div class="th"><b>优点：</b>①<b>大幅降低存储开销</b>——3 副本需 <b>300%</b> 空间，RS(6,3) 只需 <b>150%</b>（1.5 倍），冷数据甚至可用 RS(10,4)=140%；②<b>容错能力不降甚至更强</b>（可容忍同时坏 3 个块）；③<b>省下的就是成本</b>，适合<b>海量、写一次读多次的冷数据/归档数据</b>。</div>
+  <div class="th"><b>缺点：</b>①<b>重建代价高</b>——恢复一个丢失块要<b>读取 k 个块并做计算</b>，网络与 CPU 开销远大于"直接复制一个副本"；②<b>不适合小文件</b>（不足 k 个块无法发挥优势，反而增加元数据与复杂度）；③<b>不适合频繁更新/随机写</b>（编码需整块组重算）；④<b>读取需跨更多节点</b>，可能降低读吞吐、增加延迟；⑤<b>配置复杂</b>，需为目录显式设置 EC 策略文件，且<b>不能与多副本策略随意混用</b>。</div>
+  <div class="note">⚖️ 一句话对比：<b>3 副本 = 用 3 倍空间换"简单快速的重建"；擦除码 = 用 1.5 倍空间换"更高的存储效率但更贵的重建"</b>。冷热分层：热数据用副本（或 ONE_SSD），冷数据用 EC + ARCHIVE。</div>
+</div>
+
+<h2 class="section" id="s9">九、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>由来</b>：本地 → 网络（NFS）→ 分布式（GFS/HDFS）；选型看<b>容量、性能、可靠、一致、成本、生态</b>六因素。</li>
+    <li><b>核心思想</b>：<b>分而治之</b>——切块分散存、NameNode 集中管、多副本保可靠。</li>
+    <li><b>架构六件套</b>：NameNode、DataNode、SecondaryNameNode（<b>不是热备</b>）、Client、Block（128M）、副本（默认 3、跨机架）。</li>
+    <li><b>三条流程</b>：读（就近副本、块间独立、出错换副本）；写（管道 + packet + ACK 反向确认、节点失效则剔除并补副本）；心跳（注册 → 3s 心跳 → 6h 块报告 → 10 分半判死）。</li>
+    <li><b>块设计的收益</b>：元数据少、可超单机、便于负载均衡与容错、跨平台。</li>
+    <li><b>异构存储</b>：介质 RAM_DISK/SSD/DISK/ARCHIVE；策略 <b>LAZY_PERSIST / ALL_SSD / ONE_SSD / TOP / WARM / COLD</b>。</li>
+    <li><b>擦除码</b>：k 数据 + m 校验，坏 ≤m 可恢复；<b>省空间（300%→150%）但重建贵、不适合小文件与频繁写</b>。</li>
+  </ol>
+  <div class="note">🎯 6 学时分配：①由来 + 设计思想 1 学时；②架构与块（对着 SVG 默画一遍）1.5 学时；③<b>读写与心跳流程 2 学时（综合应用主战场，必须能分步书写）</b>；④异构存储 0.5 学时；⑤擦除码 1 学时。本章<b>整章考、无跳过节</b>。</div>
+</div>
+
+<div class="gotos plain" style="margin-top:22px">
+  <a href="../Hadoop架构/Hadoop处理架构与生态组件.html">← 第 2 章 大数据处理架构 Hadoop</a>
+  <a href="../计算框架/MapReduce与Spark.html">→ 第 4 章 MapReduce 与 Spark</a>
+  <a href="../index.html">📚 回到知识点导航</a>
+</div>
+
+<footer>
+  <p>13011《人工智能与大数据》· 第 3 章 Hadoop 分布式文件系统 HDFS 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

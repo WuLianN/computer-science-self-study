@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>人工智能与大数据 13011 · 知识点导航</title>
+<meta name="description" content="人工智能与大数据 13011 知识点导航：按考纲 13 章拆成 13 页速记卡，分「大数据技术原理与应用（1–6 章）／人工智能基础与应用（7–11 章）／综合应用（12–13 章）」三篇，每页按考纲能力层次（识记/领会/简单应用/综合应用）组织，含距离计算、K-均值、线性回归、决策树信息增益等算例。指定教材《大数据与人工智能》郏东耀主编，清华大学出版社·北京交通大学出版社 2022 年版。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261027d">
+<style>
+  header.hero{background:linear-gradient(135deg,#0e7490,#7c3aed)}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 6px}
+  .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:118px}
+  .pcard:hover{border-color:var(--brand);background:#f5faff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.10)}
+  .pcard .t{font-weight:700;color:var(--brand);margin-bottom:4px;font-size:15px}
+  .pcard .t .ico{margin-right:6px}
+  .pcard .d{font-size:13px;color:var(--muted);line-height:1.65}
+  .pcard .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;margin-right:6px;margin-top:6px}
+  .pcard .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .pcard .badge.hot{background:#fce7f3;color:#be185d}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 20px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .jump .lbl{font-size:12.5px;color:var(--muted);margin-right:4px}
+  .jump a{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-weight:600;transition:.15s}
+  .jump a:hover{background:var(--brand);color:#fff}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>人工智能与大数据 13011 · 知识点导航</h1>
+  <p>按考纲 <b>13 章</b>拆成 <b>13 页速记卡</b>，每页按<b>考核知识点 + 能力层次（识记/领会/简单应用/综合应用）</b>组织。<b>指定教材是《大数据与人工智能》（郏东耀主编，清华大学出版社·北京交通大学出版社 2022 年版，ISBN 978-7-5121-4554-2）</b>，3 篇 15 章，全书 282 页。</p>
+  <span class="pill">13 章速记卡 · 68 学时</span><span class="pill">6 学分 · 闭卷 150 分钟</span><span class="pill">🚫 教材 13/14 整章 + 4.6/4.8/5.5/5.6/8.3/15.4 不考</span>
+  <div class="gotos">
+    <a href="../../index.html">🏠 首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+  </div>
+</header>
+
+<div class="note">
+  ⏰ <b>本知识点为「考纲驱动 + 公开资料补充」版：</b>13011 是广东新开课，<b>暂无可靠成套真题</b>，页面标注的是<b>考纲能力层次</b>而非真题题号；内容以覆盖考纲考核知识点为目标，拔高仍需翻教材原文。<br>
+  ⚠️ <b>翻书前必看：考纲章号 ≠ 教材章号！</b>教材 3 篇共 15 章，考纲只取其中内容重新编号成 13 章。<b>最易踩坑的一处：</b>考纲<b>第 13 章"机器学习算法实验"＝教材第 15 章 15.1—15.3 节</b>（要考）；而<b>教材第 13 章、第 14 章整章不考</b>。章→节映射以<a href="../考纲.html#chapters">考纲页</a>为准，本页各卡一律<b>按考纲章号</b>编号。
+</div>
+
+<nav class="jump">
+  <span class="lbl">📍 章节快速跳转：</span>
+  <a href="#g1">1 大数据概论</a>
+  <a href="#g1">2 Hadoop</a>
+  <a href="#g1">3 HDFS</a>
+  <a href="#g1">4 MapReduce/Spark</a>
+  <a href="#g1">5 NoSQL/云数据库</a>
+  <a href="#g1">6 应用与展望</a>
+  <a href="#g2">7 AI 概念</a>
+  <a href="#g2">8 特征提取</a>
+  <a href="#g2">9 机器学习</a>
+  <a href="#g2">10 自然语言理解</a>
+  <a href="#g2">11 目标检测</a>
+  <a href="#g3">12 云·数·智融合</a>
+  <a href="#g3">13 算法实验</a>
+</nav>
+
+<h2 class="section" id="g1">第 1 篇 · 大数据技术原理与应用（第 1–6 章 · 32 学时）</h2>
+<p class="section-sub">Hadoop 生态是概念与名词的主战场：HDFS 备份机制、MapReduce 两阶段、HBase 数据模型、NoSQL 的 CAP/BASE。第 6 章纯清单、拿分区，别花太多时间。</p>
+<div class="pgrid">
+  <a class="pcard" href="大数据概论/大数据的来源采集与基本概念.html">
+    <div class="t"><span class="ico">📊</span>第 1 章 · 大数据的来源、采集与基本概念</div>
+    <div class="d">大数据定义与 <b>4V/5V 特征</b>、来源与分类、采集与预处理、大数据与云计算/物联网/AI 的关系、应用领域</div>
+    <span class="badge">4 学时</span><span class="badge">选择/简答地基</span>
+  </a>
+  <a class="pcard" href="Hadoop架构/Hadoop处理架构与生态组件.html">
+    <div class="t"><span class="ico">🏗️</span>第 2 章 · 大数据处理架构 Hadoop</div>
+    <div class="d">Hadoop 简介与<b>特性</b>、<b>体系结构与三大组件</b>（HDFS/MapReduce/YARN）、生态组件、<b>安装部署与目录结构</b>、运行模式</div>
+    <span class="badge">6 学时</span><span class="badge hot">⚠️ 4.6/4.8 见第 4 章</span>
+  </a>
+  <a class="pcard" href="HDFS/分布式文件系统HDFS.html">
+    <div class="t"><span class="ico">💾</span>第 3 章 · 分布式文件系统 HDFS</div>
+    <div class="d"><b>NameNode/DataNode/Block</b>、HDFS 体系结构与<b>副本机制（默认 3 副本）</b>、读写流程、与传统文件系统区别、Java API 操作</div>
+    <span class="badge">6 学时</span><span class="badge hot">简答：读写流程</span>
+  </a>
+  <a class="pcard" href="计算框架/MapReduce与Spark.html">
+    <div class="t"><span class="ico">⚙️</span>第 4 章 · MapReduce 与 Spark</div>
+    <div class="d"><b>MapReduce 思想与两阶段</b>、YARN 作业执行、<b>WordCount</b>、Spark 特点与 RDD、<b>Spark vs MapReduce</b>；⚠️ 教材 4.6、4.8 不考</div>
+    <span class="badge">6 学时</span><span class="badge hot">综合：WordCount</span>
+  </a>
+  <a class="pcard" href="分布式与云数据库/NoSQL与云数据库.html">
+    <div class="t"><span class="ico">🗃️</span>第 5 章 · NoSQL 数据库、HBase、云数据库</div>
+    <div class="d"><b>关系数据库困境</b>、<b>NoSQL 三类与 CAP/BASE</b>、<b>HBase 数据模型与体系结构</b>、Hive；⚠️ 云数据库看教材 5.7，5.5/5.6 不考</div>
+    <span class="badge">6 学时</span><span class="badge hot">CAP/BASE 必考</span>
+  </a>
+  <a class="pcard" href="应用与展望/大数据的应用与展望.html">
+    <div class="t"><span class="ico">🔭</span>第 6 章 · 大数据的应用与展望</div>
+    <div class="d">五大应用方向、<b>四项成功指标</b>、数据分析四层次、挖掘六任务、挑战与机遇、工业与就业方向；<b>纯清单送分章</b></div>
+    <span class="badge">4 学时</span><span class="badge">列举/简答</span>
+  </a>
+</div>
+
+<h2 class="section" id="g2">第 2 篇 · 人工智能基础与应用（第 7–11 章 · 24 学时）</h2>
+<p class="section-sub">⭐ 概念密度最高的一篇，也是<b>简答与论述的主力</b>。第 8 章是第一个"动手算"的章（相关系数、前向/后向选择）；第 9 章机器学习是核心；第 11 章目标检测几乎全是清单＋流程，性价比最高。</p>
+<div class="pgrid">
+  <a class="pcard" href="人工智能概念/人工智能的基本概念.html">
+    <div class="t"><span class="ico">🤖</span>第 7 章 · 人工智能的基本概念</div>
+    <div class="d">AI 定义与四角度、三层次、强弱 AI、<b>发展史关键节点</b>、<b>图灵测试</b>、<b>中文屋论据</b>、<b>自动驾驶 L0–L5</b>、应用与社会影响</div>
+    <span class="badge">4 学时</span><span class="badge">单选/名解高发</span>
+  </a>
+  <a class="pcard" href="特征提取/特征提取与图像特征.html">
+    <div class="t"><span class="ico">🧮</span>第 8 章 · 特征提取</div>
+    <div class="d">数据预处理与方法、特征选择三类、<b>皮尔逊相关系数计算</b>、<b>前向/后向选择算法 trace</b>、图像四大特征（颜色/纹理/形状/空间）；⚠️ 8.3 不考</div>
+    <span class="badge">6 学时</span><span class="badge hot">计算：相关性</span>
+  </a>
+  <a class="pcard" href="机器学习/机器学习与深度学习.html">
+    <div class="t"><span class="ico">🧠</span>第 9 章 · 机器学习 ⭐ 核心</div>
+    <div class="d">ML 定义与分类、<b>监督 vs 无监督</b>、<b>强化学习原理</b>、推荐系统过滤算法、<b>人工神经元</b>、神经网络三基础、<b>AI⊃ML⊃DL</b>、前馈网络与 Sigmoid、<b>全连接参数量计算</b></div>
+    <span class="badge">6 学时</span><span class="badge hot">简答/结构计算</span>
+  </a>
+  <a class="pcard" href="自然语言理解/自然语言理解.html">
+    <div class="t"><span class="ico">📖</span>第 10 章 · 自然语言理解</div>
+    <div class="d">语言<b>五层次</b>、自然语言特征、汉语特点、思维规律、<b>直言推理与换位法</b>、NLU 概念、<b>Olson 语言理解四标志（问摘复翻）</b>、计算机识字与后处理</div>
+    <span class="badge">4 学时</span><span class="badge hot">简答：Olson 四条</span>
+  </a>
+  <a class="pcard" href="目标检测/AI方法在目标检测中的应用.html">
+    <div class="t"><span class="ico">🎯</span>第 11 章 · AI 方法在目标检测中的应用</div>
+    <div class="d"><b>贝叶斯网络概念</b>、<b>视频监控系统框架</b>、多视角目标识别、消失/重现识别、异常行为描述、<b>人脸识别流程</b>、多视角检测/跟踪、多任务决策融合；⚠️ 考纲"重点难点"疑混多智能体，见页内说明</div>
+    <span class="badge">4 学时</span><span class="badge hot">流程/清单必背</span>
+  </a>
+</div>
+
+<h2 class="section" id="g3">第 3 篇 · 大数据与人工智能综合应用（第 12–13 章 · 12 学时）</h2>
+<p class="section-sub">第 12 章是全书收束（云·物·数·智融合，论述题）；<b>第 13 章"机器学习算法实验"是整卷计算大题的出处</b>——距离计算、K-均值 trace、线性回归、决策树信息增益务必亲手练。</p>
+<div class="pgrid">
+  <a class="pcard" href="云计算融合/云计算大数据与人工智能.html">
+    <div class="t"><span class="ico">☁️</span>第 12 章 · 云计算、大数据与人工智能</div>
+    <div class="d">云计算概念与 <b>5 特征/3 模式/4 部署</b>、<b>云计算的优势</b>、<b>与基础架构兼容</b>、<b>适合云端迁移的用例</b>、<b>云—物—数—智四者融合关系</b>；概念熟即可近满分</div>
+    <span class="badge">6 学时</span><span class="badge hot">简答/论述</span>
+  </a>
+  <a class="pcard" href="算法实验/机器学习算法实验.html">
+    <div class="t"><span class="ico">🧪</span>第 13 章 · 机器学习算法实验 ⭐⭐ 大题必备</div>
+    <div class="d"><b>各种距离度量计算</b>、常用聚类算法、<b>K-均值迭代 trace</b>、<b>线性回归最小二乘</b>、分类两指标（<b>精确率/召回率</b>）、<b>熵与信息增益</b>、<b>基于信息增益生成决策树</b>（含大纲官方"水果分类"原题）</div>
+    <span class="badge">6 学时</span><span class="badge hot">综合：画决策树</span><span class="badge warn">✂️ 教材 15.4 不考</span>
+  </a>
+</div>
+
+<div class="note">
+  <b>怎么用：</b>先按 <b>1 → 13 顺序</b>通读（每页 15–25 分钟），把每页末尾「速记小结」和黄色 ⚠️ 易错框抄成笔记；<b>第 8、9、11、12、13 章</b>是重点，其中<b>第 8、13 章必须动手算</b>（相关性、距离、K-均值、线性回归、决策树），光看会以为会。<br>
+  <b>分值导向：</b>能力层次分值＝识记 20%／领会 30%／简单应用 30%／综合应用 20%，难易＝易 20%／较易 30%／较难 30%／难 20%。<b>计算与应用分占一半</b>——别把 13011 当纯记忆课，第 13 章大题是分水岭。<br>
+  <b>不考内容别花时间：</b>教材<b>第 13、14 章整章不考</b>，另跳 <b>4.6、4.8、5.5、5.6、8.3、15.4</b> 六节。详见<a href="../考纲.html">课程考纲</a>页首排除清单。
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../../index.html">🏠 返回首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>人工智能与大数据 13011 · 广东省高等教育自学考试 · 计算机科学与技术（专升本）</div>
+</footer>
+</div>
+</body>
+</html>
