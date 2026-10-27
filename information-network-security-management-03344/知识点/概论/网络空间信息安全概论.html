@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 1 章 网络空间信息安全概论｜七类安全问题 · 九大技术领域</title>
+<meta name="description" content="信息与网络安全管理 03344 第 1 章速记卡：网络空间信息安全的概念与所包含的两部分内容；当前面临的七类信息安全问题（Internet、电子邮件、域名系统、IP 地址、Web 站点、文件传输、社会工程学）及各自的漏洞与防范措施；主要涉及的九种技术领域；网络安全立法与网络信息安全对国家安全的重要意义、七大发展趋势。含 Web 站点安全防范措施的应用题模板。建议 4 学时，对应教材第 1 章（教材 1.4 不考）。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌐</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0d9488,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+  .risk{background:#fef2f2;border-left:4px solid #dc2626;border-radius:0 10px 10px 0;padding:9px 14px;margin:10px 0;font-size:14px}
+  .fix{background:#ecfdf5;border-left:4px solid #059669;border-radius:0 10px 10px 0;padding:9px 14px;margin:10px 0;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 1 章 · 网络空间信息安全概论</h1>
+  <p>全课程的"目录章"——<b>三个必背清单</b>（七类问题、九大技术领域、七大趋势）都出自本章，选择/填空直接考编号背诵；防范类问题则要求你<b>针对漏洞提出措施</b>（简答/应用题）。建议 4 学时。</p>
+  <span class="pill">建议 4 学时</span><span class="pill">对应教材第 1 章</span><span class="pill">✂️ 教材 1.4 不考</span><span class="pill">重点：七类问题与防范</span><span class="pill">难点：针对漏洞提出措施</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../病毒防范/计算机病毒与恶意代码.html">→ 第 2 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、概念与两部分内容（识记/领会）</a>
+  <a href="#s2">二、面临的七类信息安全问题（识记）⭐⭐必背清单</a>
+  <a href="#s3">三、电子邮件与文件传输的安全漏洞及防范（领会）⭐</a>
+  <a href="#s4">四、Web 站点安全与防范措施（简单应用）⭐应用题</a>
+  <a href="#s5">五、主要涉及的九种技术领域（识记）⭐</a>
+  <a href="#s6">六、七大趋势：立法与国家安全（领会）</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、概念与两部分内容</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 网络空间信息安全的概念；<span class="lvl b">领会</span> 它所包含的两部分内容。</div>
+  <b>网络空间信息安全</b>：以网络空间（Internet 及其延伸的信息基础设施）为环境，保护其中的<b>信息系统与数据信息</b>不受偶然的和恶意的原因而遭到<b>破坏、更改、泄露</b>，保证系统<b>连续、可靠、正常地运行</b>，即不中断地提供服务。
+  <div class="th"><b>所包含的两部分内容（简答/填空）：</b>
+    <ol class="steps">
+      <li><b>网络空间本身（系统/基础设施）的安全</b>——网络硬件、软件及网络运行环境的安全，即网络系统能正常运行、不被破坏和瘫痪，靠的是<b>访问控制、防火墙、入侵检测</b>等技术。</li>
+      <li><b>网络空间中所承载信息（数据/内容）的安全</b>——网络上存储、传输的数据不被泄露、篡改、伪造，靠的是<b>密码技术、数字签名与验证、备份</b>等技术。</li>
+    </ol>
+  </div>
+  <div class="note">🔑 一句话记：<b>"设备与系统跑得稳"＋"数据内容不泄露不篡改"</b>——前者是<b>系统安全（静态/动态的运行保障）</b>，后者是<b>信息安全（保密性、完整性、可用性）</b>。</div>
+  <div class="note">📖 <b>教材原口径（简答逐条照此写更稳）：</b>①<b>防治、保护、处置</b>包括互联网、电信网、广电网、物联网、工控网、在线设计网络以及计算系统、通信系统、控制系统在内的<b>各种通信系统及其承载的数据不受损害</b>；②<b>防止对这些信息通信技术系统的滥用</b>所引发的<b>政治安全、经济安全、文化安全、国防安全</b>问题。</div>
+  <div class="th"><b>信息安全的三个基本属性（贯穿全课程的概念，务必先记牢）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>属性</th><th>含义</th><th>被破坏的典型表现</th><th>对应防护技术（后面各章）</th></tr>
+    <tr><td class="nm"><b>保密性</b> Confidentiality</td><td>信息不泄露给未授权者</td><td>窃听、流量分析、数据泄露</td><td>密码技术、访问控制（第 4、8 章）</td></tr>
+    <tr><td class="nm"><b>完整性</b> Integrity</td><td>数据未被未授权地篡改、增加或删除</td><td>篡改、伪造、中间人替换</td><td>数字签名、散列、入侵检测（第 5、9 章）</td></tr>
+    <tr><td class="nm"><b>可用性</b> Availability</td><td>授权用户需要时能正常使用</td><td>拒绝服务攻击、病毒破坏、宕机</td><td>病毒防范、备份、防火墙（第 2、10 章）</td></tr>
+  </table></div>
+  <div class="note">⚠️ 教材 1.4「信息安全、网络安全与网络空间信息安全的区别」<b>不纳入考核</b>——三者范围大小的关系仅作理解（信息安全 ⊃ 网络安全 ⊃ 网络空间信息安全），<b>不要花时间背名词辨析</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、面临的七类信息安全问题 ⭐⭐ 必背清单</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 当前网络空间面临的<b>主要七类</b>信息安全问题。</div>
+  <div class="fig">
+    <svg viewBox="0 0 760 170" role="img" aria-label="七类信息安全问题：按协议层次从 Internet 到人的因素排列">
+      <rect x="12" y="58" width="130" height="56" rx="9" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="77" y="82" text-anchor="middle" font-size="13.5" fill="#4338ca" font-weight="700">① Internet</text>
+      <text x="77" y="100" text-anchor="middle" font-size="12" fill="#4b5563">协议先天不安全</text>
+      <rect x="152" y="20" width="120" height="46" rx="9" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+      <text x="212" y="47" text-anchor="middle" font-size="13" fill="#047857" font-weight="700">② 电子邮件</text>
+      <rect x="152" y="76" width="120" height="46" rx="9" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+      <text x="212" y="103" text-anchor="middle" font-size="13" fill="#047857" font-weight="700">③ 域名系统</text>
+      <rect x="282" y="128" width="120" height="34" rx="9" fill="#eff6ff" stroke="#94a3b8" stroke-width="1.4"/>
+      <text x="342" y="150" text-anchor="middle" font-size="12.5" fill="#6b7280">（协议 · 服务 · 人）</text>
+      <rect x="292" y="20" width="120" height="46" rx="9" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="352" y="47" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="700">④ IP 地址</text>
+      <rect x="422" y="20" width="120" height="46" rx="9" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="482" y="47" text-anchor="middle" font-size="13" fill="#92400e" font-weight="700">⑤ Web 站点</text>
+      <rect x="422" y="76" width="120" height="46" rx="9" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="482" y="103" text-anchor="middle" font-size="13" fill="#92400e" font-weight="700">⑥ 文件传输</text>
+      <rect x="562" y="48" width="150" height="56" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="637" y="72" text-anchor="middle" font-size="13.5" fill="#be185d" font-weight="700">⑦ 社会工程学</text>
+      <text x="637" y="92" text-anchor="middle" font-size="12" fill="#6b7280">针对"人"的攻击</text>
+      <line x1="142" y1="86" x2="152" y2="43" stroke="#9ca3af" stroke-width="1.6"/>
+      <line x1="142" y1="86" x2="152" y2="99" stroke="#9ca3af" stroke-width="1.6"/>
+      <line x1="272" y1="43" x2="292" y2="43" stroke="#9ca3af" stroke-width="1.6"/>
+      <line x1="412" y1="43" x2="422" y2="43" stroke="#9ca3af" stroke-width="1.6"/>
+      <line x1="272" y1="99" x2="422" y2="99" stroke="#9ca3af" stroke-width="1.6"/>
+      <line x1="542" y1="76" x2="562" y2="76" stroke="#9ca3af" stroke-width="1.6"/>
+      <text x="380" y="16" text-anchor="middle" font-size="13" fill="#6b7280">协议层 → 服务层 → 应用层 → 人的层面</text>
+    </svg>
+    <div class="cap">七类问题的记忆主线：<b>一条底层协议（Internet）→ 三项基础服务（邮件/DNS/IP）→ 两类应用（Web/FTP）→ 一个"人"的因素（社工）</b></div>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>安全问题</th><th>主要漏洞 / 攻击方式</th><th>防范措施（要点）</th></tr>
+    <tr><td>1</td><td class="nm"><b>Internet 安全</b></td><td>TCP/IP 协议族<b>设计上缺乏安全机制</b>：明文传输、源地址可伪造、无强认证；路由与广播结构易被监听</td><td>用<b>安全协议</b>（IPSec/SSL/TLS）加固各层；部署防火墙与入侵检测；全网统一安全策略</td></tr>
+    <tr><td>2</td><td class="nm"><b>电子邮件安全</b></td><td>SMTP <b>无身份认证</b>→可伪造发件人；明文传输→可被窃听；附件携带<b>病毒/木马</b>；垃圾邮件与钓鱼</td><td>反垃圾与邮件网关；<b>S/MIME、PEM</b> 做签名与加密；附件先查毒再打开；不点不明链接</td></tr>
+    <tr><td>3</td><td class="nm"><b>域名系统（DNS）安全</b></td><td><b>域名欺骗/劫持</b>、缓存投毒、DNS 查询报文被监听（可推断访问行为）、分布式拒绝服务打 DNS 服务器</td><td>DNS <b>区域传输限制</b>与随机事务 ID；<b>DNSSEC</b> 签名验证；递归与权威服务器分离、多备份解析</td></tr>
+    <tr><td>4</td><td class="nm"><b>IP 地址安全</b></td><td><b>IP 地址欺骗</b>（利用信任关系冒充授权主机）、<b>ARP 欺骗/广播</b>导致流量被劫持、IP 地址与用户绑定不严</td><td>采用<b>一次一密的挑战/应答认证</b>而非地址信任；<b>静态 ARP 表项/ARP 防护</b>、端口安全、IP-MAC-端口-交换机四绑定</td></tr>
+    <tr><td>5</td><td class="nm"><b>Web 站点安全</b></td><td>SQL 注入、XSS 跨站脚本、上传漏洞、目录遍历、弱口令与管理后台暴露、页面被篡改</td><td>见本章第四节"六步措施"（考纲点名<b>简单应用</b>）</td></tr>
+    <tr><td>6</td><td class="nm"><b>文件传输（FTP）安全</b></td><td>FTP 默认<b>匿名访问</b>且<b>账号口令明文</b>传输；上传的脚本/木马直接落在服务器上；目录权限过宽</td><td>关闭匿名、口令加密存储；改用 <b>SFTP / FTPS / SSH 隧道</b>；上传文件类型白名单与查毒；限制目录访问权限</td></tr>
+    <tr><td>7</td><td class="nm"><b>社会工程学</b></td><td>不攻击机器而攻击<b>人</b>：欺骗、假冒身份、利诱、窥探口令、垃圾邮件钓鱼、尾随进入机房</td><td><b>安全制度与培训</b>、最小授权、口令策略与定期更换、双人复核敏感操作、物理门禁与访客登记</td></tr>
+  </table></div>
+  <div class="note">🔑 口诀记七类：<b>"协（协议）邮 名 址 网 传 人"</b>——Internet 协议、邮件、域名、IP 地址、Web 站点、文件传输、社会工程学。</div>
+</div>
+
+<h2 class="section" id="s3">三、电子邮件与文件传输的安全漏洞与防范 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 电子邮件的安全漏洞和防范措施；FTP 的安全漏洞和防范措施。</div>
+  <b>（一）电子邮件</b>
+  <div class="risk"><b>安全漏洞（四条，答"漏洞"就写这些）：</b>①SMTP/POP3 协议<b>本身不提供认证与加密</b>，口令以明文在网络上传送，极易被截获；②邮件<b>源地址可伪造</b>，无法确认发件人真实身份；③邮件<b>内容易被截获、篡改和抵赖</b>，缺乏完整性与不可否认性保护；④附件与链接是<b>病毒、木马、钓鱼</b>的主要传播渠道。</div>
+  <div class="fix"><b>防范措施：</b>①<b>邮件加密</b>——传输层用 TLS，内容层用 <b>S/MIME、PEM、PGP</b> 对正文和附件加密；②<b>数字签名</b>验证发件人身份并保证不可抵赖（第 5 章）；③部署<b>反垃圾邮件网关</b>（内容过滤、黑白名单、发件人域名验证 SPF）；④邮件服务器<b>关闭开放转发（Open Relay）</b>；⑤附件<b>先杀毒后打开</b>，不执行来历不明的可执行文件；⑥对员工进行<b>钓鱼邮件识别培训</b>。</div>
+  <div class="note">📖 <b>教材原列·电子邮件的安全漏洞（六条）：</b>①<b>窃取 Email</b>；②<b>伪造指令攻击</b>；③<b>Email 轰炸</b>；④<b>Email 欺骗</b>；⑤<b>虚构某人名义发出 Email</b>；⑥<b>电子邮件病毒</b>。<br>
+  <b>教材原列·安全措施：</b>①在邮件系统中<b>安装过滤器</b>，接收任何 Email 之前先<b>检查（过滤）发件人的资料</b>，删去可疑邮件不让它进入邮件系统；②<b>防止 Email 服务器超载</b>（超载会降低传递速度或不能收发 Email）；③如有 <b>Email 轰炸</b>或遇上 Email spamming，就通过<b>防火墙或路由器过滤来自这个地址的邮件炸弹邮包</b>；④防止 Email 炸弹——<b>在路由的层次上限制网络的传输</b>；⑤可<b>写一个 script 程序</b>捕捉邮件炸弹的地址，对其每一次连接<b>自动终止并回复一个声明指出触犯法律</b>；⑥<b>严禁打开 Email 附件中的可执行文件（.exe、.com）及 Word、Excel 文档</b>（这些多是病毒／特洛伊木马的有毒文件）。</div>
+  <b>（二）文件传输 FTP</b>
+  <div class="risk"><b>安全漏洞：</b>①FTP 支持<b>匿名用户（anonymous）</b>登录，配置疏忽会让外人随意读写；②登录<b>账号与口令明文</b>传输，可被嗅探；③上传目录若授予<b>写权限或可执行</b>，攻击者可上传 WebShell/木马；④下载目录权限过宽会造成<b>源码与敏感配置文件泄露</b>；⑤FTP 本身<b>没有加密和完整性保护</b>。</div>
+  <div class="fix"><b>防范措施：</b>①<b>关闭匿名登录</b>，使用独立账号并限制可访问目录（chroot 隔离）；②用 <b>SFTP（基于 SSH）或 FTPS</b> 取代明文 FTP，或把 FTP 放进 SSH 隧道；③按<b>最小权限</b>分配读/写/执行，上传目录<b>禁止执行</b>；④上传文件做<b>扩展名白名单＋病毒扫描</b>；⑤记录<b>访问日志</b>并定期审计，设置登录失败锁定与传输速率限制。</div>
+  <div class="note">📖 <b>教材原列·FTP 的安全漏洞（五条）：</b>①<b>代理 FTP 中的跳转攻击</b>（攻击者向目标 FTP 服务器发出 <code>PORT</code> 命令，其中带被攻击主机的地址与端口，命令 FTP 服务器把数据发送给被攻击者）；②<b>FTP 软件允许用户访问系统中所有文件</b>，且文件系统<b>存在可写区域</b>供攻击者删改文件；③<b>地址被盗用（Spoof）</b>——基于网络地址的访问使 FTP 易被冒充；④<b>用户名和密码被猜测</b>；⑤<b>端口盗用</b>。<br>
+  <b>教材原列·FTP 安全措施：</b>①<b>未经授权的用户禁止进行 FTP 操作</b>，FTP 使用的账号<b>必须在 Password 文件中有记载</b>，且它的<b>口令不能为空</b>；②<b>保护 FTP 用的文件和目录</b>并设置所有权：<code>FTP\bin</code> 与 <code>FTP\exe</code> 目录所有者设为 <b>root</b>，<code>FTP\pub</code> 目录与 FTP 的<b>主目录</b>所有者设为 <b>FTP</b>。</div>
+</div>
+
+<h2 class="section" id="s4">四、Web 站点安全防范措施（应用题模板）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 根据对 Web 站点安全问题的理解，制定 Web 站点的安全防范措施。</div>
+  <b>先答"存在哪些安全问题"，再逐条给措施</b>——这是应用题的标准两段式。
+  <div class="risk"><b>Web 站点常见问题：</b>SQL 注入、跨站脚本 XSS、跨站请求伪造 CSRF、上传漏洞与 WebShell、目录遍历与越权访问、弱口令与会话劫持、管理后台暴露、拒绝服务、页面被篡改、证书与传输未加密。</div>
+  <div class="fix"><b>防范措施（六步，答题按 ①～⑥ 分行写）：</b>
+    <ol class="steps">
+      <li><b>Web 服务器与操作系统加固</b>：及时打补丁，关闭不必要的服务、端口和默认共享，删除默认账号与示例页面，最小化安装。</li>
+      <li><b>输入验证与编码</b>：所有用户输入做<b>白名单校验</b>与服务端二次验证，使用<b>参数化查询/预编译语句</b>防 SQL 注入，输出转义防 XSS，禁止拼接 SQL。</li>
+      <li><b>身份认证与会话管理</b>：强口令策略与失败锁定、多因素认证、会话超时与唯一令牌、Cookie 设置 <code>HttpOnly/Secure</code>，管理后台限 IP 访问并单独账号。</li>
+      <li><b>访问控制与权限最小化</b>：按角色授权（RBAC），目录与文件权限分离，禁止目录浏览，上传目录不可执行并使用扩展名白名单。</li>
+      <li><b>传输加密与部署防护</b>：全站 <b>HTTPS（SSL/TLS）</b>；前置<b>防火墙 / WAF（Web 应用防火墙）</b>过滤注入与异常流量，与后台数据库服务器隔离在不同网段。</li>
+      <li><b>安全审计、监测与备份恢复</b>：开启访问日志与安全日志并定期分析、部署<b>入侵检测</b>与网页<b>防篡改系统</b>、定期漏洞扫描与渗透测试、<b>数据与页面定期备份</b>并演练恢复。</li>
+    </ol>
+  </div>
+  <div class="note">📖 <b>教材原列·Web 服务器的安全漏洞（七条，答"存在哪些安全问题"先列这几条）：</b>①安全威胁来源包括<b>外部接口、网络外部非授权访问、网络内部的非授权访问、商业或工业间谍、移动数据</b>；②入侵者重点<b>针对访问某一数据库、表、目录</b>，以破坏或攻击数据为目的；③进行<b>地址欺骗、IP 欺骗或协议欺骗</b>；④<b>非法偷袭 Web 数据</b>（如电子商务或金融信息数据）；⑤<b>伪装成 Web 站点管理员</b>，攻击或控制 Web 站点主机；⑥<b>服务器误认闯入者是合法用户</b>而允许其访问；⑦<b>伪装域名</b>，使 Web 服务器向入侵者发送信息，而客户无法获得授权访问的信息。</div>
+  <div class="note">📖 <b>教材原列·常见 Web 站点安全措施（十条，可按编号答）：</b>①不把 Web 服务器当无权限用户运行，要<b>设置权限管理</b>；②敏感文件放在基本系统，再<b>设二级系统</b>，敏感数据<b>都不向 Internet 开放</b>；③<b>检查 HTTP 服务器使用的 Applet 和脚本</b>，尤其是与客户交互的 <b>CGI 脚本</b>，防止外部用户执行内部指令；④在 Windows NT 之上运行 Web 服务器并<b>检查驱动器和共享的权限，将系统设为只读</b>；⑤采用 Macintosh Web 服务器更为安全，但缺少 Windows NT 的一些设置特性；⑥<b>克制 daemons 系统的软件安全漏洞</b>（控制服务、网络服务、与时间有关的活动、打印服务等会执行不该执行的功能）；⑦为防止入侵者用电话号码作口令进入站点，要<b>配备能阻止和覆盖口令的收取机制与安全策略</b>；⑧<b>不断更新、重建和改变 Web 站点的连接信息</b>，一般只允许单一类文本作为连接资源；⑨把 Web 服务器放在<b>防火墙后面</b>，可装 <b>Wusage 统计软件</b>控制经代理服务器的信息状况（列出往返最频繁的用户名单）；⑩对<b>安装在公共场所的浏览器</b>作防御措施，防被入侵者改变浏览器配置而获得站点机要信息、IP 地址、DNS 入口号等。<br>
+  ⚠️ 上面十条是教材原文口径（含年代较久的系统举例）；<b>若题目问"结合你所知提出措施"，用上面六步的现代写法得分更高</b>，两者可结合：先列教材要点、再补现代技术名称。</div>
+  <div class="note">📝 判分点：措施要<b>成组、有条目号</b>，且尽量点出<b>具体技术名称</b>（参数化查询、HTTPS、WAF、RBAC、防篡改、日志审计）——只写"加强管理""提高意识"得分很低。</div>
+</div>
+
+<h2 class="section" id="s5">五、主要涉及的九种技术领域 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 网络空间信息安全主要涉及的 <b>9 种</b>技术领域。</div>
+  <div class="note" style="margin-top:0">🔑 记忆法：<b>"病（病毒）远（远程控制）密（密码）签（签名）协（协议）无（无线）访（访问控制防火墙）入（入侵检测）库（数据库备份）"</b>——这九项正好是本课程<b>第 2～10 章</b>，背住这张表等于背住全书目录。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>技术领域</th><th>解决的问题</th><th>本课程对应章</th></tr>
+    <tr><td>1</td><td class="nm">病毒防治技术</td><td>恶意代码的判别、检测与清除</td><td>第 2 章</td></tr>
+    <tr><td>2</td><td class="nm">远程控制与黑客入侵</td><td>非法远控与入侵攻击的防范</td><td>第 3 章</td></tr>
+    <tr><td>3</td><td class="nm">网络信息密码技术</td><td>保密性：加密与密钥</td><td>第 4 章</td></tr>
+    <tr><td>4</td><td class="nm">数字签名与验证技术</td><td>完整性、身份认证与不可抵赖</td><td>第 5 章</td></tr>
+    <tr><td>5</td><td class="nm">网络安全协议</td><td>各协议层次上的安全通信</td><td>第 6 章</td></tr>
+    <tr><td>6</td><td class="nm">无线网络安全机制</td><td>无线链路与接入安全</td><td>第 7 章</td></tr>
+    <tr><td>7</td><td class="nm">访问控制与防火墙技术</td><td>隔离与授权：谁能访问什么</td><td>第 8 章</td></tr>
+    <tr><td>8</td><td class="nm">入侵检测技术</td><td>发现并响应正在发生的攻击</td><td>第 9 章</td></tr>
+    <tr><td>9</td><td class="nm">网络数据库安全与备份技术</td><td>数据本身的安全与可恢复</td><td>第 10 章</td></tr>
+  </table></div>
+  <div class="note">⚠️ 教材 1.3 另列了"信息隐藏与数字水印""网络安全测试工具"两项，但它们属于<b>不考的教材第 11 章内容范畴</b>——考纲明确要求的是 <b>9 种</b>，答题写满 9 项即可，不要多写。</div>
+</div>
+
+<h2 class="section" id="s6">六、七大趋势：立法与国家安全（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 网络安全立法的重要性；网络信息安全对国家安全的重要意义。</div>
+  <b>考纲只要求"领会"其中两条</b>——立法的重要性、对国家安全的重要性；"七大趋势"作为一个总体判断了解即可（<b>具体七条表述请以教材 1.5 节与配套课件为准</b>）。
+  <div class="th"><b>① 网络安全立法为什么重要（简答要点）：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li>技术措施只能防"能防的"，<b>法律界定行为的边界与责任</b>，让攻击、泄露、不作为都有代价——是安全体系的<b>最后一道防线</b>。</li>
+      <li>为<b>关键信息基础设施、数据与个人信息</b>保护提供强制性的等级保护、审计和报告义务，使安全管理<b>有法可依、可核查</b>。</li>
+      <li>打击网络犯罪需要<b>取证规则与量刑依据</b>，也才能开展<b>国际司法与执法合作</b>。</li>
+      <li>统一标准与规范，避免各家各行其是，促进<b>安全产业可信发展</b>。</li>
+      <li>我国已形成以<b>《网络安全法》《数据安全法》《个人信息保护法》《密码法》《国家安全法》</b>与<b>等级保护制度</b>为骨架的法律体系（注意：命题会涵盖<b>考试日前 6 个月内</b>新颁布/修订的法律法规）。</li>
+    </ol>
+  </div>
+  <div class="th"><b>② 网络信息安全对国家安全的重要意义：</b>网络空间已成为<b>继陆、海、空、天之后的第五疆域</b>；政务、金融、能源、交通、通信等<b>关键基础设施</b>都运行在网络之上，一旦失控直接威胁<b>政治安全、经济安全、国防安全与社会稳定</b>；网络攻防具有<b>成本低、隐蔽性强、溯源难、跨域传导快</b>的特点，使"没有网络安全就没有国家安全"。因此网络空间信息安全是<b>构建国家信息化的根本保证</b>，也是电子政务、电子商务、网络银行、远程医疗等系统正常运转的前提。</div>
+  <div class="note">📌 趋势层面的通行判断（帮助理解，不必逐条背）：由<b>被动防御走向主动防护与可信</b>、由<b>单点技术走向体系化/平台化</b>、<b>立法与标准加速</b>、<b>安全上升为国家战略</b>、云/移动/物联网带来<b>新场景风险</b>、<b>安全服务与产业规模化</b>、<b>国际竞争与合作并存</b>。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <div class="th"><b>六条一句话：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li><b>概念两块</b>：网络系统自身的安全 ＋ 网络中信息（数据）的安全。</li>
+      <li><b>三性</b>：保密性、完整性、可用性——后面每章的技术都在保这三样。</li>
+      <li><b>七类问题</b>：Internet 协议、邮件、域名、IP 地址、Web 站点、文件传输、社会工程学。</li>
+      <li><b>邮件/FTP 的根因</b>：明文传输＋无强认证＋匿名/弱口令＋附件与上传通道。</li>
+      <li><b>九种技术领域</b>＝本书第 2～10 章的目录。</li>
+      <li><b>立法与国家安全</b>：技术防得住漏洞，法律管得住人；网络空间是第五疆域。</li>
+    </ol>
+  </div>
+  <div class="note">📌 本章<span class="lvl c">简单应用</span>只有一处——<b>为 Web 站点开一剂防范药方</b>（第四节六步）。其余全考"清单式"记忆：七类、九种、两部分内容、三性。</div>
+</div>
+
+<footer>
+  <p>03344《信息与网络安全管理》· 第 1 章 网络空间信息安全概论 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

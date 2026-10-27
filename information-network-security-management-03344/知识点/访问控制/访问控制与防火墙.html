@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 8 章 访问控制与防火墙技术｜三要素与 DAC/MAC/RBAC · 防火墙分类与优缺点 · 虚拟防火墙</title>
+<meta name="description" content="信息与网络安全管理 03344 第 8 章速记卡：访问控制的概念、机制的两个层次（物理与逻辑访问控制）、三要素（主体、客体、访问控制策略）、安全策略实施三原则（最小特权、最小泄露、多级安全）；自主访问控制 DAC 的四种实现方式（目录式访问控制模式、访问控制列表 ACL、访问控制矩阵 ACM、面向过程的访问控制）与相关术语（ACCLs 能力列表、ACSLLs 安全标签列表）、基于口令的三种机制；强制访问控制的四种访问模式（下读、上写、下写、上读）与保密性／完整性方向；自主与强制访问控制策略的区别和优缺点；基于角色访问控制 RBAC 的特点（管理简单、可继承、机动灵活）；防火墙的定义、四部分组成、四项主要功能、三种分类角度与主流划分（包过滤型、代理型、状态检测型）及各类优缺点；防火墙安全策略匹配原则（首包过滤、后续包不过滤）；网络地址转换 NAT 与防火墙部署；虚拟系统五个特点与大中型企业网络隔离、云计算安全网关两类应用。建议 6 学时，课程重点章，对应教材第 8 章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚪</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#dc2626,#b45309)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+  .yes{color:#15803d;font-weight:700}
+  .no{color:#b91c1c;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 8 章 · 访问控制与防火墙技术</h1>
+  <p>考纲明列的<b>课程重点章</b>（6 学时）。<b>名词解释直接考"访问控制"</b>（考纲附录原题型），其余是大量"清单＋对比"：三要素、三原则、DAC 四实现、MAC 四模式、RBAC 三特点、防火墙四组成与三类划分。<span class="lvl d">综合应用</span>落在<b>防火墙安全策略及应用</b>。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">对应教材第 8 章</span><span class="pill">⭐ 课程重点章</span><span class="pill">重点：ACL 与 RBAC、防火墙原理与应用</span><span class="pill">难点：设计配置安全策略</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../无线网络/无线网络安全机制.html">← 第 7 章</a>
+    <a href="../入侵防御/入侵防御系统.html">→ 第 9 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、访问控制：概念·层次·三要素·三原则（识记）⭐⭐名解</a>
+  <a href="#s2">二、自主访问控制 DAC：四种实现方式与术语（识记）⭐⭐</a>
+  <a href="#s3">三、强制访问控制 MAC：四种访问模式（识记/领会）⭐难点</a>
+  <a href="#s4">四、基于角色的访问控制 RBAC 与 DAC／MAC 对比（领会）⭐</a>
+  <a href="#s5">五、防火墙：定义·组成·功能·分类（识记）⭐⭐</a>
+  <a href="#s6">六、各类防火墙优缺点与 NAT（领会）⭐</a>
+  <a href="#s7">七、防火墙安全策略与部署（综合应用）⭐⭐</a>
+  <a href="#s8">八、虚拟防火墙与虚拟系统（领会/简单应用）</a>
+  <a href="#s9">九、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、访问控制：概念、层次、三要素与三原则 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 访问控制的<b>概念</b>、访问控制<b>机制的层次</b>、访问控制的<b>3 个要素</b>、安全策略的<b>实施原则</b>。</div>
+  <b>访问控制（名词解释，按教材口径写）</b>：即<b>判断使用者是否有权限使用</b>，并<b>防止对任何资源进行未授权的访问</b>，从而使<b>计算机网络系统资源在合法的范围内被使用</b>。
+  <div class="th"><b>访问控制机制分为两个层次：</b><b>物理访问控制</b>与<b>逻辑访问控制</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>层次</th><th>控制的对象／手段</th><th>举例</th></tr>
+    <tr><td class="nm"><b>物理访问控制</b></td><td>用<b>实体屏障与人员管理</b>限制对机房、设备、介质的直接接触</td><td>门禁、栅栏、锁柜、访客登记、监控、机房出入审批（对应第 1 章"社会工程学"防范）</td></tr>
+    <tr><td class="nm"><b>逻辑访问控制</b></td><td>用<b>软件与协议机制</b>在系统内限制主体对客体的操作</td><td>账号口令、ACL、RBAC、防火墙规则、加密与认证（本章其余内容都在这一层）</td></tr>
+  </table></div>
+  <div class="th"><b>访问控制的三要素（必背）：主体、客体、访问控制策略。</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>要素</th><th>含义</th><th>典型实例</th></tr>
+    <tr><td class="nm"><b>① 主体</b> Subject</td><td><b>提出访问请求</b>的主动一方（可是人，也可以是程序）</td><td>用户、进程、服务、连接的设备／终端</td></tr>
+    <tr><td class="nm"><b>② 客体</b> Object</td><td>被访问的<b>资源</b></td><td>文件、数据库表、打印机、网卡、内存、系统配置、网络带宽</td></tr>
+    <tr><td class="nm"><b>③ 访问控制策略</b></td><td>判定主体<b>能否对客体做什么操作</b>的规则集合（授权与限制的总则），由机制实施</td><td>ACL／能力表／角色权限表／安全标签与密级、防火墙规则、SELinux 策略</td></tr>
+  </table></div>
+  <div class="th"><b>安全策略的实施原则（三条，简答必背）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>原则</th><th>要求</th><th>反面例子</th></tr>
+    <tr><td class="nm"><b>① 最小特权原则</b></td><td>只授予主体<b>完成任务所必需的最小权限</b>，不多给、不常用高权限账号</td><td>人人用 Administrator 日常办公；给运维"永久全库读写"</td></tr>
+    <tr><td class="nm"><b>② 最小泄露原则</b></td><td>把信息<b>只暴露给确实需要知道的人</b>（need-to-know），减少知悉范围</td><td>全员可见含身份证号的业务报表；共享盘全盘开放</td></tr>
+    <tr><td class="nm"><b>③ 多级安全策略</b></td><td>按<b>密级／敏感度的多个级别</b>分别规定读写方向，防止<b>向上读取（泄密）与向下写入（污染／泄露）</b></td><td>机密级与公开级数据混放在同一可写目录</td></tr>
+  </table></div>
+  <div class="note">🔑 三原则正好对应三种手段：<b>最小特权 → RBAC／权限审批</b>；<b>最小泄露 → 分类分级与按需授权</b>；<b>多级安全 → 强制访问控制 MAC（下一节的四个方向）</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、自主访问控制 DAC：实现方式与相关术语 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 自主访问控制的<b>实现方式</b>、访问控制实现<b>相关术语的定义</b>。</div>
+  <b>自主访问控制（DAC，Discretionary Access Control）</b>：由<b>客体的所有者（或创建者）自主决定</b>把权限授予哪些主体——权限可以<b>转让、修改</b>，系统不强制干预。
+  <div class="th"><b>DAC 的实现方式通常包括四种（必背清单）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>实现方式</th><th>定义与机制</th><th>优缺点</th></tr>
+    <tr><td>1</td><td class="nm"><b>目录式访问控制模式</b></td><td>按<b>目录（文件／域名空间）层次</b>组织授权，父目录权限向下继承，可在各级设置访问属性</td><td>符合文件系统习惯、便于批量管理；粒度受目录结构影响</td></tr>
+    <tr><td>2</td><td class="nm"><b>访问控制列表 ACL</b></td><td><b>以文件（客体）为中心</b>建立的访问权限表，逐项列出"哪个主体对该对象有什么权限"</td><td><b>优点：控制粒度比较小</b>；<b>适用于被区分的用户数比较少且这些用户的授权情况比较稳定的情形</b>；用户／对象多时表长、维护量大</td></tr>
+    <tr><td>3</td><td class="nm"><b>访问控制矩阵 ACM</b></td><td><b>通过矩阵形式表示访问控制规则和授权用户权限</b>的方法：行是主体、列是客体，交叉格写权限</td><td>直观、表达力完整；<b>矩阵稀疏庞大</b>，实际按"按列＝ACL／按行＝能力表"压缩存储</td></tr>
+    <tr><td>4</td><td class="nm"><b>面向过程的访问控制</b></td><td>把权限判断<b>嵌入到过程（程序／服务）内部</b>，由代码规定谁能通过它访问什么</td><td>可表达与业务逻辑绑定的动态规则；<b>策略散落在代码中，难以集中审计</b></td></tr>
+  </table></div>
+  <div class="th"><b>相关术语的定义（识记，易出填空／单选）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>术语</th><th>定义</th><th>记忆抓手</th></tr>
+    <tr><td class="nm"><b>访问控制列表 ACLs</b></td><td><b>以文件为中心</b>建立的访问权限表</td><td>"<b>围绕客体</b>列谁能访问"</td></tr>
+    <tr><td class="nm"><b>访问控制能力列表 ACCLs</b></td><td><b>以用户为中心</b>建立的访问权限表（用户持有"能力票"）</td><td>"<b>围绕主体</b>列他能访问哪些客体"</td></tr>
+    <tr><td class="nm"><b>访问控制安全标签列表 ACSLLs</b></td><td><b>限定一个用户对一个客体目标访问的安全属性集合</b></td><td>"<b>安全属性（密级／类别）</b>的集合"，为 MAC 服务</td></tr>
+    <tr><td class="nm"><b>基于口令的机制</b>（三种）</td><td>①<b>动态访问控制</b>——与<b>目标的内容相关</b>的访问控制；②<b>多用户访问控制</b>——当<b>多个用户同时提出请求</b>时如何做出授权决定；③<b>基于上下文的控制</b>——对一个目标的授权决定<b>依赖于外界因素</b>，如<b>时间、用户的位置</b>等</td><td>"<b>内容、并发、上下文</b>"三个词对应三条</td></tr>
+  </table></div>
+  <div class="note">⚠️ 高频辨析：<b>ACL 以文件（客体）为中心，能力列表以用户（主体）为中心</b>——题目常把两句调换。看到"控制粒度小、用户少且授权稳定"→选 <b>ACL</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、强制访问控制 MAC：四种访问模式 ⭐ 难点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 强制访问控制策略的<b>访问模式</b>。</div>
+  <b>强制访问控制（MAC，Mandatory Access Control）</b>：由<b>系统按统一的安全策略（密级／完整性标签）强制</b>判定访问是否允许，<b>客体所有者也无权改变</b>，主体不能自主转让权限。
+  <div class="th"><b>MAC 策略的访问模式包括四种：下读、上写、下写、上读。</b>（"上／下"指<b>相对级别高低</b>：上＝比自身级别<b>高</b>的客体，下＝比自身级别<b>低</b>的客体。）</div>
+  <div class="fig">
+    <svg viewBox="0 0 800 232" role="img" aria-label="强制访问控制的四种访问模式：保密性策略禁止上读和下写，完整性策略禁止下读和上写">
+      <g font-size="12.5" text-anchor="middle">
+        <text x="120" y="24" font-weight="700" fill="#4b5563">安全级别阶梯</text>
+        <rect x="60" y="34" width="120" height="34" rx="7" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/><text x="120" y="56" fill="#991b1b">机密级（高）</text>
+        <rect x="60" y="86" width="120" height="34" rx="7" fill="#fef3c7" stroke="#b45309" stroke-width="2"/><text x="120" y="108" fill="#92400e">秘密级（中）</text>
+        <rect x="60" y="138" width="120" height="34" rx="7" fill="#dcfce7" stroke="#15803d" stroke-width="2"/><text x="120" y="160" fill="#166534">公开级（低）</text>
+        <text x="120" y="196" text-anchor="middle" font-size="12" fill="#6b7280">以"秘密级"主体为例</text>
+        <text x="360" y="24" font-weight="700" fill="#b91c1c">保密性策略（防泄露）</text>
+        <rect x="230" y="36" width="260" height="30" rx="7" fill="#fff" stroke="#b91c1c" stroke-width="1.6"/>
+        <text x="360" y="56" fill="#1f2430"><tspan fill="#b91c1c" font-weight="700">✘ 上读</tspan>：不许读更高级（防刺探）</text>
+        <rect x="230" y="74" width="260" height="30" rx="7" fill="#fff" stroke="#b91c1c" stroke-width="1.6"/>
+        <text x="360" y="94" fill="#1f2430"><tspan fill="#b91c1c" font-weight="700">✘ 下写</tspan>：不许写入低级（防外泄）</text>
+        <rect x="230" y="112" width="260" height="30" rx="7" fill="#f8fafc" stroke="#15803d" stroke-width="1.6"/>
+        <text x="360" y="132" fill="#1f2430"><tspan class="yes" font-weight="700">✔ 下读</tspan>：可读低级公开信息</text>
+        <rect x="230" y="150" width="260" height="30" rx="7" fill="#f8fafc" stroke="#15803d" stroke-width="1.6"/>
+        <text x="360" y="170" fill="#1f2430"><tspan class="yes" font-weight="700">✔ 上写</tspan>：可向高级汇报（信任向上）</text>
+        <text x="630" y="24" font-weight="700" fill="#0891b2">完整性策略（防污染）</text>
+        <rect x="510" y="36" width="260" height="30" rx="7" fill="#f8fafc" stroke="#15803d" stroke-width="1.6"/>
+        <text x="640" y="56" fill="#1f2430"><tspan class="yes" font-weight="700">✔ 上读</tspan>：可读高级（权威数据）</text>
+        <rect x="510" y="74" width="260" height="30" rx="7" fill="#f8fafc" stroke="#15803d" stroke-width="1.6"/>
+        <text x="640" y="94" fill="#1f2430"><tspan class="yes" font-weight="700">✔ 下写</tspan>：可向低级输出结果</text>
+        <rect x="510" y="112" width="260" height="30" rx="7" fill="#fff" stroke="#b91c1c" stroke-width="1.6"/>
+        <text x="640" y="132" fill="#1f2430"><tspan fill="#b91c1c" font-weight="700">✘ 下读</tspan>：不许读低级（防不可信输入）</text>
+        <rect x="510" y="150" width="260" height="30" rx="7" fill="#fff" stroke="#b91c1c" stroke-width="1.6"/>
+        <text x="640" y="170" fill="#1f2430"><tspan fill="#b91c1c" font-weight="700">✘ 上写</tspan>：不许改高级（防低可信篡改）</text>
+      </g>
+      <text x="400" y="216" text-anchor="middle" font-size="12.5" fill="#6b7280">口诀：<tspan font-weight="700">保密性"不上读、不下写"；完整性"不下读、不上写"</tspan>——两者方向正好相反</text>
+    </svg>
+    <div class="cap">第 10 章"基于完整性的强制策略两条控制原则（<b>不能向下读、不能向上写</b>）"就是右下角这两条</div>
+  </div>
+  <div class="note">🔑 理解方式：想"<b>别让秘密往下流</b>"→禁<b>上读</b>（刺探）与<b>下写</b>（外抛）；想"<b>别让脏数据往上爬</b>"→禁<b>下读</b>（采信低级数据）与<b>上写</b>（篡改高级数据）。四个模式只是这"两个禁令"的组合。</div>
+</div>
+
+<h2 class="section" id="s4">四、RBAC 与 DAC／MAC 的区别和优缺点 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 基于角色的访问控制策略的<b>特点</b>；<span class="lvl b">领会</span> 自主访问控制策略与强制访问控制策略的<b>区别和优缺点</b>。</div>
+  <b>基于角色的访问控制（RBAC）</b>是目前国际上流行的、先进的安全管理控制方式，具有以下<b>特点：管理简单、可继承、机动灵活</b>。（权限给角色、角色给用户 —— 详见第 5 章"基于 PKI 的 RBAC 三阶段"。）
+  <div class="tscroll"><table class="law">
+    <tr><th>比较项</th><th>自主访问控制 DAC</th><th>强制访问控制 MAC</th><th>基于角色 RBAC</th></tr>
+    <tr><td class="nm"><b>谁决定权限</b></td><td><b>客体所有者</b>自主授予、可转让</td><td><b>系统按安全策略（标签／密级）强制</b>判定，所有者不能改变</td><td><b>安全管理员按岗位职责</b>定义角色权限，用户被指派角色</td></tr>
+    <tr><td class="nm"><b>安全性</b></td><td>较弱：权限可被层层转授，容易造成<b>权限扩散与失控</b></td><td><b>安全性高</b>：不受用户意志影响，能防"合法用户无意泄露"</td><td>取决于角色与职责划分是否严谨，支持最小特权与职责分离</td></tr>
+    <tr><td class="nm"><b>灵活性</b></td><td><b>灵活、易用、贴近业务</b>，普通用户即可共享文件</td><td><b>灵活性差一些</b>，规则死板、变更需密级调整</td><td><b>机动灵活、可继承</b>：岗位调动只需换角色</td></tr>
+    <tr><td class="nm"><b>适用场景</b></td><td>通用操作系统、办公文件共享（用户少、授权稳定的场合更优）</td><td><b>军事、机密与多级安全场合</b>；<b>在大型、复杂的系统中很难被采用</b></td><td>企业／政务大用户量、岗位明确的信息系统（可搭配前两者）</td></tr>
+    <tr><td class="nm"><b>典型实现</b></td><td>文件权限位、ACL、能力表</td><td>典型产品：<b>SELinux、RSBAC、MAC</b> 等，采用的策略各不相同</td><td>数据库／OA／业务系统的角色权限模块，可结合 PKI（第 5 章）</td></tr>
+  </table></div>
+  <div class="note">🔑 教材原话（领会题必答）：<b>"强制访问控制策略的安全性比自主访问控制策略的安全性有了很大提高，但灵活性要差一些，在大型、复杂的系统中很难被采用。"</b> 答"区别"时要再加上<b>决定权归属</b>（所有者 vs 系统）这一句，才算完整。</div>
+</div>
+
+<h2 class="section" id="s5">五、防火墙：定义、组成、功能与分类 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 网络防火墙的<b>定义、组成和分类</b>。</div>
+  <b>网络防火墙的定义（名词解释按原文背）</b>：一种由<b>软件和硬件设备组合而成</b>、在<b>内部网与外部网之间、专用网与公共网之间的界面上构造的保护屏障</b>；或者是由两个<b>信任程度不同的网络</b>之间的软件与硬件设备组合而成的<b>网关</b>。它<b>对两个网络之间的通信进行控制</b>，通过<b>强制实施统一的安全策略</b>，<b>限制外界用户对内部网络的访问及管理内部用户访问外部网络的权限</b>，<b>防止对重要信息资源的非法存取和访问</b>，以达到保护网络系统安全的目的。
+  <div class="th"><b>防火墙主要由 4 部分组成：</b></div>
+  <ul class="m">
+    <li><b>服务访问规则</b>——规定哪些服务／流量允许、哪些拒绝（策略核心）；</li>
+    <li><b>验证工具</b>——对接入方身份与请求做<b>认证与校验</b>；</li>
+    <li><b>包过滤</b>——按<b>地址、端口、协议、标志位</b>逐包判定的过滤引擎；</li>
+    <li><b>应用网关</b>——面向<b>应用层代理</b>，代用户完成连接并检查应用数据。</li>
+  </ul>
+  <div class="th"><b>防火墙系统的主要功能（四项）：</b>①防火墙是<b>网络安全的屏障</b>；②防火墙可以<b>强化网络安全的策略</b>；③对网络<b>存取和访问进行监控审计</b>；④<b>防止内部信息的外泄</b>。</div>
+  <div class="th"><b>防火墙的分类（三个划分角度 + 主流划分）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>划分依据</th><th>类别</th></tr>
+    <tr><td class="nm">按<b>软硬件形式</b></td><td><b>软件防火墙</b>、<b>硬件防火墙</b>（硬件又可分为<b>低端硬件防火墙</b>、<b>高端硬件防火墙</b>与<b>高端服务器防火墙</b>三种类型）</td></tr>
+    <tr><td class="nm">按<b>保护对象</b></td><td><b>单机防火墙</b>、<b>网络防火墙</b>等</td></tr>
+    <tr><td class="nm">按<b>访问控制方式</b>（<b>主流的划分方法</b>）</td><td><b>包过滤型防火墙</b>、<b>代理型防火墙</b>、<b>状态检测防火墙</b></td></tr>
+  </table></div>
+  <div class="note">🔑 记住这句结论：<b>"总体来说，主流的划分方法是按访问控制方式进行分类的"</b>——问"防火墙按什么分最主流"就答<b>访问控制方式三类</b>。</div>
+</div>
+
+<h2 class="section" id="s6">六、各类防火墙的特点与优缺点（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 对防火墙<b>含义的理解</b>，各类防火墙的<b>特点和优缺点</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>优点</th><th>缺点</th></tr>
+    <tr><td class="nm"><b>低端硬件防火墙</b></td><td><b>成本低、配置简单、即插即用</b></td><td>只提供<b>基本的防火墙功能</b>；<b>无法以并行的方式进行冗余</b>，处理<b>高吞吐量时连接有限，可能出现瓶颈</b></td></tr>
+    <tr><td class="nm"><b>高端服务器防火墙</b></td><td><b>高性能</b>；<b>可用性、适应性和可扩展性好</b></td><td><b>对硬件要求较高</b>（高端中央处理单元、内存、网络接口），成本高</td></tr>
+    <tr><td class="nm"><b>软件防火墙</b></td><td><b>使用方便、配置简单</b></td><td><b>性能和抗攻击能力比较弱</b></td></tr>
+    <tr><td class="nm"><b>包过滤型防火墙</b></td><td><b>设计简单、非常易用、易于实现，价格便宜</b>（对上层透明、速度快）</td><td>①随<b>访问控制列表 ACL 的复杂度和长度增加，其过滤性能呈指数下降</b>；②<b>静态的 ACL 规则难以适应动态的安全要求</b>；③<b>不检查会话状态也不分析数据</b>，很容易让黑客<b>蒙混过关</b></td></tr>
+    <tr><td class="nm"><b>代理（应用网关）防火墙</b></td><td>能够<b>完全控制网络信息的交换、控制会话过程，具有较高的安全性</b>（内外网不直接相连）</td><td>①<b>软件实现限制了处理速度</b>；②<b>易于遭受拒绝服务攻击</b>；③<b>需要针对每种协议都开发应用层代理</b>，<b>开发周期长、升级很困难</b></td></tr>
+    <tr><td class="nm"><b>状态检测防火墙</b></td><td><b>后续数据包处理性能优异、安全性较高</b>（建立连接状态表，既看包头也跟踪会话状态）</td><td>仍<b>不深入分析应用层数据内容</b>，对应用层攻击与非法内容需配合其他机制（理解性补充）</td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 820 200" role="img" aria-label="防火墙在网络中的部署位置：外部网络经防火墙进入内部网络，防火墙同时隔离 DMZ 区，包过滤在三层、代理在应用层">
+      <rect x="16" y="60" width="150" height="66" rx="10" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/>
+      <text x="91" y="88" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">外部网络</text>
+      <text x="91" y="108" text-anchor="middle" font-size="11.5" fill="#6b7280">Internet／不可信</text>
+      <rect x="200" y="34" width="130" height="118" rx="10" fill="#fef3c7" stroke="#b45309" stroke-width="2.4"/>
+      <text x="265" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">防火墙</text>
+      <text x="265" y="84" text-anchor="middle" font-size="11.5" fill="#7c2d12">包过滤引擎</text>
+      <text x="265" y="102" text-anchor="middle" font-size="11.5" fill="#7c2d12">状态表／会话</text>
+      <text x="265" y="120" text-anchor="middle" font-size="11.5" fill="#7c2d12">应用网关·验证工具</text>
+      <text x="265" y="146" text-anchor="middle" font-size="11" fill="#92400e">统一安全策略</text>
+      <rect x="366" y="34" width="180" height="52" rx="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="456" y="56" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c4a6e">DMZ 隔离区</text>
+      <text x="456" y="74" text-anchor="middle" font-size="11" fill="#6b7280">Web／邮件／对外服务器</text>
+      <rect x="366" y="100" width="180" height="52" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="456" y="122" text-anchor="middle" font-size="12.5" font-weight="700" fill="#166534">内部网络</text>
+      <text x="456" y="140" text-anchor="middle" font-size="11" fill="#6b7280">业务主机·数据库·终端</text>
+      <rect x="580" y="34" width="220" height="118" rx="10" fill="#f8fafc" stroke="#64748b" stroke-width="1.8"/>
+      <text x="690" y="56" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f2430">防火墙的局限（必答）</text>
+      <text x="594" y="76" font-size="11.5" fill="#4b5563">· 防不住<tspan font-weight="700">绕过防火墙的拨号／无线</tspan></text>
+      <text x="594" y="94" font-size="11.5" fill="#4b5563">· 防不住<tspan font-weight="700">内部人员的越权与违规</tspan></text>
+      <text x="594" y="112" font-size="11.5" fill="#4b5563">· 不查<tspan font-weight="700">病毒／木马内容</tspan>（需第 2、9 章）</text>
+      <text x="594" y="130" font-size="11.5" fill="#4b5563">· 不解决<tspan font-weight="700">物理与社会工程学</tspan>风险</text>
+      <g stroke="#9ca3af" stroke-width="1.8" marker-end="url(#ar10)">
+        <line x1="166" y1="93" x2="200" y2="93"/>
+        <line x1="330" y1="60" x2="366" y2="60"/><line x1="330" y1="126" x2="366" y2="126"/>
+      </g>
+      <text x="120" y="180" font-size="12" fill="#6b7280">部署原则：所有进出流量<tspan font-weight="700">必经防火墙</tspan>（单一出入口），DMZ 与内网之间<tspan font-weight="700">再次设策略</tspan></text>
+      <defs><marker id="ar10" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker></defs>
+    </svg>
+    <div class="cap">防火墙＝<b>边界上的强制策略执行点</b>；它只能管"走这条路"的流量，所以必须与入侵防御、病毒防范、访问控制配合</div>
+  </div>
+  <div class="th"><b>网络地址转换 NAT（课程目的要求"掌握"，补充要点）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>要点</th><th>内容</th></tr>
+    <tr><td class="nm"><b>概念</b></td><td>Network Address Translation，在<b>网络／传输层改写报文的 IP 地址（和端口）</b>，把<b>私有地址与公网地址相互转换</b>，实现内部主机借用少量公网地址上网</td></tr>
+    <tr><td class="nm"><b>三种类型</b></td><td><b>静态 NAT</b>（一对一固定映射）、<b>动态 NAT</b>（从地址池临时分配一对一）、<b>NAPT／PAT（端口多路复用，最常见）</b>——多个内网主机<b>共用一个公网地址、用端口号区分</b></td></tr>
+    <tr><td class="nm"><b>安全价值</b></td><td>①<b>隐藏内部网络结构与真实地址</b>（外部无法直接寻址内网主机）；②天然<b>限制入站连接</b>（无映射即不可达）；③缓解<b>IPv4 地址不足</b></td></tr>
+    <tr><td class="nm"><b>与防火墙配合</b></td><td>常与防火墙<b>同一设备部署</b>：NAT 负责地址转换与隐藏，防火墙负责<b>策略过滤</b>；对外发布的服务用<b>静态映射（服务器发布）</b>并在 DMZ 中隔离；<b>IPSec 穿越 NAT 需用隧道模式／NAT-T</b>（衔接第 6 章）</td></tr>
+    <tr><td class="nm"><b>局限</b></td><td>对<b>报文内嵌地址</b>的应用（FTP 主动模式、部分 VoIP／SIP）需 ALG 支持；<b>NAT 不是加密、也不是认证</b>，不能替代安全策略</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s7">七、防火墙的安全策略及应用（综合应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 防火墙的<b>安全策略及应用</b>。</div>
+  <div class="th"><b>核心机制（教材明确给出的一条，必写）：</b>防火墙安全策略的<b>匹配原则</b>——<b>首包流程会做安全策略过滤，后续包流程不做安全策略过滤</b>。</div>
+  <div class="note">🔑 这句话的含义（展开它就能拿"理解"的分）：会话的<b>第一个包</b>要<b>逐条比对安全策略</b>（源／目的地址、服务、优先级、是否放行）；一旦建会话<b>生成了会话表项</b>，同一会话的<b>后续包直接按会话表快速转发</b>，不再重复做策略匹配 ⇒ <b>性能大幅提升</b>；但这也意味着<b>修改策略后，已建立的旧会话仍会按原结果继续通过</b>，需<b>清除会话表项或重启策略</b>才能立即生效。</div>
+  <div class="th"><b>制定防火墙安全策略的六步（答题骨架）：</b></div>
+  <ol class="steps">
+    <li><b>明确安全需求与信任边界</b>：划分<b>外网／DMZ／内网</b>（以及部门间、生产与办公间），列出要保护的资产与合规要求；</li>
+    <li><b>确定默认策略</b>：一般取<b>"未明确允许即拒绝"（default deny）</b>作为缺省动作，只放行已登记的业务；</li>
+    <li><b>按业务写允许规则</b>：以<b>源地址／目的地址／服务（协议＋端口）／时间／用户</b>为要素写规则，<b>对象用地址组与服务组</b>命名便于维护，坚持<b>最小特权</b>与<b>按需开放</b>；</li>
+    <li><b>安排规则顺序与优先级</b>：把<b>精确的、常用的放行规则放前面</b>、通用拒绝放后面（多数防火墙<b>自上而下首次匹配</b>即生效），避免规则冗余与相互遮蔽；</li>
+    <li><b>配置配套防护</b>：开启<b>状态检测</b>、限制<b>管理平面访问</b>（只允许指定 IP 登录、强口令／证书）、<b>日志与告警</b>外发集中、必要时联动<b>入侵防御（第 9 章）与黑白名单</b>；</li>
+    <li><b>验证、审计与持续优化</b>：上线前做<b>正向／反向连通性测试</b>（该通的通、该断的断），定期<b>核查命中数为 0 的规则并清理</b>、变更走审批流程、保留策略版本以便回溯。</li>
+  </ol>
+  <div class="note">💡 常见案例题两则：①"<b>Web 服务器该放哪？</b>"→ 放 <b>DMZ</b>，只对公网开放 <b>80/443</b>，禁止外网直连内网数据库，DMZ→内网仅允许<b>指定的数据库端口</b>由 Web 服务器发起；②"<b>员工能上外网但不能外传资料</b>"→ 出方向<b>按地址组＋应用（服务）放行</b>、禁止 FTP/TELNET 等明文外发、结合<b>认证策略绑定用户</b>与日志审计，并按需启用 NAT 与防病毒／IPS 联动。</div>
+</div>
+
+<h2 class="section" id="s8">八、虚拟防火墙与虚拟系统（领会／简单应用）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> <b>虚拟系统的特点</b>；<span class="lvl c">简单应用</span> <b>大中型企业虚拟防火墙网络隔离应用</b>和<b>云计算安全网关应用</b>。</div>
+  <b>虚拟系统</b>：在<b>一台物理设备上划分出的多台相互独立的逻辑设备</b>。每个虚拟系统<b>相当于一台真实的设备</b>，有<b>自己的接口、地址集、用户/组、路由表项及策略</b>，并可<b>通过虚拟系统管理员进行配置和管理</b>。
+  <div class="th"><b>虚拟系统的五个特点（必背）：</b></div>
+  <ol class="steps">
+    <li>每个虚拟系统由<b>独立的管理员</b>进行管理，使多个虚拟系统的管理<b>更加清晰简单</b>，<b>非常适用于大规模的组网环境</b>；</li>
+    <li>每个虚拟系统都拥有<b>独立的配置及路由表项</b>，即使<b>不同虚拟系统下的局域网使用了相同的地址范围也能正常通信</b>；</li>
+    <li>可以<b>为每个虚拟系统分配固定的系统资源</b>，保证<b>不会因为一个虚拟系统业务繁忙而影响其他虚拟系统</b>；</li>
+    <li>虚拟系统之间的<b>流量相互隔离，更加安全</b>；在需要时，虚拟系统之间<b>也可以进行完全互访</b>；</li>
+    <li>实现了<b>硬件资源的有效利用</b>，<b>减小了空间、能耗及管理成本</b>。</li>
+  </ol>
+  <div class="th"><b>两类典型应用（简单应用，答出"怎么做＋好处"）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>场景</th><th>做法</th><th>带来的价值</th></tr>
+    <tr><td class="nm"><b>① 大中型企业的网络隔离</b></td><td>通过<b>多个虚拟系统将各部门的网络隔离开来</b>，各部门的虚拟系统<b>由本部门 IT 管理员管理</b>；各管理员按自身要求配置<b>不同的上网认证策略、安全策略、带宽策略</b>；各部门之间<b>可以根据权限相互访问</b>，不同部门管理员<b>权限区分明确</b>；各部门<b>通过共享根系统的接口</b>进行 Internet 互联，内网用户按<b>不同部门的权限访问 Internet 的特定网站</b></td><td><b>一台设备 = 多台部门级防火墙</b>：分权管理、策略互不干扰、地址可重叠、带宽可按部门保障，采购与运维成本大幅下降</td></tr>
+    <tr><td class="nm"><b>② 云计算的安全网关</b></td><td>云计算的核心理念是把<b>网络资源和计算能力存放于网络云端</b>，用户通过终端接入公有网络即可访问资源；这一过程中<b>不同用户之间的流量隔离、安全防护和资源分配</b>非常重要——通过<b>配置虚拟系统</b>，让部署在<b>云计算中心出口的防火墙具备云网关能力</b>，在<b>对用户流量进行隔离的同时提供强大的安全防护</b></td><td>满足<b>多租户隔离</b>：每租户独立策略、独立资源配额、独立管理与审计视图，同时共享物理设备成本</td></tr>
+  </table></div>
+  <div class="note">ℹ️ 关于"✂️ 8.3、8.4 不考"：该清单按<b>教材节号</b>统计；而考纲<b>课程内容列出了 8.3 虚拟防火墙技术并给出考核知识点（三）</b>（要求"领会虚拟系统的特点""简单应用两类场景"）——本节仍须掌握，<b>以考核知识点清单为准</b>。</div>
+</div>
+
+<h2 class="section" id="s9">九、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>访问控制</b>＝判断有没有权限使用＋防止未授权访问；<b>两层次</b>（物理／逻辑）、<b>三要素</b>（主体·客体·访问控制策略）、<b>三原则</b>（最小特权·最小泄露·多级安全）。</li>
+    <li><b>DAC 四实现</b>：目录式、<b>ACL（以文件为中心，粒度小，适合用户少且授权稳定）</b>、ACM（矩阵）、面向过程；术语三兄弟：<b>ACLs 客体中心／ACCLs 用户中心／ACSLLs 安全属性集合</b>；基于口令三机制：<b>动态、多用户、上下文</b>。</li>
+    <li><b>MAC 四模式</b>：下读、上写、下写、上读 ⇒ <b>保密性"禁上读、禁下写"；完整性"禁下读、禁上写"</b>（与第 10 章两条原则呼应）。MAC <b>安全性高、灵活性差、大型复杂系统难采用</b>；产品 <b>SELinux、RSBAC、MAC</b>。</li>
+    <li><b>RBAC 三特点</b>：<b>管理简单、可继承、机动灵活</b>（权限给角色不给用户）。</li>
+    <li><b>防火墙</b>：边界上的<b>软硬件组合保护屏障／网关</b>；<b>四组成</b>（服务访问规则、验证工具、包过滤、应用网关）；<b>四功能</b>（屏障、强化策略、监控审计、防内部外泄）；<b>主流按访问控制方式分三类</b>（包过滤／代理／状态检测），并掌握<b>各自优缺点</b>（包过滤性能随 ACL 复杂度<b>指数下降</b>、代理<b>易遭 DoS 且升级难</b>、状态检测<b>后续包性能好安全性高</b>）。</li>
+    <li><b>NAT</b>：静态／动态／PAT 三型，作用是<b>省地址 + 隐藏内网 + 限制入站</b>，但它<b>不是加密与认证</b>。</li>
+    <li><b>策略匹配原则</b>：<b>首包过滤、后续包不过滤</b>；制定策略六步：定边界 → 默认拒绝 → 按业务放行 → 排规则顺序 → 配套防护 → 验证审计。</li>
+    <li><b>虚拟系统五特点</b>＋两类应用（部门隔离、云网关多租户）。</li>
+  </ol>
+  <div class="note">🎯 6 学时分配建议：访问控制（DAC/MAC/RBAC 清单与对比）3 学时 → 防火墙定义组成分类与优缺点 2 学时 → 安全策略六步 + 虚拟防火墙 1 学时。名词解释"访问控制"与"网络防火墙"两句原文必须能默写。</div>
+  <div class="gotos">
+    <a href="../无线网络/无线网络安全机制.html">← 第 7 章 无线网络安全机制</a>
+    <a href="../入侵防御/入侵防御系统.html">→ 第 9 章 入侵防御系统</a>
+    <a href="../index.html">📚 回到知识点导航</a>
+  </div>
+</div>
+
+<footer class="footer">
+  信息与网络安全管理（03344）知识点速记卡 · 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）· 指定教材《网络空间信息安全》苏永红、蒋天发 主编，电子工业出版社 2022 年第 2 版<br>
+  <a href="../../../index.html">🏠 返回首页</a> · <a href="../../考纲.html">📋 本课程考纲</a>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部">↑</a>
+</body>
+</html>

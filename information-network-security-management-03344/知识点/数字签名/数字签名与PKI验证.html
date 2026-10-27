@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 5 章 数字签名与验证技术｜签名性质与 DSA/SHA · 数字证书 · PKI 组成与 RBAC</title>
+<meta name="description" content="信息与网络安全管理 03344 第 5 章速记卡：数字签名的概念、三项性质与四条安全要求、作用和意义、DSA 数字签名算法与 SHA 安全散列算法；数字签名的实现过程（散列取摘要 + 私钥签名 + 公钥验证）；口令验证协议与非对称密钥系统验证协议的步骤与优缺点对比；数字证书（电子证书）的概念、用途与两类（事务型、交易型）；PKI 的主要功能、五个基本组成与三大核心、核心是对信任关系的管理；基于 PKI 的角色访问控制 RBAC 模型及其三阶段实现过程（身份验证、访问控制、服务提供）。建议 4 学时，对应教材第 5 章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✍️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#7c3aed,#db2777)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 5 章 · 数字签名与验证技术</h1>
+  <p>只有 <b>4 学时</b>但<span class="lvl d">综合应用</span>不落空：必背<b>签名的三条性质</b>与<b>四条安全要求</b>，会画<b>签名—验证流程图</b>，能默写 <b>PKI 五组成 + 三核心 + 核心是信任管理</b>，最后把 <b>基于 PKI 的 RBAC 三阶段</b>答完整。</p>
+  <span class="pill">建议 4 学时</span><span class="pill">对应教材第 5 章</span><span class="pill">重点：签名原理与 PKI</span><span class="pill">难点：PKI 与数字证书的应用</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../密码技术/对称与公钥密码体制.html">← 第 4 章</a>
+    <a href="../安全协议/IPSec与SSL-TLS.html">→ 第 6 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、数字签名：概念、性质与安全要求（识记）⭐</a>
+  <a href="#s2">二、作用意义与实现过程（领会）⭐⭐画图题</a>
+  <a href="#s3">三、DSA 与 SHA 算法名称（识记）</a>
+  <a href="#s4">四、两种验证协议与优缺点（识记/领会）⭐对比表</a>
+  <a href="#s5">五、数字证书与 PKI：功能·组成·核心（识记/领会）⭐⭐</a>
+  <a href="#s6">六、基于 PKI 的角色访问控制 RBAC（综合应用）⭐⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、数字签名：概念、性质与安全要求 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数字签名的<b>性质</b>；数字签名标准中提出的数字签名算法 <b>DSA</b> 和安全散列算法 <b>SHA</b>。</div>
+  <b>数字签名（Digital Signature）</b>：在网络环境下<b>使用公钥加密算法</b>来<b>模拟手写签名与印章</b>的一种机制，是<b>网络中进行完全交易的基础</b>。它不仅能保证信息的<b>完整性</b>和<b>信息源的可靠性</b>，而且可以<b>防止通信双方的欺骗和抵赖行为</b>。
+  <div class="note">🔑 与"报文认证"的区别（简答爱考）：报文认证能够保证通信双方免受<b>任何第三方</b>的攻击，然而却<b>不能保护通信双方中的一方防止另一方的欺骗和伪造</b>——要解决<b>双方之间的抵赖</b>，必须靠<b>数字签名</b>。</div>
+  <div class="th"><b>数字签名应具有的性质（三条，必背）：</b></div>
+  <ol class="steps">
+    <li>必须能够<b>验证签名生成者的身份</b>以及<b>生成签名的时间</b>；</li>
+    <li>能够用于<b>证实被签名消息的内容</b>；</li>
+    <li>数字签名必须<b>能被第三方验证</b>，从而<b>解决通信双方的争议</b>（仲裁性）。</li>
+  </ol>
+  <div class="th"><b>数字签名应满足的安全要求（四条）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>要求</th><th>通俗理解</th></tr>
+    <tr><td>1</td><td class="nm">签名的产生必须使用对发送者来说<b>唯一的信息</b></td><td>以防<b>伪造和抵赖</b>（只有我有这把私钥）</td></tr>
+    <tr><td>2</td><td class="nm">签名的产生必须<b>相对简单</b></td><td>签名方计算开销小，便于实用</td></tr>
+    <tr><td>3</td><td class="nm">数字签名的<b>识别和验证必须相对简单</b></td><td>接收方／第三方能快速验真</td></tr>
+    <tr><td>4</td><td class="nm">对已有签名<b>伪造新报文</b>、或对已知报文<b>伪造虚假签名</b>，<b>在计算上是不可行的</b></td><td>安全性建立在数学难题上</td></tr>
+  </table></div>
+  <div class="note">⚠️ 判断题陷阱："<b>数字签名可以防止接收方篡改报文后转发</b>"——对，因为<b>签名与报文内容绑定</b>，内容一改摘要就不匹配；但签名<b>本身不隐藏报文内容</b>（要保密还需另外加密，见第 6 章 S/MIME 的"签名 + 加密"流程）。</div>
+</div>
+
+<h2 class="section" id="s2">二、数字签名的作用意义与实现过程 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 数字签名的<b>作用和意义</b>、<b>实现过程</b>。</div>
+  <div class="th"><b>作用与意义：</b>目的是<b>验证、核准、有效和负责</b>，<b>防止相互欺骗和抵赖</b>——从而实现<b>完整性鉴别</b>（报文未被改）、<b>来源鉴别</b>（确实由声称者发出）、<b>身份鉴别</b>（签名者身份可确认）与<b>不可否认</b>（事后不能否认曾签发）。它是电子商务、电子合同、网上报税、证券交易等<b>完全交易</b>得以成立的技术前提。</div>
+  <div class="fig">
+    <svg viewBox="0 0 820 250" role="img" aria-label="数字签名与验证的流程：发送方用私钥对摘要签名，接收方用公钥验证摘要">
+      <text x="120" y="18" text-anchor="middle" font-size="13" font-weight="700" fill="#7c3aed">发送方 A（签名）</text>
+      <text x="690" y="18" text-anchor="middle" font-size="13" font-weight="700" fill="#be185d">接收方 / 仲裁方 B（验证）</text>
+      <rect x="20" y="32" width="110" height="34" rx="7" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.8"/>
+      <text x="75" y="54" text-anchor="middle" font-size="12.5" fill="#1f2430">报文 m</text>
+      <rect x="20" y="92" width="110" height="34" rx="7" fill="#dcfce7" stroke="#15803d" stroke-width="1.8"/>
+      <text x="75" y="107" text-anchor="middle" font-size="12" fill="#166534">散列函数 H</text>
+      <text x="75" y="121" text-anchor="middle" font-size="11.5" fill="#166534">SHA</text>
+      <rect x="20" y="150" width="110" height="34" rx="7" fill="#fef3c7" stroke="#b45309" stroke-width="1.8"/>
+      <text x="75" y="172" text-anchor="middle" font-size="12.5" fill="#1f2430">摘要 H(m)</text>
+      <rect x="150" y="150" width="120" height="34" rx="7" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="210" y="165" text-anchor="middle" font-size="12" fill="#9d174d">A 的<tspan font-weight="700">私钥</tspan>加密摘要</text>
+      <text x="210" y="180" text-anchor="middle" font-size="11.5" fill="#9d174d">→ 数字签名 S</text>
+      <rect x="150" y="32" width="120" height="34" rx="7" fill="#fff" stroke="#64748b" stroke-width="1.6" stroke-dasharray="5 3"/>
+      <text x="210" y="48" text-anchor="middle" font-size="12" fill="#4b5563">需要时公钥加密报文</text>
+      <text x="210" y="62" text-anchor="middle" font-size="11.5" fill="#4b5563">（保密性另做加密）</text>
+      <rect x="300" y="86" width="180" height="46" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="390" y="106" text-anchor="middle" font-size="12.5" fill="#0c4a6e">网络传输</text>
+      <text x="390" y="123" text-anchor="middle" font-size="12" fill="#0c4a6e">报文 m（或密文）+ 签名 S</text>
+      <rect x="510" y="86" width="120" height="46" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="570" y="106" text-anchor="middle" font-size="12" fill="#9d174d">用 A 的<tspan font-weight="700">公钥</tspan></text>
+      <text x="570" y="123" text-anchor="middle" font-size="12" fill="#9d174d">解密 S → 摘要 H₁</text>
+      <rect x="660" y="86" width="140" height="46" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="730" y="106" text-anchor="middle" font-size="12" fill="#166534">对收到的 m 重新</text>
+      <text x="730" y="123" text-anchor="middle" font-size="12" fill="#166534">求 H(m) → 摘要 H₂</text>
+      <rect x="560" y="170" width="240" height="42" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="680" y="188" text-anchor="middle" font-size="12.5" fill="#7c2d12"><tspan font-weight="700">比较 H₁ = H₂ ？</tspan></text>
+      <text x="680" y="205" text-anchor="middle" font-size="11.5" fill="#7c2d12">相等 ⇒ 签名有效、报文未被篡改</text>
+      <g stroke="#9ca3af" stroke-width="1.7" marker-end="url(#ar5)">
+        <line x1="75" y1="66" x2="75" y2="92"/><line x1="75" y1="126" x2="75" y2="150"/>
+        <line x1="130" y1="167" x2="150" y2="167"/><line x1="270" y1="167" x2="330" y2="132"/>
+        <line x1="480" y1="109" x2="510" y2="109"/><line x1="630" y1="109" x2="660" y2="109"/>
+        <line x1="570" y1="132" x2="600" y2="170"/><line x1="730" y1="132" x2="700" y2="170"/>
+      </g>
+      <text x="390" y="238" text-anchor="middle" font-size="12" fill="#6b7280">要点：<tspan font-weight="700">签名用发送者的私钥，验证用发送者的公钥</tspan>——与加密正好相反</text>
+      <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker></defs>
+    </svg>
+    <div class="cap">先<b>散列</b>取摘要、再用<b>私钥</b>加密摘要得到签名；验证时用<b>公钥</b>还原摘要并与<b>重算的摘要</b>比对</div>
+  </div>
+  <div class="th"><b>实现过程（简答五步，配合上图默写）：</b></div>
+  <ol class="steps">
+    <li>A 用<b>散列函数（SHA）</b>对报文 m 计算<b>固定长度的摘要（消息鉴别码）</b>；</li>
+    <li>A 用自己的<b>私钥</b>对该摘要<b>加密</b>，所得结果即<b>数字签名 S</b>；</li>
+    <li>把<b>报文 m 与签名 S 一起</b>发送给 B（若要求保密，再用 B 的公钥或会话密钥加密报文）；</li>
+    <li>B 用 <b>A 的公钥</b>解密 S 得到摘要 H₁，并对收到的 m <b>重新计算</b>摘要 H₂；</li>
+    <li>B <b>比较 H₁ 与 H₂</b>：一致则证明<b>来源真实、内容完整、A 无法抵赖</b>；必要时可由<b>第三方（仲裁／CA）</b>用同一公钥验证以解决争议。</li>
+  </ol>
+  <div class="note">🔑 为什么"先摘要后签名"：①<b>快</b>——对几百位的短摘要做非对称运算，比对整份大文件做要快得多；②<b>强</b>——改一个比特摘要就完全不同，篡改可被立即发现。这正是"签名相对简单、验证相对简单"两条安全要求的落地方式。</div>
+</div>
+
+<h2 class="section" id="s3">三、DSA 与 SHA（识记名称即可）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数字签名标准中提出的<b>数字签名算法 DSA</b> 和<b>安全散列算法 SHA</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>缩写</th><th>全称</th><th>作用</th><th>备注</th></tr>
+    <tr><td class="nm"><b>DSA</b></td><td><b>数字签名算法</b>（Digital Signature Algorithm）</td><td><b>专门用于生成与验证数字签名</b>，基于<b>数论中的离散对数问题</b></td><td>由美国 NIST 在<b>《数字签名标准》</b>中提出；<b>只能签名、不能加密</b>（这是与 RSA 的关键差别）</td></tr>
+    <tr><td class="nm"><b>SHA</b></td><td><b>安全散列算法</b>（Secure Hash Algorithm）</td><td>把任意长度的报文压成<b>固定长度的摘要</b>，供签名与完整性校验使用</td><td>常见版本 SHA-1／SHA-256 等；<b>单向、抗碰撞</b></td></tr>
+    <tr><td class="nm">（对照）RSA</td><td>以三位发明者姓氏命名</td><td>基于<b>大整数分解难题</b>，<b>既能加密又能签名</b></td><td>见第 4 章计算</td></tr>
+    <tr><td class="nm">（对照）IDEA／DES</td><td>国际数据加密算法／数据加密标准</td><td><b>对称</b>分组密码</td><td>常与 RSA/DSA 组合成混合机制</td></tr>
+  </table></div>
+  <div class="note">🔑 一句话区分：<b>SHA 负责"算摘要"，DSA 负责"签与验"，RSA 兼顾"加密＋签名"</b>。选择题问"数字签名标准提出的算法"→ <b>DSA</b>；问"安全散列算法"→ <b>SHA</b>。</div>
+  <div class="note">ℹ️ 关于"✂️ 5.2 不考"：考纲页首按<b>教材节号</b>标注了第 5 章的跳过小节，但本章<b>考核知识点（二）验证技术</b>是考纲明确列出的必考内容（含综合应用 RBAC）——<b>以"考核知识点与考核要求"清单为准复习</b>，不要因为节号对不上就整节不看。</div>
+</div>
+
+<h2 class="section" id="s4">四、两种用户验证协议与优缺点对比 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> <b>非对称密钥系统的用户验证协议</b>；<span class="lvl b">领会</span> <b>口令验证协议</b>与非对称密钥系统验证协议的<b>优缺点</b>。</div>
+  <div class="th"><b>① 口令验证协议（三步）：</b></div>
+  <ol class="steps">
+    <li>A 将自己的<b>用户名和口令</b>传输给服务器；</li>
+    <li>服务器计算出<b>口令的单向函数值</b>（散列值）；</li>
+    <li>服务器把<b>用户名和单向函数值</b>与<b>口令表</b>中登记的值进行<b>匹配</b>，一致则通过。</li>
+  </ol>
+  <div class="th"><b>② 非对称密钥系统的用户验证协议（四步，挑战—应答）：</b></div>
+  <ol class="steps">
+    <li>服务器发送一个<b>随机数 R</b>（挑战）给 A；</li>
+    <li>A 用<b>自己的私钥</b>对 R 加密得 <b>R₁</b>，把 <b>R₁ 与用户名</b>一起回传服务器；</li>
+    <li>服务器按用户名在数据库中<b>找到 A 的公钥</b>，用它解密 R₁ 得到 <b>R₂</b>；</li>
+    <li>若 <b>R₂ = R</b>，则<b>A 登录成功</b>。</li>
+  </ol>
+  <div class="tscroll"><table class="law">
+    <tr><th>协议</th><th>优点</th><th>缺点</th></tr>
+    <tr><td class="nm"><b>口令验证协议</b></td><td>服务器中的<b>口令表</b>以及<b>通信线路中传输的口令，对攻击者来说毫无意义</b>（表里存的是单向函数值，线路上传输的也是单向函数值）</td><td><b>异地使用起来不方便</b>（口令表是本地机制，跨网络／漫游访问时难以通用）</td></tr>
+    <tr><td class="nm"><b>非对称密钥系统验证协议</b></td><td><b>可以有效对付窃听或偷窥</b>：每次的随机数 R 都不同（一次一挑战），窃听到 R₁ 也无法重放；无需在服务器上保存用户口令</td><td><b>A 所使用的终端必须具有（相应的）计算能力</b>——要做非对称运算，终端成本与速度受限</td></tr>
+  </table></div>
+  <div class="note">⚠️ 易混点：<b>口令协议里"口令以单向函数值形式存储与传输"</b>不等于"口令被加密"——单向函数<b>不可逆</b>，服务器自己也拿不到明文口令；而<b>非对称验证协议传输的是私钥的签名结果</b>，本质是"证明我持有私钥"。</div>
+</div>
+
+<h2 class="section" id="s5">五、数字证书与 PKI：功能、组成与核心 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> <b>数字证书的概念和用途</b>、<b>PKI 的主要功能和基本组成</b>；<span class="lvl b">领会</span> PKI 的<b>原理和核心</b>。</div>
+  <b>数字证书</b>（又称<b>电子证书</b>）：起着<b>标志证书持有者身份</b>的作用；证书持有者可以通过它进行<b>安全的通信、事务处理及贸易</b>等活动。目前可提供的类型：①<b>事务型数字证书</b>——用来进行<b>各种网上事务处理活动</b>；②<b>交易型数字证书</b>——用来进行<b>网上安全电子交易</b>。
+  <div class="th"><b>一个完整的 PKI 系统应具备的主要功能（简答，抓关键词即可）：</b></div>
+  <ul class="m">
+    <li>根据 <b>X.509 标准发放证书</b>；证书与 <b>CA 产生密钥对</b>；</li>
+    <li><b>密钥备份及恢复</b>；<b>证书、密钥对的自动更换</b>；</li>
+    <li><b>加密密钥与签名密钥的分隔</b>；<b>管理密钥和证书</b>；</li>
+    <li>支持对数字签名的<b>不可抵赖性</b>；<b>密钥历史的管理</b>；</li>
+    <li>为用户提供 PKI 服务：如<b>网络用户安全登录、增加和删除用户、恢复密钥、检验证书</b>等；</li>
+    <li>其他相关功能：<b>交叉验证</b>、支持 <b>LDAP 协议</b>、支持用户验证的<b>智能卡</b>等。</li>
+  </ul>
+  <div class="th"><b>PKI 的基本组成（两套"五部分"要分得清）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>角度</th><th>五个部分</th><th>说明</th></tr>
+    <tr><td class="nm">典型 PKI 系统的<br><b>五个基本组成部分</b></td><td><b>证书申请者</b>、<b>注册机构 RA</b>、<b>验证（认证）中心 CA</b>、<b>证书库</b>、<b>证书信任方</b></td><td>其中<b>证书中心 CA、注册机构 RA、证书库</b>三部分是 <b>PKI 的核心</b>；<b>证书申请者</b>与<b>证书信任方</b>则是利用 PKI 进行网上交易的<b>参与者</b></td></tr>
+    <tr><td class="nm">完整 PKI 系统必须具有的<br><b>五大基本构成部分</b><br>（构建 PKI 围绕这五部分）</td><td><b>权威验证机构</b>、<b>数字证书库</b>、<b>密钥备份及恢复系统</b>、<b>证书作废系统</b>、<b>应用程序接口 API</b></td><td>侧重<b>工程构建</b>视角：证书要能发、能查、能备份恢复、能作废（CRL）、能被应用调用</td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 780 180" role="img" aria-label="PKI 信任链：证书申请者经注册机构向认证中心申请证书，证书存入证书库供信任方验证">
+      <rect x="14" y="60" width="130" height="46" rx="9" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="79" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#4338ca">证书申请者</text>
+      <text x="79" y="97" text-anchor="middle" font-size="11.5" fill="#6b7280">提交身份与公钥</text>
+      <rect x="196" y="60" width="130" height="46" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="261" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0c4a6e">注册机构 RA</text>
+      <text x="261" y="97" text-anchor="middle" font-size="11.5" fill="#6b7280">审核身份／登记</text>
+      <rect x="378" y="60" width="130" height="46" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2.2"/>
+      <text x="443" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#166534">认证中心 CA</text>
+      <text x="443" y="97" text-anchor="middle" font-size="11.5" fill="#6b7280">签发／撤销证书</text>
+      <rect x="560" y="60" width="110" height="46" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="615" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c2d12">证书库</text>
+      <text x="615" y="97" text-anchor="middle" font-size="11.5" fill="#6b7280">发布·查询(LDAP)</text>
+      <rect x="560" y="128" width="200" height="40" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="660" y="146" text-anchor="middle" font-size="12.5" font-weight="700" fill="#9d174d">证书信任方</text>
+      <text x="660" y="161" text-anchor="middle" font-size="11.5" fill="#6b7280">下载验证、放心通信</text>
+      <g stroke="#9ca3af" stroke-width="1.7" marker-end="url(#ar6)">
+        <line x1="144" y1="83" x2="196" y2="83"/><line x1="326" y1="83" x2="378" y2="83"/>
+        <line x1="508" y1="83" x2="560" y2="83"/><line x1="615" y1="106" x2="645" y2="128"/>
+      </g>
+      <text x="330" y="34" text-anchor="middle" font-size="12.5" fill="#6b7280">核心：<tspan font-weight="700">对信任关系的管理</tspan>（CA 用自己的私钥为证书背书，把"公钥 ↔ 身份"绑起来）</text>
+      <defs><marker id="ar6" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker></defs>
+    </svg>
+    <div class="cap">PKI 原理：在用户<b>不知道对方身份或分布很广</b>的情况下，<b>以证书为基础、通过一系列信任关系</b>完成网络通信与电子商务</div>
+  </div>
+  <div class="th"><b>PKI 的原理与核心（领会，必答句）：</b>PKI 在实际应用中是<b>一套软件、硬件系统和安全策略的集合</b>，它提供<b>一整套安全机制</b>，使网络用户在<b>不知道对方身份或者分布很广</b>的情况下，<b>以证书为基础、通过一系列信任关系</b>进行网络通信和电子商务交易。<b>PKI 的核心是对信任关系的管理。</b></div>
+  <div class="note">🔑 数字证书里到底有什么（帮助理解用途）：持有者<b>主体名</b>、持有者<b>公钥</b>、<b>证书序列号与有效期</b>、发行者 <b>CA 名</b>、CA 的<b>数字签名</b>、所用算法与标准（<b>X.509</b>）。<b>公钥的可靠性不靠算法而靠 CA 的签名背书</b>——这就是"信任管理"的含义。</div>
+</div>
+
+<h2 class="section" id="s6">六、基于 PKI 的角色访问控制 RBAC ⭐⭐ 综合应用</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 基于 PKI 的<b>角色访问控制模型及其实现过程</b>。</div>
+  <b>核心思想：</b>权限<b>并不直接被分配给用户</b>，而是<b>分配给角色</b>；<b>角色是分配权限的一种间接手段</b>——用户通过<b>担任角色</b>间接获得权限，角色与用户的对应关系随职务变动而调整。
+  <div class="th"><b>模型三要素与结构（画成"用户—角色—权限"三层）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>层</th><th>对象</th><th>关系</th><th>带来的好处</th></tr>
+    <tr><td class="nm">用户层</td><td>职员、部门账号、外部合作方</td><td>用户 ↔ 角色：<b>多对多</b>分配</td><td>人员进出一张"授权／撤权"即可，<b>不必逐条改权限</b></td></tr>
+    <tr><td class="nm">角色层</td><td>系统管理员、审计员、普通业务员…</td><td>角色 ↔ 权限：<b>按岗位职责</b>定义</td><td><b>权限继承</b>、<b>机动灵活</b>、<b>管理简单</b>（RBAC 三特点）</td></tr>
+    <tr><td class="nm">资源／权限层</td><td>数据库表、文件、业务功能、设备</td><td>权限落到具体客体的读／写／执行</td><td>便于落实<b>最小特权</b>与职责分离</td></tr>
+  </table></div>
+  <div class="th"><b>实现过程分三个阶段（考纲要求"能答出实现过程"，必须记住这三个名字）：</b></div>
+  <div class="fig">
+    <svg viewBox="0 0 820 140" role="img" aria-label="基于 PKI 的角色访问控制三个阶段：身份验证、访问控制、服务提供">
+      <rect x="14" y="40" width="230" height="56" rx="10" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="129" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#0c4a6e">① 身份验证阶段</text>
+      <text x="129" y="82" text-anchor="middle" font-size="11.5" fill="#4b5563">证书／私钥证明身份，确认用户是谁</text>
+      <rect x="290" y="40" width="230" height="56" rx="10" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="405" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">② 访问控制阶段</text>
+      <text x="405" y="82" text-anchor="middle" font-size="11.5" fill="#4b5563">按证书中的角色与策略判定可否访问</text>
+      <rect x="566" y="40" width="240" height="56" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="686" y="62" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">③ 服务提供阶段</text>
+      <text x="686" y="82" text-anchor="middle" font-size="11.5" fill="#4b5563">放行并按权限提供具体业务服务</text>
+      <g stroke="#9ca3af" stroke-width="1.8" marker-end="url(#ar7)">
+        <line x1="244" y1="68" x2="290" y2="68"/><line x1="520" y1="68" x2="566" y2="68"/>
+      </g>
+      <text x="410" y="126" text-anchor="middle" font-size="12" fill="#6b7280">证书撤销（CRL／RA 审核）任一阶段均可使访问被拒绝</text>
+      <defs><marker id="ar7" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker></defs>
+    </svg>
+    <div class="cap">三阶段是一条<b>请求处理链</b>：先证明"你是谁"，再判定"你该有什么权限"，最后"提供对应服务"</div>
+  </div>
+  <ol class="steps">
+    <li><b>身份验证阶段</b>：用户持 <b>CA 签发的数字证书</b>登录，系统用<b>非对称密钥验证协议</b>（挑战随机数 + 用户私钥签名）确认其身份真伪，并从证书中读出<b>用户标识与所属角色</b>；证书还需查<b>证书库／作废列表</b>确认有效。</li>
+    <li><b>访问控制阶段</b>：访问控制策略模块把该用户的<b>角色</b>与系统定义的<b>角色—权限</b>映射比对，结合<b>安全策略实施原则</b>（最小特权、最小泄露、多级安全）判定<b>允许／拒绝</b>本次操作，并记录审计信息。</li>
+    <li><b>服务提供阶段</b>：判定通过后，应用系统<b>按角色开放相应的功能与数据范围</b>向用户提供服务；会话结束或角色变更时回收权限，必要时由 PKI 完成<b>密钥／证书的更新</b>。</li>
+  </ol>
+  <div class="note">💡 答题结构提示：先写<b>核心思想（权限给角色不给用户）</b>，再画／列<b>用户—角色—权限三层</b>，然后按<b>三阶段</b>展开，最后一句收尾"<b>PKI 提供可信身份绑定，RBAC 提供灵活授权管理，两者结合既解决了'你是谁'又解决了'你能做什么'，并支持职责分离与审计</b>"。这类 10 分题按此结构可稳定拿分。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>数字签名 = 私钥签摘要、公钥验签名</b>；作用：<b>完整性 + 来源可靠 + 防欺骗抵赖</b>，是网络完全交易的基础。</li>
+    <li><b>三条性质</b>（验身份与时间／证内容／第三方可验证）＋<b>四条安全要求</b>（唯一信息／签名易／验证易／伪造不可行）。</li>
+    <li><b>两个算法名</b>：<b>DSA</b> 数字签名算法（只签名）、<b>SHA</b> 安全散列算法（算摘要）。</li>
+    <li><b>两种验证协议</b>：口令协议（单向函数值存储与传输，异地不便）；非对称协议（随机数挑战 + 私钥应答，抗窃听但终端要能算）。</li>
+    <li><b>数字证书</b>：标志持有者身份；<b>事务型</b>与<b>交易型</b>两类。</li>
+    <li><b>PKI 五组成</b>（申请者、RA、CA、证书库、信任方）＋<b>三核心</b>（CA、RA、证书库）＋<b>核心是信任关系的管理</b>；构建五大构成（权威验证机构、证书库、密钥备份恢复、证书作废、API）。</li>
+    <li><b>RBAC 三阶段</b>：身份验证 → 访问控制 → 服务提供。</li>
+  </ol>
+  <div class="note">🎯 优先级：①<b>签名—验证流程图</b>（能画能讲）；②<b>PKI 组成与核心</b>（名词解释＋简答）；③<b>RBAC 三阶段</b>（综合应用）；④两种验证协议的<b>优缺点对比表</b>。</div>
+  <div class="gotos">
+    <a href="../密码技术/对称与公钥密码体制.html">← 第 4 章 网络空间信息密码技术</a>
+    <a href="../安全协议/IPSec与SSL-TLS.html">→ 第 6 章 网络安全协议</a>
+    <a href="../index.html">📚 回到知识点导航</a>
+  </div>
+</div>
+
+<footer class="footer">
+  信息与网络安全管理（03344）知识点速记卡 · 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）· 指定教材《网络空间信息安全》苏永红、蒋天发 主编，电子工业出版社 2022 年第 2 版<br>
+  <a href="../../../index.html">🏠 返回首页</a> · <a href="../../考纲.html">📋 本课程考纲</a>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部">↑</a>
+</body>
+</html>

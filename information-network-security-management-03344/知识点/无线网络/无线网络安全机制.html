@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 7 章 无线网络安全机制｜无线网络分类 · 蓝牙/ZigBee/RFID/Wi-Fi · 攻击与防范策略</title>
+<meta name="description" content="信息与网络安全管理 03344 第 7 章速记卡：无线网络的基本概念与六类分类（WPAN、LR-WPAN、WLAN、无线 LAN-to-LAN 网桥、无线城域网、无线广域网）；常见四种短程无线通信技术的名称、适用场景与优缺点（蓝牙、ZigBee、RFID、Wi-Fi）；无线网络存在的各种安全隐患（Wi-Fi 钓鱼陷阱、接入点被偷梁换柱、黑客主动攻击、攻击家用路由器、劫持风险）；常见无线网络安全加密技术（WEP、WPA、WPA2、VPN、硬件安全交换机、ESSID）；黑客入侵无线网络的七种方法；防范无线网络入侵的十条安全策略。建议 6 学时，对应教材第 7 章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📡</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#059669,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 7 章 · 无线网络安全机制</h1>
+  <p>本章是"<b>清单章</b>"：四种短程技术、六类无线网络、七种入侵手法、十条防范策略——简答与多选直接考背诵量。唯一的<span class="lvl c">简单应用</span>是<b>安全隐患分析 + 防范策略制定</b>，答题时把十条策略按"<b>物理—标识—认证—加密—管理</b>"五组归类写，条理分最稳。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">对应教材第 7 章</span><span class="pill">重点：概念·原理·攻击与防范</span><span class="pill">难点：把原理用到实际无线问题</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../安全协议/IPSec与SSL-TLS.html">← 第 6 章</a>
+    <a href="../访问控制/访问控制与防火墙.html">→ 第 8 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、无线网络：概念与六类分类（识记）⭐</a>
+  <a href="#s2">二、四种短程无线通信技术（识记/领会）⭐⭐简答高发</a>
+  <a href="#s3">三、无线网络存在的安全隐患（简单应用）⭐</a>
+  <a href="#s4">四、无线网络安全加密技术（识记）⭐</a>
+  <a href="#s5">五、黑客入侵无线网络的七种方法（领会）⭐</a>
+  <a href="#s6">六、防范无线网络入侵的安全策略（简单应用）⭐⭐十条</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、无线网络：概念与分类 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 无线网络的<b>基本概念和分类</b>。</div>
+  <b>无线网络（Wireless Network）</b>：不依赖有线传输介质，而是<b>以电磁波（无线电波、微波、红外线、激光等）作为传输信道</b>，把计算机、终端与网络设施互联起来进行<b>数据通信与信息交换</b>的网络。其特点是<b>组网灵活、可移动、建设快、覆盖可扩展</b>；但也因此<b>信道公开、信号外泄、边界模糊</b>——安全上比有线网络更难设防（这是本章所有问题的根源）。
+  <div class="th"><b>无线网络的分类（六类，按覆盖范围从大到小理解）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>类别</th><th>英文／缩写</th><th>典型范围与用途</th></tr>
+    <tr><td>1</td><td class="nm"><b>无线广域网</b></td><td>WWAN</td><td>跨城市／国家，运营商蜂窝网络（4G/5G 等）</td></tr>
+    <tr><td>2</td><td class="nm"><b>无线城域网</b></td><td>WMAN</td><td>覆盖一座城市／大片区域（如 WiMAX 类）</td></tr>
+    <tr><td>3</td><td class="nm"><b>无线局域网</b></td><td><b>WLAN</b></td><td>楼宇、园区、家庭；<b>本章讨论的主角</b>（IEEE 802.11 系列）</td></tr>
+    <tr><td>4</td><td class="nm"><b>无线个人网</b></td><td><b>WPAN</b></td><td>人身周围数米至数十米的设备互联</td></tr>
+    <tr><td>5</td><td class="nm"><b>低速率无线个域网</b></td><td><b>LR-WPAN</b></td><td>低速率、低功耗的个域网（对应 <b>ZigBee／IEEE 802.15.4</b>，传感与智能家居）</td></tr>
+    <tr><td>6</td><td class="nm"><b>无线 LAN-to-LAN 网桥</b></td><td>无线网桥</td><td>用无线链路<b>把两个局域网互联</b>（跨楼、跨厂区，避免架线）</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆顺序：<b>"广域 → 城域 → 局域网 → 个域网 → 低速率个域网 → 网桥"</b>，即<b>范围由大到小 + 一个特殊互联形态（网桥）</b>。选择题给缩写问名称：WPAN＝无线个人网、LR-WPAN＝低速率无线个域网、WLAN＝无线局域网。</div>
+</div>
+
+<h2 class="section" id="s2">二、四种短程无线通信关键技术 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 常见<b>四种</b>短程无线通信网络技术的名称；<span class="lvl b">领会</span> 四种技术的<b>适用场景和优缺点</b>。</div>
+  <b>四种技术：蓝牙技术、ZigBee、RFID、Wi-Fi。</b>（考纲附录的简答题就是"短距离无线通信关键技术"，答出这四个名称并各展开一句即可。）
+  <div class="tscroll"><table class="law">
+    <tr><th>技术</th><th>要点（教材原文口径）</th><th>适用场景</th><th>优点</th><th>缺点／风险</th></tr>
+    <tr><td class="nm"><b>蓝牙</b><br>Bluetooth</td><td>传输范围约 <b>6 m</b> 的短距离无线通信技术，用来在<b>便携式计算机、移动电话及其他移动设备</b>之间建立一种<b>小型、经济、短距离</b>的无线链路，实现无线信息交换</td><td>耳机／手环配对、手机传文件、车载免提、近场设备互联</td><td><b>小型、经济、功耗低</b>、通用性强、即配即用</td><td>距离短、速率有限；<b>开放配对（可被发现）易被嗅探与未授权接入</b></td></tr>
+    <tr><td class="nm"><b>ZigBee</b></td><td>协议<b>从下到上包括物理层、媒体访问控制层、传输层、网络层、应用层</b>；其中<b>物理层与媒体访问控制层遵循 IEEE 802.15.4 标准</b>，是一种<b>低速短距离传输</b>的无线网络协议，<b>主要用于智能家居</b></td><td>智能家居、传感与控制网络、工业采集、无线抄表</td><td><b>低功耗、低成本、低速率、近距离、短时延</b>（五低／短快），可组网、节点多、电池寿命长</td><td>速率与带宽小，<b>不适合传输音视频等大数据量</b>；节点多时密钥管理复杂</td></tr>
+    <tr><td class="nm"><b>RFID</b><br>射频识别</td><td>又称<b>感应式电子芯片</b>或近接卡、感应卡、非接触卡、电子标签、电子条形码等；可<b>通过无线电信号识别特定目标并读写相关数据</b>，而<b>无须在识别系统与特定目标之间建立机械或光学接触</b></td><td>门禁卡／身份证、物流与仓储盘点、商品电子标签、ETC、动物识别</td><td><b>读取方便快捷、识别速度快、数据容量大、使用寿命长、应用广泛、标签数据可动态更改、更好的安全性、动态实时通信</b></td><td>无接触即被读 ⇒ <b>存在被秘密读取／克隆／跟踪的隐私风险</b>；无鉴权的低频标签易被复制</td></tr>
+    <tr><td class="nm"><b>Wi-Fi</b></td><td>一种能将 <b>PC、手持设备等终端以无线方式互相连接</b>的技术（无线局域网接入手段）</td><td>家庭／办公／公共场所上网、移动办公、物联网关</td><td><b>速率高、覆盖范围广、兼容性强、功耗更低</b></td><td>存在明显风险：<b>Wi-Fi 钓鱼陷阱、Wi-Fi 接入点被偷梁换柱、黑客主动攻击、攻击家用路由器、劫持风险</b>等</td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 800 170" role="img" aria-label="四种短程无线技术的速率与功耗定位对比：Wi-Fi 速率最高、蓝牙居中、ZigBee 低速率低功耗、RFID 以识别为主">
+      <line x1="70" y1="130" x2="740" y2="130" stroke="#9ca3af" stroke-width="1.6"/>
+      <line x1="70" y1="130" x2="70" y2="24" stroke="#9ca3af" stroke-width="1.6"/>
+      <text x="405" y="158" text-anchor="middle" font-size="12" fill="#6b7280">数据速率（越高越适合传业务数据）→</text>
+      <text x="30" y="78" font-size="12" fill="#6b7280" transform="rotate(-90 30 78)" text-anchor="middle">功耗／覆盖 →</text>
+      <g font-size="12.5" font-weight="700" text-anchor="middle">
+        <circle cx="640" cy="60" r="26" fill="#0891b2" opacity="0.18" stroke="#0891b2" stroke-width="2"/><text x="640" y="65" fill="#0e7490">Wi-Fi</text>
+        <circle cx="460" cy="86" r="22" fill="#059669" opacity="0.18" stroke="#059669" stroke-width="2"/><text x="460" y="91" fill="#047857">蓝牙</text>
+        <circle cx="280" cy="108" r="20" fill="#b45309" opacity="0.18" stroke="#b45309" stroke-width="2"/><text x="280" y="113" fill="#92400e">ZigBee</text>
+        <circle cx="140" cy="120" r="17" fill="#be185d" opacity="0.18" stroke="#be185d" stroke-width="2"/><text x="140" y="124" fill="#9d174d">RFID</text>
+      </g>
+      <text x="640" y="26" text-anchor="middle" font-size="11.5" fill="#6b7280">高速率、广覆盖，风险也最多</text>
+      <text x="220" y="46" text-anchor="middle" font-size="11.5" fill="#6b7280">RFID 重在"识别与读写"，速率低但免接触</text>
+    </svg>
+    <div class="cap">横向比较主线：<b>RFID（识别）→ ZigBee（控制／低功耗）→ 蓝牙（个人短距）→ Wi-Fi（高速接入）</b></div>
+  </div>
+  <div class="note">🔑 归类型选择题速判：<b>智能家居／低速低功耗</b>→ZigBee；<b>免接触识别／电子标签</b>→RFID；<b>约 6 m、手机耳机配对</b>→蓝牙；<b>PC 与手持终端无线上网</b>→Wi-Fi。另记一句：<b>ZigBee 的物理层与 MAC 层遵循 IEEE 802.15.4</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、无线网络存在的安全隐患（简单应用）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 无线网络存在的<b>各种安全隐患</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>隐患</th><th>怎么发生</th><th>后果</th></tr>
+    <tr><td class="nm"><b>① Wi-Fi 钓鱼陷阱</b></td><td>攻击者架一个与合法热点<b>同名（SSID 相同）</b>的假接入点，终端自动或误连</td><td>凭据、Cookie、银行页面信息被<b>钓取</b>，流量被全量记录</td></tr>
+    <tr><td class="nm"><b>② Wi-Fi 接入点被偷梁换柱</b></td><td>把合法 AP 换成<b>外观相同的恶意设备</b>（或篡改配置、固件植入后门）</td><td>整网流量经攻击者中转，<b>中间人</b>可解密、改包</td></tr>
+    <tr><td class="nm"><b>③ 黑客主动攻击</b></td><td>对无线设备与网段<b>直接发起扫描、漏洞利用、口令破解</b>等攻击</td><td>设备被控、内网被打通</td></tr>
+    <tr><td class="nm"><b>④ 攻击家用路由器</b></td><td>使用<b>默认管理地址／默认口令</b>、固件长期不更新、开放远程管理</td><td>路由器被劫持 ⇒ <b>DNS 改写、端口映射滥用、沦为僵尸网络节点</b></td></tr>
+    <tr><td class="nm"><b>⑤ 劫持风险</b></td><td>利用协议弱点或弱加密<b>接管会话／重定向流量</b>（会话劫持、ARP／DNS 劫持、无线重放）</td><td>用户以为在正常访问，实际数据被<b>替换或导向恶意站点</b></td></tr>
+  </table></div>
+  <div class="note">🔑 更本质的四条共性风险（用来"分析原因"得满分）：<b>①信号广播 → 边界不可控</b>（任何人可在覆盖范围内收发电磁波）；<b>②接入认证弱</b>（开放网络、默认口令、WEP 可破）；<b>③用户行为不可控</b>（私设热点、随身设备接入）；<b>④设备与协议实现缺陷</b>（固件漏洞、WPS／管理接口暴露）。</div>
+</div>
+
+<h2 class="section" id="s4">四、常见无线网络安全加密技术（识记）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 常见的<b>无线网络安全加密技术</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>技术</th><th>要点</th></tr>
+    <tr><td>1</td><td class="nm"><b>WEP</b>（有线等效保密）</td><td>最早的 802.11 加密方案，<b>已被证明存在严重弱点、易被破解</b>（IV 重用、密钥可恢复）——只作"反面教材"，<b>不能把保障寄希望于 WEP</b></td></tr>
+    <tr><td>2</td><td class="nm"><b>WPA</b>（Wi-Fi 保护接入）</td><td>作为 WEP 的<b>过渡替代</b>方案，引入<b>临时密钥完整性协议 TKIP</b> 与报文完整性校验，改进密钥生成与管理</td></tr>
+    <tr><td>3</td><td class="nm"><b>WPA2</b></td><td>采用 <b>AES（802.11i）</b>加密，是无线加密的<b>主流强度</b>；企业版配合 802.1X/RADIUS 做<b>逐个用户认证</b>（第 4、6 章知识在此复用）</td></tr>
+    <tr><td>4</td><td class="nm"><b>VPN</b>（虚拟专用网）</td><td>在无线／公共网络之上<b>再建一条加密隧道</b>（可复用第 6 章 <b>IPSec</b> 隧道模式），把认证与机密性交给隧道端点，<b>不依赖无线链路自身的安全</b></td></tr>
+    <tr><td>5</td><td class="nm"><b>硬件安全交换机</b></td><td>用<b>交换而非共享集线器</b>、端口安全与 VLAN 隔离，使<b>流量不再被任意端口窃听</b>；结合 802.1X 认证交换机可拒绝未授权设备接入</td></tr>
+    <tr><td>6</td><td class="nm"><b>ESSID</b>（服务集标识符）</td><td>无线网络的<b>标识名</b>；通过<b>隐藏 ESSID／不广播</b>、区分不同 SSID 的访问权限、避免使用默认名称来<b>增加猜测与伪装难度</b>（属弱手段，不能单独依赖）</td></tr>
+  </table></div>
+  <div class="note">🔑 强度排序背下来：<b>WEP ＜ WPA（TKIP）＜ WPA2（AES）</b>；<b>ESSID／MAC 过滤只是"减少暴露面"，VPN 与硬件隔离是"把不可信无线信道变成可信通道"</b>。凡答"加密技术"就写这六个名称：WEP、WPA、WPA2、VPN、硬件安全交换机、ESSID。</div>
+</div>
+
+<h2 class="section" id="s5">五、黑客入侵无线网络的七种方法（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 黑客<b>入侵无线网络的方法</b>。</div>
+  <ol class="steps">
+    <li><b>利用现有的开放网络</b>：搜寻免费的公共热点／未加密 AP，<b>借其通道接入或隐藏攻击来源</b>；</li>
+    <li><b>无线伪装</b>：架设<b>伪造接入点（Rogue AP）／同名 SSID 钓鱼</b>，把合法用户吸引过来接收其流量与凭据；</li>
+    <li><b>加密破解</b>：抓取握手与大量报文，<b>破解 WEP/WPA 密钥或弱口令</b>，还原加密流量；</li>
+    <li><b>无线 DoS 攻击</b>：用<b>干扰、连续解除认证（deauth） flood、占用信道</b>使合法用户无法接入（拒绝服务）；</li>
+    <li><b>WEP 注入攻击</b>：向网络<b>注入伪造数据包</b>以刺激产生大量初始化向量 IV，加速密钥统计恢复；</li>
+    <li><b>WEP ARP 注入攻击</b>：利用<b>已捕获的 ARP 报文重放注入</b>，无需客户端关联即可制造流量、快速算出密钥；</li>
+    <li><b>WEP 高级攻击</b>：针对 WEP 弱点（<b>密钥调度与 IV 空间小</b>）的<b>更高效的密钥恢复／伪造接入</b>手段，可在少量报文下突破。</li>
+  </ol>
+  <div class="note">⚠️ 后四条都以 <b>WEP</b> 为攻击对象 ⇒ 直接支撑"防范策略"里那句<b>"要清楚地认识到 WEP 协议不是万能的"</b>。答题时把这两处连起来写，能体现"分析并解决无线安全问题"的能力层次。</div>
+</div>
+
+<h2 class="section" id="s6">六、防范无线网络入侵的安全策略（简单应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> <b>防范无线网络入侵的安全策略制定</b>。</div>
+  <div class="th"><b>十条策略（教材原列，按五组归类更好记）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>组</th><th>策略</th><th>落地做法</th></tr>
+    <tr><td class="nm" rowspan="2"><b>物理与部署</b></td><td>①<b>正确放置网络的接入点设备</b></td><td>AP 放在<b>受控区域</b>、避免信号溢出到建筑外／公共区域；固定安装防被搬动、替换</td></tr>
+    <tr><td>⑩<b>不能让非专业人员构建无线网络</b></td><td>由<b>专业人员规划、配置与验收</b>；禁止员工私自带入无线路由器（rogue 设备清查）</td></tr>
+    <tr><td class="nm" rowspan="2"><b>标识与准入</b></td><td>②<b>利用 MAC 阻止黑客入侵</b></td><td>启用 <b>MAC 地址过滤／绑定</b>，只允许登记过的终端接入（注意 MAC 可被伪造，需与认证配合）</td></tr>
+    <tr><td>③<b>有效关联无线网络的 ID</b></td><td>规范使用 <b>ESSID／BSSID</b>：改默认名、按需隐藏广播、不同业务用不同 ID 并分别授权，防止同名伪装混用</td></tr>
+    <tr><td class="nm" rowspan="2"><b>加密与隧道</b></td><td>④⑤<b>重视 WEP 协议，同时清楚认识到 WEP 不是万能的</b>，不能把加密保障都寄希望于 WEP</td><td>启用加密但<b>升级到 WPA2/AES</b>；把 WEP 视为历史方案，重要业务<b>不依赖无线链路自身加密</b></td></tr>
+    <tr><td>⑥<b>采用 VPN 技术</b></td><td>无线终端<b>必须先建立 VPN 隧道</b>再访问内网／敏感系统，实现端到端加密与集中认证</td></tr>
+    <tr><td class="nm"><b>认证与服务</b></td><td>⑦<b>提高已有的 RADIUS 服务能力</b></td><td>用 <b>802.1X + RADIUS</b> 做<b>集中、逐个用户</b>的认证、授权与计费，强口令、证书登录、账号审计</td></tr>
+    <tr><td class="nm" rowspan="2"><b>管理与策略</b></td><td>⑧<b>简化网络安全管理，集成无线和有线网络安全策略</b></td><td>无线与有线<b>统一安全策略、统一设备管理平台</b>（同一目录、同一防火墙策略、同一日志）</td></tr>
+    <tr><td>⑨<b>认识到 WLAN 设备不全都一样</b></td><td>选型评估<b>安全特性差异</b>（支持 WPA2/802.1X、固件升级、入侵告警能力），不同场景用不同等级设备</td></tr>
+  </table></div>
+  <div class="note">🔑 背诵口诀（按组记，避免漏条）：<b>"放设备、专人建；MAC 拦、ID 辨；WEP 要重也要疑，VPN 隧道来兜底；RADIUS 强认证，无线有线一体化；设备不同要选型。"</b> 10 条对应 ①⑩②③④⑤⑥⑦⑧⑨。</div>
+  <div class="note">💡 应用题（"为某单位制定无线安全方案"）的<b>四段式答题骨架</b>：<b>①风险识别</b>（引用本章五类隐患）→ <b>②技术措施</b>（加密升级 WPA2、802.1X/RADIUS、VPN、MAC/SSID、交换机隔离、隐藏与放置）→ <b>③管理措施</b>（专业建设与验收、设备台账与 rogue 巡检、口令与证书策略、日志审计与应急响应）→ <b>④验证与持续改进</b>（定期无线扫描与渗透测试、固件更新、培训与制度复查）。这样答能同时覆盖"简单应用"和"综合应用"的给分点。</div>
+  <div class="note">ℹ️ 关于"✂️ 7.3、7.4 不考"：考纲页首按<b>教材节号</b>标注跳过内容，但考纲的<b>课程内容（7.1 无线网络｜7.2 短程无线通信｜7.3 无线网络的安全性）与考核知识点（一）～（三）全部要求掌握</b>——节号与"不考清单"对不上时，<b>以"考核知识点与考核要求"清单为准</b>。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>无线网络六类</b>：无线广域网、无线城域网、<b>WLAN</b>、<b>WPAN</b>、<b>LR-WPAN</b>、无线 LAN-to-LAN 网桥。</li>
+    <li><b>短程四种</b>：<b>蓝牙</b>（约 6 m、小型经济）、<b>ZigBee</b>（IEEE 802.15.4，低功耗低成本低速率近距离短时延，智能家居）、<b>RFID</b>（免接触识别与读写，标签／电子条码）、<b>Wi-Fi</b>（速率高覆盖广兼容强功耗低，但风险多）。</li>
+    <li><b>五类安全隐患</b>：Wi-Fi 钓鱼陷阱、接入点被偷梁换柱、黑客主动攻击、攻击家用路由器、劫持风险。</li>
+    <li><b>六种加密／防护技术</b>：WEP、WPA、WPA2、VPN、硬件安全交换机、ESSID（强度 WEP＜WPA＜WPA2）。</li>
+    <li><b>七种入侵方法</b>：开放网络利用、无线伪装、加密破解、无线 DoS、WEP 注入、WEP ARP 注入、WEP 高级攻击。</li>
+    <li><b>十条防范策略</b>：物理放置 → 专人建设 → MAC 拦截 → ID 关联 → 重 WEP 而不信 WEP → VPN → RADIUS → 无线有线一体化 → 设备选型 →（管理集成与验收）。</li>
+  </ol>
+  <div class="note">🎯 抢分顺序：①默写<b>四种短程技术＋八字关键词</b>（简答／名词解释）；②背<b>十条策略</b>并能归到五组（应用题主体）；③记住<b>五个隐患</b>与<b>七个入侵方法</b>的名称（多选）；④最后确认<b>缩写对应</b>（WLAN/WPAN/LR-WPAN/WEP/WPA/SSID/RADIUS/VLAN/802.1X/802.15.4）。</div>
+  <div class="gotos">
+    <a href="../安全协议/IPSec与SSL-TLS.html">← 第 6 章 网络安全协议</a>
+    <a href="../访问控制/访问控制与防火墙.html">→ 第 8 章 访问控制与防火墙技术</a>
+    <a href="../index.html">📚 回到知识点导航</a>
+  </div>
+</div>
+
+<footer class="footer">
+  信息与网络安全管理（03344）知识点速记卡 · 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）· 指定教材《网络空间信息安全》苏永红、蒋天发 主编，电子工业出版社 2022 年第 2 版<br>
+  <a href="../../../index.html">🏠 返回首页</a> · <a href="../../考纲.html">📋 本课程考纲</a>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部">↑</a>
+</body>
+</html>

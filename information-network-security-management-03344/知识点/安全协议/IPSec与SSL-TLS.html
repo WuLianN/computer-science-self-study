@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 6 章 网络安全协议｜IPSec 四组成 · SSL/TLS 三种服务 · SSH/S-MIME/SET</title>
+<meta name="description" content="信息与网络安全管理 03344 第 6 章速记卡：网络安全协议的概念、保密性完整性认证性三种特点与按功能分的五类协议；TCP/IP 协议的不安全因素；各层经典安全协议对照（网络层 IPSec、传输层 SSL/TLS、应用层 SET/S-HTTP/PGP/S/MIME/PEM/SSH/Kerberos）；IPSec 四个组成部分（ESP、AH、SA、IKE）与功能原理、AH 与 ESP 的差别、SA 的概念与传输模式和隧道模式；SSL/TLS 三种基本安全功能服务、SSL 握手协议两阶段、SSL 记录协议与记录格式、TLS 的五项改进优点、如何用 SSL/TLS 保证数据传输安全；SSH 的三部分组成与三种启动方法；S/MIME 数字签名与邮件加密在邮件系统中的工作流程；SET 协议应用系统框架六方（持卡客户、网上商家、支付网关、收单银行、发卡银行、验证中心）与支付流程及 SET 与 SSL 的区别。建议 8 学时，课程重点章，对应教材第 6 章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤝</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#4f46e5)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .flow span{background:#eef2ff;border:1.5px solid #6366f1;border-radius:9px;padding:6px 11px;font-size:13.5px;white-space:nowrap}
+  .flow i{font-style:normal;color:#94a3b8;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 6 章 · 网络安全协议</h1>
+  <p>考纲明列的<b>课程重点章</b>（8 学时）：先记住"<b>哪一层用哪个协议</b>"这张分层图，再深挖 <b>IPSec 四组成 + SA 两模式</b>与 <b>SSL/TLS 三种服务 + 握手两阶段</b>，最后把 <b>SET 六方框架</b>与 <b>SET vs SSL 区别</b>练成案例分析模板。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">对应教材第 6 章</span><span class="pill">⭐ 课程重点章</span><span class="pill">重点：各层协议原理与应用场景</span><span class="pill">难点：具体实现与解决安全问题</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../数字签名/数字签名与PKI验证.html">← 第 5 章</a>
+    <a href="../无线网络/无线网络安全机制.html">→ 第 7 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、概述：概念·特点·功能分类（识记）⭐</a>
+  <a href="#s2">二、TCP/IP 的不安全因素（领会）</a>
+  <a href="#s3">三、各层经典安全协议一览（识记）⭐⭐分层图</a>
+  <a href="#s4">四、网络层 IPSec：组成·功能·SA（识记/领会）⭐⭐</a>
+  <a href="#s5">五、传输层 SSL/TLS：三种服务·握手·记录（⭐⭐综合应用）</a>
+  <a href="#s6">六、应用层协议：SSH 与 S/MIME（领会/简单应用）⭐</a>
+  <a href="#s7">七、SET 协议框架与支付流程（综合应用）⭐⭐案例分析</a>
+  <a href="#s8">八、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、网络安全协议：概念、特点与功能分类 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 网络安全协议的<b>概念、特点和基于功能的分类</b>。</div>
+  <b>概念：</b>网络安全协议就是<b>在协议中采用了若干密码算法</b>——运用<b>加密技术、认证技术</b>，以保证<b>信息安全交换</b>的网络协议。（名词解释按此写：协议 + 密码算法 + 安全交换。）
+  <div class="th"><b>安全协议具有以下三种特点：</b><b>保密性、完整性、认证性</b>。</div>
+  <div class="th"><b>按照其完成的功能分类（五类，必背）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>类别</th><th>要解决的问题</th><th>典型代表</th></tr>
+    <tr><td>1</td><td class="nm"><b>密钥建立协议</b></td><td>在不安全信道上<b>安全地协商出会话密钥</b></td><td>Diffie-Hellman 密钥交换</td></tr>
+    <tr><td>2</td><td class="nm"><b>认证协议</b></td><td>确认<b>对方身份</b>是否合法（实体认证、消息认证）</td><td>Kerberos、挑战—应答</td></tr>
+    <tr><td>3</td><td class="nm"><b>认证和密钥交换协议</b></td><td><b>既认证身份又交换密钥</b>（实际系统最常用）</td><td>IKE、SSL/TLS 握手</td></tr>
+    <tr><td>4</td><td class="nm"><b>电子商务协议</b></td><td>面向<b>交易</b>：公平性、不可抵赖、支付信息保护</td><td><b>SET</b></td></tr>
+    <tr><td>5</td><td class="nm"><b>安全通信协议</b></td><td>保护<b>通信过程</b>中数据的机密与完整</td><td>IPSec、SSL/TLS、SSH、S/MIME</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆主线：功能分类是从"<b>先建密钥 → 再认证 → 二者合一 → 保护通信 → 保护交易</b>"逐层升级的，层次越靠后涉及的安全目标越多（交易类还要加<b>不可否认与公平性</b>）。</div>
+</div>
+
+<h2 class="section" id="s2">二、TCP/IP 协议的不安全因素（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> TCP/IP 协议的不安全因素。</div>
+  <ol class="steps">
+    <li>利用<b>系统漏洞</b>与其他个体通信，<b>窃取信息</b>；</li>
+    <li><b>窃取网络上的通信内容</b>，对他人的<b>隐私</b>构成威胁；</li>
+    <li>某一<b>资源被他人非法使用</b>；</li>
+    <li>对<b>正在传输的数据进行恶意修改</b>，造成接收者的误解；</li>
+    <li>为了获得<b>非法的特权</b>，攻击者会<b>发掘系统漏洞并侵入系统内部</b>。</li>
+  </ol>
+  <div class="note">🔑 根源在于 TCP/IP <b>设计之初以互通与效率为目标、缺乏内置的安全机制</b>：地址可伪造、多数协议明文传输、无强制认证。正因如此，安全只能<b>"分层外挂"</b>——于是有了 IPSec（网络层）、SSL/TLS（传输层）、SSH/SET/S-MIME（应用层），这就是下一节的线索。</div>
+</div>
+
+<h2 class="section" id="s3">三、各网络层下的经典安全协议 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 各个网络层下的<b>经典安全协议</b>（考试常给协议名让你归层，或给层次让你列协议）。</div>
+  <div class="fig">
+    <svg viewBox="0 0 780 250" role="img" aria-label="安全协议在 TCP/IP 各层的分布：应用层 SET、S-HTTP、PGP、S/MIME、PEM、SSH、Kerberos；传输层 SSL/TLS；网络层 IPSec">
+      <rect x="20" y="26" width="360" height="46" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="40" y="54" font-size="13" font-weight="700" fill="#4338ca">应用层</text>
+      <text x="120" y="54" font-size="12.5" fill="#1f2430">SET · S-HTTP · PGP · S/MIME · PEM · SSH · Kerberos</text>
+      <rect x="20" y="90" width="360" height="46" rx="8" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="40" y="118" font-size="13" font-weight="700" fill="#166534">传输层</text>
+      <text x="120" y="118" font-size="12.5" fill="#1f2430">SSL / TLS</text>
+      <rect x="20" y="154" width="360" height="46" rx="8" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="40" y="182" font-size="13" font-weight="700" fill="#7c2d12">网络层</text>
+      <text x="120" y="182" font-size="12.5" fill="#1f2430">IPSec（ESP · AH · SA · IKE）</text>
+      <rect x="20" y="218" width="360" height="26" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.6"/>
+      <text x="200" y="236" text-anchor="middle" font-size="12" fill="#6b7280">网络接口层（物理／链路安全另用链路加密）</text>
+      <g font-size="12" fill="#6b7280">
+        <text x="410" y="45">保护单个应用／邮件／远程登录，粒度最细</text>
+        <text x="410" y="109">为上层应用提供通用安全通道（浏览器／服务器）</text>
+        <text x="410" y="173">保护所有 IP 流量，透明、端到端，适合 VPN</text>
+      </g>
+      <g stroke="#9ca3af" stroke-width="1.4" stroke-dasharray="4 4">
+        <line x1="380" y1="49" x2="404" y2="49"/><line x1="380" y1="113" x2="404" y2="113"/><line x1="380" y1="177" x2="404" y2="177"/>
+      </g>
+    </svg>
+    <div class="cap">越往下越<b>通用、透明</b>（一次部署保护所有上层应用）；越往上越<b>贴近业务</b>（能做交易级安全如不可否认、支付信息隔离）</div>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>层次</th><th>协议</th><th>括号内是它的定位（考试按此归层）</th></tr>
+    <tr><td class="nm">网络层</td><td><b>IPSec</b></td><td>网络层安全协议，保护 IP 包，VPN 的核心</td></tr>
+    <tr><td class="nm">传输层</td><td><b>SSL / TLS</b></td><td>传输层安全协议，为应用提供加密通道</td></tr>
+    <tr><td class="nm" rowspan="7">应用层</td><td><b>SET</b></td><td><b>信用卡支付安全协议</b>（电子交易，多方认证 + 双重签名）</td></tr>
+    <tr><td><b>S-HTTP</b></td><td><b>Web 安全协议</b>（保护单条 HTTP 请求／响应报文）</td></tr>
+    <tr><td><b>PGP</b></td><td><b>电子邮件安全协议</b>（"pretty good privacy"，混合加密 + 信任网）</td></tr>
+    <tr><td><b>S/MIME</b></td><td><b>电子邮件安全协议</b>（MIME 报文的安全扩展，数字签名与邮件加密）</td></tr>
+    <tr><td><b>PEM</b></td><td><b>电子邮件安全协议</b>（隐私增强邮件，Internet 标准一类的邮件加密方案）</td></tr>
+    <tr><td><b>SSH</b></td><td><b>远程登录安全协议</b>（安全外壳，替代 telnet／rlogin／ftp）</td></tr>
+    <tr><td><b>Kerberos</b></td><td><b>网络验证协议</b>（基于可信第三方与票据的认证系统）</td></tr>
+  </table></div>
+  <div class="note">🔑 口诀"<b>网 IPSec、传 SSL、应用一堆（SET·S-HTTP·PGP·S/MIME·PEM·SSH·Kerberos）</b>"。爱考区分：<b>S-HTTP 保护单条 Web 报文，SSL 保护整条通信通道</b>；<b>SET 是交易协议、SSL 是通道协议</b>。</div>
+</div>
+
+<h2 class="section" id="s4">四、网络层安全协议 IPSec ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> IPSec 协议的<b>组成和体系结构</b>；<span class="lvl b">领会</span> IPSec 的<b>功能和工作原理</b>，如何用于<b>加密／认证／数据完整性保护</b>，<b>SA 的概念和两种工作模式</b>。</div>
+  <div class="th"><b>IPSec 协议由 4 个主要部分组成：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>组成</th><th>全称</th><th>职责</th></tr>
+    <tr><td class="nm"><b>ESP</b></td><td><b>封装安全载荷</b>协议（Encapsulating Security Payload）</td><td><b>同时提供数据完整性验证和数据加密传输</b>机制（ confidentiality + 完整性）</td></tr>
+    <tr><td class="nm"><b>AH</b></td><td><b>验证头</b>协议（Authentication Header）</td><td><b>只提供数据完整性验证机制</b>：证明数据源端点、保证完整性、<b>防止数据篡改和重播</b>（<b>不加密</b>载荷）</td></tr>
+    <tr><td class="nm"><b>SA</b></td><td><b>安全关联</b>（Security Association）</td><td>通信双方为本次安全服务<b>协商一致的"合同"</b>（用哪个协议、哪种算法、什么密钥、模式）</td></tr>
+    <tr><td class="nm"><b>IKE</b></td><td><b>互联网密钥交换</b>协议（Internet Key Exchange）</td><td><b>自动协商与管理 SA、协商并分发票据密钥</b>（兼具认证与密钥交换协议特征）</td></tr>
+  </table></div>
+  <div class="th"><b>功能与工作原理（领会）：</b>IPSec 是<b>通过端对端的安全性来提供主动的保护，以防止专用网络与 Internet 的攻击</b>，是<b>安全联网的长期方向</b>。它提供了<b>两种安全协议：验证头 AH 与封装安全有效载荷 ESP</b>，这两种协议<b>以 IP 扩展头的方式被增加到 IP 包中</b>，可以对<b>IP 数据包或上层协议数据包</b>进行安全保护，提高了对 IP 数据项的安全性。</div>
+  <div class="note">🔑 三个安全目标怎么落地（考纲要点）：<b>加密 → ESP</b>；<b>认证（源端点证明）→ AH（或 ESP 的认证）</b>；<b>数据完整性 → AH／ESP 的校验</b>；<b>防重播 → AH 的序号机制</b>；<b>密钥与协商 → IKE／SA</b>。问"如何用 IPSec 进行加密、认证与完整性保护"就按这四句答。</div>
+  <div class="th"><b>SA（安全关联）的概念与两种工作模式：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>项目</th><th>内容</th></tr>
+    <tr><td class="nm"><b>SA 的概念</b></td><td>SA 是<b>发送者与接收者之间的一种单向关系</b>，它<b>为其承载的通信提供安全服务</b>。双向通信需要<b>两个 SA</b>（去程与回程各一）；SA 由 <b>SPI 安全参数索引、协议（AH/ESP）、算法、密钥、模式、生命周期</b>等构成</td></tr>
+    <tr><td class="nm"><b>① 传输模式</b><br>Transport Mode</td><td>只在<b>原 IP 包的数据部分（上层报文）前后</b>插入 AH/ESP，<b>保留原 IP 头</b>——用于<b>主机到主机</b>的端到端保护（两端都是主机时最常用），开销小</td></tr>
+    <tr><td class="nm"><b>② 隧道模式</b><br>Tunnel Mode</td><td>把<b>整个原 IP 包（含 IP 头）作为载荷封装</b>起来，再<b>加上新的 IP 头</b>——用于<b>站点到站点（网关到网关）的 VPN</b>，可隐藏内部网络拓扑</td></tr>
+  </table></div>
+  <div class="note">⚠️ 高频辨析：<b>传输模式保护"数据"、原 IP 头暴露；隧道模式保护"整个包"、外加新 IP 头</b>。看到"用于构建 VPN、隐藏内网"→隧道模式；看到"端到端主机通信、开销小"→传输模式。</div>
+</div>
+
+<h2 class="section" id="s5">五、传输层安全协议 SSL/TLS ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> SSL/TLS 的<b>三种基本安全功能服务</b>；<span class="lvl b">领会</span> <b>SSL 握手协议、SSL 记录协议、TLS 在 SSL 上改进后的优点</b>；<span class="lvl d">综合应用</span> 基于 SSL/TLS 工作原理<b>保证数据传输的安全性</b>。</div>
+  <b>SSL</b>（Secure Sockets Layer，安全套接层）／<b>TLS</b>（Transport Layer Security，传输层安全）：<b>为网络通信提供安全及数据完整性的一种安全协议</b>，TLS 与 SSL <b>在传输层对网络连接进行加密</b>。SSL 协议<b>建立在运输层和应用层之间</b>，是提供<b>客户和服务器双方网络应用安全通信的开放式标准</b>。
+  <div class="th"><b>三种基本的安全功能服务（必背）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>服务</th><th>使用的算法</th><th>作用</th></tr>
+    <tr><td>1</td><td class="nm"><b>信息加密</b></td><td>既有<b>对称加密技术 DES、IDEA</b>，又有<b>非对称加密技术 RSA</b></td><td><b>加密可防止数据中途被窃取</b>（会话密钥用对称、其分发用非对称）</td></tr>
+    <tr><td>2</td><td class="nm"><b>身份验证</b></td><td>验证算法包括 <b>RSA、DSA、ECDSA</b></td><td>确认<b>通信对方（尤其服务器）的身份</b>，防假冒站点</td></tr>
+    <tr><td>3</td><td class="nm"><b>信息完整性校验</b></td><td>报文鉴别码（MAC／散列）</td><td>保证数据<b>未被篡改</b>地到达</td></tr>
+  </table></div>
+  <div class="th"><b>SSL 握手协议（位于 SSL 记录协议之上的主要子协议，两个阶段）：</b></div>
+  <ol class="steps">
+    <li><b>第一阶段——交换密钥等信息</b>：通信双方通过<b>相互发送 Hello 消息进行初始化</b>（协商协议版本、随机数、密码算法套件，并交换／加密<b>会话密钥</b>）；</li>
+    <li><b>第二阶段——用户身份验证</b>：服务器（必要时也包括客户端）出示<b>数字证书</b>，用 <b>RSA／DSA／ECDSA</b> 完成<b>身份验证</b>，双方确认密钥后握手结束。</li>
+  </ol>
+  <div class="th"><b>SSL 记录协议：</b>在 SSL 协议中，<b>所有要传输的数据都被封装在记录中</b>；记录协议<b>规定了数据传输格式</b>，它包括<b>应用程序提供的信息的压缩、数据验证</b>等。<b>SSL 记录格式五字段：信息类型、主要版本、次要版本、压缩长度、数据段。</b></div>
+  <div class="th"><b>TLS 在 SSL 基础上改进后的优点（五条）：</b></div>
+  <ul class="m">
+    <li>对于消息验证<b>使用密钥散列法 HMAC</b>；</li>
+    <li><b>增强的伪随机功能</b>（PRF，密钥扩展更安全）；</li>
+    <li><b>改进的（已完成）Finished 消息验证</b>，即"改进的已完成消息验证"；</li>
+    <li><b>一致的证书处理</b>；</li>
+    <li><b>特定的警报（Alert）消息</b>。</li>
+  </ul>
+  <div class="fig">
+    <svg viewBox="0 0 820 118" role="img" aria-label="SSL/TLS 建立安全通道的过程：Hello 协商、证书认证、会话密钥、加密传输">
+      <g font-size="12" text-anchor="middle">
+        <rect x="10" y="34" width="130" height="46" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+        <text x="75" y="55" font-weight="700" fill="#166534">① Hello 协商</text><text x="75" y="72" fill="#4b5563">版本／算法／随机数</text>
+        <rect x="160" y="34" width="130" height="46" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+        <text x="225" y="55" font-weight="700" fill="#0c4a6e">② 证书认证</text><text x="225" y="72" fill="#4b5563">RSA／DSA／ECDSA</text>
+        <rect x="310" y="34" width="130" height="46" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+        <text x="375" y="55" font-weight="700" fill="#7c2d12">③ 会话密钥</text><text x="375" y="72" fill="#4b5563">用公钥加密分发</text>
+        <rect x="460" y="34" width="150" height="46" rx="9" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+        <text x="535" y="55" font-weight="700" fill="#4338ca">④ 对称加密传输</text><text x="535" y="72" fill="#4b5563">DES／IDEA + 完整性校验</text>
+        <rect x="630" y="34" width="180" height="46" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+        <text x="720" y="55" font-weight="700" fill="#9d174d">⑤ Finished／警报</text><text x="720" y="72" fill="#4b5563">TLS：HMAC 验证、专用 Alert</text>
+      </g>
+      <g stroke="#9ca3af" stroke-width="1.8" marker-end="url(#ar8)">
+        <line x1="140" y1="57" x2="160" y2="57"/><line x1="290" y1="57" x2="310" y2="57"/>
+        <line x1="440" y1="57" x2="460" y2="57"/><line x1="610" y1="57" x2="630" y2="57"/>
+      </g>
+      <text x="410" y="106" text-anchor="middle" font-size="12.5" fill="#6b7280">握手（①②③）解决"认证 + 密钥"，记录协议（④）负责"压缩 + 加密 + 校验 + 分段传输"</text>
+      <defs><marker id="ar8" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker></defs>
+    </svg>
+    <div class="cap">综合应用题的答题骨架：<b>握手两阶段（交换密钥 → 身份验证）＋ 记录协议（压缩、验证、加密封装成记录）</b></div>
+  </div>
+  <div class="note">💡 <b>如何用 SSL/TLS 保证数据传输的安全性（综合应用答题模板）</b>：①<b>先在传输层建立安全连接</b>——握手第一阶段用 Hello 消息协商版本与算法并<b>交换密钥信息</b>；②第二阶段用 <b>RSA/DSA/ECDSA 完成身份验证</b>（校验对方证书），杜绝假冒站点与中间人；③随后所有数据<b>封装在记录中</b>，由记录协议完成<b>压缩、数据验证</b>，用<b>对称算法 DES/IDEA 加密</b>保保密性、用<b>报文鉴别码</b>保完整性；④会话密钥<b>一次性</b>使用，即使长期私钥泄露也难以解出历史报文；⑤出现异常时用<b>警报消息</b>立即断开会话（TLS 的 HMAC 与增强伪随机使消息验证更安全）。一句话收尾：<b>SSL/TLS 用"非对称解决认证与密钥分发、对称解决高速加密、散列解决完整性"的三重组合，在不可信网络上搭出一条端到端的可信通道。</b></div>
+</div>
+
+<h2 class="section" id="s6">六、应用层安全协议：SSH 与 S/MIME ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 安全外壳协议 <b>SSH 的组成和启动方法</b>；<span class="lvl c">简单应用</span> <b>S/MIME 两种安全服务</b>（数字签名、邮件加密）在<b>邮件系统中的工作流程</b>。</div>
+  <div class="th"><b>① SSH（Secure Shell，安全外壳协议）主要由三部分组成：</b><b>传输层协议、用户验证协议、连接协议</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>组成</th><th>职责（理解性补充）</th></tr>
+    <tr><td class="nm"><b>传输层协议</b></td><td>建立安全连接，完成<b>服务器认证、密钥交换、算法协商与完整性保护</b>（运行在 TCP 之上，默认端口 <b>22</b>）</td></tr>
+    <tr><td class="nm"><b>用户验证协议</b></td><td>由服务器<b>验证用户身份</b>（口令、公钥、挑战—应答等）</td></tr>
+    <tr><td class="nm"><b>连接协议</b></td><td>在已认证的加密通道上<b>多路复用</b>各种会话：远程登录 shell、端口转发、<b>SFTP 文件传输</b>等</td></tr>
+  </table></div>
+  <div class="th"><b>SSH 的启动方法（三种，识记名称）：</b>①<b>使用批处理文件</b>；②<b>使用 SSH 服务配置程序</b>；③<b>使用 NET 命令</b>。</div>
+  <div class="note">🔑 联系第 1、3 章：SSH 之所以被推荐，是因为它能<b>替代明文的 Telnet（23）与 FTP</b>——把<b>口令与数据全部加密</b>，这正是"文件传输与远程登录安全"的标准防范措施答案之一。</div>
+  <div class="th"><b>② S/MIME 的两种安全服务与工作流程（简单应用，顺序题常考）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>服务</th><th>发信方向的处理顺序（8 步）</th><th>收信方向的处理顺序（10 步）</th></tr>
+    <tr><td class="nm"><b>数字签名</b><br>（保证来源与完整性、防抵赖）</td><td class="nm" colspan="2">发件人用<b>自己的私钥</b>对邮件摘要签名并附加；收件人（或第三方）用<b>发件人的公钥／证书</b>验证</td></tr>
+    <tr><td class="nm"><b>对电子邮件进行签名和加密</b><br>（发送流程）</td><td colspan="2"><div class="flow"><span>捕获邮件正文</span><i>→</i><span>检索唯一的<b>发件人</b>信息</span><i>→</i><span>检索唯一的<b>收件人</b>信息</span><i>→</i><span>执行<b>签名</b>操作</span><i>→</i><span>附加数字签名</span><i>→</i><span>执行<b>加密</b>操作</span><i>→</i><span>用加密邮件替换原始邮件</span><i>→</i><span>发送邮件</span></div></td></tr>
+    <tr><td class="nm"><b>对数字签名进行解密和验证</b><br>（接收流程）</td><td colspan="2"><div class="flow"><span>接收邮件</span><i>→</i><span>检索加密邮件</span><i>→</i><span>检索唯一的<b>收件人</b>信息</span><i>→</i><span>执行<b>解密</b>操作</span><i>→</i><span>检索解密后的邮件正文</span><i>→</i><span>显示邮件正文</span><i>→</i><span>检索数字签名</span><i>→</i><span>检索唯一的<b>发件人</b>信息</span><i>→</i><span><b>比较</b>数字签名</span><i>→</i><span>验证邮件</span></div></td></tr>
+  </table></div>
+  <div class="note">⚠️ 顺序要点（易错）：<b>发送时"先签名、后加密"；接收时"先解密、后验签"</b>——两个方向的操作次序<b>正好相反</b>，题目常把这两步调换让你纠错。另外记：<b>签名用发件人私钥，加密用收件人（公钥／会话密钥）</b>。</div>
+  <div class="note">🔑 对照记忆：<b>PGP／PEM／S-MIME 三个都是"电子邮件安全协议"</b>，差别在实现路线（S/MIME 依托企业 PKI 与 X.509 证书，PGP 采用"信任网 Web of Trust"）。考纲只要求归类与用途，不必深究差别。</div>
+</div>
+
+<h2 class="section" id="s7">七、SET 协议的应用系统框架与分析 ⭐⭐ 案例分析</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> <b>SET 协议的应用系统框架设计及分析</b>（考纲附录题型举例：给出框架图补全参与方 + 说明支付流程 + 比较 SET 与 SSL）。</div>
+  <b>SET</b>（Secure Electronic Transaction，安全电子交易）是面向<b>信用卡支付</b>的应用层安全协议，其设计目标是：<b>信息保证</b>（数据端到端完整）、<b>报文源真实性</b>（多方认证）、<b>订单信息与个人信息隔离</b>（商家看不到卡号）、<b>协议开放与互操作</b>。
+  <div class="th"><b>SET 应用系统的六个参与方（框架图必背，"补全框架"就是填这 6 个）：</b></div>
+  <div class="fig">
+    <svg viewBox="0 0 840 260" role="img" aria-label="SET 协议应用系统框架：持卡客户、网上商家、支付网关、收单银行、发卡银行、验证中心六方及其关系">
+      <rect x="30" y="30" width="150" height="48" rx="9" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="105" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#4338ca">① 持卡客户</text>
+      <text x="105" y="69" text-anchor="middle" font-size="11.5" fill="#6b7280">持卡人 + 支付证书</text>
+      <rect x="330" y="30" width="150" height="48" rx="9" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="405" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">② 网上商家</text>
+      <text x="405" y="69" text-anchor="middle" font-size="11.5" fill="#6b7280">商家软件与证书</text>
+      <rect x="650" y="30" width="160" height="48" rx="9" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="730" y="52" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">③ 支付网关</text>
+      <text x="730" y="69" text-anchor="middle" font-size="11.5" fill="#6b7280">SET ↔ 银行网转换</text>
+      <rect x="650" y="150" width="160" height="48" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="730" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#0c4a6e">④ 收单银行</text>
+      <text x="730" y="189" text-anchor="middle" font-size="11.5" fill="#6b7280">为商家开户结算</text>
+      <rect x="330" y="150" width="150" height="48" rx="9" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="405" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#0c4a6e">⑤ 发卡银行</text>
+      <text x="405" y="189" text-anchor="middle" font-size="11.5" fill="#6b7280">发卡与授权／支付</text>
+      <rect x="30" y="150" width="150" height="48" rx="9" fill="#fce7f3" stroke="#be185d" stroke-width="2.2"/>
+      <text x="105" y="172" text-anchor="middle" font-size="13" font-weight="700" fill="#9d174d">⑥ 验证中心 CA</text>
+      <text x="105" y="189" text-anchor="middle" font-size="11.5" fill="#6b7280">发放并管理证书</text>
+      <g stroke="#9ca3af" stroke-width="1.8" marker-end="url(#ar9)">
+        <line x1="180" y1="54" x2="330" y2="54"/>
+        <line x1="480" y1="54" x2="650" y2="54"/>
+        <line x1="730" y1="78" x2="730" y2="150"/>
+        <line x1="650" y1="174" x2="480" y2="174"/>
+        <line x1="330" y1="174" x2="180" y2="174"/>
+      </g>
+      <g stroke="#be185d" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#ar9b)">
+        <line x1="105" y1="150" x2="105" y2="78"/>
+        <line x1="150" y1="150" x2="360" y2="80"/>
+        <line x1="150" y1="158" x2="670" y2="150" opacity="0.5"/>
+      </g>
+      <text x="240" y="20" text-anchor="middle" font-size="12" fill="#4b5563">订单 OI + 支付指令（经<tspan font-weight="700">双重签名</tspan>）</text>
+      <text x="565" y="20" text-anchor="middle" font-size="12" fill="#4b5563">支付信息 PI 转发（商家不可读）</text>
+      <text x="60" y="112" font-size="11.5" fill="#be185d">证书</text>
+      <text x="60" y="126" font-size="11.5" fill="#be185d">发放／撤销</text>
+      <text x="250" y="230" font-size="12" fill="#6b7280">CA 为<tspan font-weight="700">持卡人、商家、支付网关</tspan>三方发放证书，是整套信任关系的中枢</text>
+      <defs>
+        <marker id="ar9" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker>
+        <marker id="ar9b" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#be185d"/></marker>
+      </defs>
+    </svg>
+    <div class="cap">实线是<b>资金／报文流</b>，虚线是 CA 的<b>证书信任流</b>——框架题按 6 方补全并画出这两类连线</div>
+  </div>
+  <div class="th"><b>SET 支付流程（一般八步，用于"说明支付过程"）：</b></div>
+  <ol class="steps">
+    <li><b>选购与下单</b>：持卡客户在<b>网上商家</b>浏览选购，商家返回订单信息；</li>
+    <li><b>生成支付指令</b>：客户用<b>电子钱包</b>填卡号等支付信息 PI，与订单信息 OI 一起准备发送；</li>
+    <li><b>双重签名</b>：客户对 <b>H(OI)</b> 与 <b>H(PI)</b> 拼接后做<b>双重签名</b>，使<b>商家只能验证 OI、银行只能验证 PI</b>，两者互不可见；</li>
+    <li><b>发送</b>：把 <b>OI + 经商家公钥加密的部分 + PI（客户用支付网关公钥加密）</b>连同自己的<b>支付证书</b>发给商家；</li>
+    <li><b>商家验证并转发</b>：商家用 CA 证书验证客户签名与订单，<b>原样转发 PI（自己无法解密）</b>给<b>支付网关</b>；</li>
+    <li><b>支付网关转换与授权</b>：支付网关解密 PI、把 SET 报文转换为<b>银行网格式</b>，向<b>收单银行／发卡银行</b>请求<b>授权</b>；</li>
+    <li><b>返回授权与确认</b>：发卡行批准后经网关→商家返回<b>授权响应</b>，商家向客户发<b>订单确认</b>并配货；</li>
+    <li><b>清算与对账</b>：日后<b>收单银行</b>向<b>发卡银行</b>请款、完成<b>资金清算</b>，各方依签名记录<b>不可抵赖</b>地对账。</li>
+  </ol>
+  <div class="note">ℹ️ 上述八步是按 SET 通用机制整理的<b>答题骨架</b>（考纲只给了六方参与者的名单）；<b>各步的确切名称与划分请以教材 6.5 与课件原文为准</b>，作答时先写清"六方"再逐步展开即可得分。</div>
+  <div class="th"><b>SET 与 SSL 的区别（案例分析必答，也是本章最高频的对比题）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>比较项</th><th>SET</th><th>SSL / TLS</th></tr>
+    <tr><td class="nm"><b>所处层次</b></td><td><b>应用层</b>安全协议（专门面向电子交易报文）</td><td><b>传输层</b>安全协议（在运输层与应用层之间）</td></tr>
+    <tr><td class="nm"><b>保护对象</b></td><td>保护<b>交易报文本身</b>，端到端覆盖<b>客户—商家—银行</b>三方</td><td>保护<b>一条通信通道</b>，只对<b>客户—服务器两点</b>之间的链路安全负责</td></tr>
+    <tr><td class="nm"><b>参与方与认证</b></td><td><b>多方认证</b>：持卡人、商家、支付网关都持有证书，<b>三方互验身份</b></td><td>通常<b>只有服务器认证</b>，客户端认证（双向）为可选、部署少</td></tr>
+    <tr><td class="nm"><b>信息隔离</b></td><td>用<b>双重签名</b>实现<b>订单信息与个人信息分离</b>——商家看不到卡号，银行看不到订单明细</td><td><b>无此机制</b>：商家服务器能读到提交的<b>全部明文表单（含卡号）</b></td></tr>
+    <tr><td class="nm"><b>不可否认／仲裁</b></td><td>交易报文带数字签名，<b>可作支付依据与争议仲裁</b></td><td>只保证通道安全，<b>不提供交易级不可抵赖</b></td></tr>
+    <tr><td class="nm"><b>部署成本</b></td><td><b>复杂、昂贵</b>：需电子钱包软件、各方证书与支付网关改造，故<b>未大规模普及</b></td><td><b>简单、通用</b>：浏览器与服务器内置，无需专用客户端 ⇒ 现实中成为主流（HTTPS）</td></tr>
+  </table></div>
+  <div class="note">🔑 一句总结（写在这类题的结尾最出彩）：<b>"SSL 解决的是'管道安不安全'，SET 解决的是'交易可不可信'"</b>——SET 以多方认证与双重签名换来交易级安全与隐私隔离，代价是部署复杂；SSL 以通道加密换取通用与易用，但无法阻止商家留存持卡人的支付信息。</div>
+</div>
+
+<h2 class="section" id="s8">八、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>概念与三特点</b>：采用密码算法保证信息<b>安全交换</b>的协议；<b>保密性、完整性、认证性</b>；按功能分<b>五类</b>（密钥建立／认证／认证与密钥交换／电子商务／安全通信）。</li>
+    <li><b>分层归属</b>：网络层 <b>IPSec</b>；传输层 <b>SSL/TLS</b>；应用层 <b>SET、S-HTTP、PGP、S/MIME、PEM、SSH、Kerberos</b>。</li>
+    <li><b>IPSec 四组成</b>：<b>ESP</b>（加密＋完整性）、<b>AH</b>（只完整性与源认证、防重播）、<b>SA</b>（<b>单向关系</b>，双向要两个）、<b>IKE</b>（协商 SA 与密钥）；<b>两种模式：传输模式（留原 IP 头）／隧道模式（封装整包＋新 IP 头，用于 VPN）</b>。</li>
+    <li><b>SSL/TLS 三种服务</b>：<b>信息加密</b>（DES、IDEA + RSA）、<b>身份验证</b>（RSA、DSA、ECDSA）、<b>完整性校验</b>；<b>握手两阶段</b>（Hello 交换密钥 → 身份验证）、<b>记录协议</b>（压缩、验证；记录格式＝信息类型·主版本·次版本·压缩长度·数据段）；<b>TLS 五改进</b>（HMAC、伪随机、Finished 验证、一致证书处理、特定警报）。</li>
+    <li><b>SSH 三组成</b>（传输层／用户验证／连接协议）＋<b>三种启动方法</b>（批处理文件、SSH 服务配置程序、NET 命令）。</li>
+    <li><b>S/MIME 两服务</b>：<b>先签名后加密</b>发送（8 步）／<b>先解密后验签</b>接收（10 步）。</li>
+    <li><b>SET 六方</b>：持卡客户、网上商家、支付网关、收单银行、发卡银行、验证中心；核心机制<b>双重签名</b>；与 SSL 的本质差别＝<b>通道安全 vs 交易可信</b>。</li>
+  </ol>
+  <div class="note">🎯 复习顺序（8 学时）：①先默写<b>分层图与协议归层表</b>（选择/填空稳定得分）；②攻<b>IPSec</b>与<b>SSL/TLS</b>两节（简答 + 综合应用主力）；③背<b>SSH 三组成、S/MIME 两个顺序</b>；④最后把 <b>SET 六方 + 双重签名 + SET/SSL 对比表</b>练成案例分析模板。⚠️ 教材 6.6（按节号标注的跳过部分）不在考核范围，但本节所列<b>考核知识点（一）～（五）全部要掌握</b>。</div>
+  <div class="gotos">
+    <a href="../数字签名/数字签名与PKI验证.html">← 第 5 章 数字签名与验证技术</a>
+    <a href="../无线网络/无线网络安全机制.html">→ 第 7 章 无线网络安全机制</a>
+    <a href="../index.html">📚 回到知识点导航</a>
+  </div>
+</div>
+
+<footer class="footer">
+  信息与网络安全管理（03344）知识点速记卡 · 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）· 指定教材《网络空间信息安全》苏永红、蒋天发 主编，电子工业出版社 2022 年第 2 版<br>
+  <a href="../../../index.html">🏠 返回首页</a> · <a href="../../考纲.html">📋 本课程考纲</a>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部">↑</a>
+</body>
+</html>

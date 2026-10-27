@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 2 章 病毒防范技术｜病毒特点分类 · 恶意代码五类 · 检测清除与故障判别</title>
+<meta name="description" content="信息与网络安全管理 03344 第 2 章速记卡：计算机病毒的定义、七大特点与多种分类方式；恶意代码的五种常见类型（病毒、蠕虫、木马、后门、逻辑炸弹）及共同特征与各自特点；木马类与蠕虫类病毒的检测方法与防范措施；U 盘病毒与 autorun.inf 分析、手机等移动设备病毒的防范检测清除；杀毒软件工作原理（特征码、行为监测、启发式）；病毒现象与硬件故障、软件故障的判别对照表。建议 6 学时，对应教材第 2 章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦠</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#b45309,#be185d)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.code .cm{color:#94a3b8}
+  pre.code .kw{color:#7dd3fc}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 2 章 · 病毒防范技术</h1>
+  <p>本章<b>清单最多</b>：病毒的特点、病毒的分类、恶意代码五类、检测手段、判别对照——全是"背了就有分"的名词解释、多选和简答。唯一的<span class="lvl d">综合应用</span>是 <b>U 盘／手机病毒防治</b>，唯一的<span class="lvl c">简单应用</span>难点是 <b>是病毒还是故障</b>。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">对应教材第 2 章（整章考）</span><span class="pill">重点：分类·特征·木马与蠕虫防治</span><span class="pill">难点：病毒与故障判别</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../概论/网络空间信息安全概论.html">← 第 1 章</a>
+    <a href="../黑客入侵/远程控制与黑客入侵.html">→ 第 3 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、计算机病毒：定义与特点（识记）⭐名词解释</a>
+  <a href="#s2">二、病毒的分类（识记）⭐多选高发</a>
+  <a href="#s3">三、恶意代码五种类型与对比（识记/领会）⭐⭐</a>
+  <a href="#s4">四、木马类与蠕虫类：检测与防范（简单应用）⭐</a>
+  <a href="#s5">五、典型病毒的检测与清除（综合应用）⭐U 盘 · 手机</a>
+  <a href="#s6">六、病毒现象与软硬件故障的判别（简单应用）⭐难点</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、计算机病毒：定义与特点 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 计算机病毒的特点。</div>
+  <b>计算机病毒定义（法规原文，名词解释按此写）：</b>编制或者在计算机程序中<b>插入</b>的<b>破坏计算机功能或者毁坏数据，影响计算机使用，并能自我复制</b>的一组<b>计算机指令或者程序代码</b>。
+  <div class="th"><b>七大特点（简答必背，答"最基本/最本质"要挑对）：</b>
+    <div class="tscroll"><table class="law">
+      <tr><th>特点</th><th>含义</th><th>备注</th></tr>
+      <tr><td class="nm"><b>传染性</b></td><td>能像生物病毒一样把自身<b>复制</b>传播到其他程序、磁盘或主机</td><td>病毒<b>最基本、最本质</b>的特征，是判断"是不是病毒"的首要依据</td></tr>
+      <tr><td class="nm"><b>非授权性</b></td><td>进入用户计算机<b>不需用户授权</b>，靠<b>寄生</b>在正常程序中非法取得运行控制权（不独立执行，随宿主被调起）</td><td>解释"双击正常文件为什么也中毒"；宏病毒寄生在文档模板的宏里</td></tr>
+      <tr><td class="nm"><b>隐蔽性</b></td><td>附着在正常程序或数据中，不易被发现；有的还伪装成系统文件</td><td>潜伏后常规操作看不出异常</td></tr>
+      <tr><td class="nm"><b>潜伏性</b></td><td>侵入后不一定立刻发作，可长期等待<b>触发条件</b></td><td>触发条件如日期、次数、特定操作</td></tr>
+      <tr><td class="nm"><b>破坏性</b></td><td>占用资源、干扰运行、删改文件、破坏引导区乃至硬件</td><td>危害程度的最终体现</td></tr>
+      <tr><td class="nm"><b>不可预见性</b></td><td>病毒种类繁多、代码风格各异，<b>何时发作、造成什么后果难以预料</b></td><td>所以防范必须<b>主动预防</b>，不能等出了事再处理</td></tr>
+      <tr><td class="nm"><b>可触发性</b></td><td>长期潜伏，<b>满足预设条件才激活</b>：日期时间（如"黑色星期五"）、运行次数、特定操作、字符计数</td><td>触发条件就是"发作开关"；另有教材补充<b>针对性／衍生性</b>（可变异生变种，故特征码法会漏检）</td></tr>
+    </table></div>
+  </div>
+  <div class="note">📖 <b>教材原列·七大特征（按此顺序背，"传非隐潜破预触"）：</b>①<b>传染性</b>；②<b>非授权性</b>；③<b>隐蔽性</b>；④<b>潜伏性</b>；⑤<b>破坏性</b>；⑥<b>不可预见性</b>；⑦<b>可触发性</b>。上表即按这七项排列。<br>
+  🔑 选择题常挖的坑：传染性≠破坏性——<b>传染性是病毒的最基本特征</b>；"能自我复制"是定义里的关键词，看到"仅破坏但不复制"（如逻辑炸弹）要能分辨它属于恶意代码而<b>不是严格意义的病毒</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、病毒的分类（识记）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 计算机病毒的分类。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>分类依据</th><th>类别</th><th>要点与典型</th></tr>
+    <tr><td class="nm">按<b>存在的部位</b>（寄生方式）</td><td><b>引导型</b>、<b>文件型</b>、<b>混合型</b>、<b>宏病毒</b></td><td>引导型感染<b>引导扇区/主引导记录 MBR</b>（如米开朗基罗）；文件型感染<b>可执行文件</b>（.exe/.com）；混合型两者都染；宏病毒寄生在<b>文档/模板的宏</b>中（Word/Excel 宏病毒，跨平台）</td></tr>
+    <tr><td class="nm">按<b>连接（感染）方式</b></td><td>覆盖型、前附型、后附型、起源型（主病毒）、<b>嵌入式</b></td><td>覆盖型破坏原程序（不可恢复）；前/后附型把病毒码接在程序头尾，原程序仍可运行故更隐蔽</td></tr>
+    <tr><td class="nm">按<b>破坏程度</b></td><td><b>良性（无害型）</b>、<b>恶性（危险型）</b></td><td>良性主要消耗资源、显示奇怪信息；恶性删改文件、破坏分区表甚至 BIOS</td></tr>
+    <tr><td class="nm">按<b>是否变形</b></td><td><b>静态型</b>、<b>多态型</b>、<b>变形（metamorphic）型</b>、加密型</td><td>多态/变形病毒每次感染<b>改变自身代码特征</b>，专门规避特征码扫描 ⇒ 需要行为监测与启发式</td></tr>
+    <tr><td class="nm">按<b>传播媒介</b></td><td>单机（磁盘/U 盘）病毒、<b>网络病毒（蠕虫）</b>、移动设备病毒</td><td>网络型不需用户操作即可自动扫描传播，扩散速度最快</td></tr>
+    <tr><td class="nm">按<b>操作系统/平台</b></td><td>DOS 病毒、Windows 病毒、Linux/Unix 病毒、手机与智能终端病毒</td><td>了解，用于答"针对特定平台"</td></tr>
+  </table></div>
+  <div class="note">📖 <b>教材原列·五种分类依据（简答/多选按这五条写）：</b>①<b>依据病毒寄生的媒介</b>——<b>网络病毒、文件病毒、引导型病毒</b>；②<b>依据其破坏性</b>——<b>良性病毒、恶性病毒</b>；③<b>按其传染途径</b>——<b>驻留内存型病毒、非驻留内存型病毒</b>；④<b>按其不同算法</b>——<b>伴随型病毒、"蠕虫"型病毒、寄生型病毒</b>；⑤<b>按传染对象不同</b>——<b>引导区型病毒、文件型病毒、混合型病毒、宏病毒</b>。<br>
+  ⚠️ 第①条与第⑤条别混：教材把"网络"归入<b>寄生媒介</b>，把"引导区型／文件型／混合型／宏病毒"归入<b>传染对象</b>；下面这张六角度表是便于理解的展开版，<b>答题以上面五条依据为准</b>。</div>
+  <div class="note">🔑 记忆主线：<b>"部位—连接—破坏—变形—媒介—平台"</b>六个角度。考试问"按存在部位分"就答引导型/文件型/混合型/宏病毒四类，别把"网络病毒"混进去（那是按媒介分的）。</div>
+</div>
+
+<h2 class="section" id="s3">三、恶意代码五种类型与对比 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 常见恶意代码的类型；<span class="lvl b">领会</span> 不同类型恶意代码的共同特征和各自特点。</div>
+  <b>恶意代码（Malicious Code）</b>：无须利用系统弱点、以<b>破坏系统或数据</b>为目的而编写的、<b>不期望使用</b>的程序或代码的总称。常见五类：<b>病毒、蠕虫、木马、后门、逻辑炸弹</b>（有的教材另列间谍软件、广告软件、键盘记录器等）。
+  <div class="th"><b>共同特征（领会，简答要点）：</b>①都是<b>人为编制的程序或代码片段</b>；②都具有<b>非授权执行/隐蔽潜伏</b>的特点——在用户不知情时运行；③都以<b>干扰、破坏、窃取或控制</b>为后果；④都能借助系统漏洞、合法程序或社会工程学<b>进入并驻留</b>；⑤具有<b>可触发性</b>与一定<b>传染性或传播能力</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>核心特点</th><th>是否需宿主 / 是否自我复制</th><th>典型危害</th></tr>
+    <tr><td class="nm"><b>病毒</b> Virus</td><td><b>传染性</b>；必须<b>寄生</b>在宿主程序或引导区，随宿主被执行而激活</td><td>需宿主 ／ 复制自身到宿主</td><td>破坏文件与引导区、占用资源</td></tr>
+    <tr><td class="nm"><b>蠕虫</b> Worm</td><td><b>独立程序</b>，靠<b>扫描漏洞＋自动传播</b>，通过网络指数级扩散；关键字"<b>扫描、攻击、传播</b>"</td><td>不需宿主 ／ 复制自身为独立进程</td><td><b>耗尽带宽与系统资源</b>导致瘫痪（如冲击波、震荡波、 Morris 蠕虫）</td></tr>
+    <tr><td class="nm"><b>木马</b> Trojan</td><td><b>伪装成有用程序诱骗用户运行</b>；关键字"<b>欺骗、隐藏、窃取信息</b>"；<b>不自我复制</b></td><td>不需宿主 ／ 一般不复制</td><td>开后门、<b>远程控制</b>屏幕与文件、偷口令与键盘记录</td></tr>
+    <tr><td class="nm"><b>后门</b> Backdoor</td><td><b>绕过安全控制</b>让远程方再次进入系统的通道；关键字"潜伏"；常由木马或攻击者植入</td><td>不需宿主 ／ 不复制</td><td>长期潜伏、随时可被再次控制；<b>替换系统服务程序</b>是经典手法</td></tr>
+    <tr><td class="nm"><b>逻辑炸弹</b></td><td>植入正常程序中，<b>满足特定条件（时间、离职、计数）才发作</b>；不传染</td><td>依附程序 ／ 不复制</td><td>定时删库、毁数据，多与内部人员报复相关</td></tr>
+    <tr><td class="nm">（补充）间谍软件 / 键录 / 广告软件</td><td>秘密<b>收集与回传</b>用户行为、口令</td><td>—</td><td>隐私与账号泄露</td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 720 150" role="img" aria-label="病毒、蠕虫、木马三种恶意代码的传播方式对比">
+      <text x="95" y="20" text-anchor="middle" font-size="13.5" fill="#b45309" font-weight="700">病毒：挂宿主</text>
+      <rect x="30" y="32" width="70" height="34" rx="6" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="65" y="54" text-anchor="middle" font-size="12" fill="#1f2430">宿主程序</text>
+      <rect x="30" y="92" width="70" height="30" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 3"/>
+      <text x="65" y="112" text-anchor="middle" font-size="12" fill="#1f2430">病毒体</text>
+      <line x1="100" y1="49" x2="135" y2="49" stroke="#9ca3af" stroke-width="1.8"/>
+      <text x="118" y="106" text-anchor="middle" font-size="11.5" fill="#6b7280">需人执行</text>
+      <text x="360" y="20" text-anchor="middle" font-size="13.5" fill="#be185d" font-weight="700">蠕虫：自己跑、自己传</text>
+      <rect x="290" y="46" width="70" height="34" rx="6" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="325" y="68" text-anchor="middle" font-size="12" fill="#1f2430">主机 A</text>
+      <rect x="460" y="46" width="70" height="34" rx="6" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="495" y="68" text-anchor="middle" font-size="12" fill="#1f2430">主机 B</text>
+      <path d="M360 63 L460 63" stroke="#be185d" stroke-width="2" marker-end="url(#a2)"/>
+      <text x="410" y="54" text-anchor="middle" font-size="11.5" fill="#be185d">扫漏洞自动复制</text>
+      <text x="360" y="112" text-anchor="middle" font-size="11.5" fill="#6b7280">不需宿主 · 不需用户操作 · 传播最快</text>
+      <text x="620" y="20" text-anchor="middle" font-size="13.5" fill="#4f46e5" font-weight="700">木马：骗你点开</text>
+      <rect x="570" y="46" width="100" height="34" rx="6" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="620" y="68" text-anchor="middle" font-size="12" fill="#1f2430">"免费工具.exe"</text>
+      <path d="M620 80 L620 100" stroke="#4f46e5" stroke-width="2" marker-end="url(#a3)"/>
+      <text x="620" y="116" text-anchor="middle" font-size="11.5" fill="#4f46e5">运行后 → 远控 + 后门</text>
+      <defs>
+        <marker id="a2" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#be185d"/></marker>
+        <marker id="a3" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#4f46e5"/></marker>
+      </defs>
+    </svg>
+    <div class="cap">三者最直观的区别：<b>病毒靠宿主＋人执行、蠕虫自己扫自己传、木马靠欺骗且不开新副本</b></div>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、木马类与蠕虫类的检测与防范（简单应用）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 木马类和蠕虫类病毒的检测方法，制定防范方法和措施。</div>
+  <b>（一）木马的检测方法（五个抓手）</b>
+  <ol class="steps">
+    <li><b>看进程与任务</b>：任务管理器/进程列表中找<b>陌生、伪装名（如 svch0st.exe）、CPU 或网络占用异常</b>的进程。</li>
+    <li><b>查端口与连接</b>：<code>netstat -ano</code>（Windows）/ <code>ss -tnp</code>（Linux）看<b>异常监听端口与外连地址</b>，用 <code>tasklist /svc</code> 反查 PID 对应程序——木马必开一个"后门端口"。</li>
+    <li><b>查自启动项与注册表</b>：<code>msconfig</code>／任务计划／启动文件夹；注册表 Run 键、<b>AppInit_DLLs</b>、服务列表中被新增的陌生服务。</li>
+    <li><b>文件与系统完整性检查</b>：比对系统文件数字签名与大小、检查 <b>hosts、LSP、驱动、DLL 注入</b>；用反恶意软件工具做<b>全盘特征码＋行为扫描</b>。</li>
+    <li><b>专用工具</b>：木马专杀工具、进程资源管理器（Process Explorer）、端口查看工具、日志与流量分析（发现周期性回连 C&amp;C 服务器）。</li>
+  </ol>
+  <div class="note">📖 <b>教材原列·木马类程序的检测与清除（六项，按编号答）：</b>①<b>查看开放端口</b>；②<b>查看和恢复 win.ini 和 System.ini 系统配置文件</b>；③<b>查看启动程序并删除可疑的启动程序</b>；④<b>查看系统进程并停止可疑的系统进程</b>；⑤<b>查看和还原注册表</b>；⑥<b>使用杀毒软件和木马查杀工具检测和清除木马</b>。<br>
+  <b>教材原列·木马预防方法和措施（七条）：</b>①<b>不随意打开来历不明的电子邮件，阻塞可疑邮件</b>；②<b>不随意下载来历不明的软件</b>；③<b>及时修补漏洞和关闭可疑的端口</b>；④<b>尽量少用共享文件夹</b>；⑤<b>运行实时监控程序</b>；⑥<b>经常升级系统和更新病毒库</b>；⑦<b>限制使用不必要的具有传输能力的文件</b>。<br>
+  ⚠️ 上面"五个抓手"与 <code>netstat -ano</code>／<code>msconfig</code> 是现代实操版，可作为⑥的<b>举例补充</b>；<b>简答优先写教材六项／七条的编号条目</b>。</div>
+  <div class="fix"><b>木马的防范措施：</b>不从不可信来源下载并运行程序、警惕"双击即运行"的附件；<b>先断网再查杀</b>以免继续外传信息；关闭不必要的共享与远程服务、把<b>默认远程端口改掉</b>；开启防火墙<b>禁止陌生程序对外连接</b>；及时打系统与浏览器补丁；口令强策略并定期更换；使用最小权限账号办公，不用管理员账号上网。</div>
+  <b>（二）蠕虫的检测方法</b>
+  <ol class="steps">
+    <li><b>网络流量异常</b>：出口带宽被占满、出现<b>大量对同一端口的扫描连接</b>（如 135/139/445/1433/3389）、内网主机间 ARP/连接风暴。</li>
+    <li><b>主机资源异常</b>：CPU/内存长期高占用、生成大量随机命名文件、<b>不断自我复制</b>使文件数激增、系统变慢或反复重启。</li>
+    <li><b>日志与告警</b>：防火墙/IDS 的扫描与溢出告警、服务器安全日志中的异常登录与漏洞利用记录。</li>
+    <li><b>补丁与漏洞核查</b>：对照已知蠕虫利用的漏洞（如 MS08-067、"永恒之蓝"MS17-010）扫描本机是否未打补丁——未打补丁＋异常外联基本可判定。</li>
+    <li><b>样本确认</b>：在<b>隔离环境/沙箱</b>中运行可疑程序观察其复制与外连行为，比对病毒库特征码。</li>
+  </ol>
+  <div class="fix"><b>蠕虫的防范措施（"堵传播路径"是关键）：</b>①<b>及时更新补丁</b>并开启自动更新，先补高危漏洞；②<b>关闭不必要服务与端口</b>、禁用未用的网络共享，边界防火墙<b>阻断异常扫描流量</b>；③部署<b>网络层 IDS/IPS ＋ 全网防病毒（联动）</b>，及时升级病毒库；④<b>网络分段与 VLAN 隔离</b>、限制广播域，防止一台染毒全网扩散；⑤<b>关闭自动运行、限制脚本执行</b>（禁用不必要的 ActiveX/宏）、口令策略防弱口令爆破；⑥制定<b>应急预案</b>：断网隔离 → 清杀 → 重装/恢复 → 全网排查 → 通报。</div>
+</div>
+
+<h2 class="section" id="s5">五、典型病毒的检测与清除（综合应用）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> U 盘、手机等移动设备的病毒防范、检测和清除方法。</div>
+  <b>（一）常见系统自检方法（识记/领会，检测手段清单）：</b>在<b>干净系统（无病毒环境）</b>下记录基准数据，再与可疑状态比对——
+  ①<b>中断向量检查</b>（病毒常改写 INT 向量）；②<b>比较检验法</b>（与备份的正常程序逐字节比较）；③<b>CRC 校验／数字签名校验</b>（校验码变化说明被改动）；④<b>特征码（特征字）检查</b>；⑤<b>内存比较</b>与常驻内存检查；⑥<b>引导区比较</b>；⑦日期、长度、簇变化观察（文件莫名变长、修改日期改变）。
+  <div class="th"><b>杀毒软件工作原理（简答）：</b><b>特征码扫描法</b>（病毒库比对，最快最常用，但对新病毒与多态病毒失效）→ <b>行为监测法</b>（监控改写引导区、驻留内存、注入进程、修改共享文件等可疑动作，可发现未知病毒）→ <b>启发式／代码模拟执行（虚拟机）</b>（静态分析代码结构、在沙箱中模拟运行判断）→ <b>完整性检查（校验和）</b>与<b>云查杀／信誉库</b>。安装后应<b>常驻内存实时监控、定期全盘扫描、开机自动升级病毒库</b>。</div>
+  <b>（二）U 盘病毒（Autorun 类）的检测与清除</b>
+  <div class="risk"><b>典型手法：</b>在可移动盘根目录写入<b>隐藏的 <code>autorun.inf</code></b> ＋ 病毒正文（常伪装成 <code>RECYCLER</code>、<code>svchost.exe</code> 等），利用系统<b>自动播放</b>机制在插入时运行，并把病毒复制到本机、再感染其他盘、修改注册表自启动。</div>
+  <pre class="code"><span class="cm">; 可疑的 autorun.inf —— 见到 open/shell 指向可疑 exe 就要处理</span>
+<span class="kw">[autorun]</span>
+open=<span class="kw">RECYCLER\svchost.exe</span>      <span class="cm">; 自动运行的程序（病毒本体）</span>
+shell=auto          action=打开(&amp;O)
+hidefoldericon      <span class="cm">; 隐藏真实文件图标，诱导双击病毒文件</span></pre>
+  <ol class="steps">
+    <li><b>先关闭自动播放</b>（组策略"关闭自动播放"，或插入时按住 Shift；Windows 10/11 用"一次性自动播放"设置），避免插入即中毒。</li>
+    <li><b>以地址栏/资源管理器方式打开盘符</b>，勾选"显示隐藏文件和文件夹"、取消"隐藏受保护的操作系统文件"，露出 <code>autorun.inf</code> 与伪装文件。</li>
+    <li><b>结束病毒进程并删自启动项</b>：任务管理器结束可疑进程，清理注册表 Run 键与相关服务，删除 <code>%windir%</code> 下复制体。</li>
+    <li><b>删除病毒文件与 autorun.inf</b>（先去掉只读/隐藏属性：<code>attrib -r -h -s /s /d</code>），清空回收站与临时目录。</li>
+    <li><b>用最新病毒库全盘查杀</b>＋扫描其他已插入过的电脑；对重要 U 盘<b>建立写保护或用专用工具免疫</b>（把 autorun.inf 做成只读目录）。</li>
+    <li><b>无法清除时格式化</b>：先备份数据（备份前查毒、不备份可执行文件），再格式化重建。</li>
+  </ol>
+  <div class="note">📖 <b>教材原列·U 盘（移动存储设备）病毒的清除（原文口径，照此写最稳）：</b>打开<b>文件夹选项</b>→在"查看"中<b>取消勾选"隐藏受保护的操作系统文件"</b>、<b>勾选"显示所有文件和文件夹"</b>→单击"确定"→此时在移动存储设备中会看到 <b><code>autorun.inf</code>、<code>msvcr71.dll</code>、<code>RavMonE.exe</code></b> 三个文件，<b>全部删除</b>即可；还有一个<b>扩展名为 <code>.tmp</code> 的文件</b>，也可以删除，完成后病毒就清除了。<br>
+  ⚠️ <code>msvcr71.dll</code>、<code>RavMonE.exe</code>（仿冒杀毒软件进程）与 <code>.tmp</code> 是<b>教材点名的具体文件名</b>，答题写出这几个名字最容易拿分；上面六步流程是同一操作的展开版。</div>
+  <div class="th"><b>（三）手机等移动设备病毒（综合应用答题模板）：</b>
+    <b>防范</b>——只从<b>官方应用商店</b>下载、拒绝来历不明的 APK/越狱Root、关闭"允许安装未知来源应用"、不点短信/二维码链接、开启<b>锁屏密码与指纹/人脸</b>、关闭不用时的蓝牙/Wi‑Fi/USB 调试、设<b>应用权限最小化</b>、装正规移动安全软件并及时更新系统补丁、重要数据<b>定期备份</b>到可信位置。
+    <b>检测</b>——看异常现象（<b>话费/流量异常飙升</b>、频繁自动发短信、电量与发热异常、通讯录与短信被改写、弹出广告、应用自行安装）、检查已安装应用列表中的<b>陌生/图标空白/同名伪装</b>应用、检查设备管理器中的陌生蓝牙配对与可疑配置文件（描述文件）、用安全软件做全盘扫描、核对扣费短信与权限访问记录。
+    <b>清除</b>——<b>教材三步：</b>①<b>安装一款安全软件（如手机管家等）</b>；②打开主界面上的<b>"一键体检"</b>按钮自动检测问题并给出处理建议，再单击<b>"一键清除"</b>删除病毒程序；③若重启后病毒依然存在或提示无法删除，则<b>先获取 ROOT 权限（可用 PC 端一键 ROOT 工具）再进行深度查杀</b>，或改用<b>专门的病毒专杀工具</b>一键查杀。通用处置：<b>断网（飞行模式）＋关机重启进入安全模式</b>，卸载可疑应用与其残留数据，清除可疑设备管理器/管理员权限与描述文件，修改所有重要账号口令（因为短信/密码可能已泄露），必要时查杀或<b>恢复出厂设置</b>（前提是已备份干净数据），最后<b>升级系统与补丁</b>再恢复使用。</div>
+</div>
+
+<h2 class="section" id="s6">六、病毒现象与软硬件故障的判别 ⭐ 难点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 根据异常现象或运行错误提示，判断是病毒还是软、硬件故障。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>观察角度</th><th>更像<b>病毒</b></th><th>更像<b>硬件故障</b></th><th>更像<b>软件故障/设置问题</b></th></tr>
+    <tr><td class="nm">出现方式</td><td><b>渐进且会扩散</b>：一台变多台、一个盘变多个盘，且现象<b>可复制到其他机器</b></td><td>与<b>特定设备/插槽/线缆</b>绑定，换设备即消失；常伴随异响、报警声、冒烟</td><td>与<b>特定程序、特定操作或某次更新</b>同步出现，重装/回滚即消失</td></tr>
+    <tr><td class="nm">文件与磁盘</td><td>文件<b>长度莫名增加、日期被改、出现隐藏/随机名文件</b>、Autorun.inf、引导区报错，但<b>磁盘物理检测正常</b></td><td>坏道、读写错误、盘体异响、<b>chkdsk 报物理错误</b>、容量识别异常</td><td>路径/权限/编码设置错、程序写文件失败、文件被占用</td></tr>
+    <tr><td class="nm">系统资源</td><td><b>空闲时 CPU/网络也高</b>、内存持续下降、有<b>陌生进程与异常外连端口</b>、自启动项被加</td><td>内存条接触不良致蓝屏、过热降频、电源不稳重启、网卡故障丢包</td><td>程序内存泄漏、服务冲突、驱动版本不匹配、开机加载项过多</td></tr>
+    <tr><td class="nm">网络表现</td><td>大量对内/对外扫描包、被拉入僵尸网络、账号异地登录、邮件自动外发</td><td>线路衰减、交换机端口故障、网卡/驱动掉线</td><td>配置错误（IP/DNS/代理）、防火墙规则、带宽被正常应用占满</td></tr>
+    <tr><td class="nm">查杀验证（决定性）</td><td><b>干净环境（PE/杀毒启动盘）下扫描能查出病毒</b>，清除后现象消失</td><td>杀毒无果、<b>替换硬件/重新插拔</b>后现象消失</td><td>杀毒无果，<b>重装/回滚软件或改配置</b>后消失</td></tr>
+  </table></div>
+  <div class="th"><b>判别四步法（答题顺序）：</b>①<b>问范围</b>——现象是否跨机器扩散（扩散 ⇒ 偏病毒）；②<b>看痕迹</b>——是否有新增进程/端口/自启动/隐藏文件；③<b>查基线</b>——用干净启动盘引导后做校验（文件长度、引导区、CRC、内存）比对；④<b>验证处置</b>——查杀后是否消失，未消失再按硬件替换法、软件回滚法逐项排除。</div>
+  <div class="note">📖 <b>教材原列·计算机病毒现象（10 项，问"哪些异常现象说明可能感染病毒"逐条答）：</b>①<b>屏幕显示异常</b>，显示出不是由正常程序产生的画面或字符串、屏幕显示混乱；②<b>程序装入时间增长，文件运行速度下降</b>；③<b>用户没有访问的设备出现工作信号</b>；④<b>磁盘出现莫名其妙的文件和坏块，卷标发生变化</b>；⑤<b>系统自行引导</b>；⑥<b>丢失数据或程序，文件字节数发生变化</b>；⑦<b>内存空间、磁盘空间减小</b>；⑧<b>异常死机</b>；⑨<b>磁盘访问时间比平时增长</b>；⑩<b>系统引导时间增长</b>。<br>
+  📖 <b>教材原列·与病毒现象类似的硬件故障（5 项）：</b>①<b>系统的硬件配置</b>；②<b>电源电压不稳定</b>；③<b>插件接触不良</b>；④<b>软驱故障</b>；⑤<b>关于 CMOS 的问题</b>。<br>
+  📖 <b>教材原列·与病毒现象类似的软件故障（4 项）：</b>①出现 <b>"Invalid drive specification"（非法驱动器号）</b>；②<b>软件程序已被破坏（非病毒）</b>；③<b>引导过程故障</b>；④<b>用不同的编辑软件程序</b>。<br>
+  ⚠️ 判别题的答法：先引用上面三组清单中的<b>具体现象</b>定性（如"文件字节数变化＋磁盘出现莫名文件"→ 偏病毒；"电源电压不稳定／插拔后恢复"→ 硬件；"提示非法驱动器号且换干净盘启动即恢复"→ 软件），再给验证手段。</div>
+  <div class="note">🔑 关键判据一句话：<b>病毒现象会"传染"，故障现象只"复现"</b>。若同一台机器换个干净系统盘启动后一切正常、但原盘里有自启动的可疑程序 → 病毒；若换系统也一样报错 → 硬件。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <div class="th"><b>六条一句话：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li><b>定义关键词</b>：插入、破坏功能或数据、影响使用、<b>自我复制</b>的指令或代码。</li>
+      <li><b>特点之最</b>：教材七特征<b>"传非隐潜破预触"</b>，其中<b>传染性</b>是最基本特征。</li>
+      <li><b>分类五依据</b>：寄生媒介／破坏性／传染途径／不同算法／传染对象。</li>
+      <li><b>恶意代码五类</b>：病毒、蠕虫、木马、后门、逻辑炸弹——蠕虫自己传、木马靠骗、后门留通道、炸弹不传染。</li>
+      <li><b>检测三板斧</b>：进程与端口（netstat）→ 自启动与注册表 → 特征码＋行为＋启发式扫描。</li>
+      <li><b>判别看扩散</b>：会传染的是病毒，只复现的是故障；干净启动盘校验是最终判据。</li>
+    </ol>
+  </div>
+  <div class="note">📌 本章能力层次分布很"全"：识记（特点/分类/恶意代码类型）、领会（共同特征与各特点）、<span class="lvl c">简单应用</span>（木马蠕虫检测防范、病毒与故障判别）、<span class="lvl d">综合应用</span>（U 盘与手机病毒防治）。<b>名词解释与简答题命中率很高</b>，把表格"含义"列背下来即可应对。</div>
+</div>
+
+<footer>
+  <p>03344《信息与网络安全管理》· 第 2 章 病毒防范技术 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

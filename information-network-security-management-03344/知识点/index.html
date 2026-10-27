@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>信息与网络安全管理 03344 · 知识点导航</title>
+<meta name="description" content="信息与网络安全管理 03344 知识点导航：按考纲 10 章拆成 10 页速记卡，每页按考纲能力层次（识记/领会/简单应用/综合应用）组织，含 RSA/DES 计算、IPSec/SSL/TLS/SET 流程、访问控制与防火墙、入侵防御、数据库备份等清单与易错点。指定教材《网络空间信息安全》苏永红、蒋天发主编，电子工业出版社 2022 年第 2 版。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0d9488,#4f46e5)}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 6px}
+  .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:118px}
+  .pcard:hover{border-color:var(--brand);background:#f5faff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.10)}
+  .pcard .t{font-weight:700;color:var(--brand);margin-bottom:4px;font-size:15px}
+  .pcard .t .ico{margin-right:6px}
+  .pcard .d{font-size:13px;color:var(--muted);line-height:1.65}
+  .pcard .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;margin-right:6px;margin-top:6px}
+  .pcard .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .pcard .badge.hot{background:#fce7f3;color:#be185d}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 20px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .jump .lbl{font-size:12.5px;color:var(--muted);margin-right:4px}
+  .jump a{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-weight:600;transition:.15s}
+  .jump a:hover{background:var(--brand);color:#fff}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>信息与网络安全管理 03344 · 知识点导航</h1>
+  <p>按考纲 <b>10 章</b>拆成 <b>10 页速记卡</b>，每页按<b>考核知识点 + 能力层次（识记/领会/简单应用/综合应用）</b>组织，并把<b>教材原文清单</b>（七特征、入侵六步、七层次、IPSec 四组成、备份五方法等）逐条列全。指定教材是<b>《网络空间信息安全》（苏永红、蒋天发主编，电子工业出版社 2022 年第 2 版）</b>，<b>考纲 10 章与教材 10 章章号一一对应</b>，翻书很省事。</p>
+  <span class="pill">10 章速记卡 · 60 学时</span><span class="pill">考纲驱动 + 教材清单</span><span class="pill">🚫 教材第 11 章整章不考</span>
+  <div class="gotos">
+    <a href="../../index.html">🏠 首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+  </div>
+</header>
+
+<div class="note">
+  ⏰ <b>本知识点为「考纲驱动 + 公开资料补充」版：</b>03344 是新切换的课程代码（旧代码同名课），<b>本目录暂未收录其成套真题</b>，页面标注的是<b>考纲能力层次</b>与<b>教材原文清单</b>，不是真题题号；内容以覆盖考纲「Ⅲ 课程内容与考核要求」为目标，拔高仍需翻教材原文。<br>
+  ⚠️ <b>关于"不考小节"：</b>教材整章章号与考纲一致，但考纲列出的<b>考核知识点</b>才是出题范围。若某节同时出现在「不考清单」和「考核知识点」里（如第 5 章验证技术、第 7 章无线网络的安全性、第 8 章虚拟防火墙、第 10 章数据库服务器安全），<b>一律以考核知识点清单为准</b>——各页已在对应位置加了说明，不要因为不考清单就整节跳过。
+</div>
+
+<nav class="jump">
+  <span class="lbl">📍 章节快速跳转：</span>
+  <a href="#g1">1 概论</a>
+  <a href="#g1">2 病毒防范</a>
+  <a href="#g1">3 黑客入侵</a>
+  <a href="#g2">4 密码技术</a>
+  <a href="#g2">5 数字签名</a>
+  <a href="#g2">6 安全协议</a>
+  <a href="#g3">7 无线网络</a>
+  <a href="#g3">8 访问控制</a>
+  <a href="#g3">9 入侵防御</a>
+  <a href="#g4">10 数据库安全</a>
+</nav>
+
+<h2 class="section" id="g1">威胁与防范基础（第 1–3 章 · 16 学时）</h2>
+<p class="section-sub">名词解释与简答题主场：七类安全问题、病毒七特征、木马检测六项、黑客入侵六步与七层次，全是<b>背清单就能拿分</b>的硬考点。</p>
+<div class="pgrid">
+  <a class="pcard" href="概论/网络空间信息安全概论.html">
+    <div class="t"><span class="ico">🌐</span>第 1 章 · 网络空间信息安全概论</div>
+    <div class="d">信息安全基本概念与<b>三大属性（保密性/完整性/可用性）</b>、<b>七类网络空间安全问题</b>（Internet／Email／DNS／IP／Web／FTP／社工）、<b>邮件与 FTP 的漏洞与防范</b>、<b>Web 站点安全措施</b>、九种技术领域与七大趋势</div>
+    <span class="badge">4 学时</span><span class="badge hot">简答：Web 安全防范</span><span class="badge warn">✂️ 教材 1.4 不考</span>
+  </a>
+  <a class="pcard" href="病毒防范/计算机病毒与恶意代码.html">
+    <div class="t"><span class="ico">🦠</span>第 2 章 · 病毒防范技术 ⭐</div>
+    <div class="d">病毒定义与<b>七特征"传非隐潜破预触"</b>、<b>五种分类依据</b>、恶意代码五类（病毒/蠕虫/木马/后门/逻辑炸弹）、<b>木马检测六项＋防范七条</b>、<b>U 盘与手机病毒清除</b>、病毒现象 10 项与软硬件故障判别</div>
+    <span class="badge">6 学时</span><span class="badge hot">整章都考</span><span class="badge">综合：U 盘／手机</span>
+  </a>
+  <a class="pcard" href="黑客入侵/远程控制与黑客入侵.html">
+    <div class="t"><span class="ico">🕵️</span>第 3 章 · 远程控制与黑客入侵 ⭐</div>
+    <div class="d">远程控制概念与<b>应用范畴五项</b>、Windows 远控手段与端口、<b>入侵六步</b>与攻击位置三类、<b>入侵七层次</b>、主/被动攻击与<b>四类攻击术</b>、<b>服务器端六条＋维护终端八条</b>防范措施</div>
+    <span class="badge">6 学时</span><span class="badge hot">综合：维护终端防范</span><span class="badge warn">✂️ 教材 3.3、3.4 不考</span>
+  </a>
+</div>
+
+<h2 class="section" id="g2">密码与认证技术（第 4–6 章 · 20 学时）</h2>
+<p class="section-sub">⭐ <b>全书唯一有"计算题"的一块</b>：RSA 加解密、古典密码（凯撒/维吉尼亚/置换）必须能手算；IPSec、SSL/TLS、SET 的组成与工作过程是简答高频。</p>
+<div class="pgrid">
+  <a class="pcard" href="密码技术/对称与公钥密码体制.html">
+    <div class="t"><span class="ico">🔐</span>第 4 章 · 网络空间信息密码技术 ⭐⭐</div>
+    <div class="d">密码学术语与<b>密码体系分类</b>、安全密码体制<b>四功能</b>、对称/非对称<b>优缺点对比</b>、古典密码<b>凯撒·维吉尼亚·置换计算</b>、<b>DES 十步与数字</b>、<b>RSA 六步与算例题（n=403、d=103）</b>、密钥管理八步</div>
+    <span class="badge hot">8 学时 · 最重</span><span class="badge hot">计算题出处</span><span class="badge">整章都考</span>
+  </a>
+  <a class="pcard" href="数字签名/数字签名与PKI验证.html">
+    <div class="t"><span class="ico">✍️</span>第 5 章 · 数字签名与验证技术</div>
+    <div class="d">数字签名<b>概念与三性质、四安全要求</b>、签名与验证工作过程、<b>DSA/SHA/RSA</b> 方案、口令验证与公钥验证、<b>数字证书</b>两类、<b>PKI 功能与五部分</b>与信任链、RBAC 三阶段</div>
+    <span class="badge">4 学时</span><span class="badge">简答：签名三性质</span><span class="badge warn">✂️ 不考清单有 5.2，以考核知识点为准</span>
+  </a>
+  <a class="pcard" href="安全协议/IPSec与SSL-TLS.html">
+    <div class="t"><span class="ico">🤝</span>第 6 章 · 网络安全协议 ⭐⭐</div>
+    <div class="d">安全协议<b>三特点与五分类</b>、TCP/IP 各层不安全因素与协议归层、<b>IPSec 四组成与 SA／传输-隧道模式</b>、<b>SSL 三服务＋握手两阶段＋记录协议</b>、TLS 五优点、SSH、S/MIME 收发顺序、<b>SET 六方与支付八步</b></div>
+    <span class="badge hot">8 学时 · 最重</span><span class="badge hot">简答：SSL 与 SET 对比</span><span class="badge warn">✂️ 教材 6.6 不考</span>
+  </a>
+</div>
+
+<h2 class="section" id="g3">网络与边界防护（第 7–9 章 · 18 学时）</h2>
+<p class="section-sub">清单记忆章：三类内容各自成表——无线"六类＋十策略"、访问控制"三要素＋防火墙六类优缺点"、入侵防御"两类 IPS＋五步流程"。答题按编号写条目即可。</p>
+<div class="pgrid">
+  <a class="pcard" href="无线网络/无线网络安全机制.html">
+    <div class="t"><span class="ico">📡</span>第 7 章 · 无线网络安全机制</div>
+    <div class="d">无线网络概念与<b>六类无线网络安全</b>、<b>短程四种技术</b>（蓝牙/ZigBee/NFC/Wi‑Fi）对比、五类安全隐患、<b>六种加密技术</b>（WEP/WPA/WPA2/VPN/硬件安全交换机/ESSID）、<b>七种入侵方法＋十条防范策略</b></div>
+    <span class="badge">6 学时</span><span class="badge">简答：十条策略</span><span class="badge warn">✂️ 不考清单有 7.3、7.4，以考核知识点为准</span>
+  </a>
+  <a class="pcard" href="访问控制/访问控制与防火墙.html">
+    <div class="t"><span class="ico">🚪</span>第 8 章 · 访问控制与防火墙技术 ⭐</div>
+    <div class="d">访问控制<b>概念两层次、三要素、三原则</b>、<b>DAC</b> 四种实现与 ACL 系列术语、<b>MAC</b> 四种模式与保密性/完整性方向、RBAC 三模型、<b>防火墙定义—四组成—四功能—三分类</b>、<b>六类防火墙优缺点</b>、策略匹配与制定六步、NAT、虚拟系统</div>
+    <span class="badge">6 学时</span><span class="badge hot">简答：防火墙分类与局限</span><span class="badge warn">✂️ 不考清单有 8.3、8.4，以考核知识点为准</span>
+  </a>
+  <a class="pcard" href="入侵防御/入侵防御系统.html">
+    <div class="t"><span class="ico">🚨</span>第 9 章 · 入侵防御系统 ⭐</div>
+    <div class="d">入侵概念与<b>三种攻击手段</b>、IPS <b>两大类</b>、<b>两条五步流程</b>（检测—响应）与差异、<b>NIPS 结构六件</b>、三类检测机制与三种捕获方式、统计机制四步与规则机制四要素、主机资源五类、截获三机制与访问控制策略</div>
+    <span class="badge">6 学时</span><span class="badge">整章都考</span><span class="badge">应用：Web/FTP 防护</span>
+  </a>
+</div>
+
+<h2 class="section" id="g4">数据安全与备份（第 10 章 · 6 学时）</h2>
+<p class="section-sub">收尾送分章：安全策略/需求是纯背诵，<b>热备份与冷备份的实施方法和特点</b>是本章唯一的简单应用落点，务必会把归档模式六步写出来。</p>
+<div class="pgrid">
+  <a class="pcard" href="数据库安全/数据库安全与备份.html">
+    <div class="t"><span class="ico">💾</span>第 10 章 · 网络数据库安全与备份技术 ⭐</div>
+    <div class="d">数据库<b>四项安全策略</b>（存在/可用/机密/完整）与<b>七项安全需求</b>、强制访问控制<b>两种策略与两条原则</b>（不能向下读、不能向上写）、多实例三问题与完整性锁、服务器漏洞四类来源、<b>备份方案四组成＋五种方法＋软件备份六功能</b>、<b>热备份与冷备份实施</b></div>
+    <span class="badge">6 学时</span><span class="badge hot">简单应用：冷热备份</span><span class="badge warn">✂️ 教材 10.3、10.5、10.6 不考</span>
+  </a>
+</div>
+
+<div class="note">
+  <b>怎么用：</b>按 <b>1 → 10 顺序</b>通读（每页 15–25 分钟），把每页末尾「速记小结」和黄色 ⚠️ 易错框抄成笔记；<b>第 4、6 章</b>是学时最多也最难的两章（密码计算 + 协议流程），必须<b>亲手算一遍 RSA、默写一遍 SSL 握手五步</b>；第 1、2、3、9、10 章靠背清单就能得分，考前一晚可过完。<br>
+  <b>学时分配：</b>4/6/6/<b>8</b>/4/<b>8</b>/6/6/6/6 ＝ 60 学时，与分值大致成正比；能力层次分值参考<b>识记 20、领会 30、简单应用 30、综合应用 20</b>——所以<b>不能只背概念，防范措施类条目要成组记牢</b>。<br>
+  <b>不考内容别花时间：</b><b>教材第 11 章整章不考</b>；节级不考清单为 1.4／3.3、3.4／5.2／6.6／7.3、7.4／8.3、8.4／10.3、10.5、10.6（其中与考核知识点冲突的以上面说明为准）。详见<a href="../考纲.html">课程考纲</a>页首速查表。
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../../index.html">🏠 返回首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>信息与网络安全管理 03344 · 高等教育自学考试 · 计算机科学与技术（专升本）</div>
+</footer>
+</div>
+</body>
+</html>

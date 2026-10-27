@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 4 章 网络空间信息密码技术｜古典密码加密计算 · DES 原理 · RSA 求公钥私钥</title>
+<meta name="description" content="信息与网络安全管理 03344 第 4 章速记卡：密码学、明文密文、密钥、加密解密等术语与密码体系分类；安全密码体制的四项功能；对称与非对称密码体系的优缺点对比；古典密码（替代密码：凯撒单表、Vigenère 多表；置换密码）由明文求密文的典型计算；DES 工作原理（64 位分组、56 位有效密钥、16 轮 Feistel 迭代、IP 与 IP⁻¹、S 盒 P 盒、ECB/CBC）与 AES 名称；RSA 密钥生成原理与考纲原题计算（p=13、q=31、e=7 ⇒ n=403、φ(n)=360、d=103、公钥(7,403)、私钥(103,403)）；密码管理体制的常见步骤。建议 8 学时，对应教材第 4 章（整章考），是全卷计算题高发章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#4f46e5,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+  .calc{background:#f8fafc;border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:0 10px 10px 0;padding:11px 15px;margin:11px 0;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:14px;line-height:1.9;overflow-x:auto}
+  .calc b{color:var(--brand)}
+  .calc .r{color:#b45309;font-weight:700}
+  .mono{font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:14px;background:#f1f5f9;border-radius:4px;padding:1px 5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章 · 网络空间信息密码技术</h1>
+  <p>本章是<b>全卷唯一稳定出计算题</b>的章（8 学时，重点中的重点）：一类是<b>古典密码由明文求密文</b>（替代、置换），一类是<b>RSA 给定 p、q、e 求 d 与公钥私钥</b>。两者都是"背下五步流程就能拿满分"的题，务必动手算过两遍。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">对应教材第 4 章（整章考）</span><span class="pill">重点：古典密码、DES、RSA</span><span class="pill">难点：DES 加解密原理、RSA 过程</span><span class="pill">⭐ 计算题高发</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../黑客入侵/远程控制与黑客入侵.html">← 第 3 章</a>
+    <a href="../数字签名/数字签名与PKI验证.html">→ 第 5 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、密码技术概述：术语与分类（识记）⭐</a>
+  <a href="#s2">二、安全体制四功能 · 对称与非对称优缺点（领会）⭐</a>
+  <a href="#s3">三、古典密码：替代与置换（简单应用）⭐⭐会算</a>
+  <a href="#s4">四、DES 与 AES：近现代对称密码（识记/领会）⭐</a>
+  <a href="#s5">五、非对称密码与 RSA 计算（简单应用）⭐⭐⭐必考</a>
+  <a href="#s6">六、密码管理：密钥管理体制步骤（领会）</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、密码技术概述：术语与分类 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 密码技术中各种术语的概念和密码体系的分类。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>术语</th><th>定义（名词解释按此写）</th></tr>
+    <tr><td class="nm"><b>密码学</b> Cryptography</td><td>研究<b>信息加密与破译</b>的科学，包含两个分支：<b>密码编码学</b>（研究如何保密通信）与<b>密码分析学</b>（研究如何破译密文）</td></tr>
+    <tr><td class="nm"><b>明文</b> Plaintext</td><td>需要被保护的<b>原始信息</b>，记作 <span class="mono">P</span> / <span class="mono">m</span></td></tr>
+    <tr><td class="nm"><b>密文</b> Ciphertext</td><td>明文经加密变换后得到的<b>不可直接理解的形式</b>，记作 <span class="mono">C</span></td></tr>
+    <tr><td class="nm"><b>加密 / 解密</b></td><td>明文 → 密文的过程叫<b>加密</b>；密文 → 明文的过程叫<b>解密</b>（解密是加密的<b>逆运算</b>）</td></tr>
+    <tr><td class="nm"><b>密钥</b> Key</td><td>控制加密与解密变换的<b>参数</b>，记作 <span class="mono">K</span>；分为<b>对称密钥</b>（加解密同一把）与<b>非对称密钥</b>（公钥加密、私钥解密）</td></tr>
+    <tr><td class="nm"><b>密钥空间</b></td><td>密钥所有可能取值的集合；密钥空间越大，暴力穷举越不可行</td></tr>
+    <tr><td class="nm"><b>密码体制（算法）</b></td><td>由<b>明文空间、密文空间、密钥空间、加密算法、解密算法</b>五部分构成的一个五元组</td></tr>
+  </table></div>
+  <div class="th"><b>密码体系的分类（按密钥特点 —— 考纲点名）：</b></div>
+  <ol class="steps">
+    <li><b>对称密码体系</b>：又称<b>单密钥密码 / 私钥密码 / 传统密码</b>——加密密钥<b>就是</b>解密密钥，双方必须持有<b>相同</b>的密钥并通过安全信道事先传递。</li>
+    <li><b>非对称密码体系</b>：又称<b>双密钥密码 / 公钥密码</b>——加密密钥（公钥）与解密密钥（私钥）<b>不同</b>且不能互相推出，公钥可公开。</li>
+  </ol>
+  <div class="th"><b>另外两种常见划分角度（帮助理解，选择题可能考名称）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>划分角度</th><th>类别</th><th>代表</th></tr>
+    <tr><td class="nm">按<b>明文处理方式</b></td><td><b>分组密码</b>（Block）／<b>序列（流）密码</b>（Stream）</td><td>DES、AES 是分组；一次一密、RC4 属流密码</td></tr>
+    <tr><td class="nm">按<b>转换手段</b>（古典密码）</td><td><b>置换（Transposition）</b>／<b>替代（Substitution）</b></td><td>只改位置 → 置换；只换字符 → 替代</td></tr>
+  </table></div>
+  <div class="note">🔑 <b>Kerckhoffs（柯克霍夫斯）原则</b>——"系统的安全性<b>不依赖于算法的保密</b>，而<b>仅依赖于密钥的保密</b>"。这句话是理解全章的钥匙，也是判断题高频：算法可以公开，<b>密钥绝不能泄露</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、安全密码体制的功能 · 对称与非对称优缺点 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 安全的密码体制对信息具备的功能；对称与非对称体系的优缺点比较。</div>
+  <div class="th"><b>安全密码体制对信息应具备的四项功能（简答必背）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>功能</th><th>含义</th><th>被破坏的表现</th></tr>
+    <tr><td class="nm"><b>① 秘密性</b></td><td>防止<b>非法接收者</b>发现明文（窃听者拿到密文也无法理解）</td><td>信息泄露</td></tr>
+    <tr><td class="nm"><b>② 鉴别性</b></td><td>确定<b>信息来源的合法性</b>（确认是谁发的）</td><td>假冒身份</td></tr>
+    <tr><td class="nm"><b>③ 完整性</b></td><td>确认信息是否被<b>有意或无意地更改</b></td><td>传输中被篡改</td></tr>
+    <tr><td class="nm"><b>④ 不可否认性</b></td><td>发送者<b>无法否认</b>自己已发送的信息</td><td>事后抵赖</td></tr>
+  </table></div>
+  <div class="note">🔑 对照第 1 章三性记：<b>秘密性＝保密性</b>，再加<b>鉴别性</b>与<b>不可否认性</b>——后两项正是<b>非对称密码 + 数字签名</b>（第 5 章）要解决的问题，对称密码做不到。</div>
+  <div class="th"><b>对称 vs 非对称 优缺点对比（表格题 / 简答）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>体系</th><th>优点</th><th>缺点</th></tr>
+    <tr><td class="nm"><b>对称密码体系</b><br>（DES／AES）</td><td>①<b>安全性高</b>（密钥保密的前提下）；②<b>加密解密速度快</b>、计算量小，适合<b>大量数据</b>（报文、文件卷）的加密</td><td>①网络规模巨大时<b>密钥管理困难</b>（n 个用户约需 n(n−1)/2 把密钥）；②<b>难以解决密钥的安全传递（分发）问题</b>；③<b>缺乏自动检测密钥是否泄露的能力</b>；④<b>不能实现数字签名</b>与不可否认</td></tr>
+    <tr><td class="nm"><b>非对称密码体系</b><br>（RSA／ECC）</td><td>①<b>密钥管理方便</b>：公钥可公开分发，<b>无需安全信道</b>；②<b>安全性高</b>：基于<b>数学难题</b>（大整数分解等），破解在计算上不可行；③<b>支持数字签名</b>，可实现身份认证与<b>不可否认性</b></td><td>①<b>加解密速度慢</b>、计算资源消耗大，只适合对<b>少量数据</b>（如密钥、摘要）加密；②算法依赖复杂数学运算，<b>计算复杂度高</b></td></tr>
+  </table></div>
+  <div class="note">💡 由此推出实务做法——<b>混合加密</b>：用<b>非对称</b>加密"会话密钥"解决分发问题，再用<b>对称</b>加密正文解决速度问题（SSL/TLS 正是这么做的，见第 6 章）。答"如何兼顾两者优点"时用这句。</div>
+</div>
+
+<h2 class="section" id="s3">三、古典密码：替代与置换 —— 由明文求密文 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 古典密码体系包含的密码算法；<span class="lvl c">简单应用</span> 能用古典密码算法<b>由明文求密文</b>。</div>
+  <b>古典密码体系包括两大类：替代（代换）密码法与置换密码法。</b>
+  <div class="th"><b>① 替代密码法</b>（将明文字母表中的每个字符<b>替换</b>为密文字母表中的字符，对应密文字母<b>可能是一个也可能是多个</b>，接收者<b>逆向替换</b>即得明文）：</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>子类</th><th>经典算法</th><th>规则</th></tr>
+    <tr><td class="nm"><b>单字符 · 单表代换</b></td><td><b>凯撒密码</b>（Caesar）</td><td>整个字母表<b>统一偏移 k 位</b>：C = (P + k) mod 26，解密 P = (C − k) mod 26</td></tr>
+    <tr><td class="nm"><b>多字符 · 多表代换</b></td><td><b>Vigenère 密码</b></td><td>用一个<b>密钥词</b>循环对应不同的替代表：第 i 位偏移量随密钥字母变化</td></tr>
+    <tr><td class="nm">补充</td><td>明文字母表乱序替换、同音替换（多表的一种）</td><td>了解名称即可</td></tr>
+  </table></div>
+  <div class="calc">
+    <b>【例 1 · 凯撒密码 k=3】</b> 明文 <span class="r">COMPUTER</span> → 逐字母 +3（超过 Z 则回绕）<br>
+    C→F&nbsp;&nbsp;O→R&nbsp;&nbsp;M→P&nbsp;&nbsp;P→S&nbsp;&nbsp;U→X&nbsp;&nbsp;T→W&nbsp;&nbsp;E→H&nbsp;&nbsp;R→U<br>
+    密文 = <span class="r">FRPSXZHU</span>　（验证：解密各字母 −3 还原 COMPUTER ✔）
+  </div>
+  <div class="calc">
+    <b>【例 2 · Vigenère，密钥 KEY】</b>　K=10、E=4、Y=24，密钥循环 <span class="r">K E Y K E</span><br>
+    H(7)+10=17→<b>R</b>　E(4)+4=8→<b>I</b>　L(11)+24=35−26=9→<b>J</b>　L(11)+10=21→<b>V</b>　O(14)+4=18→<b>S</b><br>
+    明文 HELLO ⇒ 密文 <span class="r">RIJVS</span>　（同一字母 L 得到 J 与 V 两种结果 —— 这就是"多表"的意义：掩盖单字母频率）
+  </div>
+  <div class="th"><b>② 置换密码法</b>：明文<b>字母不变</b>，只按密钥规定的<b>位置重新排列</b>（密钥是一个置换序列）。</div>
+  <div class="calc">
+    <b>【例 3 · 置换，密钥 (3,1,4,2)】</b>　每 4 个字母一组，密钥含义："输出的第 1 个字符取本组第 3 位，第 2 个取第 1 位，第 3 个取第 4 位，第 4 个取第 2 位"<br>
+    第 1 组 C O <b>M</b> <b>P</b> → <span class="r">M C P O</span>　　第 2 组 U <b>T</b> E <b>R</b> → <span class="r">E U R T</span><br>
+    明文 COMPUTER ⇒ 密文 <span class="r">MCPOEURT</span><br>
+    解密用<b>逆置换 (2,4,1,3)</b>（把置换还原回原顺序），还原 COMPUTER ✔
+  </div>
+  <div class="note">⚠️ 两个易错点：①<b>置换不改变字符本身，只改变顺序</b>——题目若问"字母没变、顺序变了"选<b>置换</b>；②凯撒偏移遇到字母表末尾要<b>mod 26 回绕</b>（如 R+3=U、X+3=A、Z+3=C），别写成超出 Z 的字符。</div>
+  <div class="note">🔑 古典密码为何不安全：替代密码保留了<b>字母频率特征</b>（单表可用频率分析破解），置换密码保留了<b>字母本身</b>（可用双字母/三字母组合统计还原）——这是"领会"级的经典问句。</div>
+</div>
+
+<h2 class="section" id="s4">四、DES 与 AES：近现代对称密码 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 对称密码体系的概念、DES 与 AES 的<b>名称</b>；<span class="lvl b">领会</span> <b>DES 的工作原理</b>。</div>
+  <b>对称密码体系</b>：采用的<b>解密算法是加密算法的逆运算</b>，且<b>加密密钥就是解密密钥</b>的一类加密体系。它常用于<b>带大量数据的报文和文卷通信</b>的加密（因为可实现高速加密）。主要特点：<b>发送者与接收者之间的密钥必须完全传递（安全分发），双方必须妥善保管密钥</b>。
+  <div class="tscroll"><table class="law">
+    <tr><th>算法</th><th>全称（名词解释）</th><th>关键数字（选择题最爱）</th></tr>
+    <tr><td class="nm"><b>DES</b></td><td><b>数据加密标准</b>（Data Encryption Standard）</td><td>分组长度 <b>64 位</b>；密钥输入 64 位但<b>有效密钥 56 位</b>（8 位奇偶校验）；<b>16 轮</b>迭代；<b>Feistel（费斯顿）网络</b>结构</td></tr>
+    <tr><td class="nm"><b>AES</b></td><td><b>高级加密标准</b>（Advanced Encryption Standard）</td><td>分组固定 <b>128 位</b>；密钥 <b>128 / 192 / 256 位</b>三档（对应 10 / 12 / 14 轮）；用以<b>取代 56 位密钥的 DES</b></td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 820 190" role="img" aria-label="DES 加密流程：初始置换 IP、16 轮 Feistel 迭代、逆初始置换 IP-1">
+      <rect x="10" y="76" width="86" height="40" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="53" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#4338ca">64 位明文</text>
+      <rect x="112" y="76" width="86" height="40" rx="8" fill="#fff" stroke="#64748b" stroke-width="1.8"/>
+      <text x="155" y="95" text-anchor="middle" font-size="12.5" fill="#1f2430">初始置换</text>
+      <text x="155" y="110" text-anchor="middle" font-size="12" fill="#6b7280">IP → L₀R₀</text>
+      <rect x="214" y="60" width="230" height="72" rx="8" fill="#fef3c7" stroke="#b45309" stroke-width="2.2"/>
+      <text x="329" y="80" text-anchor="middle" font-size="12.5" font-weight="700" fill="#7c2d12">16 轮相同结构的迭代（Feistel）</text>
+      <text x="329" y="99" text-anchor="middle" font-size="11.5" fill="#7c2d12">扩展置换 E(32→48) ⊕ 子密钥 Kᵢ</text>
+      <text x="329" y="116" text-anchor="middle" font-size="11.5" fill="#7c2d12">S 盒代换(48→32) → P 盒 → ⊕ Lᵢ₋₁</text>
+      <rect x="460" y="76" width="90" height="40" rx="8" fill="#fff" stroke="#64748b" stroke-width="1.8"/>
+      <text x="505" y="95" text-anchor="middle" font-size="12.5" fill="#1f2430">逆初始置换</text>
+      <text x="505" y="110" text-anchor="middle" font-size="12" fill="#6b7280">IP⁻¹(R₁₆L₁₆)</text>
+      <rect x="566" y="76" width="86" height="40" rx="8" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="609" y="101" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">64 位密文</text>
+      <rect x="214" y="10" width="230" height="34" rx="8" fill="#e0f2fe" stroke="#0369a1" stroke-width="1.8"/>
+      <text x="329" y="32" text-anchor="middle" font-size="12" fill="#0c4a6e">密钥调度：64(56) 位 → 16 个 48 位子密钥</text>
+      <g stroke="#9ca3af" stroke-width="1.8" marker-end="url(#ar4)">
+        <line x1="96" y1="96" x2="112" y2="96"/><line x1="198" y1="96" x2="214" y2="96"/>
+        <line x1="444" y1="96" x2="460" y2="96"/><line x1="550" y1="96" x2="566" y2="96"/>
+        <line x1="329" y1="44" x2="329" y2="60"/>
+      </g>
+      <text x="690" y="70" font-size="12" fill="#6b7280">解密：同样的 16 轮，</text>
+      <text x="690" y="88" font-size="12" fill="#6b7280">只是子密钥</text>
+      <text x="690" y="106" font-size="12" fill="#6b7280">逆序使用 K₁₆…K₁</text>
+      <defs><marker id="ar4" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#9ca3af"/></marker></defs>
+    </svg>
+    <div class="cap">DES 工作原理一句话：<b>用 Feistel 网络结构，以 56 位密钥对 64 位明文分组做 16 轮迭代加密生成密文</b></div>
+  </div>
+  <div class="th"><b>DES 工作流程（领会·四步，简答按此展开）：</b></div>
+  <ol class="steps">
+    <li><b>初始置换 IP</b>：把 64 位明文按固定规则<b>重新排列</b>，分成左右两半 <span class="mono">L₀</span>、<span class="mono">R₀</span>，各 32 位。</li>
+    <li><b>生成子密钥</b>：经<b>密钥调度算法</b>，将 64 位密钥（实际有效 56 位）扩展变换为 <b>16 个 48 位子密钥</b> K₁…K₁₆。</li>
+    <li><b>16 轮迭代</b>（每轮用不同子密钥）：<b>扩展置换</b>把 Rᵢ₋₁ 由 32 位扩成 48 位 → 与 Kᵢ <b>异或</b> → 分 8 组经 <b>S 盒</b>压缩为 32 位 → 经 <b>P 盒置换</b> → 再与 Lᵢ₋₁ <b>异或</b>得到新的 Rᵢ（同时 Lᵢ = Rᵢ₋₁）。</li>
+    <li><b>逆初始置换 IP⁻¹</b>：将 L₁₆、R₁₆ 合并为 64 位并经逆置换输出<b>密文</b>。<b>解密过程相同，只是子密钥逆序使用</b>。</li>
+  </ol>
+  <div class="th"><b>关键特性（补充，用于选择/判断）：</b>①<b>对称性</b>——加解密同密钥，解密是加密的逆序；②<b>安全性依赖密钥保密</b>，但 <b>56 位密钥已易受暴力破解</b>，故现已被 <b>AES</b> 取代；③<b>分组工作模式</b>支持 <b>ECB（电码本）、CBC（密码分组链接）</b>等，其中 <b>CBC 通过初始化向量 IV 增强安全性</b>（相同明文块不会得到相同密文块）。AES 内部则由四种字节操作构成：<b>字节替代 SubBytes、行移位 ShiftRows、列混淆 MixColumns、轮密钥加 AddRoundKey</b>（名称识记即可）。</div>
+  <div class="note">🔑 数字题速答表：<b>DES = 64 位分组 / 56 位有效密钥 / 16 轮 / 48 位子密钥 / Feistel</b>；<b>AES = 128 位分组 / 密钥 128·192·256</b>。看到"数据加密标准"选 DES，看到"高级加密标准"选 AES。</div>
+</div>
+
+<h2 class="section" id="s5">五、非对称密码体系与 RSA 计算 ⭐⭐⭐ 必考</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 理解 <b>RSA 密钥生成原理</b>，能根据给定设置<b>计算公钥和私钥</b>。</div>
+  <b>非对称（公钥）密码体系</b>：每个用户有一对密钥——<b>公钥 PU 公开</b>、<b>私钥 PR 保密</b>，二者<b>互不相同且由一个不可推出另一个</b>。用公钥加密的数据只有对应私钥能解，反过来用私钥签名可用公钥验证。<b>安全性依赖数学难题：RSA = 大整数分解难题</b>（其他还有离散对数、椭圆曲线、背包问题）。
+  <div class="th"><b>RSA 密钥生成五步（把这张表背下来，计算题就是套公式）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>步骤</th><th>做法</th><th>公式</th></tr>
+    <tr><td class="nm">① 取两个<b>大素数</b></td><td>任取互不相同的素数 p、q</td><td>—</td></tr>
+    <tr><td class="nm">② 计算<b>模数 n</b></td><td>两素数相乘，n 是公钥与私钥<b>共有</b>的部分</td><td><span class="mono">n = p × q</span></td></tr>
+    <tr><td class="nm">③ 计算<b>欧拉函数 φ(n)</b></td><td>小于 n 且与 n 互质的正整数个数</td><td><span class="mono">φ(n) = (p−1)(q−1)</span></td></tr>
+    <tr><td class="nm">④ 选<b>公钥指数 e</b></td><td>取<b>与 φ(n) 互质</b>的整数（1 &lt; e &lt; φ(n)）</td><td><span class="mono">gcd(e, φ(n)) = 1</span></td></tr>
+    <tr><td class="nm">⑤ 求<b>私钥指数 d</b></td><td>求满足下式的<b>乘法逆元</b> d</td><td><span class="mono">e × d ≡ 1 (mod φ(n))</span></td></tr>
+    <tr><td class="nm">⑥ 公布/保密</td><td><b>公钥 = (e, n)</b> 公开；<b>私钥 = (d, n)</b> 保密（p、q 用完应销毁）</td><td>加密 <span class="mono">C = m<sup>e</sup> mod n</span>；解密 <span class="mono">m = C<sup>d</sup> mod n</span></td></tr>
+  </table></div>
+  <div class="calc">
+    <b>【考纲真题 · 求 d 及公钥、私钥】</b>　给定 <span class="r">p = 13，q = 31，e = 7</span><br>
+    ① <b>n = p × q = 13 × 31 = <span class="r">403</span></b><br>
+    ② <b>φ(n) = (p−1)(q−1) = 12 × 30 = <span class="r">360</span></b><br>
+    ③ 验 e：<b>7 与 360 互质</b>（360 = 2³·3²·5，不含因子 7）✔ 可作公钥指数<br>
+    ④ 求 d：解 <b>7d ≡ 1 (mod 360)</b>，即找 d 使 7d − 1 是 360 的倍数：<br>
+    &nbsp;&nbsp;&nbsp; 7d = 1 + 360t → t=1 时 361/7 不整除；<b>t=2 时 721/7 = 103 整除</b><br>
+    &nbsp;&nbsp;&nbsp; ∴ <b>d = <span class="r">103</span></b>（验算：7 × 103 = 721 = 2 × 360 + 1 ✔）<br>
+    ⑤ 结论：<b>公钥 = (e, n) = <span class="r">(7, 403)</span></b>，<b>私钥 = (d, n) = <span class="r">(103, 403)</span></b><br>
+    ⑥ 加解密演示（明文 m = 2）：<b>C = 2⁷ mod 403 = 128</b>；解密 <b>128<sup>103</sup> mod 403 = 2</b>（由 ed ≡ 1 mod φ(n) 保证还原）
+  </div>
+  <div class="note">⚠️ 三类常见丢分：①<b>φ(n) 算成 p×q</b>（正确是 (p−1)(q−1)）；②<b>把 d 写成 e 的算术倒数</b>或忘记"模逆元"——必须满足 <b>ed mod φ(n) = 1</b>；③<b>公钥私钥写反</b>：公钥是 <b>(e, n)</b>、私钥是 <b>(d, n)</b>，且都要<b>带上 n</b>。手算逆元最稳的办法就是上例的<b>"逐个添倍数 t=1,2,3…"试探</b>，比扩展欧几里得更快不易错。</div>
+  <div class="th"><b>求 d 的通用解法（若数字较大）：扩展欧几里得算法</b>——求 e 关于模 φ(n) 的逆元；自考命题一般给小素数，<b>添倍数试探足够</b>。</div>
+  <div class="th"><b>其他常见公钥算法（名称识记，选择题）：</b><b>RSA</b>（大整数分解）、<b>ElGamal</b> 与 <b>Diffie-Hellman</b>（离散对数，后者只做<b>密钥交换</b>不加密数据）、<b>ECC 椭圆曲线</b>（同等安全下密钥更短）、<b>DSA</b>（专用于<b>数字签名</b>，见第 5 章）。</div>
+  <div class="note">🧩 补充理解（考纲未点名，答"加密方式"时可加分）：网络上加密有三个层次——<b>链路加密</b>（通信链路上逐段加密，中间节点是明文）、<b>节点加密</b>（节点内在加密模块中转换）、<b>端到端加密</b>（只在通信两端加解密，中间节点不接触明文，粒度可到用户）。原则：<b>越靠上层（端到端）越灵活、越易实现；越靠下层越能保护路由信息</b>。</div>
+</div>
+
+<h2 class="section" id="s6">六、密码管理：密钥管理体制的常见步骤</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 密码管理体制的<b>常见步骤</b>。</div>
+  <b>密码管理（密钥管理）</b>是对密钥从<b>产生到销毁的全生命周期</b>进行管理，是密码系统能否真正安全的关键——<b>算法可以公开，密钥一旦失控则一切归零</b>。
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>步骤</th><th>要点</th></tr>
+    <tr><td>1</td><td class="nm"><b>密钥生成</b></td><td>由<b>密钥分发中心 KDC 或各端点</b>用<b>随机数发生器</b>产生密钥；要求随机性好、不可预测（避免弱密钥、半弱密钥）</td></tr>
+    <tr><td>2</td><td class="nm"><b>非线性密钥空间</b></td><td>密钥在空间中<b>非线性、无规律</b>地取值，防止攻击者按规律缩小穷举范围</td></tr>
+    <tr><td>3</td><td class="nm"><b>发送（分发）密钥</b></td><td>通过<b>安全信道</b>或<b>事先约定的根密钥加密传送</b>；对称体制这是<b>最薄弱的一环</b>（可用 KDC／公钥保护会话密钥）</td></tr>
+    <tr><td>4</td><td class="nm"><b>验证密钥</b></td><td>接收方<b>确认收到的是正确、完整的密钥</b>（密钥校验值／认证），防止错用或被替换</td></tr>
+    <tr><td>5</td><td class="nm"><b>更新密钥</b></td><td>按规定周期或在<b>怀疑泄露时立即更换</b>；会话密钥一次一换，主密钥长期但受严格保护</td></tr>
+    <tr><td>6</td><td class="nm"><b>存储密钥</b></td><td>用<b>密码机、密钥卡、智能卡、加密的密钥文件</b>等保存，并实行<b>多人分段掌握（分割存储）</b>与访问审计</td></tr>
+    <tr><td>7</td><td class="nm"><b>密钥有效期</b></td><td>为每类密钥设定<b>使用时间上限</b>（保护期／加密期／信任期），到期<b>销毁</b>；用得越久被攻破风险越大</td></tr>
+    <tr><td>8</td><td class="nm"><b>公钥密码管理</b></td><td>公钥需<b>可信绑定到持有者身份</b>——由 <b>CA 用数字证书</b>发布与撤销（衔接第 5 章 PKI）</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆主线：<b>"生—非—发—验—更—存—效—公"</b>（生成 → 非线性空间 → 发送 → 验证 → 更新 → 存储 → 有效期 → 公钥管理）。答"密钥管理包括哪些环节"时按序写，一条一分。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>两个概念</b>：明文 P／密文 C；<b>加密＝P→C，解密＝C→P（逆运算）</b>；安全性<b>只依赖密钥</b>（Kerckhoffs 原则）。</li>
+    <li><b>两大体系</b>：<b>对称</b>（单密钥／私钥，快但分发难，DES·AES）与<b>非对称</b>（双密钥／公钥，慢但易分发、能签名，RSA）。</li>
+    <li><b>四项功能</b>：秘密性、鉴别性、完整性、不可否认性。</li>
+    <li><b>古典密码两法</b>：<b>替代</b>（凯撒单表、Vigenère 多表）与<b>置换</b>（改顺序不改字符）；例：COMPUTER 凯撒 +3 = <b>FRPSXZHU</b>，置换密钥 (3,1,4,2) = <b>MCPOEURT</b>。</li>
+    <li><b>DES 五个数</b>：64 位分组、56 位有效密钥、16 轮、48 位子密钥、Feistel；AES 是取代它的<b>高级加密标准</b>（128 位分组）。</li>
+    <li><b>RSA 三步套公式</b>：n=pq → φ=(p−1)(q−1) → 解 ed≡1 (mod φ)；<b>p=13, q=31, e=7 ⇒ n=403, φ=360, d=103，公钥(7,403)、私钥(103,403)</b>。</li>
+    <li><b>密钥管理八步</b>：生—非—发—验—更—存—效—公。</li>
+  </ol>
+  <div class="note">🎯 考前抢分顺序：①把 RSA 例题<b>遮住答案重算一遍</b>（应用题 10 分左右）；②背熟<b>古典密码两种算法的求密文步骤</b>；③默写<b>DES 四步流程</b>与<b>对称／非对称优缺点表</b>（简答与单选）；④最后背<b>密钥管理八步</b>与<b>四项功能</b>。</div>
+  <div class="gotos">
+    <a href="../黑客入侵/远程控制与黑客入侵.html">← 第 3 章 远程控制与黑客入侵</a>
+    <a href="../数字签名/数字签名与PKI验证.html">→ 第 5 章 数字签名与验证技术</a>
+    <a href="../index.html">📚 回到知识点导航</a>
+  </div>
+</div>
+
+<footer class="footer">
+  信息与网络安全管理（03344）知识点速记卡 · 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）· 指定教材《网络空间信息安全》苏永红、蒋天发 主编，电子工业出版社 2022 年第 2 版<br>
+  <a href="../../../index.html">🏠 返回首页</a> · <a href="../../考纲.html">📋 本课程考纲</a>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部">↑</a>
+</body>
+</html>

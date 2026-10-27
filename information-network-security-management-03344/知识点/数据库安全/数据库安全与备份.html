@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03344 · 第 10 章 网络数据库安全与备份技术｜安全策略与需求 · 强制访问控制 · 冷热与备份方法</title>
+<meta name="description" content="信息与网络安全管理 03344 第 10 章速记卡：网络数据库的四项安全策略（存在安全、可用性、机密性、完整性）与七项安全需求（物理数据库完整性、逻辑数据库完整性、元素安全性、可审计性、访问控制、身份验证、可用性）；强制访问控制的两种强制策略（基于保密性、基于完整性）与基于完整性强制策略的两条控制原则（不能向下读、不能向上写）；多级安全模型的多实例问题（多实例关系、多实例元组、多实例元素）与完整性锁的作用；数据库服务器安全漏洞的四类来源（默认安装漏洞、人为使用漏洞、数据库设计缺陷、数据库产品漏洞）；系统备份方案的四个组成、网络数据库备份的五种常用方法与分类、软件备份功能的六个组成、物理热备份（联机备份）与冷备份（脱机备份）的实施方法和特点。建议 6 学时，对应教材第 10 章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💾</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#1d4ed8,#0f766e)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+  .flow span{background:#eff6ff;border:1.5px solid #1d4ed8;border-radius:9px;padding:6px 11px;font-size:13.5px;white-space:nowrap}
+  .flow i{font-style:normal;color:#94a3b8;font-weight:700}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.75;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 10 章 · 网络数据库安全与备份技术</h1>
+  <p>收尾章，<b>背清单就能得分</b>：4 项安全策略、7 项安全需求、2 种强制策略与 2 条控制原则、3 类多实例问题、4 类服务器漏洞、备份方案 4 组成、备份方法 5 对、软件备份 6 组成。<span class="lvl c">简单应用</span>集中在<b>热备份与冷备份的实施方法和特点</b>——务必会把 Oracle 的归档模式步骤写出来。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">对应教材第 10 章</span><span class="pill">重点：安全需求与策略、访问控制、备份技术</span><span class="pill">难点：安全策略的应用和实施</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../入侵防御/入侵防御系统.html">← 第 9 章</a>
+    <a href="../../考纲.html#types">✍️ 附录·题型举例</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、数据库安全策略与安全需求（识记/领会）⭐⭐</a>
+  <a href="#s2">二、访问控制模型：两种强制策略与两条原则（⭐⭐难点）</a>
+  <a href="#s3">三、多实例问题与完整性锁（领会）</a>
+  <a href="#s4">四、数据库服务器的安全漏洞四类（领会）⭐</a>
+  <a href="#s5">五、备份方案组成与备份方法分类（识记）⭐⭐</a>
+  <a href="#s6">六、物理热备份与冷备份的实施（简单应用）⭐⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、网络数据库的安全策略与安全需求 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 网络数据库的<b>安全策略</b>；<span class="lvl b">领会</span> 网络数据库的<b>安全需求</b>。</div>
+  <div class="th"><b>安全策略（四条）——从数据库系统的<b>存在性、可用性、机密性和完整性</b>几个方面着重考虑，数据库系统至少具有以下安全策略：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>策略</th><th>含义</th><th>主要技术手段</th></tr>
+    <tr><td>1</td><td class="nm"><b>① 保证数据库的存在安全</b></td><td>数据库本身（数据文件、结构、服务）<b>不被破坏、不被盗走、不丢失</b></td><td>物理与环境安全、访问控制、防病毒与防入侵（第 2、8、9 章）、<b>备份</b></td></tr>
+    <tr><td>2</td><td class="nm"><b>② 保证数据库的可用性</b></td><td>授权用户在需要时<b>能正常访问和使用</b>数据与服务</td><td>冗余与集群、容灾、备份恢复、性能与容量管理、抗拒绝服务</td></tr>
+    <tr><td>3</td><td class="nm"><b>③ 保障数据库系统的机密性</b></td><td>数据<b>不泄露</b>给未授权者（含被窃听、被拖库）</td><td>身份验证、<b>加密与视图／列级控制</b>、强制访问控制、审计</td></tr>
+    <tr><td>4</td><td class="nm"><b>④ 保证数据库的完整性</b></td><td>数据<b>未被未授权篡改</b>，且符合语义约束（正确、一致）</td><td>约束与触发器、事务与并发控制、<b>基于完整性的强制策略</b>、日志与审计</td></tr>
+  </table></div>
+  <div class="th"><b>安全需求（七条，"可将数据库安全问题定义为以下内容"）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>需求</th><th>关注点</th></tr>
+    <tr><td>1</td><td class="nm"><b>物理数据库的完整性</b></td><td>数据文件、存储设备、机房环境<b>不被物理破坏</b>（灾害、盗抢、误操作删文件）</td></tr>
+    <tr><td>2</td><td class="nm"><b>逻辑数据库的完整性</b></td><td><b>模式与数据的一致性、约束不被破坏</b>（关系结构、参照完整性、业务规则）</td></tr>
+    <tr><td>3</td><td class="nm"><b>元素安全性</b></td><td>细粒度到<b>数据元素（表、行、列、字段值）</b>的保护与授权</td></tr>
+    <tr><td>4</td><td class="nm"><b>可审计性</b></td><td>谁在何时做了什么<b>可追溯</b>（审计日志、操作留痕、责任认定）</td></tr>
+    <tr><td>5</td><td class="nm"><b>访问控制</b></td><td>按策略<b>限制主体对客体的操作</b>（DAC／MAC／RBAC，见第 8 章）</td></tr>
+    <tr><td>6</td><td class="nm"><b>身份验证</b></td><td>确认<b>连接者与用户的真实身份</b>（口令、证书、操作系统／网络级认证）</td></tr>
+    <tr><td>7</td><td class="nm"><b>可用性</b></td><td>服务<b>持续可提供</b>、数据<b>可恢复</b>（备份与容灾是本章第四节）</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆组合：<b>策略四条＝"存在、可用、机密、完整"</b>（题干常给四个方面让你列策略）；<b>需求七条＝"两完整（物理／逻辑）＋元素＋审计＋访问控制＋身份验证＋可用"</b>。两者是"目标 vs 具体问题清单"的关系。</div>
+</div>
+
+<h2 class="section" id="s2">二、访问控制模型：两种强制策略与两条控制原则 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 强制访问控制的<b>两种强制策略</b>、<b>基于完整性的强制策略的两条控制原则</b>。</div>
+  <b>强制访问控制策略可以分为两类：基于保密性的强制策略和基于完整性的强制策略。</b>
+  <div class="th"><b>基于完整性的强制策略依据以下两条原则控制主体对客体的访问请求：（1）不能向下读；（2）不能向上写。</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>策略类型</th><th>要防的事</th><th>允许／禁止的方向</th><th>一句话理由</th></tr>
+    <tr><td class="nm"><b>基于保密性的强制策略</b></td><td>防<b>泄露</b>（秘密往下跑）</td><td><span class="no">禁 上读</span>、<span class="no">禁 下写</span>；<span class="yes">允 下读</span>、<span class="yes">允 上写</span></td><td>不能看比自已高的（防刺探），不能把内容写到低级客体（防外抛）</td></tr>
+    <tr><td class="nm"><b>基于完整性的强制策略</b></td><td>防<b>篡改／污染</b>（脏数据往上爬）</td><td><span class="no">禁 下读</span>、<span class="no">禁 上写</span>；<span class="yes">允 上读</span>、<span class="yes">允 下写</span></td><td>两条控制原则的原文；不采信低可信数据，不许低级主体改高级数据</td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 780 190" role="img" aria-label="两种强制策略的方向对比：保密性禁止上读与下写，完整性禁止下读与上写">
+      <g font-size="12.5" text-anchor="middle">
+        <rect x="40" y="30" width="150" height="34" rx="7" fill="#fee2e2" stroke="#b91c1c" stroke-width="2"/><text x="115" y="52" fill="#991b1b">高级客体（机密／权威）</text>
+        <rect x="40" y="120" width="150" height="34" rx="7" fill="#dcfce7" stroke="#15803d" stroke-width="2"/><text x="115" y="142" fill="#166534">低级客体（公开／普通）</text>
+        <text x="115" y="102" text-anchor="middle" font-size="12" fill="#4b5563">主体（用户／进程）位于其间</text>
+        <line x1="90" y1="66" x2="90" y2="118" stroke="#b91c1c" stroke-width="1.8" marker-end="url(#ar12)"/>
+        <text x="70" y="96" text-anchor="middle" font-size="11.5" fill="#b91c1c">下写</text>
+        <line x1="140" y1="118" x2="140" y2="66" stroke="#0891b2" stroke-width="1.8" marker-end="url(#ar12b)"/>
+        <text x="165" y="96" text-anchor="middle" font-size="11.5" fill="#0891b2">上读</text>
+        <rect x="250" y="30" width="240" height="60" rx="9" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+        <text x="370" y="52" font-weight="700" fill="#7c2d12">保密性策略</text>
+        <text x="370" y="72" fill="#7c2d12">✘ 禁止上读　✘ 禁止下写</text>
+        <text x="370" y="86" font-size="11" fill="#92400e">目标：秘密只向上流动</text>
+        <rect x="250" y="104" width="240" height="60" rx="9" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+        <text x="370" y="126" font-weight="700" fill="#1e40af">完整性策略</text>
+        <text x="370" y="146" fill="#1e40af">✘ 不能向下读　✘ 不能向上写</text>
+        <text x="370" y="160" font-size="11" fill="#1e3a8a">目标：可信数据只向下输出</text>
+        <rect x="530" y="30" width="220" height="134" rx="9" fill="#f8fafc" stroke="#64748b" stroke-width="1.8"/>
+        <text x="640" y="52" font-weight="700" fill="#1f2430">为什么要"分等级"</text>
+        <text x="640" y="74" font-size="11.5" fill="#4b5563">单靠用户级授权（自主）</text>
+        <text x="640" y="92" font-size="11.5" fill="#4b5563">无法阻止"合法用户无意泄露"</text>
+        <text x="640" y="112" font-size="11.5" fill="#4b5563">强制策略由系统统一判定，</text>
+        <text x="640" y="130" font-size="11.5" fill="#4b5563">所有者也不能更改</text>
+        <text x="640" y="152" font-size="11.5" fill="#4b5563">⇒ 对应第 8 章 MAC 四模式</text>
+      </g>
+      <defs>
+        <marker id="ar12" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#b91c1c"/></marker>
+        <marker id="ar12b" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#0891b2"/></marker>
+      </defs>
+    </svg>
+    <div class="cap">两套策略方向<b>正好相反</b>：保密性管"别往外漏"，完整性管"别往里灌"——考试常问"基于完整性的两条原则"，答案就是<b>不能向下读、不能向上写</b></div>
+  </div>
+  <div class="note">⚠️ 常见错答：把保密性与完整性的禁止方向<b>写反</b>。校验方法——<b>"向下读"会引入低可信数据（伤完整性）故完整性禁它；"向上写"会污染高可信数据（同样伤完整性）故完整性禁它；泄露则是"把高级内容写到低级"（下写）与"偷看高级"（上读），由保密性禁止。</b></div>
+</div>
+
+<h2 class="section" id="s3">三、多级安全模型的多实例问题与完整性锁（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 多级安全模型的<b>多实例问题</b>、<b>完整性锁的作用</b>。</div>
+  <b>多级安全模型</b>：把主体与客体都分到<b>多个安全等级</b>（如绝密／机密／秘密／公开）并按强制策略判定的模型。当<b>同一张表要同时存放不同密级的数据</b>时，就出现<b>多实例（multiple instantiation）问题</b>——同一逻辑实体的多个副本因密级不同而分散，导致一致性与授权困难。
+  <div class="th"><b>多实例问题主要表现在以下三个方面：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>方面</th><th>含义</th><th>带来的麻烦</th></tr>
+    <tr><td class="nm"><b>① 多实例关系</b></td><td>同一<b>关系（表）</b>因密级不同被分成<b>多个实例关系</b>（如"人员表-秘密级"与"人员表-机密级"）</td><td>用户看不到全貌；跨密级的查询、约束与参照完整性难以统一维护</td></tr>
+    <tr><td class="nm"><b>② 多实例元组</b></td><td>同一<b>元组（行）</b>在不同密级关系中出现<b>多个副本</b></td><td>更新一个副本会造成<b>数据不一致</b>；删除时容易漏删低密级副本（残留泄露）</td></tr>
+    <tr><td class="nm"><b>③ 多实例元素</b></td><td>同一元组中的<b>某个数据元素（字段值）</b>有多个密级版本</td><td><b>字段级密级</b>使视图、授权与审计复杂化，聚合统计易失真</td></tr>
+  </table></div>
+  <div class="th"><b>完整性锁的作用（识记句）：</b>完整性锁的目的是<b>能够让用户使用任何数据库管理器，实施或授权对敏感数据的访问</b>。</div>
+  <div class="note">🔑 理解补充：完整性锁＝把<b>数据项与"谁能读写它"的安全属性锁在一起</b>，使得<b>无论用户通过哪种数据库管理器（客户端工具、应用、命令行）访问</b>，安全规则都<b>一致生效</b>——从而既防止绕过某个工具的越权，又支持由授权者<b>把访问权再授予他人</b>。答"作用"时把上面那句原文写上即可得分。</div>
+</div>
+
+<h2 class="section" id="s4">四、数据库服务器的安全漏洞（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 数据库的<b>服务器安全漏洞</b>。</div>
+  <b>数据库服务器的安全漏洞种类繁多、危害性严重，是数据库系统受到攻击的主要原因。</b>按<b>来源</b>大致分为 <b>4 类</b>：
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>漏洞来源</th><th>典型表现</th><th>处置方向</th></tr>
+    <tr><td>1</td><td class="nm"><b>默认安装漏洞</b></td><td><b>默认账号／空口令或弱口令</b>（如 sa、sys）、默认监听端口与示例库、安装时遗留的高权限账号</td><td>装完<b>立刻改口令、删除示例与无用账号</b>、改默认端口、限制监听地址</td></tr>
+    <tr><td>2</td><td class="nm"><b>人为使用漏洞</b></td><td>DBA <b>随意授予dba／超级权限</b>、口令共享与外泄、把生产库开放给个人电脑、不记日志、随意导数据</td><td><b>职责分离与最小特权</b>、账号专用与审批、集中审计、口令策略</td></tr>
+    <tr><td>3</td><td class="nm"><b>数据库设计缺陷</b></td><td>模式设计不合理导致<b>约束缺失／权限挂错</b>、视图与存储过程暴露敏感列、<b>SQL 注入</b>（拼接语句未校验）</td><td>安全建模阶段就定<b>分级与授权方案</b>、用参数化语句与最小视图、代码审计</td></tr>
+    <tr><td>4</td><td class="nm"><b>数据库产品漏洞</b></td><td>DBMS 自身<b>程序缺陷与后门</b>、扩展存储过程（如命令执行）、补丁未及时发布造成的已知漏洞</td><td><b>跟踪补丁并按测试—上线流程更新</b>、关闭不必要的组件与扩展、打基线加固配置</td></tr>
+  </table></div>
+  <div class="note">🔑 口诀记四类来源："<b>默认—人为—设计—产品</b>"（从"装好那一刻"到"用的过程"到"设计"再到"软件本身"）。这条链正好说明：<b>数据库安全不能只靠 DBMS，必须与操作系统、网络（第 8 章防火墙）、入侵防御（第 9 章）层层配合。</b></div>
+</div>
+
+<h2 class="section" id="s5">五、备份方案的组成与备份方法分类（识记）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 系统<b>备份方案的组成</b>、网络数据库<b>备份的方法和分类</b>；<span class="lvl b">领会</span> <b>应用需求与备份方法选择</b>、<b>软件备份功能组成</b>。</div>
+  <div class="th"><b>一个完整的系统备份方案应由 4 部分组成（必背）：</b></div>
+  <div class="flow">
+    <span>① 备份硬件</span><span>② 备份软件</span><span>③ 日常备份制度</span><span>④ 灾难恢复措施</span>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>组成</th><th>包括什么</th><th>易被忽略的点</th></tr>
+    <tr><td class="nm"><b>① 备份硬件</b></td><td>磁带机／磁带库、磁盘阵列与备份一体机、NAS／SAN、异地存储与介质保管设备</td><td>硬件本身会坏 ⇒ <b>介质也要冗余</b>（异地、多份）</td></tr>
+    <tr><td class="nm"><b>② 备份软件</b></td><td>数据库备份工具（SQL*PLUS、OEM、RMAN 等）与<b>企业级备份管理软件</b>（调度、介质管理、恢复）</td><td>只备份不<b>验证</b>等于没备份 ⇒ 需<b>定期做恢复测试</b></td></tr>
+    <tr><td class="nm"><b>③ 日常备份制度</b></td><td><b>备份周期与时间表</b>、保留与轮换策略（如按周轮换、月度长期保留）、责任人与交接、记录台账</td><td>把"谁来备、何时备、存多久"写成<b>制度</b>而非口头习惯</td></tr>
+    <tr><td class="nm"><b>④ 灾难恢复措施</b></td><td><b>恢复流程与预案</b>、RTO／RPO 目标、备用站点与切换演练、灾难发生时的组织与通报</td><td>备份是手段，<b>恢复才是目的</b>——必须<b>演练</b>过</td></tr>
+  </table></div>
+  <div class="th"><b>网络数据库的备份种类繁多，根据不同需求可以选择相应的最佳备份方法。常用的备份方法有以下几种（五对）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>#</th><th>方法（分类角度）</th><th>含义</th><th>取舍</th></tr>
+    <tr><td>1</td><td class="nm"><b>物理备份</b> 与 <b>逻辑备份</b></td><td>物理＝<b>复制数据文件／控制文件／日志等底层文件</b>；逻辑＝<b>导出对象与数据（SQL／转储文件）</b>，与存储结构无关</td><td>物理<b>恢复快、可整库还原</b>；逻辑<b>灵活可跨版本／挑对象</b>，但大对象慢</td></tr>
+    <tr><td>2</td><td class="nm"><b>一致性备份</b> 与 <b>不一致性备份</b></td><td>一致性＝备份得到的数据<b>在某一时刻是自洽完整的</b>；不一致＝备份期间仍在写入，各文件不在同一时间点</td><td>不一致备份必须<b>配合归档日志前滚</b>才能恢复一致</td></tr>
+    <tr><td>3</td><td class="nm"><b>全数据库备份</b> 与 <b>部分数据库备份</b></td><td>全库＝<b>整个数据库</b>一次备完；部分＝只备<b>关键表空间／数据文件／库</b></td><td>全库<b>耗时长、占用大</b>；部分备份<b>灵活、窗口短</b>，需规划组合</td></tr>
+    <tr><td>4</td><td class="nm"><b>联机备份</b> 与 <b>脱机备份</b></td><td>联机＝<b>数据库打开状态下</b>备份（＝<b>热备份</b>）；脱机＝<b>数据库正常关闭后</b>备份（＝<b>冷备份</b>）</td><td>联机<b>不停业务但要归档模式</b>；脱机<b>简单一致但要停机</b>（详见下一节）</td></tr>
+    <tr><td>5</td><td class="nm"><b>不同工具的备份</b></td><td>按<b>使用的工具</b>区分：SQL*PLUS／OEM 备份向导、RMAN、第三方备份软件、操作系统复制命令等</td><td>工具决定<b>能否点恢复、能否压缩与并行、能否集中调度</b></td></tr>
+  </table></div>
+  <div class="th"><b>软件备份的功能组成（六项，教材原列）：</b>①<b>磁带驱动器的管理</b>；②<b>磁带库的管理</b>；③<b>备份数据的管理</b>；④<b>数据格式的管理</b>；⑤<b>备份策略制定</b>；⑥<b>数据恢复工作</b>。</div>
+  <div class="note">🔑 记"<b>两管硬件（驱动器、库）+ 两管数据（备份数据、数据格式）+ 一策略 + 一恢复</b>"。选方法时按<b>业务能否停机、允许丢多少数据（RPO）、多久要恢复（RTO）、存储预算</b>四个问题定：能停 ⇒ 脱机冷备；不能停 ⇒ 联机热备＋归档；量大 ⇒ 全库低频＋部分高频组合。</div>
+  <div class="note">ℹ️ 业界还常用<b>完全备份／增量备份／差异备份</b>这组概念（增量只备上次备份后的变化、差异只备上次<b>完全</b>备份后的变化）。教材以"全数据库备份和部分数据库备份"表述，答题<b>以教材口径为主</b>，把这组作为补充说明即可。</div>
+</div>
+
+<h2 class="section" id="s6">六、物理热备份与冷备份的实施方法和特点（简单应用）⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 物理<b>热备份</b>和<b>冷备份</b>的<b>实施方法和特点</b>。</div>
+  <b>物理热备份</b>也是<b>联机备份</b>，是指<b>在数据库打开状态下进行的备份</b>，<b>只能运行在归档模式下</b>，使用联机备份时<b>要避免出现数据裂块</b>（备份期间页被改写导致块内不一致，故需"置为备份模式"）。
+  <div class="th"><b>热备份的使用方法（教材步骤，应用题按此写）：</b>可以使用 <b>SQL*PLUS 程序和 OEM 中的备份向导</b>进行热备份。在进行热备份之前，<b>应将数据库置为归档模式</b>——该操作必须<b>以 DBA 的角色重启数据库并进入 MOUNT 状态</b>，然后执行 <b>ALTER DATABASE 命令</b>修改数据库的归档模式。在<b>设置完数据库归档模式后，再将数据库打开</b>，<b>将数据库置为备份模式</b>，这样<b>数据库文件在备份期间不会改变</b>。</div>
+  <div class="flow">
+    <span>① 以 DBA 角色重启并进入 <b>MOUNT</b></span><i>→</i><span>② <b>ALTER DATABASE</b> 改为归档模式</span><i>→</i><span>③ 打开数据库</span><i>→</i><span>④ 将表空间／数据文件<b>置为备份模式</b></span><i>→</i><span>⑤ 操作系统复制文件</span><i>→</i><span>⑥ <b>结束备份模式</b>并备份归档日志</span>
+  </div>
+  <pre class="sql"><span class="cm">-- 关键操作示意（Oracle 风格，与教材步骤对应）</span>
+<span class="kw">STARTUP</span> MOUNT;                          <span class="cm">-- ① 以 DBA 角色重启，先进入 MOUNT 状态</span>
+<span class="kw">ALTER DATABASE</span> ARCHIVELOG;              <span class="kw">ALTER DATABASE OPEN;</span>  <span class="cm">-- ② 改为归档模式后 ③ 打开数据库</span>
+<span class="kw">ALTER TABLESPACE</span> ts_data <span class="kw">BEGIN</span> BACKUP;  <span class="cm">-- ④ 置为备份模式：备份期间文件不会被改变</span>
+<span class="cm">-- ⑤ 用操作系统命令复制该表空间的数据文件（此时数据库是打开的）</span>
+<span class="kw">ALTER TABLESPACE</span> ts_data <span class="kw">END</span> BACKUP;    <span class="cm">-- ⑥ 结束备份模式，再备份归档日志以便点恢复</span></pre>
+  <div class="th"><b>热备份的特点（五条，必背）：</b></div>
+  <ol class="steps">
+    <li><b>备份时数据库可以是打开的</b>（业务不中断，属联机备份）；</li>
+    <li><b>热备份可以用来进行点恢复</b>（配合归档日志可恢复到<b>指定时刻</b>）；</li>
+    <li><b>初始化参数文件、归档日志在数据库正常运行时是关闭的</b>（不随热备份一起做），<b>可用操作系统命令复制</b>；</li>
+    <li><b>可以对几乎所有的数据库实体进行恢复</b>；</li>
+    <li><b>恢复速度快</b>，<b>大多数情况下在数据库工作时就可以完成恢复</b>。</li>
+  </ol>
+  <div class="th"><b>冷备份（脱机备份）的实施与特点（对照记忆）：</b><b>在数据库正常关闭后</b>，用<b>操作系统命令复制</b>全部<b>数据文件、控制文件、联机重做日志与初始化参数文件</b>；打开数据库恢复。它<b>一致性天然成立、操作简单</b>，但<b>必须停机</b>，且只能<b>恢复到备份时刻</b>（<b>不能点恢复</b>，因为其间没有归档日志可前滚）。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>比较项</th><th>热备份（联机）</th><th>冷备份（脱机）</th></tr>
+    <tr><td class="nm"><b>数据库状态</b></td><td><b>打开</b>状态下备份，业务继续运行</td><td><b>关闭</b>（正常关闭）后复制文件</td></tr>
+    <tr><td class="nm"><b>前提条件</b></td><td><b>必须运行在归档模式</b>；须<b>置／结束备份模式</b>避免<b>数据裂块</b></td><td>无归档要求；<b>必须干净关闭</b>（异常关闭后的文件集不可用）</td></tr>
+    <tr><td class="nm"><b>能否点恢复</b></td><td><span class="yes">能</span>（备份 + 归档日志前滚到指定时刻）</td><td><span class="no">不能</span>，只能回到备份时刻，<b>丢失其后的改动</b></td></tr>
+    <tr><td class="nm"><b>对业务影响</b></td><td>不停机，但<b>占用 I/O、性能有影响</b>；操作复杂、易出错</td><td><b>需停机</b>，影响可用性；操作简单一致</td></tr>
+    <tr><td class="nm"><b>恢复范围与速度</b></td><td>可恢复<b>几乎所有数据库实体</b>，<b>恢复快</b>、多数可边运行边恢复</td><td>只能<b>整库（或整组文件）还原</b>，恢复需再次停机</td></tr>
+    <tr><td class="nm"><b>适用场景</b></td><td>7×24 关键业务系统（银行、电商、生产库）</td><td>可停机维护的小型库、数据仓库、初始化基线备份</td></tr>
+  </table></div>
+  <div class="note">💡 应用题（"为某单位设计数据库备份方案"）的<b>四段答法</b>：<b>①需求分析</b>——能否停机、可容忍丢失多少数据（RPO）、要求多久恢复（RTO）、数据量与增长；<b>②方案组成</b>——四件套（硬件／软件／日常备份制度／灾难恢复措施）分别选什么；<b>③方法与排程</b>——不能停 ⇒ <b>热备份</b>（先置归档模式，表空间 BEGIN/END BACKUP）＋每日归档日志；能停 ⇒ 周末<b>冷备份</b>为基线，工作日增量；关键表空间做<b>部分备份</b>缩短窗口；介质<b>异地两份</b>；<b>④验证与预案</b>——软件备份六功能（驱动器、库、备份数据、数据格式、策略、恢复）齐备，<b>每季度做恢复演练</b>，写明切换流程与责任人。收尾一句：<b>"备份的价值取决于能不能恢复，所以灾难恢复措施与演练是方案的组成部分，而不是附注。"</b></div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <ol class="steps">
+    <li><b>四项安全策略</b>：存在安全、可用性、机密性、完整性（从这<b>四个方面</b>着重考虑）。</li>
+    <li><b>七项安全需求</b>：物理完整性、逻辑完整性、元素安全性、可审计性、访问控制、身份验证、可用性。</li>
+    <li><b>两种强制策略</b>：基于保密性（禁上读、禁下写）、<b>基于完整性（不能向下读、不能向上写）</b>。</li>
+    <li><b>多实例问题三方面</b>：多实例关系、多实例元组、多实例元素；<b>完整性锁</b>＝让用户使用<b>任何数据库管理器</b>都能<b>实施或授权对敏感数据的访问</b>。</li>
+    <li><b>服务器漏洞四来源</b>：默认安装、人为使用、数据库设计缺陷、数据库产品。</li>
+    <li><b>备份方案四组成</b>：硬件、软件、日常备份制度、灾难恢复措施；<b>五对备份方法</b>：物理／逻辑、一致／不一致、全库／部分、联机／脱机、不同工具；<b>软件备份六功能</b>：磁带驱动器、磁带库、备份数据、数据格式、策略制定、数据恢复。</li>
+    <li><b>热备份</b>＝联机备份，<b>只能在归档模式下</b>做，流程 <b>MOUNT → ALTER DATABASE 归档 → 打开 → 置备份模式 → 复制 → 结束备份模式</b>；五特点记住"<b>开着备、能点恢复、参数文件与归档日志靠 OS 复制、几乎全能恢复、恢复快</b>"。<b>冷备份</b>简单一致但停机、不能点恢复。</li>
+  </ol>
+  <div class="note">🎯 6 学时分配：安全策略与需求 1.5 → 强制访问控制两策略与多实例 1.5 → 服务器漏洞 0.5 → 备份组成与方法 1.5 → 冷热备份实施与特点 + 方案设计 1。整章<b>只考清单与实施</b>，计算量为零，属于"背了就有分"的收官章。⚠️ 页首"✂️ 10.3、10.5、10.6"按<b>教材节号</b>统计，但考纲<b>考核知识点（一）～（四）全部要求掌握</b>（含"数据库服务器安全漏洞"），以清单为准。</div>
+  <div class="gotos">
+    <a href="../入侵防御/入侵防御系统.html">← 第 9 章 入侵防御系统</a>
+    <a href="../index.html">📚 回到知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 十章考纲对照</a>
+  </div>
+</div>
+
+<footer class="footer">
+  信息与网络安全管理（03344）知识点速记卡 · 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）· 指定教材《网络空间信息安全》苏永红、蒋天发 主编，电子工业出版社 2022 年第 2 版<br>
+  <a href="../../../index.html">🏠 返回首页</a> · <a href="../../考纲.html">📋 本课程考纲</a>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部">↑</a>
+</body>
+</html>
