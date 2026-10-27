@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 10 章 数据库设计｜六步流程 · E-R 图 · 关系模式转换</title>
+<meta name="description" content="数据库原理与技术 13009 第 10 章速记卡：数据库设计的特点与方法、六个基本步骤；需求分析的任务与方法；概念结构设计（局部 E-R 模型设计、全局 E-R 模型合并与冲突消解）；逻辑结构设计与 E-R 图向关系模式的转换规则（1:1 / 1:n / m:n 三种联系的处理）；物理结构设计任务。含考纲·题型举例的医院病房 E-R 综合题完整解答（画 E-R 图、转关系模式并标主码外码、建表）。建议 4 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#15803d,#0369a1)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+  .pk{text-decoration:underline;text-decoration-thickness:1.5px}
+  .fk{text-decoration:underline wavy;text-decoration-thickness:1.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 10 章 · 数据库设计 ⭐ 综合题必考</h1>
+  <p>整卷最后一道<b>综合题</b>基本就出自本章：<b>给一段业务描述 → 画 E-R 图 → 转成关系模式并标出主码/外码 → 写出建表 SQL</b>。四步链条，每步都有固定画法与固定规则。建议 4 学时（分值不低，性价比极高）。</p>
+  <span class="pill">建议 4 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：概念设计与逻辑设计</span><span class="pill">难点：E-R 图转关系模式</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../规范化/关系数据库设计理论.html">← 第 9 章</a>
+    <a href="../index.html">→ 知识点导航</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、数据库设计概述：特点·方法·六步（识记/领会）⭐</a>
+  <a href="#s2">二、需求分析：任务与方法（识记/领会）</a>
+  <a href="#s3">三、概念结构设计：局部与全局 E-R（简单/综合应用）⭐⭐</a>
+  <a href="#s4">四、逻辑结构设计：E-R → 关系模式三条规则（综合应用）⭐⭐</a>
+  <a href="#s5">五、物理结构设计（识记）</a>
+  <a href="#s6">六、综合例题：医院病房（考纲·题型举例）</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、数据库设计概述 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据库设计的特点与方法；<span class="lvl b">领会</span> 数据库设计的基本步骤。</div>
+  <b>数据库设计</b>：根据一个部门的<b>应用需求</b>，设计出<b>最优的数据库模式</b>，建立数据库及其应用系统，有效存储数据，满足用户的信息要求和处理要求。
+  <div class="th"><b>四个特点（简答/多选）：</b>①<b>是有结构（数据模型）和行为（应用程序）两方面的设计</b>——既要设计数据库结构，又要设计与之匹配的应用程序，二者<b>结合进行</b>；②<b>是一项综合技术</b>，涉及计算机硬件、软件、数学、应用领域知识；③<b>以需求为出发点、设计为核心</b>（需求分析不当会导致整个系统失败）；④<b>周期长、花费高</b>，必须讲方法、有步骤、用工具。</div>
+  <div class="th"><b>常用方法：</b><b>生命周期法</b>（分阶段、按步骤）、<b>原型法</b>（先做出可运行原型再逐步细化）、<b>E-R 方法</b>（实体-联系方法，最常用、本章主角）、<b>面向对象方法</b>。实际设计中常<b>杂交使用</b>。</div>
+  <div class="th"><b>六个基本步骤（必须按序背，选择题常考顺序与各步任务/成果）：</b></div>
+  <ol class="steps">
+    <li><b>需求分析</b>——调查与理解：数据需求＋处理需求＋安全性与完整性要求。成果：<b>需求说明书、数据流图 DFD、数据字典 DD</b>。</li>
+    <li><b>概念结构设计</b>——把需求抽象为<b>独立于任何 DBMS 的概念模型</b>。成果：<b>E-R 图（概念模型）</b>。</li>
+    <li><b>逻辑结构设计</b>——概念模型转换为<b>所选 DBMS 支持的数据模型</b>并优化。成果：<b>关系模式集合 + 用户子模式（外模式）</b>。</li>
+    <li><b>物理结构设计</b>——为逻辑模型选择<b>存储结构与存取方法</b>。成果：<b>物理数据库定义（存储路径、索引、聚簇等）</b>。</li>
+    <li><b>数据库实施</b>——<b>建库建表、装载数据、编程与调试、试运行</b>。</li>
+    <li><b>数据库运行和维护</b>——运行监控、<b>性能监测与分析</b>、重组与重构（阶段性修订扩张）。</li>
+  </ol>
+  <div class="note">🔑 记忆：<b>"需概逻、物实维"</b>。前两布的差别是考点——<b>概念设计的结果与机器/DBMS 无关</b>，逻辑设计才开始"落地到某个 DBMS"。</div>
+</div>
+
+<h2 class="section" id="s2">二、需求分析：任务与方法</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 需求分析的任务；<span class="lvl b">领会</span> 需求分析的方法。</div>
+  <b>任务：</b>准确了解<b>现实世界</b>要"做什么"（而不是"怎么做"），包括<b>信息要求</b>（要处理和使用什么数据，导出对<b>数据</b>的需求）、<b>处理要求</b>（要完成什么处理功能与处理精度）、<b>安全性与完整性要求</b>。需求分析是<b>最重要、最难、最需要与人沟通</b>的一步，是设计开发的<b>基础</b>。</div>
+  <div class="th"><b>方法与做法：</b>①<b>建立数据流图（DFD）与数据字典（DD）</b>——DFD 描述<b>处理</b>（外部实体、加工、数据流、数据存储四种符号），DD 描述<b>数据</b>（对数据项、数据结构、数据流、数据存储、处理过程的定义），二者<b>互相配合</b>构成需求规格说明；②<b>需求调查方法</b>：访谈、问卷、参加业务实践、查阅原有系统的档案与报表、召开调查会；③<b>自顶向下逐层分解</b>的结构化分析方式。</div>
+  <div class="note">📝 <b>数据字典是"关于数据的数据"</b>（元数据），是需求分析的<b>核心工具</b>，也是后续设计、维护的<b>共同依据</b>；它一旦建立应<b>集中管理、随时修改</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、概念结构设计 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 概念结构的含义；<span class="lvl b">领会</span> 概念结构设计的方法和步骤；<span class="lvl c">简单应用</span> 局部 E-R 模型设计；<span class="lvl d">综合应用</span> 全局 E-R 模型设计。</div>
+  <b>概念结构（概念模型）</b>：将需求分析得到的用户需求<b>抽象为信息结构</b>——它是现实世界到机器世界的<b>中间层</b>，<b>独立于具体的机器和 DBMS</b>，易于向关系/网状/层次等各种数据模型转换，也易于与用户交流（因为用的是用户熟悉的实体与联系）。
+  <div class="th"><b>为什么"概念设计"要单独一步（简答）：</b>直接把需求转成关系模式不容易，且会<b>把结构与具体 DBMS 捆死</b>；先做概念设计可以①<b>与用户沟通确认</b>需求无遗漏；②<b>逻辑设计简单明确</b>（按规则机械转换即可）；③<b>系统适应性强</b>——换 DBMS 只需改逻辑设计，概念模型不变。</div>
+  <div class="th"><b>E-R 模型三要素与符号（画图必备）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>要素</th><th>符号</th><th>说明</th></tr>
+    <tr><td class="nm"><b>实体</b> Entity</td><td><b>矩形</b>，内写实体<b>型</b>名</td><td>客观存在并可相互区别的事物（可以是人、物、事、抽象概念）；<b>实体型</b>用实体名＋属性名描述，<b>实体集</b>是同一型实体的集合</td></tr>
+    <tr><td class="nm"><b>属性</b> Attribute</td><td><b>椭圆</b>，虚线与实体相连</td><td>实体拥有的性质。<b>主码（键）属性</b>在椭圆名下<b>画一条横线</b>；多值属性用<b>双线椭圆</b>；派生属性用<b>虚线椭圆</b></td></tr>
+    <tr><td class="nm"><b>联系</b> Relationship</td><td><b>菱形</b>，实线连接相关实体，边上标 <b>1 / n / m</b></td><td>实体<b>型之间</b>的关联。同一实体集内部也可有联系（如"领导-被领导"）</td></tr>
+  </table></div>
+  <b>联系的类型（按参与实体集的个数与对应关系）：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>含义</th><th>典型例子</th></tr>
+    <tr><td class="nm"><b>1 : 1</b></td><td>两个实体集<b>至多</b>一对一，甲对应一个乙、乙也只对应一个甲</td><td>一个班级只有一个班长，一个班长只带一个班；学生 ↔ 学籍卡</td></tr>
+    <tr><td class="nm"><b>1 : n</b></td><td>一方对应多方，多方中每个只对应一方一个</td><td><b>一个科室有多名医生，一名医生只属于一个科室</b>；部门—职工</td></tr>
+    <tr><td class="nm"><b>m : n</b></td><td>双方都可对应对方多个</td><td><b>学生 ↔ 课程</b>（选课）；作者 ↔ 图书</td></tr>
+  </table></div>
+  <div class="th"><b>概念结构设计的方法与步骤（领会）：</b>常用<b>自顶向下、自底向上、逐步扩张、混合</b>四种策略，其中最常用的是<b>自底向上的 E-R 方法</b>——先定义各<b>局部应用</b>的概念结构（局部 E-R 图，即<b>用户视图/外模式</b>），再把它们<b>集成</b>成全局概念结构。步骤：
+    <ol class="steps">
+      <li><b>抽象公共实体</b>：确定实体类型、属性与主码。</li>
+      <li><b>确定实体类型之间的联系</b>（含类型 1:1/1:n/m:n 与联系的属性）。</li>
+      <li><b>画局部 E-R 图</b>：按需求中的每个<b>视图（业务模块）</b>单独画一张。</li>
+      <li><b>选择适当的中心实体／共同属性作为基准，逐步合并成初步全局 E-R 图</b>（一次集成一个局部图）。</li>
+      <li><b>优化与消除冲突</b>，得到最终全局 E-R 图。</li>
+    </ol>
+  </div>
+  <div class="th"><b>集成时的三类冲突（多选/简答高发）：</b><b>属性冲突</b>（同一属性的类型、长度、取值范围或单位不一致，如"年龄"有的用整数有的用"年龄段"）；<b>命名冲突</b>（<b>同名异义</b>：不同意义取同名；<b>异名同义</b>：同一意义取不同名）；<b>结构冲突</b>（同一实体在各局部图中<b>属性组成不同</b>；同一对象在一处是实体、另一处是属性；实体间联系<b>类型不一致</b>，如 1:n 与 m:n）。</div>
+  <div class="note">🔑 <b>优化全局 E-R 图的四条标准</b>：实体尽量少、联系尽量少、<b>无冗余</b>属性与联系（能由其他属性推出的属性应去掉）、<b>结构合理</b>易扩展。</div>
+</div>
+
+<h2 class="section" id="s4">四、逻辑结构设计：E-R → 关系模式 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 逻辑结构设计的任务；<span class="lvl b">领会</span> 步骤；<span class="lvl d">综合应用</span> E-R 模型向关系模型转换。</div>
+  <b>任务：</b>把概念结构（E-R 图）转换为与选用的 DBMS 所支持的<b>数据模型</b>（此处即关系模型）相<b>吻合</b>的关系模式集合，并<b>优化</b>（规范化、调整）、为不同用户设计<b>外模式（视图）</b>、给出<b>完整性与安全性</b>控制定义。
+  <div class="th"><b>步骤：</b>①<b>初始关系模式</b>（按下面三条规则转换）；②<b>规范化优化</b>（用第 9 章方法，通常达到 3NF，删除冗余属性、合并等价模式）；③<b>评价与调整</b>（检查能否满足查询需求、是否有高效实现方式）；④<b>设计外模式与安全完整性</b>。</div>
+  <div class="th"><b>转换三条规则（背熟＋会写主码外码，综合题第 2 问的全部答案）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>转换对象</th><th>规则</th><th>结果</th></tr>
+    <tr><td class="nm"><b>每个实体型</b></td><td>直接转换成一个<b>独立的关系模式</b>；实体的<b>属性＝关系的属性</b>，实体的<b>主码＝关系的主码</b></td><td>科室、医生、病人各成一表</td></tr>
+    <tr><td class="nm"><b>1 : 1 联系</b></td><td>①<b>合并到任意一端</b>：把另一端的主码及<b>联系自身的属性</b>加入该端关系，作为外码；或②<b>单独成一个关系</b>：两端主码＋联系属性，两端主码的组合作主码</td><td>通常合并（少一张表）</td></tr>
+    <tr><td class="nm"><b>1 : n 联系</b></td><td><b>必须合并到 n 端</b>：把 <b>1 端的主码</b>和<b>联系自身的属性</b>一起加入 <b>n 端</b>的关系模式，该主码在 n 端是<b>外码</b>（若合并到 1 端会造成空值与冗余）</td><td>科室(1) → 并入 医生(n)；医生(1) → 并入 病人(n)</td></tr>
+    <tr><td class="nm"><b>m : n 联系</b></td><td><b>必须单独转换成一个关系模式</b>：各端实体的<b>主码＋联系自身的属性</b>为该关系的属性，各端<b>主码的组合</b>为该关系的<b>主码</b>，其中每个主码又是<b>外码</b></td><td>选课(学号, 课程号, 成绩)——学号、课程号组合为主码，各自是外码</td></tr>
+  </table></div>
+  <div class="note">📝 <b>答题书写要求</b>：转换结果一律写成"<b>关系名（属性，属性，…）</b>"，并在<b>主码下画直线</b>、<b>外码下画波浪线</b>（本页用 <span class="pk">下划线</span> 代直线、<span class="fk">波浪线</span> 代波浪线示意）。别忘了<b>联系的属性</b>要一起带走，这是最容易失分的地方。</div>
+  <div class="note">⚠️ 三个高频错误：①把 <b>m:n 联系</b>硬塞进某一端（导致重复组，违反 1NF）；②<b>1:n 联系合并到了 1 端</b>（一个科室行要存多个医生）；③多对多联系建表时<b>只写了一个主码</b>（应为两端主码的组合）。</div>
+</div>
+
+<h2 class="section" id="s5">五、物理结构设计（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 物理结构设计的任务。</div>
+  <b>任务：</b>为已设计的逻辑模型<b>选取最适合应用要求的物理结构</b>（存储结构与存取方法），并给出完整的物理数据库定义。具体内容包括：
+  <div class="th">①确定数据库的<b>存储记录类型、格式与存放次序</b>；②确定数据的<b>存放位置与存储结构</b>（磁盘文件组织、聚簇、表空间、分区）；③确定<b>存取路径与索引</b>（在哪些列上建什么索引，见第 6 章）；④确定<b>存储参数、自由空间与增长量</b>；⑤<b>评价</b>物理方案——主要指标是<b>存储空间开销、访问效率（响应时间）、维护开销</b>三者权衡，常需<b>折中</b>（多建索引提速但占空间并加大维护代价）。</div>
+  <div class="note">🔑 与逻辑设计的分界：<b>逻辑设计决定"有哪些表、什么列、什么约束"；物理设计决定"这些数据怎么存在盘上、怎么找得快"</b>。MySQL 中的对应物即<b>存储引擎选择（InnoDB / MyISAM）、聚簇索引、二级索引、分区表</b>。</div>
+</div>
+
+<h2 class="section" id="s6">六、综合例题：医院病房（考纲 · 题型举例）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 独立进行概念结构设计与逻辑结构设计——整卷综合题原型。</div>
+  <b>题目：</b>某医院病房计算机管理系统需要如下信息：<b>科室</b>（科室名，地址，电话）、<b>医生</b>（工作证号，姓名，职称，年龄，科室名）、<b>病人</b>（病历号，姓名，性别，主治医生工作证号）。约束：<b>一个科室有多名医生，一个医生只属于一个科室但可负责多个病人，一个病人的主治医生只有一个。</b>
+  (1) 画出上述实体联系的 E-R 图（不必画实体属性）；(2) 转换成关系模式并指出每个关系模式的主码和外码；(3) 用 SQL 语句建立"科室"表。
+  <ol class="steps">
+    <li><b>辨析联系类型。</b>科室 ∶ 医生 ＝ <b>1 : n</b>（一个科室多名医生，一名医生只属一个科室）；医生 ∶ 病人 ＝ <b>1 : n</b>（一名医生负责多个病人，一个病人只有一个主治医生）。两个联系都是 1:n ⇒ <b>都合并到 n 端</b>，不需要额外的联系表。</li>
+    <li><b>画 E-R 图</b>（矩形＝实体、菱形＝联系、边标 1/n；主码属性在椭圆内名下加横线）：
+      <div class="fig">
+        <svg viewBox="0 0 860 260" role="img" aria-label="医院病房 E-R 图：科室与医生 1:n，医生与病人 1:n">
+          <rect x="30" y="100" width="130" height="60" rx="6" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+          <text x="95" y="127" text-anchor="middle" font-size="16" fill="#14532d" font-weight="700">科室</text>
+          <text x="95" y="147" text-anchor="middle" font-size="11.5" fill="#4b5563">实体（1 端）</text>
+          <polygon points="260,100 325,130 260,160 195,130" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+          <text x="260" y="136" text-anchor="middle" font-size="14.5" fill="#92400e" font-weight="700">拥有</text>
+          <rect x="370" y="100" width="140" height="60" rx="6" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+          <text x="440" y="127" text-anchor="middle" font-size="16" fill="#1e3a8a" font-weight="700">医生</text>
+          <text x="440" y="147" text-anchor="middle" font-size="11.5" fill="#4b5563">实体（n 端 / 1 端）</text>
+          <polygon points="610,100 675,130 610,160 545,130" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+          <text x="610" y="136" text-anchor="middle" font-size="14.5" fill="#92400e" font-weight="700">诊治</text>
+          <rect x="720" y="100" width="130" height="60" rx="6" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+          <text x="785" y="127" text-anchor="middle" font-size="16" fill="#9d174d" font-weight="700">病人</text>
+          <text x="785" y="147" text-anchor="middle" font-size="11.5" fill="#4b5563">实体（n 端）</text>
+          <line x1="160" y1="130" x2="195" y2="130" stroke="#334155" stroke-width="2"/>
+          <line x1="325" y1="130" x2="370" y2="130" stroke="#334155" stroke-width="2"/>
+          <line x1="510" y1="130" x2="545" y2="130" stroke="#334155" stroke-width="2"/>
+          <line x1="675" y1="130" x2="720" y2="130" stroke="#334155" stroke-width="2"/>
+          <text x="176" y="92" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700">1</text>
+          <text x="345" y="92" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700">n</text>
+          <text x="526" y="92" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700">1</text>
+          <text x="698" y="92" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700">n</text>
+          <ellipse cx="95" cy="40" rx="58" ry="21" fill="#f1f5f9" stroke="#64748b" stroke-width="1.6"/>
+          <text x="95" y="46" text-anchor="middle" font-size="12.5" fill="#1f2430">科室名·地址·电话</text>
+          <line x1="95" y1="61" x2="95" y2="100" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <ellipse cx="440" cy="220" rx="74" ry="21" fill="#f1f5f9" stroke="#64748b" stroke-width="1.6"/>
+          <text x="440" y="226" text-anchor="middle" font-size="12.5" fill="#1f2430">工作证号·姓名·职称·年龄</text>
+          <line x1="440" y1="199" x2="440" y2="160" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3"/>
+          <ellipse cx="785" cy="40" rx="58" ry="21" fill="#f1f5f9" stroke="#64748b" stroke-width="1.6"/>
+          <text x="785" y="46" text-anchor="middle" font-size="12.5" fill="#1f2430">病历号·姓名·性别</text>
+          <line x1="785" y1="61" x2="785" y2="100" stroke="#94a3b8" stroke-width="1.6" stroke-dasharray="4 3"/>
+        </svg>
+        <div class="cap">本题两个联系都是 1:n，故不产生独立的关系模式（若出现 m:n 则必须单独成表）</div>
+      </div>
+      若题目要求<b>不画属性</b>，则只需画三个矩形＋两个菱形＋连线，并在靠近两端处标 <b>1</b> 与 <b>n</b>——务必标，标注缺失直接扣分。</li>
+    <li><b>转换为关系模式</b>（1:n 联系把 1 端主码并入 n 端；<span class="pk">直线</span>＝主码，<span class="fk">波浪线</span>＝外码）：
+      <div class="fd">
+        科室（<span class="pk">科室名</span>，地址，电话）<br>
+        医生（<span class="pk">工作证号</span>，姓名，职称，年龄，<span class="fk">科室名</span>）　<span style="color:#6b7280">——科室名是外码，参照科室(科室名)</span><br>
+        病人（<span class="pk">病历号</span>，姓名，性别，<span class="fk">主治医生工作证号</span>）　<span style="color:#6b7280">——外码，参照医生(工作证号)</span>
+      </div>
+      逐条核对：三个实体 → 三个关系模式；无 m:n 联系 → 无额外表；每个非主属性完全依赖于本表主码 → <b>均已达 3NF</b>（这一句是第 9 章与本章的衔接点，写上更稳）。
+    </li>
+    <li><b>写"科室"表的建表 SQL</b>（用第 3 章语法＋第 7 章约束）：
+      <pre class="sql"><span class="kw">CREATE TABLE</span> 科室 (                       <span class="cm">-- 也可用英文名 department，试卷允许中文表名</span>
+  科室名  <span class="kw">VARCHAR</span>(20)  <span class="kw">NOT NULL</span>,
+  地址    <span class="kw">VARCHAR</span>(50),
+  电话    <span class="kw">CHAR</span>(11),
+  <span class="kw">CONSTRAINT</span> pk_dept <span class="kw">PRIMARY KEY</span> (科室名)   <span class="cm">-- 实体完整性：主码非空且唯一</span>
+);</pre>
+      若题目接着要求建"医生"表，则外键这样写（注意<b>先建被参照表</b>）：
+      <pre class="sql"><span class="kw">CREATE TABLE</span> 医生 (
+  工作证号 <span class="kw">CHAR</span>(6) <span class="kw">PRIMARY KEY</span>,
+  姓名   <span class="kw">VARCHAR</span>(20) <span class="kw">NOT NULL</span>,
+  职称   <span class="kw">VARCHAR</span>(10),
+  年龄   <span class="kw">SMALLINT</span> <span class="kw">CHECK</span> (年龄 &gt;= 18 <span class="kw">AND</span> 年龄 &lt;= 70),   <span class="cm">-- 用户定义的完整性</span>
+  科室名 <span class="kw">VARCHAR</span>(20),
+  <span class="kw">CONSTRAINT</span> fk_doc_dept <span class="kw">FOREIGN KEY</span> (科室名) <span class="kw">REFERENCES</span> 科室(科室名)
+      <span class="kw">ON DELETE</span> <span class="kw">RESTRICT</span> <span class="kw">ON UPDATE</span> <span class="kw">CASCADE</span>   <span class="cm">-- 参照完整性：不许删还有医生的科室</span>
+);</pre>
+    </li>
+  </ol>
+  <div class="note">🔑 <b>综合题四步得分点自查表</b>：□ 联系类型（1:1 / 1:n / m:n）判断对不对并<b>标注在图上</b>；□ 实体的主码选对（题目里"科室名""工作证号""病历号"都是天然码）；□ 1:n 并到 <b>n 端</b>、m:n <b>单独成表</b>；□ 每个关系模式<b>主码画线、外码画波浪线</b>；□ 建表语句里有 <code>PRIMARY KEY</code>，需要时补 <code>FOREIGN KEY … REFERENCES</code>。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <div class="th"><b>六条一句话：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li><b>六步走</b>：需求分析 → 概念设计 → 逻辑设计 → 物理设计 → 实施 → 运行维护。</li>
+      <li><b>需求分析交两样东西</b>：数据流图 DFD（管处理）＋数据字典 DD（管数据）。</li>
+      <li><b>概念设计＝画 E-R 图</b>：矩形实体、椭圆属性、菱形联系，成果<b>与 DBMS 无关</b>。</li>
+      <li><b>集成会撞三类冲突</b>：属性冲突、命名冲突（同名异义／异名同义）、结构冲突。</li>
+      <li><b>转换三条规则</b>：实体各自成表；1:1 可并入任一端；1:n 并入 n 端；m:n 必须独立成表（主码＝两端主码组合）。</li>
+      <li><b>物理设计只管"存哪儿、怎么找得快"</b>：存储结构、索引、聚簇，评价看空间／效率／维护三平衡。</li>
+    </ol>
+  </div>
+  <div class="note">📌 学 4 学时但分值不低：综合题（E-R 图＋转换＋建表）约 10～15 分。<b>拿分技巧是把每一步都写出来</b>——即使图有小错，转换规则与建表语句仍能独立得分。</div>
+</div>
+
+<div class="gotos" style="margin-top:22px">
+  <a href="../概论/数据库概论.html">第 1 章</a>
+  <a href="../关系模型/关系数据库系统模型.html">第 2 章</a>
+  <a href="../MySQL数据库和表/建库与建表.html">第 3 章</a>
+  <a href="../表数据操作/增删改数据.html">第 4 章</a>
+  <a href="../数据查询/SELECT查询.html">第 5 章</a>
+  <a href="../视图索引/视图和索引.html">第 6 章</a>
+  <a href="../数据完整性/完整性约束.html">第 7 章</a>
+  <a href="../安全管理/用户与权限.html">第 8 章</a>
+  <a href="../规范化/关系数据库设计理论.html">第 9 章</a>
+</div>
+
+<footer>
+  <p>13009《数据库原理与技术》· 第 10 章 数据库设计 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

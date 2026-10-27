@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 2 章 数据类型、表达式和内置函数｜数值类型 / 运算符 / 内置函数</title>
+<meta name="description" content="计算机高级程序设计 08074 第 2 章速记卡：整型/浮点型/复数/布尔型描述、常量与变量、算术/关系/逻辑/位/身份/成员运算符与优先级结合性、类型转换/数学/输入输出/range/len/type 内置函数。按考纲能力层次标注。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔢</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 2 章 · 基本数据类型、表达式和内置函数</h1>
+  <p>送分章 + 基础章：数值类型怎么写、运算符怎么用、内置函数有哪些。单选的运算符优先级题、内置函数结果题都在这里。建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">重点：数值类型描述、运算符</span><span class="pill">难点：内置函数</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../概述/Python概述.html">← 第 1 章</a>
+    <a href="../控制结构/程序控制结构.html">→ 第 3 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、基本数据类型：int / float / complex / bool（领会）</a>
+  <a href="#s2">二、常量与变量（识记）</a>
+  <a href="#s3">三、运算符与表达式 ⭐（简单应用）</a>
+  <a href="#s4">四、运算符优先级与结合性（识记）</a>
+  <a href="#s5">五、常用内置函数（简单应用）</a>
+  <a href="#s6">六、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、基本数据类型</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 整型、浮点型、复数型、布尔型数据的描述方法。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>说明</th><th>写法举例</th></tr>
+    <tr><td class="nm">int 整型</td><td>整数，无长度限制</td><td><code>10, -3, 0b101(二进制), 0o17(八进制), 0x1F(十六进制=31)</code></td></tr>
+    <tr><td class="nm">float 浮点型</td><td>带小数点的数</td><td><code>3.14, .5, 5., 1.5e3(=1500.0)</code></td></tr>
+    <tr><td class="nm">complex 复数</td><td>实部 + 虚部，虚部用 <code>j</code></td><td><code>3+4j</code>；<code>z.real</code> 取实部、<code>z.imag</code> 取虚部</td></tr>
+    <tr><td class="nm">bool 布尔</td><td>只有两个值</td><td><code>True / False</code>（首字母大写）；实质 <code>True=1, False=0</code></td></tr>
+    <tr><td class="nm">str 字符串</td><td>用引号括起来的一串字符</td><td><code>"hi", 'ok', """多行"""</code></td></tr>
+  </table></div>
+  <pre class="py"><span class="kw">print</span>(<span class="st">0x1F</span>)       <span class="cm"># 31  —— 十六进制</span>
+<span class="kw">print</span>(<span class="st">1.5e3</span>)     <span class="cm"># 1500.0 —— e 后可正负，指数是整数</span>
+<span class="kw">print</span>(<span class="st">True</span> + <span class="st">True</span>) <span class="cm"># 2 —— bool 参与运算按 1 算</span></pre>
+</div>
+
+<h2 class="section" id="s2">二、常量与变量</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 常量与变量概念、组合数据类型定义。</div>
+  <ul>
+    <li><b>常量</b>：值不能变的量（数字、字符串字面量；Python 无 <code>const</code>，约定用大写字母名表常量如 <code>PI=3.14</code>）。</li>
+    <li><b>变量</b>：不需要先声明类型，<b>赋值即创建</b>，类型由所赋的值决定，可随时改（动态类型）。<code>a=5; a="hi"</code> 合法。</li>
+    <li><b>赋值</b>：<code>=</code> 是赋值号（右→左），不是等号；支持 <code>a=b=c=1</code> 链式、<code>a,b=b,a</code> 交换、<code>a,b=[1,2]</code> 序列解包。</li>
+    <li><b>组合数据类型</b>：多个数据元素组织在一起（列表/元组/集合/字典，详见第 4 章）。</li>
+  </ul>
+  <pre class="py">a, b = 3, 5
+a, b = b, a        <span class="cm"># 交换 → a=5, b=3（Python 独有巧写法）</span>
+<span class="kw">print</span>(<span class="st">type</span>(a))     <span class="cm"># &lt;class 'int'&gt;</span></pre>
+</div>
+
+<h2 class="section" id="s3">三、运算符与表达式 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 算术、关系、逻辑、成员测试运算符；<span class="lvl b">领会</span> 位运算符、身份运算符。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类别</th><th>运算符</th><th>注意 / 易错</th></tr>
+    <tr><td class="nm">算术</td><td><code>+ - * / // % **</code></td><td><code>/</code> 永远得<b>浮点</b>（6/3=2.0）；<code>//</code> 整除向下取整（-7//2=-4）；<code>%</code> 取余；<code>**</code> 幂（2**3=8）</td></tr>
+    <tr><td class="nm">关系</td><td><code>&gt; &lt; &gt;= &lt;= == !=</code></td><td>比较返回 bool；<code>==</code> 判等、<code>=</code> 赋值别混</td></tr>
+    <tr><td class="nm">逻辑</td><td><code>and or not</code></td><td>用单词不是 <code>&amp;&amp;</code>；短路求值</td></tr>
+    <tr><td class="nm">赋值</td><td><code>= += -= *= /= //= **=</code></td><td><code>a+=1</code> 等价 <code>a=a+1</code></td></tr>
+    <tr><td class="nm">成员</td><td><code>in / not in</code></td><td>判断元素是否在序列中：<code>2 in [1,2,3]</code> → True</td></tr>
+    <tr><td class="nm">身份</td><td><code>is / is not</code></td><td>判断是否<b>同一对象</b>（内存地址），不是判值相等</td></tr>
+    <tr><td class="nm">位运算</td><td><code>&amp; | ^ ~ &lt;&lt; &gt;&gt;</code></td><td>按二进制位操作：<code>&lt;&lt;</code> 左移乘2、<code>&gt;&gt;</code> 右移除2</td></tr>
+  </table></div>
+  <pre class="py"><span class="kw">print</span>(7 / 2)    <span class="cm"># 3.5（/ 得浮点）</span>
+<span class="kw">print</span>(7 // 2)   <span class="cm"># 3（整除）</span>
+<span class="kw">print</span>(-7 // 2)  <span class="cm"># -4（向负无穷取整）</span>
+<span class="kw">print</span>(2 <span class="kw">and</span> 3)  <span class="cm"># 3（都真取后者）</span>
+<span class="kw">print</span>(0 <span class="kw">or</span> 5)   <span class="cm"># 5（前者假取后者）</span>
+<span class="kw">print</span>(1 &lt;&lt; 3)   <span class="cm"># 8（1 左移 3 位 = 1*2³）</span></pre>
+</div>
+
+<h2 class="section" id="s4">四、运算符优先级与结合性</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 运算符优先级和结合性。</div>
+  <b>从高到低（记这条主干就够用）：</b>
+  <div class="th"><code>() 括号 → ** 幂 → 一元(+/-/not) → * / // % → + - → 移位 → &amp; → ^ → | → 比较(&gt; &lt; == !=) → not → and → or → 赋值</code></div>
+  <ul>
+    <li><b>幂 <code>**</code> 右结合</b>：<code>2**3**2 = 2**(3**2) = 2**9 = 512</code>。</li>
+    <li>其余算术运算左结合；同级从左到右。</li>
+    <li>不确定就<b>加括号</b>，考试时也最稳。</li>
+  </ul>
+</div>
+
+<h2 class="section" id="s5">五、常用内置函数</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 数学运算、类型转换、输入输出、range/len/type；<span class="lvl a">识记</span> 迭代器函数。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类别</th><th>函数</th><th>作用</th></tr>
+    <tr><td class="nm">数学</td><td><code>abs() max() min() sum() round() pow()</code></td><td><code>round(3.6)=4</code>；<code>pow(2,3)=8</code></td></tr>
+    <tr><td class="nm">类型转换</td><td><code>int() float() str() bool() list() tuple() set()</code></td><td><code>int("12")=12</code>；<code>str(12)="12"</code></td></tr>
+    <tr><td class="nm">输入输出</td><td><code>print() input()</code></td><td><b><code>input()</code> 返回的永远是字符串</b>，要算数得 <code>int(input())</code></td></tr>
+    <tr><td class="nm">序列/信息</td><td><code>range() len() type() id() ord() chr()</code></td><td><code>len("abc")=3</code>；<code>type(x)</code> 看类型；<code>ord('A')=65</code></td></tr>
+    <tr><td class="nm">迭代器</td><td><code>iter() next() enumerate() zip()</code></td><td><code>enumerate</code> 带下标、<code>zip</code> 并行打包</td></tr>
+  </table></div>
+  <div class="th"><code>range</code> 三要点：<code>range(n)</code>→0..n-1；<code>range(a,b)</code>→a..b-1（<b>含头不含尾</b>）；<code>range(a,b,step)</code> 带步长。<code>list(range(1,10,2))=[1,3,5,7,9]</code>。</div>
+  <pre class="py">s = <span class="st">input</span>(<span class="st">"输入数字："</span>)   <span class="cm"># s 是 str</span>
+n = <span class="st">int</span>(s)                <span class="cm"># 转成整数才能运算</span>
+<span class="kw">print</span>(<span class="st">abs</span>(-5), <span class="st">max</span>(1,9,3), <span class="st">sum</span>([1,2,3]))  <span class="cm"># 5 9 6</span></pre>
+</div>
+
+<h2 class="section" id="s6">六、本章速记小结</h2>
+<div class="note">
+  <b>最易错 4 点：</b>① <code>/</code> 结果一定是 float；② <code>//</code> 向<b>负无穷</b>取整（-7//2=-4）；③ <code>input()</code> 返回字符串；④ <code>=</code> 赋值、<code>==</code> 判等，<code>is</code> 判身份。<br>
+  <b>优先级主干：</b>括号→幂→单目→乘除→加减→比较→not→and→or。<b>幂右结合</b>，其余左结合。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 2 章 数据类型、表达式和内置函数 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

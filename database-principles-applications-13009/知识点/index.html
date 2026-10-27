@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>数据库原理与应用 13009 · 知识点导航</title>
+<meta name="description" content="数据库原理与应用（基于 MySQL）13009 知识点导航：按考纲 10 章拆成 10 页速记卡，每页按考纲能力层次（识记/领会/简单应用/综合应用）组织，含 MySQL/SQL 语句示例与易错点。指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗄️</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#7c3aed)}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 6px}
+  .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:118px}
+  .pcard:hover{border-color:var(--brand);background:#f5faff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.10)}
+  .pcard .t{font-weight:700;color:var(--brand);margin-bottom:4px;font-size:15px}
+  .pcard .t .ico{margin-right:6px}
+  .pcard .d{font-size:13px;color:var(--muted);line-height:1.65}
+  .pcard .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;margin-right:6px;margin-top:6px}
+  .pcard .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .pcard .badge.hot{background:#fce7f3;color:#be185d}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 20px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .jump .lbl{font-size:12.5px;color:var(--muted);margin-right:4px}
+  .jump a{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-weight:600;transition:.15s}
+  .jump a:hover{background:var(--brand);color:#fff}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>数据库原理与应用 13009 · 知识点导航</h1>
+  <p>按考纲 <b>10 章</b>拆成 <b>10 页速记卡</b>，每页按<b>考核知识点 + 能力层次（识记/领会/简单应用/综合应用）</b>组织，配 MySQL 8 语句示例与易错点。<b>指定教材是《数据库原理与应用（基于 MySQL）》（赵明渊主编，清华大学出版社 2022 年版）</b>，平台就是 MySQL，别买成 SQL Server / Oracle 版。</p>
+  <span class="pill">10 章速记卡 · 64 学时</span><span class="pill">考纲驱动</span><span class="pill">🚫 教材 3/9/10/11/13/14/17 章不考</span>
+  <div class="gotos">
+    <a href="../../index.html">🏠 首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+  </div>
+</header>
+
+<div class="note">
+  ⏰ <b>本知识点为「考纲驱动 + 公开资料补充」版：</b>13009 是广东新开课，<b>暂无可靠成套真题</b>，故页面标注的是<b>考纲能力层次</b>而非真题题号；内容深度以覆盖考纲考核知识点为目标，拔高仍需翻教材原文。<br>
+  ⚠️ <b>翻书前必看：</b>考纲章号 ≠ 教材章号（教材中间有 7 章不考，跳过去了）。哪一章对应教材第几章，请查<a href="../考纲.html#chapters">考纲页</a>的「考纲章 → 教材章」映射表，本页各卡一律<b>按考纲章号</b>编号。
+</div>
+
+<nav class="jump">
+  <span class="lbl">📍 章节快速跳转：</span>
+  <a href="#g1">1 概论</a>
+  <a href="#g1">2 关系模型</a>
+  <a href="#g2">3 建库建表</a>
+  <a href="#g2">4 增删改</a>
+  <a href="#g2">5 数据查询</a>
+  <a href="#g3">6 视图索引</a>
+  <a href="#g3">7 完整性</a>
+  <a href="#g3">8 安全管理</a>
+  <a href="#g4">9 设计理论</a>
+  <a href="#g4">10 数据库设计</a>
+</nav>
+
+<h2 class="section" id="g1">原理与概念（第 1–2 章 · 10 学时）</h2>
+<p class="section-sub">概念题主场：选择、简答几乎都从这里出。把"三级模式两级映像""关系运算""三类完整性规则"背死，是全套卷的送分地基。</p>
+<div class="pgrid">
+  <a class="pcard" href="概论/数据库概论.html">
+    <div class="t"><span class="ico">🗄️</span>第 1 章 · 数据库概论</div>
+    <div class="d">DB/DBMS/DBS 三者关系、数据管理三阶段、<b>数据模型三要素与分类</b>、<b>三级模式两级映像</b>、数据库系统组成、大数据简介</div>
+    <span class="badge">4 学时</span><span class="badge hot">简答：DBMS 功能</span>
+  </a>
+  <a class="pcard" href="关系模型/关系数据库系统模型.html">
+    <div class="t"><span class="ico">🔗</span>第 2 章 · 关系数据库系统模型</div>
+    <div class="d">关系术语（元组/属性/域/分量）、<b>关系完整性三规则</b>、关系代数五运算 σ π ⋈ ∪ − ÷、SQL 语言组成与特点</div>
+    <span class="badge">6 学时</span><span class="badge hot">设计题：关系代数</span>
+  </a>
+</div>
+
+<h2 class="section" id="g2">MySQL 操作（第 3–5 章 · 24 学时）</h2>
+<p class="section-sub">⭐ 全课程分值最重的一块，尤其<b>第 5 章数据查询（12 学时）</b>——SELECT 一定要手写到能默，连接与子查询要能互译。</p>
+<div class="pgrid">
+  <a class="pcard" href="MySQL数据库和表/建库与建表.html">
+    <div class="t"><span class="ico">🛠️</span>第 3 章 · MySQL 数据库和表</div>
+    <div class="d">MySQL 安装与登录、<b>CREATE/ALTER/DROP DATABASE</b>、数据类型选型、<b>CREATE/ALTER/DROP TABLE</b>、列属性与约束、information_schema 查看结构</div>
+    <span class="badge">6 学时</span><span class="badge">DDL 语法</span>
+  </a>
+  <a class="pcard" href="表数据操作/增删改数据.html">
+    <div class="t"><span class="ico">✏️</span>第 4 章 · 表数据操作</div>
+    <div class="d">INSERT 四种写法、INSERT…SELECT、<b>UPDATE / DELETE / TRUNCATE</b> 对比、REPLACE、事务与 <b>COMMIT / ROLLBACK</b>、用户变量</div>
+    <span class="badge">6 学时</span><span class="badge">DML 语法</span>
+  </a>
+  <a class="pcard" href="数据查询/SELECT查询.html">
+    <div class="t"><span class="ico">🔍</span>第 5 章 · 数据查询 ⭐⭐</div>
+    <div class="d"><b>SELECT 七子句执行顺序</b>、条件与通配符、聚合函数与 GROUP BY/HAVING、ORDER BY LIMIT、<b>内/左/右连接、自连接</b>、子查询（ANY/ALL/EXISTS/IN）、UNION</div>
+    <span class="badge hot">12 学时 · 最大章</span><span class="badge hot">大题必出</span>
+  </a>
+</div>
+
+<h2 class="section" id="g3">对象与安全（第 6–8 章 · 18 学时）</h2>
+<p class="section-sub">语句记忆章：视图/索引/约束/权限四类对象的"创建—查看—修改—删除"套路高度对称，记一套就够用三章。</p>
+<div class="pgrid">
+  <a class="pcard" href="视图索引/视图和索引.html">
+    <div class="t"><span class="ico">🗂️</span>第 6 章 · 视图和索引</div>
+    <div class="d">视图含义与<b>五大优点</b>、CREATE/ALTER/DROP VIEW、可更新视图的条件与 <b>WITH CHECK OPTION</b>、索引分类与<b>建索引的建议</b>、三种创建两种删除</div>
+    <span class="badge">6 学时</span><span class="badge">难点：视图消解</span>
+  </a>
+  <a class="pcard" href="数据完整性/完整性约束.html">
+    <div class="t"><span class="ico">🔒</span>第 7 章 · 数据完整性</div>
+    <div class="d">三类完整性与约束机制优点、<b>主键 vs 唯一</b>、外键六条规则与<b>级联动作 CASCADE/SET NULL/RESTRICT</b>、CHECK 与非空、四类约束<b>建表与 ALTER 两套写法</b></div>
+    <span class="badge">6 学时</span><span class="badge hot">综合应用</span>
+  </a>
+  <a class="pcard" href="安全管理/用户与权限.html">
+    <div class="t"><span class="ico">🛡️</span>第 8 章 · 安全管理</div>
+    <div class="d"><b>mysql 库六张权限表</b>、CREATE/RENAME/SET PASSWORD/DROP USER 四条用户语句、权限组类与 <b>*.* / db.* / db.tb</b> 级别值、<b>GRANT / REVOKE</b></div>
+    <span class="badge">6 学时</span><span class="badge">选择/填空高发</span>
+  </a>
+</div>
+
+<h2 class="section" id="g4">设计理论（第 9–10 章 · 12 学时）</h2>
+<p class="section-sub">课程两大难点章，也是<b>整卷最后那道综合题</b>的出处。理论题要写推导过程，E-R 题要严格按四步给分点作答。</p>
+<div class="pgrid">
+  <a class="pcard" href="规范化/关系数据库设计理论.html">
+    <div class="t"><span class="ico">🧩</span>第 9 章 · 关系数据库设计理论 ⭐⭐</div>
+    <div class="d">函数依赖与<b>完全/部分/传递依赖</b>、多值依赖、<b>1NF→4NF</b> 五级范式判定、三种异常、规范化的目的原则方法、<b>Armstrong 公理与闭包求候选码</b></div>
+    <span class="badge hot">8 学时 · 最难</span><span class="badge hot">规范化大题</span>
+  </a>
+  <a class="pcard" href="数据库设计/E-R图与数据库设计.html">
+    <div class="t"><span class="ico">🏗️</span>第 10 章 · 数据库设计 ⭐</div>
+    <div class="d">设计<b>六步流程</b>与成果物、需求分析（DFD＋DD）、局部/全局 E-R 与<b>三类冲突</b>、<b>E-R → 关系模式（1:1 / 1:n / m:n）</b>转换规则、物理设计任务</div>
+    <span class="badge">4 学时</span><span class="badge hot">综合题：画 E-R 图</span><span class="badge warn">✂️ 教材 16 章第 6、7 节不考</span>
+  </a>
+</div>
+
+<div class="note">
+  <b>怎么用：</b>按 <b>1 → 10 顺序</b>通读（每页 12–20 分钟），把每页末尾「速记小结」和黄色 ⚠️ 易错框抄成笔记；<b>第 5、7、9、10 章</b>是重点＋难点，必须<b>手敲 SQL / 手写推导</b>，光看会以为自己会。<br>
+  <b>省时提示：</b>学时分配 4/6/6/6/<b>12</b>/6/6/6/<b>8</b>/4，与分值大致成正比——第 1、3 章别陷太深，第 5、9 章值得反复练。<br>
+  <b>不考内容别花时间：</b>教材第 3、9、10、11、13、14、17 章整章不考，第 16 章只跳第 6、7 节。详见<a href="../考纲.html">课程考纲</a>页首速查表。
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../../index.html">🏠 返回首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>数据库原理与应用 13009 · 广东省高等教育自学考试 · 计算机科学与技术（专升本）</div>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 1 章 数据库概论｜DB/DBMS/DBS · 数据模型 · 三级模式 · 大数据</title>
+<meta name="description" content="数据库原理与技术 13009 第 1 章速记卡：DB、DBMS、DBS 三个概念与关系（选择必考），数据管理技术三个阶段，数据模型三要素与分类，概念模型与 E-R 图绘制，层次/网状/关系三种逻辑模型，三级模式两级映像与逻辑/物理独立性，大数据 5V 与处理流程。建议 4 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗄️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0ea5e9,#4f46e5)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  ol.steps{margin:8px 0 8px 0;padding-left:0;list-style:none;counter-reset:st}
+  ol.steps>li{counter-increment:st;position:relative;padding:6px 0 6px 34px;border-bottom:1px dashed var(--line)}
+  ol.steps>li:last-child{border-bottom:none}
+  ol.steps>li::before{content:counter(st);position:absolute;left:0;top:6px;width:23px;height:23px;border-radius:50%;background:var(--brand);color:#fff;font-size:12.5px;font-weight:700;line-height:23px;text-align:center}
+  .er{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0}
+  .er svg{max-width:100%;height:auto;display:block;margin:0 auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 1 章 · 数据库概论</h1>
+  <p>全课程的"名词表"。这一章几乎全是<b>概念题</b>：单选必出 DB/DBMS/DBS 关系、三级模式与两级映像、数据模型三要素；简答常问"DBMS 的功能"；还可能让你<b>画 E-R 图</b>。建议 4 学时。</p>
+  <span class="pill">建议 4 学时</span><span class="pill">对应教材第 1 章</span><span class="pill">重点：数据模型、E-R 图</span><span class="pill">难点：设计 E-R 图</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../关系模型/关系数据库系统模型.html">→ 第 2 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、三个基本概念：DB / DBMS / DBS（识记）⭐单选必考</a>
+  <a href="#s2">二、数据管理技术的发展（领会）</a>
+  <a href="#s3">三、数据模型：概念、三要素、分类（识记/领会）⭐</a>
+  <a href="#s4">四、概念模型与 E-R 图（领会/简单应用）⭐难点</a>
+  <a href="#s5">五、三种逻辑模型：层次 / 网状 / 关系（领会）</a>
+  <a href="#s6">六、三级模式、两级映像与数据独立性（识记/领会）⭐</a>
+  <a href="#s7">七、大数据简介（识记/领会）</a>
+  <a href="#s8">八、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、DB / DBMS / DBS 三个概念 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据库 DB、数据库管理系统 DBMS、数据库系统 DBS 的概念。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>缩写</th><th>全称</th><th>一句话定义</th></tr>
+    <tr><td class="nm"><b>DB</b></td><td>Database 数据库</td><td>长期存储在计算机内、<b>有组织、可共享</b>的大量数据的集合</td></tr>
+    <tr><td class="nm"><b>DBMS</b></td><td>Database Management System 数据库管理系统</td><td>专门用于<b>建立、使用和维护</b>数据库的<b>系统软件</b>（如 MySQL、Oracle、SQL Server）</td></tr>
+    <tr><td class="nm"><b>DBS</b></td><td>Database System 数据库系统</td><td>由 DB、DBMS、应用程序、<b>数据库管理员（DBA）</b>和用户等构成的<b>整个人机系统</b></td></tr>
+    <tr><td class="nm"><b>DBA</b></td><td>Database Administrator 管理员</td><td>负责数据库设计、维护、安全性与完整性控制的人员</td></tr>
+  </table></div>
+  <div class="note">📝 <b>考纲·题型举例（单选）原题：</b>DB、DBS、DBMS 的关系是？——答案 <b>DBS 包括 DBMS 和 DB</b>。记忆法：<b>DBS（系统）＞ DBMS（软件）＞ DB（数据）</b>，DB 是被 DBMS 管理的那堆数据。</div>
+  <div class="th"><b>DBMS 的主要功能（简答模板）：</b>①<b>数据定义</b>功能（DDL 建模式/表）；②<b>数据操纵</b>功能（DML 增删改查）；③<b>数据库的运行管理</b>（并发控制、安全性、完整性、故障恢复）；④<b>数据建立与维护</b>功能（加载、转储、重组、重构）。</div>
+</div>
+
+<h2 class="section" id="s2">二、数据管理技术的发展（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 数据管理技术的发展阶段与区别。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>阶段</th><th>数据管理者</th><th>特点</th></tr>
+    <tr><td class="nm">人工管理阶段</td><td>程序自己</td><td>数据不保存、无专门管理、每套程序各带一份数据，<b>不共享、冗余大</b></td></tr>
+    <tr><td class="nm">文件系统阶段</td><td>操作系统</td><td>数据以文件长期保存、可共享，但<b>冗余度高、独立性差、联系靠程序</b></td></tr>
+    <tr><td class="nm">数据库系统阶段</td><td>DBMS</td><td><b>结构化</b>的数据集合：冗余度低、<b>独立性高</b>、易扩展、共享性好、由 DBMS 统一控制（安全性/完整性/并发/恢复）</td></tr>
+  </table></div>
+  <b>数据独立性</b>是数据库阶段最本质的优点：<b>物理独立性</b>（存储结构变了，程序和逻辑结构不受影响）＋<b>逻辑独立性</b>（逻辑结构变了，程序不受影响）。第六节的"两级映像"就是实现它的机制，两处要连着记。
+</div>
+
+<h2 class="section" id="s3">三、数据模型：概念、三要素、分类 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据模型的概念、分类、组成要素。</div>
+  <b>数据模型</b>：对数据库<b>结构与行为</b>的抽象描述，是 DBMS 实现的基础，用来描述<b>静态特征</b>（数据结构）、<b>动态特征</b>（数据操作）和<b>约束条件</b>。
+  <div class="th"><b>组成三要素（必背，常考单选/简答）：</b>①<b>数据结构</b>——描述对象的类型与联系（静态特征）；②<b>数据操作</b>——查询、插入、删除、修改等操作与规则（动态特征）；③<b>数据的完整性约束条件</b>——制约数据间关系与语义的规则。</div>
+  <b>分类（按层次分两类）：</b>
+  <ul>
+    <li><b>概念数据模型</b>（信息模型）：面向用户与业务，如 <b>E-R 模型</b>。</li>
+    <li><b>逻辑数据模型</b>（结构模型）：面向 DBMS，按数据结构命名 → <b>层次模型、网状模型、关系模型</b>；此外还有非传统模型（面向对象、对象关系、半结构化/XML）。</li>
+  </ul>
+  <div class="note">⚠️ 易混：问"数据模型的三要素"答<b>结构 / 操作 / 完整性约束</b>；问"数据模型的分类"答<b>概念模型与逻辑模型</b>（或层次/网状/关系）。别把两套答案串了。</div>
+</div>
+
+<h2 class="section" id="s4">四、概念模型与 E-R 图 ⭐ 难点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 实体间联系、实体-联系方法；<span class="lvl c">简单应用</span> 根据有关信息设计 E-R 图。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>术语</th><th>含义</th><th>图形记号</th></tr>
+    <tr><td class="nm">实体</td><td>客观存在并可相互区分的<b>事物</b>（一个学生、一门课）</td><td><b>矩形</b></td></tr>
+    <tr><td class="nm">属性</td><td>实体具有的<b>特性</b>（学号、姓名、年龄）</td><td><b>椭圆</b>，连到实体</td></tr>
+    <tr><td class="nm">码（键）</td><td>能<b>唯一标识</b>一个实体的属性或属性组（学号）</td><td>属性名下画直线</td></tr>
+    <tr><td class="nm">实体集</td><td>同一类实体的集合</td><td>矩形</td></tr>
+    <tr><td class="nm">联系</td><td>实体集之间或实体内部的对应关系</td><td><b>菱形</b>，标 1、n 或 m</td></tr>
+    <tr><td class="nm">域</td><td>一组<b>同质</b>值的集合（年龄取值 0～150）</td><td>—</td></tr>
+  </table></div>
+  <b>实体间的联系：</b>分两类——同一实体集内、不同实体集间；<b>四种类型</b>：
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>记法</th><th>典型例子</th></tr>
+    <tr><td class="nm">一对一</td><td>1 : 1</td><td>学生 ↔ 借书证；班长 ↔ 班级</td></tr>
+    <tr><td class="nm">一对多</td><td>1 : n</td><td>班级 → 学生；科室 → 医生</td></tr>
+    <tr><td class="nm">多对多</td><td>m : n</td><td>学生 ↔ 课程；病人 ↔ 药品</td></tr>
+    <tr><td class="nm">自身联系</td><td>1 : n 或 m : n</td><td>职工与其直接上级（同一实体集内）</td></tr>
+  </table></div>
+  <div class="er">
+    <svg viewBox="0 0 620 190" role="img" aria-label="E-R 图示例：学生—选修—课程">
+      <rect x="30" y="70" width="120" height="52" rx="6" fill="#e0f2fe" stroke="#0369a1" stroke-width="2"/>
+      <text x="90" y="102" text-anchor="middle" font-size="17" fill="#0369a1" font-weight="700">学生</text>
+      <polygon points="310,60 380,96 310,132 240,96" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="310" y="102" text-anchor="middle" font-size="15" fill="#b45309" font-weight="700">选修</text>
+      <rect x="470" y="70" width="120" height="52" rx="6" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="530" y="102" text-anchor="middle" font-size="17" fill="#15803d" font-weight="700">课程</text>
+      <line x1="150" y1="96" x2="240" y2="96" stroke="#6b7280" stroke-width="2"/>
+      <line x1="380" y1="96" x2="470" y2="96" stroke="#6b7280" stroke-width="2"/>
+      <text x="180" y="88" font-size="15" fill="#be185d" font-weight="700">m</text>
+      <text x="440" y="88" font-size="15" fill="#be185d" font-weight="700">n</text>
+      <ellipse cx="90" cy="22" rx="52" ry="19" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/>
+      <text x="90" y="28" text-anchor="middle" font-size="14" fill="#7c3aed">学号（码）</text>
+      <line x1="90" y1="41" x2="90" y2="70" stroke="#9ca3af" stroke-width="1.6"/>
+      <ellipse cx="530" cy="22" rx="46" ry="19" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.6"/>
+      <text x="530" y="28" text-anchor="middle" font-size="14" fill="#7c3aed">课程号</text>
+      <line x1="530" y1="41" x2="530" y2="70" stroke="#9ca3af" stroke-width="1.6"/>
+      <ellipse cx="310" cy="170" rx="40" ry="17" fill="#fff7ed" stroke="#b45309" stroke-width="1.6"/>
+      <text x="310" y="176" text-anchor="middle" font-size="14" fill="#b45309">成绩</text>
+      <line x1="310" y1="132" x2="310" y2="153" stroke="#9ca3af" stroke-width="1.6"/>
+    </svg>
+    <div class="th" style="margin-bottom:0"><b>画法三查：</b>①实体用矩形、属性用椭圆、联系用<b>菱形</b>；②联系旁标 <b>1 / n / m</b>；③<b>联系自身的属性</b>（如"选修"的"成绩"）挂在菱形上——E-R 转关系模式时它会被并进联系生成的那张表。
+  </div>
+  <ol class="steps">
+    <li><b>找实体</b>：把题干里的名词分成"独立实体"与"属性"。能再细分出多个特征、需要单独管理的做成实体，否则当属性。</li>
+    <li><b>定属性与码</b>：给每个实体列属性，圈出能唯一标识的<b>码</b>。</li>
+    <li><b>判联系类型</b>：逐对实体双向问"一个 A 对应几个 B / 一个 B 对应几个 A"，取乘积 → 1:1、1:n 还是 m:n。</li>
+    <li><b>挂联系属性</b>：只有属于"关系本身"的信息（成绩、借书日期）才画到菱形上。</li>
+  </ol>
+  <div class="note">⚠️ 常见扣分：把"班主任"当成一个实体（应是"班级—教师"的 1:1 联系），或把 <b>m:n 联系漏画成 1:n</b>，导致后面第 10 章转换时少生成一张表。</div>
+</div>
+
+<h2 class="section" id="s5">五、三种逻辑模型（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 层次模型、网状模型、关系模型。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>模型</th><th>数据结构</th><th>特点</th><th>代表</th></tr>
+    <tr><td class="nm">层次模型</td><td><b>树</b>形结构</td><td>有且只有一个根结点，其余结点<b>有且只有一个双亲</b>；简单直观，但表示多对多困难、查询必须走路径</td><td>IMS</td></tr>
+    <tr><td class="nm">网状模型</td><td><b>图</b>（有向图）</td><td>允许<b>一个以上</b>结点无双亲、一个结点<b>可有多个</b>双亲；更灵活，但结构复杂、编程麻烦</td><td>IDMS、CODASYL</td></tr>
+    <tr><td class="nm"><b>关系模型</b></td><td><b>二维表</b></td><td>以关系数学为基础，<b>数据结构简单、独立性高</b>，用户只需声明"要什么"而不必写"怎么取"；但有集合操作开销、效率相对较低</td><td><b>MySQL</b>、Oracle</td></tr>
+  </table></div>
+  <b>非关系模型对比小结：</b>三者都用数据结构命名；<b>关系模型</b>是目前应用最广、也是本课程后半程（第 2～9 章）的理论基础。
+</div>
+
+<h2 class="section" id="s6">六、三级模式、两级映像与数据独立性 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据库系统的三级模式结构；<span class="lvl b">领会</span> 二级映像与数据独立性。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>级别</th><th>别名</th><th>描述对象</th><th>个数</th></tr>
+    <tr><td class="nm"><b>模式</b>（逻辑模式）</td><td>全体数据的<b>公共视图</b>，描述数据的<b>逻辑结构</b></td><td>数据库中<b>全部</b>数据</td><td><b>只有 1 个</b></td></tr>
+    <tr><td class="nm"><b>外模式</b>（子模式 / 用户模式）</td><td>某个用户<b>看得见、用得到</b>的局部数据的逻辑结构，通常是基本表的<b>子集</b>（视图）</td><td>局部数据</td><td><b>可以有多个</b></td></tr>
+    <tr><td class="nm"><b>内模式</b>（存储模式）</td><td>数据<b>物理存储结构与存取方法</b>（索引、聚簇、文件组织）</td><td>全局物理层</td><td><b>只有 1 个</b></td></tr>
+  </table></div>
+  <b>两级映像：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>映像</th><th>连接</th><th>保证了哪种独立性</th></tr>
+    <tr><td class="nm">外模式 / 模式映像</td><td>外模式 ↔ 模式</td><td><b>逻辑独立性</b>——模式变了，改这份映像，外模式和应用程序不必变</td></tr>
+    <tr><td class="nm">模式 / 内模式映像</td><td>模式 ↔ 内模式</td><td><b>物理独立性</b>——存储方式变了，改这份映像，模式与程序不必变</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆：<b>"三级"从下往上是 内模式（物理）→ 模式（全局逻辑）→ 外模式（用户局部）</b>；<b>映像夹在两层之间，谁被改动就改它下面那条映像</b>。选择题常问"保证逻辑独立性的是哪条映像"→ 外模式/模式映像。</div>
+</div>
+
+<h2 class="section" id="s7">七、大数据简介（识记 / 领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 大数据的基本概念；<span class="lvl b">领会</span> 大数据的处理过程、数据管理技术的发展。</div>
+  <b>大数据（Big Data）：</b>无法在一定时间内用常规软件工具<b>抓取、管理和处理</b>的数据集合，需新处理模式才能具有更强的决策力、洞察发现力和流程优化能力。
+  <div class="th"><b>特征（5V，常考多选/简答）：</b><b>Volume</b> 大量、<b>Variety</b> 多样（结构化/半结构化/非结构化）、<b>Value</b> 价值密度<b>低</b>、<b>Velocity</b> 处理要求快、<b>Veracity/Truthfulness</b> 真实性。</div>
+  <b>处理流程五步：</b>数据采集 → 数据预处理（清洗、集成、规约）→ 数据存储（分布式文件系统/NoSQL）→ 分析与挖掘（MapReduce/机器学习）→ 数据<em>可视化</em>与结果表示。
+  <div class="tscroll"><table class="law">
+    <tr><th>NoSQL 类型</th><th>存储形式</th><th>代表</th></tr>
+    <tr><td class="nm">键值 Key-Value</td><td>按 key 哈希存取</td><td>Redis、DynamoDB</td></tr>
+    <tr><td class="nm">列存储（列族）</td><td>按列簇组织、便于横向扩展</td><td>HBase、Cassandra</td></tr>
+    <tr><td class="nm">文档型</td><td>JSON/XML 半结构化文档</td><td>MongoDB、CouchDB</td></tr>
+    <tr><td class="nm">图形</td><td>点 + 边，擅长关系网络</td><td>Neo4j</td></tr>
+  </table></div>
+  <b>与传统数据库的关系（领会）：</b>大数据不是取代 DBMS，而是在<b>数据管理技术</b>上从"关系数据库"扩展到"分布式 + 非关系 + 云"；SQL 与 NoSQL 常<b>混合使用</b>（SQL 管核心业务、NoSQL 管海量灵活数据）。
+  <div class="note">⚠️ 易错：大数据的 Value 指<b>"价值密度低"</b>（总价值高但单位数据价值稀疏），不要答成"价值高"。</div>
+</div>
+
+<h2 class="section" id="s8">八、本章速记小结</h2>
+<div class="note">
+  <b>三概念大小：</b>DBS ＞ DBMS ＞ DB（DBS 还含 DBA、用户、应用程序）。<br>
+  <b>三阶段：</b>人工管理 → 文件系统 → 数据库系统，进步的核心是<b>数据独立性</b>与<b>结构化、共享、低冗余</b>。<br>
+  <b>三要素：</b>数据结构 + 数据操作 + 完整性约束。<br>
+  <b>三逻辑模型：</b>层次（树）、网状（图）、<b>关系（二维表）</b>。<br>
+  <b>三级模式两映像：</b>外模式（多个，局部）→ 模式（1 个，全局逻辑）→ 内模式（1 个，物理）；<b>外/模映像 → 逻辑独立性，模/内映像 → 物理独立性</b>。<br>
+  <b>E-R 图三形状：</b>矩形=实体、椭圆=属性、<b>菱形=联系</b>；联系类型 1:1 / 1:n / m:n，联系上可挂自己的属性。<br>
+  <b>大数据 5V：</b>Volume、Variety、Value（价值密度低）、Velocity、Veracity。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 1 章 数据库概论 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

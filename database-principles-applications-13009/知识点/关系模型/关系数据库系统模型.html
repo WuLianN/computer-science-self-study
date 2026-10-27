@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 2 章 关系数据库系统模型｜关系术语 · 完整性 · 关系代数</title>
+<meta name="description" content="数据库原理与技术 13009 第 2 章速记卡：关系模型三个组成部分、关系/元组/属性/域/分量等术语形式化定义、三类完整性规则、关系操作的特点与运算、关系代数五类运算（选择投影并差交连接除）与等值连接vs自然连接的区别、SQL 语言分类与特点，含关系代数例题。建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  .m{font-family:"Cambria Math",Cambria,Georgia,serif}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:10px 0}
+  .mini{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:#fff;font-size:14px}
+  .mini b.h{color:var(--brand);display:block;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 2 章 · 关系数据库系统模型</h1>
+  <p><b>关系代数是本章唯一"计算题"考点</b>，简答题偏爱问"等值连接与自然连接的区别""关系的三类完整性"。核心链：关系（二维表）→ 术语形式化定义 → 完整性规则 → 关系操作 → 关系代数 8 种运算 → SQL 分类。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">对应教材第 2 章</span><span class="pill">重点：完整性、关系代数</span><span class="pill">难点：关系代数运算</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../概论/数据库概论.html">← 第 1 章</a>
+    <a href="../MySQL数据库和表/建库与建表.html">→ 第 3 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、关系模型的三个组成部分（识记）</a>
+  <a href="#s2">二、关系的形式化定义与术语（领会）⭐名词</a>
+  <a href="#s3">三、关系的三类完整性规则（领会）⭐简答</a>
+  <a href="#s4">四、关系操作及其特点（识记）</a>
+  <a href="#s5">五、关系代数：运算三要素与分类（识记）⭐</a>
+  <a href="#s6">六、八种运算逐个过 + 例题（简单应用）⭐⭐必考</a>
+  <a href="#s7">七、等值连接 vs 自然连接 vs 外连接（领会）⭐简答</a>
+  <a href="#s8">八、SQL 简介：分类与特点（识记）</a>
+  <a href="#s9">九、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、关系模型的三个组成部分（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 关系模型的三个组成部分。</div>
+  与"数据模型三要素"一一对应，只是换成关系语境：
+  <ul>
+    <li><b>数据结构</b>——一个关系模型中<b>只有一个结构：满足一定条件的二维表（关系）</b>；实体与实体间联系都用关系表示，所以结构简单、一致。</li>
+    <li><b>数据操作</b>——查询（选择、投影、连接、除、并、差、交）＋ 增删改，<b>操作对象和结果都是集合</b>。</li>
+    <li><b>数据的完整性约束条件</b>——实体完整性、参照完整性、用户定义的完整性（详见第三节）。</li>
+  </ul>
+</div>
+
+<h2 class="section" id="s2">二、关系的形式化定义与术语 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 关系数据结构的形式化定义。</div>
+  <div class="th">设 <span class="m">D = {d₁, d₂, …, dₙ}</span> 为<b>域（Domain）</b>，<span class="m">D₁ × D₂ × … × Dₙ</span> 的<b>子集</b>叫做在域上<span class="m">n</span> 度（元）的<b>关系（Relation）</b>，记作 <span class="m">R(D₁, D₂, …, Dₙ)</span>。关系里的每个元素 <span class="m">(d₁, d₂, …, dₙ)</span> 叫做一个<b>元组</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>形式化术语</th><th>二维表里的通俗说法</th><th>示例（学生表）</th></tr>
+    <tr><td class="nm">关系 R</td><td><b>一张表</b></td><td>学生表 Student</td></tr>
+    <tr><td class="nm">元组（tuple）</td><td><b>一行</b>记录</td><td>(2021001, 小明, 20)</td></tr>
+    <tr><td class="nm">属性（attribute）</td><td><b>一列</b></td><td>学号 / 姓名 / 年龄</td></tr>
+    <tr><td class="nm">域 Domain</td><td>某属性<b>取值的类型范围</b></td><td>年龄 ∈ 0~150 的整数</td></tr>
+    <tr><td class="nm">分量</td><td>元组中的<b>一个值</b></td><td>第 2 个分量"小明"</td></tr>
+    <tr><td class="nm">目 / 度（arity）</td><td><b>列数</b>（属性个数）</td><td>3 列 → 度为 3</td></tr>
+    <tr><td class="nm">基数（cardinality）</td><td><b>行数</b>（元组个数）</td><td>50 个学生 → 基数 50</td></tr>
+    <tr><td class="nm">候选码 / 主码</td><td>能唯一标识一行的属性（组）；选定的那个</td><td>学号</td></tr>
+    <tr><td class="nm">主属性 / 非主属性</td><td>包含在<b>任一</b>候选码中的属性 / 其余属性</td><td>学号是主属性，年龄是非主属性</td></tr>
+    <tr><td class="nm">外码（外键）</td><td>本表属性是<b>另一张表的主码</b></td><td>选课表的"学号"</td></tr>
+  </table></div>
+  <b>关系的性质（规范化的二维表应满足）：</b>①列是同质的（同域、类型一致）；②不同列可同名但须有唯一<b>属性名</b>；③<b>行列次序无关</b>（集合无序，交换两行仍是同一关系）；④分量是<b>不可再分</b>的基本数据项（原子性 → 这正是 1NF 的要求）；⑤元组<b>不允许重复</b>。
+  <div class="note">⚠️ 易错："行列次序无关"是关系模型的数学性质，但 <b>MySQL 表里加 <code>ORDER BY</code> 才能控制显示顺序</b>——理论题按"无关"答。</div>
+</div>
+
+<h2 class="section" id="s3">三、关系的三类完整性规则 ⭐ 简答常考</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 关系的完整性规则。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>完整性</th><th>规则内容</th><th>MySQL 中由谁保证</th></tr>
+    <tr><td class="nm"><b>实体完整性</b></td><td>若属性组 <span class="m">K</span> 是基本关系的主码，则 <span class="m">K</span> 中的属性值<b>不能为空且不能重复</b>（主码任一属性都不得取 NULL）</td><td><code>PRIMARY KEY</code> / <code>UNIQUE</code></td></tr>
+    <tr><td class="nm"><b>参照完整性</b></td><td>若 <span class="m">F</span> 是参照关系的外码且与关系 S 的主码 <span class="m">X</span> 相容，则外码取值<b>或者为空值</b>（无对应参照）、<b>或者必须是 S 中某元组的主码值</b></td><td><code>FOREIGN KEY</code> + <code>ON DELETE/UPDATE</code> 动作</td></tr>
+    <tr><td class="nm"><b>用户定义的完整性</b></td><td>针对<b>具体应用</b>的数据须满足的语义约束（年龄 0~150、性别只能"男/女"、成绩非空）</td><td><code>CHECK</code> / <code>NOT NULL</code> / 默认值 / 数据类型</td></tr>
+  </table></div>
+  <div class="note">📝 <b>简答模板：</b>"关系的完整性包括<b>实体完整性</b>（主码唯一非空，保证元组可区分）、<b>参照完整性</b>（外码须在被参照关系中有对应主码或为空，保证表间联系有效）和<b>用户定义的完整性</b>（由应用语义决定的约束）。"第 7 章会把这三条落到 SQL 语句上，两章要对着学。</div>
+</div>
+
+<h2 class="section" id="s4">四、关系操作及其特点（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 关系操作的组成及关系操作语言的特点。</div>
+  <b>组成：</b><b>查询</b>（选择、投影、连接、除、并、差、交）＋ <b>增、删、改</b>。
+  <div class="th"><b>特点（简答/多选）：</b>①操作对象和结果<b>都是集合</b>（一次处理一批元组，称为<b>集合操作方式</b>/一次一集合）；②语言是<b>声明式</b>的——只说"做什么"不说"怎么做"，用户不必指定存取路径；③以<b>关系代数 / 关系演算</b>为数学基础；④有<b>高度的自动生成性</b>，便于接口、便于优化；⑤一个关系模型只有一种数据结构，语言简单一致。</div>
+  <b>两类关系语言：</b><b>过程化</b>——关系代数（用运算符号表达"怎么求"）；<b>非过程化</b>——关系演算（用谓词表达"求什么"，分元组演算与域演算）。SQL 是两者折中的<b>实用语言</b>。
+</div>
+
+<h2 class="section" id="s5">五、关系代数：运算三要素与分类（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 关系代数的概念、运算三要素、运算分类。</div>
+  <b>关系代数</b>：用一组<b>运算符</b>对关系进行运算来表达查询的语言，运算对象是关系、结果也是关系。
+  <div class="th"><b>运算三要素：</b>①<b>运算对象</b>（一个或两个关系）；②<b>运算符</b>；③<b>运算结果</b>（仍是一个关系）。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>分类</th><th>运算符</th><th>目数</th><th>说明</th></tr>
+    <tr><td class="nm">传统集合运算</td><td><span class="m">∪</span> 并、<span class="m">−</span> 差、<span class="m">∩</span> 交、<span class="m">×</span> 笛卡尔积</td><td>二目</td><td>前三者要求<b>Union 相容</b>（同度、对应列同源）</td></tr>
+    <tr><td class="nm">专门关系运算</td><td><span class="m">σ</span> 选择、<span class="m">π</span> 投影、<span class="m">⋈</span> 连接、<span class="m">÷</span> 除</td><td>一目 / 二目</td><td>关系运算的核心特色</td></tr>
+    <tr><td class="nm">扩展运算</td><td>外连接、<span class="m">ℑ</span> 分组聚合、<span class="m">ρ</span> 更名</td><td>—</td><td>了解即可，考试以上面两栏为主</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s6">六、八种运算逐个过 + 例题 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 进行简单的关系代数运算。</div>
+  <p style="margin:0 0 8px;color:var(--muted);font-size:13.5px">以下用考纲题型举例中的图书管理系统：<b>图书(<u>条形码</u>, 书名, 作者姓名, 出版社, 单价)</b>、<b>读者(<u>借书证号</u>, 姓名, 性别)</b>、<b>借阅(<u>借书证号, 条形码</u>, 借书日期, 还书日期)</b>。</p>
+  <div class="tscroll"><table class="law">
+    <tr><th>运算</th><th>记号</th><th>语义</th><th>例：查询要求</th><th>关系代数表达式</th></tr>
+    <tr><td class="nm">选择</td><td><span class="m">σ<sub>F</sub>(R)</span></td><td>挑<b>满足条件的行</b>（水平方向）</td><td>借阅证号 2001 的记录</td><td><span class="m">σ<sub>借书证号='2001'</sub>(借阅)</span></td></tr>
+    <tr><td class="nm">投影</td><td><span class="m">π<sub>A</sub>(R)</span></td><td>挑<b>指定的列</b>并<b>去重</b>（垂直方向）</td><td>所有作者的姓名</td><td><span class="m">π<sub>作者姓名</sub>(图书)</span></td></tr>
+    <tr><td class="nm">并</td><td><span class="m">R ∪ S</span></td><td>属于 R 或 S 的元组（自动去重）</td><td>借过书或某名单</td><td><span class="m">π(借阅) ∪ π(其他)</span></td></tr>
+    <tr><td class="nm">差</td><td><span class="m">R − S</span></td><td>属于 R 但<b>不属于</b> S</td><td><b>没借过书</b>的读者</td><td><span class="m">π<sub>借书证号</sub>(读者) − π<sub>借书证号</sub>(借阅)</span></td></tr>
+    <tr><td class="nm">交</td><td><span class="m">R ∩ S</span></td><td>同时属于 R 与 S＝<span class="m">R − (R − S)</span></td><td>两条件<b>都满足</b></td><td><span class="m">R ∩ S</span></td></tr>
+    <tr><td class="nm">笛卡尔积</td><td><span class="m">R × S</span></td><td>R 每个元组依次拼接 S 每个元组；结果<b>度=相加、基数=相乘</b></td><td>无条件全组合</td><td><span class="m">图书 × 借阅</span></td></tr>
+    <tr><td class="nm">θ 连接</td><td><span class="m">R ⋈<sub>A θ B</sub> S</span></td><td>先做 <span class="m">×</span>，再选<b>跨表属性满足关系运算 θ</b> 的元组</td><td>价格低于借阅上限…</td><td><span class="m">图书 ⋈<sub>单价&gt;50</sub> 借阅</span></td></tr>
+    <tr><td class="nm">除</td><td><span class="m">R ÷ S</span></td><td>找出与 S 中<b>全部</b>元组都有联系的 R 元组（答"所有/全部"就用它）</td><td><b>借遍了全部书</b>的读者</td><td><span class="m">π<sub>借书证号,条形码</sub>(借阅) ÷ π<sub>条形码</sub>(图书)</span></td></tr>
+  </table></div>
+  <div class="grid2">
+    <div class="mini"><b class="h">例题 1（考纲·题型举例·简单设计题）</b>用关系代数查询"数据库系统原理"这本书的<b>作者姓名</b>。<br><span class="m">π<sub>作者姓名</sub>( σ<sub>书名='数据库系统原理'</sub>(图书) )</span><br><small>先<b>选择</b>定位行，再<b>投影</b>取列——顺序不能写反（写反了也能算，但读题思路是"筛选→输出"）。</small></div>
+    <div class="mini"><b class="h">例题 2（差运算套路）</b>查询<b>没有借过任何书</b>的读者姓名。<br><span class="m">π<sub>姓名</sub>( 读者 ⋈ ( π<sub>借书证号</sub>(读者) − π<sub>借书证号</sub>(借阅) ) )</span><br><small>差运算前必须<b>先把两侧投影成同样的列</b>（Union 相容），这是最常见的失分点。</small></div>
+    <div class="mini"><b class="h">例题 3（连接 + 选择）</b>查询读者"小明"借过的<b>书名</b>。<br><span class="m">π<sub>书名</sub>( σ<sub>姓名='小明'</sub>(读者) ⋈ 借阅 ⋈ 图书 )</span><br><small>三表串联靠<b>自然连接</b>自动匹配同名属性（借书证号、条形码）。</small></div>
+    <div class="mini"><b class="h">例题 4（除运算）</b>查询<b>借了全部图书</b>的读者借书证号。<br><span class="m">π<sub>借书证号, 条形码</sub>(借阅) ÷ π<sub>条形码</sub>(图书)</span><br><small>题面出现"<b>全部 / 所有 / 都</b>"→ 想除法；被除关系要留下"目标列 + 除列"。</small></div>
+  </div>
+  <div class="note">⚠️ 写表达式的三条硬规则：①<b>投影自动去重、选择不去重</b>；②做并/差/交前两侧必须<b>同度且对应列同域</b>；③除法的<b>结果度 = 被除关系的度 − 除关系的度</b>。</div>
+</div>
+
+<h2 class="section" id="s7">七、等值连接 vs 自然连接 vs 外连接 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 运算规则；等值连接与自然连接的区别。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>条件</th><th>结果列</th><th>结果行</th></tr>
+    <tr><td class="nm"><b>等值连接</b></td><td>θ 取"<b>=</b>"，可指定任意属性对</td><td><b>保留两个表中重复的同名属性列</b></td><td>只保留匹配上的行</td></tr>
+    <tr><td class="nm"><b>自然连接</b></td><td>特殊的等值连接：必须在<b>两组同名（同域）属性</b>间自动进行</td><td><b>去掉重复列</b>，同名列只留一份</td><td>只保留匹配上的行</td></tr>
+    <tr><td class="nm"><b>外连接</b></td><td>把<b>不匹配</b>的元组也保留，另一侧补 NULL</td><td>—</td><td>左外连接保左表全部；右外保右表；全外连接保两侧</td></tr>
+  </table></div>
+  <div class="note">📝 <b>简答模板：</b>等值连接用"<b>=</b>"作运算符，是普通的 θ 连接，结果中<b>两个关系的全部属性都保留</b>（含重复列）；自然连接是<b>在共有属性上</b>按值相等进行的连接，并且<b>自动去掉一列重复属性</b>。可以说"自然连接 = 等值连接 + 去重列"。</div>
+  <b>对应到 SQL（预习第 5 章）：</b>自然连接 <code>NATURAL JOIN</code>；等值连接 <code>JOIN ... ON A.x = B.x</code>（SELECT * 时会看到两列 x）；外连接 <code>LEFT/RIGHT OUTER JOIN</code>。MySQL <b>不支持 FULL OUTER JOIN</b>，用 <code>LEFT JOIN UNION RIGHT JOIN</code> 代替。
+</div>
+
+<h2 class="section" id="s8">八、SQL 简介：分类与特点（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> SQL 语言的分类、特点。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>分类</th><th>缩写</th><th>关键字</th><th>作用</th></tr>
+    <tr><td class="nm">数据定义语言</td><td><b>DDL</b></td><td><code>CREATE / ALTER / DROP</code></td><td>定义、修改、删除<b>数据库与表等结构</b>（第 3、6、7 章）</td></tr>
+    <tr><td class="nm">数据操纵语言</td><td><b>DML</b></td><td><code>INSERT / UPDATE / DELETE</code></td><td>表中<b>数据</b>的增删改（第 4 章）</td></tr>
+    <tr><td class="nm">数据查询语言</td><td><b>DQL</b></td><td><code>SELECT</code></td><td>查询数据（第 5 章，占分最重）</td></tr>
+    <tr><td class="nm">数据控制语言</td><td><b>DCL</b></td><td><code>GRANT / REVOKE</code></td><td>权限与安全性控制（第 8 章）；事务 <code>COMMIT / ROLLBACK</code> 亦属控制类</td></tr>
+  </table></div>
+  <div class="th"><b>SQL 的特点（简答）：</b>①<b>一体化</b>——DDL/DML/DQL/DCL 一种语言贯通，语言风格一致；②<b>高度非过程化</b>——只需指出"做什么"，不必指明"怎么做"，存取路径由系统决定；③<b>两种使用方式</b>——交互式（独立在客户端执行）与<b>嵌入式</b>（嵌入 C/Python 等宿主语言，需配<b>SQLCA 与主变量</b>）；④<b>语言简洁、易学</b>——核心动词只有 9 个；⑤<b>面向集合</b>——一次操作一批元组；⑥<b>支持三级模式</b>：视图对应外模式、基本表对应模式、存储文件对应内模式。</div>
+  <div class="note">🔑 第⑥条几乎每年换种问法出现："SQL 中，视图对应三级模式中的哪一级？"→ <b>外模式</b>；基本表 → 模式；存储文件 → 内模式。</div>
+</div>
+
+<h2 class="section" id="s9">九、本章速记小结</h2>
+<div class="note">
+  <b>一张表 = 一个关系：</b>行=元组、列=属性、列的取值范围=域、一个值=分量；<b>度=列数、基数=行数</b>；行列无序、分量原子、元组不重复。<br>
+  <b>三类完整性：</b>实体（主码唯一非空）→ <code>PRIMARY KEY</code>；参照（外码为空或在被参照表中存在）→ <code>FOREIGN KEY</code>；用户定义 → <code>CHECK / NOT NULL</code>。<br>
+  <b>八种运算口诀：</b>选择管行、投影管列（且去重）；并差交要相容；笛卡尔积<b>度相加、基数相乘</b>；连接=笛卡尔积+条件筛选；<b>"全部"用除法</b>。<br>
+  <b>等值 vs 自然：</b>自然连接在同名列上做且<b>删重复列</b>。<br>
+  <b>SQL 四分类：</b>DDL 建结构、DML 改数据、DQL 查询、DCL 控权限；视图=外模式、基本表=模式。<br>
+  <b>符号别写错：</b>σ（选择 sigma）、π（投影 pi）、⋈（连接 join）、÷（除）、ρ（更名）。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 2 章 关系数据库系统模型 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

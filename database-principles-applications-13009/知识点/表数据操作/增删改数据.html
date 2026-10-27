@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 4 章 表数据操作｜INSERT / REPLACE / UPDATE / DELETE / TRUNCATE</title>
+<meta name="description" content="数据库原理与技术 13009 第 4 章速记卡：全列插入、指定列插入、多条记录插入、插入查询结果 INSERT...SELECT、REPLACE 语句，UPDATE 修改全部与指定记录，DELETE 删除指定/全部记录与 TRUNCATE 的区别，DML 与约束、外键级联动作的关系，含易错点与例题。建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✏️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#059669,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章 · 表数据操作</h1>
+  <p>三条 <b>DML</b> 语句：<code>INSERT</code>（增）、<code>UPDATE</code>（改）、<code>DELETE</code>（删）。考点集中在<b>"语句有几种写法、少写 WHERE 会怎样、DELETE 与 TRUNCATE 有何区别"</b>。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：INSERT / UPDATE / DELETE</span><span class="pill">难点：正确编写语句</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../MySQL数据库和表/建库与建表.html">← 第 3 章</a>
+    <a href="../数据查询/SELECT查询.html">→ 第 5 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、插入数据：五种写法（识记/领会/简单应用）⭐</a>
+  <a href="#s2">二、REPLACE 语句（领会）</a>
+  <a href="#s3">三、修改数据 UPDATE（识记/简单应用）⭐</a>
+  <a href="#s4">四、删除数据 DELETE 与 TRUNCATE（识记/领会）⭐</a>
+  <a href="#s5">五、DML 与完整性约束的关系（领会）</a>
+  <a href="#s6">六、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、插入数据 INSERT：五种写法 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 插入语句的概念与类别；<span class="lvl c">简单应用</span> 正确编写各类插入语句。</div>
+  <b>概念：</b><code>INSERT</code> 属于 <b>DML（数据操纵语言）</b>，向<b>已存在的表</b>中<b>增加新行（元组）</b>，不改变表结构。
+  <pre class="sql"><span class="cm">表结构：student(sno, sname, ssex, sage, sdept)</span>
+
+<span class="cm">-- ① 全列插入：值的顺序必须与列定义顺序完全一致，列名可省略</span>
+<span class="kw">INSERT INTO</span> student <span class="kw">VALUES</span> (<span class="st">'20210001'</span>,<span class="st">'小明'</span>,<span class="st">'男'</span>,20,<span class="st">'计算机'</span>);
+
+<span class="cm">-- ② 指定列插入：未给出的列取 DEFAULT，无默认值则为 NULL（要求 NOT NULL 就报错）</span>
+<span class="kw">INSERT INTO</span> student(sno, sname, ssex) <span class="kw">VALUES</span> (<span class="st">'20210002'</span>,<span class="st">'小红'</span>,<span class="st">'女'</span>);
+
+<span class="cm">-- ③ 一次插入多条记录（值组用逗号分隔，MySQL 支持，标准 SQL 早期不支持）</span>
+<span class="kw">INSERT INTO</span> student(sno, sname) <span class="kw">VALUES</span>
+    (<span class="st">'20210003'</span>,<span class="st">'小刚'</span>),
+    (<span class="st">'20210004'</span>,<span class="st">'小美'</span>),
+    (<span class="st">'20210005'</span>,<span class="st">'小强'</span>);
+
+<span class="cm">-- ④ 插入子查询结果（把另一张表的行灌进来）</span>
+<span class="kw">INSERT INTO</span> history_stu
+    <span class="kw">SELECT</span> * <span class="kw">FROM</span> student <span class="kw">WHERE</span> sage &gt; 22;
+
+<span class="cm">-- ⑤ INSERT IGNORE / ON DUPLICATE KEY UPDATE（了解：主键冲突时忽略或改为更新）</span>
+<span class="kw">INSERT IGNORE INTO</span> student(sno, sname) <span class="kw">VALUES</span> (<span class="st">'20210001'</span>,<span class="st">'小明'</span>);</pre>
+  <div class="note">⚠️ 判分点：①列名与值<b>个数、顺序、类型</b>要一一对应；②字符串、日期值<b>必须加单引号</b>，数字不加；③<b>省略列名时必须给全所有列的值</b>，少给一个就报 "Column count doesn't match value count"。</div>
+</div>
+
+<h2 class="section" id="s2">二、REPLACE 语句（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> REPLACE 语句的含义。</div>
+  <code>REPLACE</code> 语法与 <code>INSERT</code> 完全一样，区别在<b>遇到主键/唯一键冲突时的行为</b>：
+  <div class="tscroll"><table class="law">
+    <tr><th>语句</th><th>无冲突时</th><th>有主键/唯一键冲突时</th></tr>
+    <tr><td class="nm"><code>INSERT</code></td><td>插入新行</td><td><b>报错</b>，插入失败</td></tr>
+    <tr><td class="nm"><code>REPLACE</code></td><td>插入新行</td><td><b>先 DELETE 旧行，再 INSERT 新行</b>（未给出的列变成默认值/NULL，不是保留原值！）</td></tr>
+  </table></div>
+  <pre class="sql"><span class="kw">REPLACE INTO</span> student(sno, sname) <span class="kw">VALUES</span> (<span class="st">'20210001'</span>, <span class="st">'小明改'</span>);
+<span class="cm">-- 若表已有 sno='20210001'，该行被删除并重新插入，ssex/sage/sdept 变 NULL</span></pre>
+  <div class="note">🔑 概念表述：<b>REPLACE = "有则替换、无则插入"</b>，实现"插入或覆盖"效果；它依赖表上<b>存在主键或唯一索引</b>，没有键时行为退化成普通 INSERT。</div>
+</div>
+
+<h2 class="section" id="s3">三、修改数据 UPDATE ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 修改<b>全部记录</b>与修改<b>指定记录</b>两种方法；<span class="lvl c">简单应用</span> 用 UPDATE 完成记录修改。</div>
+  <pre class="sql"><span class="cm">-- ① 修改指定记录：带 WHERE，只影响匹配的行</span>
+<span class="kw">UPDATE</span> student <span class="kw">SET</span> sage = 21 <span class="kw">WHERE</span> sno = <span class="st">'20210001'</span>;
+<span class="kw">UPDATE</span> student <span class="kw">SET</span> sdept = <span class="st">'软件学院'</span>, sage = sage + 1
+       <span class="kw">WHERE</span> ssex = <span class="st">'男'</span> <span class="kw">AND</span> sage &gt; 20;     <span class="cm">-- 一次改多列、列自身参与运算</span>
+
+<span class="cm">-- ② 修改全部记录：不写 WHERE，全表所有行都按 SET 表达式更新</span>
+<span class="kw">UPDATE</span> student <span class="kw">SET</span> sage = sage + 1;
+
+<span class="cm">-- ③ 用子查询提供条件或新值（了解）</span>
+<span class="kw">UPDATE</span> sc <span class="kw">SET</span> grade = grade * 1.1
+   <span class="kw">WHERE</span> cno <span class="kw">IN</span> (<span class="kw">SELECT</span> cno <span class="kw">FROM</span> course <span class="kw">WHERE</span> credit &gt;= 4);</pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>要素</th><th>规则</th></tr>
+    <tr><td class="nm">语法骨架</td><td><code>UPDATE 表名 SET 列1=值1, 列2=值2 [WHERE 条件]</code></td></tr>
+    <tr><td class="nm">SET 右侧</td><td>可以是常量、表达式（<code>sage+1</code>）、子查询</td></tr>
+    <tr><td class="nm">WHERE 省略</td><td>作用于<b>全部行</b>——这是最常见的"危险写法"，考试爱问后果</td></tr>
+    <tr><td class="nm">执行结果</td><td>返回 <code>Rows matched / Changed</code>；条件不匹配时<b>不报错、改动 0 行</b></td></tr>
+  </table></div>
+  <div class="note">⚠️ 别把 <code>SET</code> 写成 <code>=</code> 之外的比较，也别用 <code>UPDATE ... VALUES</code>（语法错误）。改<b>表结构</b>是第 3 章的 <code>ALTER TABLE</code>，改<b>数据</b>才是 UPDATE。</div>
+</div>
+
+<h2 class="section" id="s4">四、删除数据 DELETE 与 TRUNCATE ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 删除数据的两种方法、删除<b>全部记录</b>的两种方式；<span class="lvl b">领会</span> 删除指定记录与删除全部记录的区别；<span class="lvl c">简单应用</span> DELETE 语句。</div>
+  <b>删除数据的两种方法（按语句分类）：</b>① <code>DELETE</code> —— DML，可带 WHERE，一次删一行或一批；② <code>TRUNCATE TABLE</code> —— DDL，<b>只能清空整张表</b>。
+  <pre class="sql"><span class="cm">-- ① 删除指定记录</span>
+<span class="kw">DELETE FROM</span> student <span class="kw">WHERE</span> sno = <span class="st">'20210005'</span>;
+<span class="kw">DELETE FROM</span> sc <span class="kw">WHERE</span> grade &lt; (<span class="kw">SELECT</span> AVG(grade) <span class="kw">FROM</span> sc);   <span class="cm">-- 条件用子查询</span>
+
+<span class="cm">-- ② 删除全部记录的两种方式</span>
+<span class="kw">DELETE FROM</span> student;        <span class="cm">-- 方式 A：DELETE 不带 WHERE，逐行删除</span>
+<span class="kw">TRUNCATE TABLE</span> student;     <span class="cm">-- 方式 B：清空表（重建表，速度快）</span></pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>对比项</th><th><code>DELETE</code>（无 WHERE）</th><th><code>TRUNCATE TABLE</code></th></tr>
+    <tr><td class="nm">语言类别</td><td>DML</td><td><b>DDL</b></td></tr>
+    <tr><td class="nm">删除方式</td><td><b>逐行</b>删除，写入 undo 日志</td><td><b>直接释放数据页</b>，不逐行删</td></tr>
+    <tr><td class="nm">速度</td><td>慢（大表尤甚）</td><td><b>快</b></td></tr>
+    <tr><td class="nm">可否回滚</td><td><b>可以</b>（在事务中 ROLLBACK）</td><td><b>隐式提交、不可回滚</b></td></tr>
+    <tr><td class="nm">触发器</td><td>激活 DELETE 触发器</td><td><b>不激活</b>触发器</td></tr>
+    <tr><td class="nm">WHERE</td><td>可以带</td><td><b>不能带条件</b></td></tr>
+    <tr><td class="nm">AUTO_INCREMENT</td><td>计数器保留</td><td><b>重新从 1 开始</b></td></tr>
+    <tr><td class="nm">外键限制</td><td>子表有引用则按级联动作处理</td><td>被外键引用的表<b>不能 TRUNCATE</b></td></tr>
+  </table></div>
+  <div class="note">📝 <b>简答模板（删除指定记录与删除全部记录的区别）：</b>删除指定记录用 <code>DELETE FROM 表 WHERE 条件</code>，只影响满足条件的元组；删除全部记录可以①省略 WHERE 的 DELETE（逐行删除、可回滚、较慢），或②<code>TRUNCATE TABLE</code>（属于 DDL，直接清空、速度快、<b>不可回滚</b>、不触发行级触发器，也不能带条件）。<b>DROP TABLE</b> 则是把表<b>结构连同数据</b>一起删除，属第三种层次。</div>
+</div>
+
+<h2 class="section" id="s5">五、DML 与完整性约束的关系（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 增删改如何受实体完整性、参照完整性制约（衔接第 7 章）。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>操作</th><th>可能违反</th><th>MySQL 的应对</th></tr>
+    <tr><td class="nm">INSERT</td><td>主键重复 / 非空列给 NULL / CHECK 不满足 / 外码在被参照表中不存在</td><td>报错，语句失败</td></tr>
+    <tr><td class="nm">UPDATE 主码</td><td>导致子表外码悬空</td><td>按外键定义的 <code>ON UPDATE</code> 动作处理</td></tr>
+    <tr><td class="nm">DELETE 被引用行</td><td>参照完整性</td><td>按 <code>ON DELETE</code> 动作：<code>CASCADE</code> 级联删子表 / <code>SET NULL</code> 置空 / <code>RESTRICT·NO ACTION</code>（默认）<b>拒绝删除</b></td></tr>
+  </table></div>
+  <pre class="sql"><span class="kw">CREATE TABLE</span> sc (
+  sno <span class="kw">CHAR</span>(8), cno <span class="kw">CHAR</span>(3), grade <span class="kw">SMALLINT</span>,
+  <span class="kw">PRIMARY KEY</span>(sno, cno),
+  <span class="kw">FOREIGN KEY</span>(sno) <span class="kw">REFERENCES</span> student(sno)
+      <span class="kw">ON DELETE CASCADE ON UPDATE CASCADE</span>   <span class="cm">-- 学生删除时其选课记录一并删除</span>
+);</pre>
+  <div class="note">🔑 记牢：<b>默认动作是 RESTRICT（拒绝）</b>，不是级联。想让删父行时子行跟着变，必须显式写 <code>CASCADE</code> 或 <code>SET NULL</code>。而且这些动作<b>只有 InnoDB 引擎支持</b>。</div>
+</div>
+
+<h2 class="section" id="s6">六、本章速记小结</h2>
+<div class="note">
+  <b>INSERT 四种必背写法：</b>全列（<code>VALUES</code> 顺序必须与列一致）、指定列（<code>INSERT INTO 表(列…) VALUES (值…)</code>）、多行（值组用逗号）、插查询结果（<code>INSERT INTO … SELECT</code>）；<code>INSERT IGNORE</code> 属了解项。<br>
+  <b>REPLACE：</b>键冲突时<b>先删后插</b>，没写的列会变 NULL——不是"部分更新"。<br>
+  <b>UPDATE：</b><code>SET</code> 可多列、可用表达式；<b>漏写 WHERE = 全表被改</b>。<br>
+  <b>DELETE vs TRUNCATE：</b>逐行/可回滚/可带条件 ↔ 整表/不可回滚/无条件/DDL。<br>
+  <b>DROP 是删表（结构+数据）</b>，DELETE/TRUNCATE 只删数据，表结构还在。<br>
+  <b>外键默认 RESTRICT</b>，级联要显式写 <code>ON DELETE CASCADE</code>。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 4 章 表数据操作 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

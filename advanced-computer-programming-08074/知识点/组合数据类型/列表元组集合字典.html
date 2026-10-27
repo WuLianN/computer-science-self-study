@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 4 章 组合数据类型｜列表 / 元组 / 集合 / 字典</title>
+<meta name="description" content="计算机高级程序设计 08074 第 4 章速记卡：列表、元组、集合、字典四种组合数据类型的创建、访问、切片与常用操作方法，可变与不可变区别，四者对比与综合运用。设计题高发章。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#2563eb,#7c3aed)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 4 章 · 组合数据类型</h1>
+  <p>⭐ 设计题高发章。列表/元组/集合/字典四大容器，考纲要求"创建、访问、切片、操作 + 综合运用"，几乎每道编程题都要用到。建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">重点：四种类型的创建与操作</span><span class="pill">难点：四者综合运用</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../控制结构/程序控制结构.html">← 第 3 章</a>
+    <a href="../函数/函数定义与调用.html">→ 第 5 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s0">〇、四者速览对比表</a>
+  <a href="#s1">一、列表 list（综合应用）⭐</a>
+  <a href="#s2">二、元组 tuple</a>
+  <a href="#s3">三、集合 set</a>
+  <a href="#s4">四、字典 dict（综合应用）⭐</a>
+  <a href="#s5">五、切片与推导式</a>
+  <a href="#s6">六、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s0">〇、四者速览对比</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 组合数据类型的分类。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>符号</th><th>有序?</th><th>可重复?</th><th>可变?</th><th>典型用途</th></tr>
+    <tr><td class="nm">列表 list</td><td><code>[ ]</code></td><td>有序</td><td>可重复</td><td><b>可变</b></td><td>一组同类数据、增删改</td></tr>
+    <tr><td class="nm">元组 tuple</td><td><code>( )</code></td><td>有序</td><td>可重复</td><td><b>不可变</b></td><td>不希望被改的数据、多返回值</td></tr>
+    <tr><td class="nm">集合 set</td><td><code>{ }</code></td><td>无序</td><td><b>不重复</b></td><td>可变</td><td>去重、交并差运算</td></tr>
+    <tr><td class="nm">字典 dict</td><td><code>{k:v}</code></td><td>按键插入序</td><td>键不重复</td><td>可变</td><td>键值映射、查名字→信息</td></tr>
+  </table></div>
+  <div class="note">记忆锚：<b>列表方括号、元组圆括号、字典带冒号键值对、集合只有值且去重。</b>元组唯一"不可变"。</div>
+</div>
+
+<h2 class="section" id="s1">一、列表 list ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 创建、访问、切片、操作；<span class="lvl d">综合应用</span> 解决实际问题。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>操作</th><th>写法</th><th>说明</th></tr>
+    <tr><td class="nm">增</td><td><code>append(x)</code> 尾部加 · <code>insert(i,x)</code> 指定位置 · <code>extend(lst)</code> 合并</td><td>append 加整个元素，extend 展开逐个加</td></tr>
+    <tr><td class="nm">删</td><td><code>remove(x)</code> 按值删 · <code>pop(i)</code> 按下标删并返回 · <code>del lst[i]</code> · <code>clear()</code></td><td>remove 删第一个匹配值</td></tr>
+    <tr><td class="nm">改/查</td><td><code>lst[i]=x</code> · <code>index(x)</code> · <code>count(x)</code> · <code>x in lst</code></td><td>下标从 0 起，支持负数（-1 是末尾）</td></tr>
+    <tr><td class="nm">排序</td><td><code>sort()</code> 原地排序 · <code>sorted(lst)</code> 返回新列表 · <code>reverse()</code></td><td>sort 可加 <code>key=... , reverse=True</code></td></tr>
+  </table></div>
+  <pre class="py">a = [3, 1, 4, 1, 5]
+a.append(9)         <span class="cm"># [3,1,4,1,5,9]</span>
+a.remove(1)         <span class="cm"># 删掉第一个 1</span>
+a.sort()            <span class="cm"># 原地升序</span>
+<span class="kw">print</span>(<span class="st">len</span>(a), <span class="st">max</span>(a), a[0], a[-1])</pre>
+</div>
+
+<h2 class="section" id="s2">二、元组 tuple</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 创建、访问、切片、操作。</div>
+  元组<b>创建后不能增删改</b>（不可变），访问/切片与列表相同。单元素元组要加逗号：<code>t=(5,)</code>（写 <code>(5)</code> 只是整数 5）。<br>
+  <code>count(x)</code>、<code>index(x)</code> 可用；没有 append/sort 等修改类方法。<b>可迭代解包</b>：<code>a,b,c=(1,2,3)</code>。
+  <pre class="py">t = (1, 2, 3)
+<span class="kw">print</span>(t[0], t[-1], <span class="st">len</span>(t))
+x, y, z = t          <span class="cm"># 解包 → x=1,y=2,z=3</span>
+<span class="cm"># t[0]=9  → ✗ TypeError：元组不可变</span></pre>
+</div>
+
+<h2 class="section" id="s3">三、集合 set</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 创建、访问、操作；<span class="lvl d">综合应用</span>。</div>
+  集合<b>无序、元素唯一</b>，最常用于<b>去重</b>和<b>集合运算</b>。空集合只能用 <code>set()</code>（<code>{}</code> 是空字典）。
+  <pre class="py">s = {1, 2, 2, 3}     <span class="cm"># 自动去重 → {1,2,3}</span>
+s.add(4)             <span class="cm"># 增</span>
+s.discard(2)         <span class="cm"># 删（不存在也不报错）</span>
+a, b = {1,2,3}, {2,3,4}
+<span class="kw">print</span>(a & b)   <span class="cm"># 交集 {2,3}</span>
+<span class="kw">print</span>(a | b)   <span class="cm"># 并集 {1,2,3,4}</span>
+<span class="kw">print</span>(a - b)   <span class="cm"># 差集 {1}</span></pre>
+</div>
+
+<h2 class="section" id="s4">四、字典 dict ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 创建、访问、操作；<span class="lvl d">综合应用</span>。</div>
+  字典是<b>键:值</b>的映射，<b>键唯一且必须不可变</b>（可用 str/int/tuple，不能是 list）。
+  <div class="tscroll"><table class="law">
+    <tr><th>操作</th><th>写法</th></tr>
+    <tr><td class="nm">取值</td><td><code>d[key]</code>（键不存在报 KeyError）· <code>d.get(key, 默认值)</code>（更安全）</td></tr>
+    <tr><td class="nm">增/改</td><td><code>d[key]=value</code>（有则改、无则增）· <code>update(其它dict)</code></td></tr>
+    <tr><td class="nm">删</td><td><code>del d[key]</code> · <code>pop(key)</code> · <code>clear()</code></td></tr>
+    <tr><td class="nm">遍历</td><td><code>keys()</code> 所有键 · <code>values()</code> 所有值 · <code>items()</code> 所有键值对</td></tr>
+  </table></div>
+  <pre class="py">stu = {<span class="st">"name"</span>:<span class="st">"小明"</span>, <span class="st">"age"</span>:20}
+<span class="kw">print</span>(stu[<span class="st">"name"</span>])          <span class="cm"># 小明</span>
+stu[<span class="st">"age"</span>] = 21              <span class="cm"># 改</span>
+<span class="kw">for</span> k, v <span class="kw">in</span> stu.items():     <span class="cm"># 遍历键值对</span>
+    <span class="kw">print</span>(k, v)</pre>
+</div>
+
+<h2 class="section" id="s5">五、切片与推导式</h2>
+<div class="rule">
+  <b>切片（列表/元组/字符串通用）：</b><code>seq[start:stop:step]</code>，<b>含头不含尾</b>，可为负、可省略。
+  <pre class="py">a = [0,1,2,3,4,5]
+a[1:4]     <span class="cm"># [1,2,3]</span>
+a[:3]      <span class="cm"># [0,1,2]（省略 start 从头）</span>
+a[::2]     <span class="cm"># [0,2,4]（步长 2）</span>
+a[::-1]    <span class="cm"># [5,4,3,2,1,0]（反转，高频！）</span></pre>
+  <b>列表推导式</b>（一行造列表，设计题神器）：<code>[表达式 for 变量 in 序列 if 条件]</code>
+  <pre class="py">sq = [x*x <span class="kw">for</span> x <span class="kw">in</span> <span class="st">range</span>(1, 6)]        <span class="cm"># [1,4,9,16,25]</span>
+ev = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="st">range</span>(10) <span class="kw">if</span> x%2==0]   <span class="cm"># [0,2,4,6,8]</span></pre>
+</div>
+
+<h2 class="section" id="s6">六、本章速记小结</h2>
+<div class="note">
+  <b>选类型口诀：</b>要改又有序→列表；不想被改→元组；要去重/算交并→集合；要按名字查→字典。<br>
+  <b>高频坑：</b>① 单元素元组忘逗号 <code>(5,)</code>；② 空集合是 <code>set()</code> 不是 <code>{}</code>；③ <code>d[key]</code> 键不存在报错，用 <code>d.get()</code> 兜底；④ 切片<b>含头不含尾</b>，<code>[::-1]</code> 反转；⑤ 列表 <code>sort()</code> 改自己返回 None，<code>sorted()</code> 返回新值。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 4 章 组合数据类型 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

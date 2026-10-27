@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 1 章 Python 概述｜程序与执行方式 / 语法规则 / 模块与库</title>
+<meta name="description" content="计算机高级程序设计 08074 第 1 章速记卡：程序设计语言类型与执行方式、IDLE 运行、基本语法规则（注释/标识符/关键字/缩进/多行语句）、Python 模块与扩展库安装、math/random 常用成员。按考纲能力层次标注。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0ea5e9,#2563eb)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+  pre.out{background:#f8fafc;border:1px dashed #94a3b8;border-radius:8px;padding:8px 12px;font-family:Consolas,Monaco,monospace;font-size:13px;margin:6px 0;color:#0f172a;white-space:pre;overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 1 章 · Python 概述</h1>
+  <p>本章是整门课的"地基"，只占 4 学时、直接考分不多，但概念题（识记/领会）几乎每年都在单选里出现。核心记三块：程序怎么被计算机执行、语法规则有哪些硬性要求、模块和库怎么导入安装。</p>
+  <span class="pill">建议 4 学时</span><span class="pill">考纲 9 章 = 教材 9 章</span><span class="pill">重点：基本语法规则</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../数据类型/数据类型与内置函数.html">→ 第 2 章：数据类型</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、程序与设计语言类型（识记）</a>
+  <a href="#s2">二、程序的执行方式与 IDLE（识记）</a>
+  <a href="#s3">三、Python 基本语法规则（领会）⭐ 本章重点</a>
+  <a href="#s4">四、Python 模块与扩展库（识记）</a>
+  <a href="#s5">五、math 模块与 random 模块（领会）</a>
+  <a href="#s6">六、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、程序与设计语言类型</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 程序设计语言的三种类型、程序执行方式。</div>
+  <div class="th"><b>能被计算机直接执行的只有机器语言（二进制 0/1）。</b>其余语言都要"翻译"成机器语言才能运行。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>代际</th><th>语言</th><th>特点</th><th>是否需要翻译</th></tr>
+    <tr><td class="nm">第一代</td><td>机器语言</td><td>二进制指令，计算机唯一能直接识别执行</td><td>不需要</td></tr>
+    <tr><td class="nm">第二代</td><td>汇编语言</td><td>用助记符代替机器指令，面向机器</td><td>需要（汇编程序）</td></tr>
+    <tr><td class="nm">第三代</td><td>高级语言（Python/C/Java…）</td><td>接近自然语言、易读易写，与机器无关</td><td>需要（编译 / 解释）</td></tr>
+  </table></div>
+  <div class="note">⚠️ <b>高频单选陷阱：</b>问"能被计算机直接执行的语言"，答案永远是<b>机器语言</b>，不是高级语言、不是汇编、更不是自然语言。</div>
+</div>
+
+<h2 class="section" id="s2">二、程序的执行方式与 IDLE</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> IDLE 中 Python 程序的运行方式。</div>
+  <b>高级语言的两种翻译/执行方式：</b>
+  <ol class="steps" style="margin:8px 0 8px 1.4em;padding:0">
+    <li><b>编译执行</b>：一次性把整个源程序翻译成目标代码再运行（C 语言属此类，先生成 .exe）。</li>
+    <li><b>解释执行</b>：逐行读入、逐行翻译执行，不生成独立目标文件。<b>Python 是解释型语言</b>。</li>
+  </ol>
+  <div class="th">Python 程序支持<b>两种运行方式</b>：① <b>交互式</b>（在 REPL/IDLE 提示符 <code>&gt;&gt;&gt;</code> 下逐句输入立即看得果）；② <b>脚本式</b>（写成 <code>.py</code> 文件，整体运行）。</div>
+  <pre class="py"><span class="cm"># 交互式：>>> 后输入，回车立即出结果</span>
+<span class="kw">&gt;&gt;&gt;</span> print(1 + 2)
+3
+<span class="cm"># 脚本式：把代码存成 hello.py，再运行该文件</span></pre>
+</div>
+
+<h2 class="section" id="s3">三、Python 基本语法规则 ⭐ 本章重点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 注释、标识符、关键字、强制缩进、多行语句、同一行执行多条语句。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>规则</th><th>要点（背这几条就够）</th></tr>
+    <tr><td class="nm">注释</td><td>单行用 <code>#</code>；多行/文档注释用三引号 <code>'''…'''</code> 或 <code>"""…"""</code>。</td></tr>
+    <tr><td class="nm">标识符（变量名）</td><td>由<b>字母、数字、下划线</b>组成，<b>不能以数字开头</b>，<b>区分大小写</b>，不能用关键字。</td></tr>
+    <tr><td class="nm">关键字</td><td>系统保留、有专门含义、不能作标识符（如 <code>if for while def class return import True None</code>）。可用 <code>import keyword; print(keyword.kwlist)</code> 查看全部。</td></tr>
+    <tr><td class="nm">强制缩进</td><td>用缩进表示语句块（相当于 C 的 <code>{}</code>）。<b>同一层级缩进必须一致</b>，推荐 4 个空格。缩进错误会报 <code>IndentationError</code>。</td></tr>
+    <tr><td class="nm">一行多句</td><td>同一行写多条语句用<b>分号 <code>;</code></b> 分隔，如 <code>a=1; b=2</code>。</td></tr>
+    <tr><td class="nm">多行语句</td><td>一条语句跨多行用<b>续行符 <code>\</code></b>，或在 <code>() {} []</code> 括号内自动续行。</td></tr>
+  </table></div>
+  <pre class="py"><span class="cm"># 标识符合法性判断</span>
+sum2 = 10     <span class="cm"># ✓ 合法</span>
+_abc = 3      <span class="cm"># ✓ 合法（下划线开头可以）</span>
+2sum = 1      <span class="cm"># ✗ 数字开头</span>
+if  = 5       <span class="cm"># ✗ if 是关键字</span>
+a*b = 2       <span class="cm"># ✗ 含非法字符 *</span>
+
+<span class="cm"># 强制缩进：if 块内三句必须同缩进</span>
+<span class="kw">if</span> sum2 &gt; 5:
+    print(<span class="st">"大"</span>)
+    x = sum2 * 2</pre>
+  <div class="note">📌 考纲题型举例里就有："下列正确的变量名是（）A.2sum B.if C.sum2 D.a*b" —— 答案 <b>C. sum2</b>。记忆口诀：<b>字母下划线开头、不用关键字、不混大小写</b>。</div>
+</div>
+
+<h2 class="section" id="s4">四、Python 模块与扩展库</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 模块的概念、扩展库安装；<span class="lvl b">领会</span> 模块的导入和使用。</div>
+  <b>模块（module）</b>：一个 <code>.py</code> 文件就是一节模块，把函数、变量、类组织起来便于<b>复用</b>。分标准库模块（随 Python 安装即有）和第三方扩展库（需额外安装）。
+  <pre class="py"><span class="cm"># 三种导入方式</span>
+<span class="kw">import</span> math                <span class="cm"># 用 math.sqrt(x)</span>
+<span class="kw">from</span> math <span class="kw">import</span> sqrt      <span class="cm"># 直接用 sqrt(x)</span>
+<span class="kw">from</span> math <span class="kw">import</span> *         <span class="cm"># 导入全部成员（不推荐）</span>
+
+<span class="cm"># 安装第三方扩展库：在命令行（不是 IDLE 里）用 pip</span>
+<span class="cm"># pip install 库名      例：pip install numpy</span></pre>
+</div>
+
+<h2 class="section" id="s5">五、math 模块与 random 模块</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> math 模块常用成员、random 模块常用函数。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>math 模块</th><th>作用</th><th>random 模块</th><th>作用</th></tr>
+    <tr><td class="nm"><code>math.sqrt(x)</code></td><td>开平方</td><td class="nm"><code>random.random()</code></td><td>返回 [0,1) 的随机浮点数</td></tr>
+    <tr><td class="nm"><code>math.pow(x,y)</code></td><td>x 的 y 次方</td><td class="nm"><code>randint(a,b)</code></td><td>[a,b] 闭区间随机整数</td></tr>
+    <tr><td class="nm"><code>math.ceil(x)</code></td><td>向上取整</td><td class="nm"><code>choice(seq)</code></td><td>从序列随机取一个元素</td></tr>
+    <tr><td class="nm"><code>math.floor(x)</code></td><td>向下取整</td><td class="nm"><code>shuffle(x)</code></td><td>原地打乱列表</td></tr>
+    <tr><td class="nm"><code>math.pi / math.e</code></td><td>常量 π / e</td><td class="nm"><code>uniform(a,b)</code></td><td>[a,b] 随机浮点数</td></tr>
+  </table></div>
+  <pre class="py"><span class="kw">import</span> math, random
+print(math.sqrt(16))       <span class="cm"># 4.0</span>
+print(math.ceil(3.2))      <span class="cm"># 4</span>
+print(random.randint(1,6)) <span class="cm"># 1~6 的随机整数（掷骰子）</span></pre>
+</div>
+
+<h2 class="section" id="s6">六、本章速记小结</h2>
+<div class="note">
+  <b>一条主线：</b>计算机只认机器语言 → Python 是<b>解释型高级语言</b>，可交互式也可脚本运行 → 语法四条硬规定（标识符规则、关键字保留、<b>缩进表语句块</b>、分号/续行符） → 模块用 <code>import</code> 导入、第三方库用 <b>pip</b> 安装 → 记熟 math、random 的常用成员。<br>
+  <b>本章关键词：</b>机器语言直接执行、解释型、<code>#</code> 注释、4 空格缩进、标识符不以数字开头、pip、math.sqrt、random.randint。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 1 章 Python 概述 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 6 章 字符串｜转义字符 / 运算 / 处理方法（正则不考）</title>
+<meta name="description" content="计算机高级程序设计 08074 第 6 章速记卡：字符串表示与编码、常见转义字符、字符串运算与切片、split/join 拆分连接、find/replace 查找替换、startswith/endswith 测试串、format 格式化、大小写转换。正则表达式（6.3）不考。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔤</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#4f46e5,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 6 章 · 字符串 ⚠️ 正则不考</h1>
+  <p>只考 6.1、6.2 两节，<b>6.3 正则表达式整体不在考核范围</b>——别在这上面花时间。核心是字符串的运算、切片和一大堆处理方法（拆分/连接/查找/替换/格式化/大小写）。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">✂️ 6.3 正则表达式不考</span><span class="pill">重点：字符串运算与方法</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../函数/函数定义与调用.html">← 第 5 章</a>
+    <a href="../文件/文件与数据维度.html">→ 第 7 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、字符串的表示与编码（领会）</a>
+  <a href="#s2">二、常见转义字符（识记）</a>
+  <a href="#s3">三、字符串运算与切片（简单应用）⭐</a>
+  <a href="#s4">四、字符串处理内置函数（领会）</a>
+  <a href="#s5">五、str 对象常用方法（简单应用）⭐</a>
+  <a href="#s6">六、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、字符串的表示与编码</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 字符串的表示；了解编码解码。</div>
+  <ul>
+    <li>单引号 <code>'hi'</code>、双引号 <code>"hi"</code> 等价；三引号 <code>"""…"""</code> 表示<b>多行字符串</b>。</li>
+    <li><b>字符串不可变</b>：不能 <code>s[0]='X'</code> 原地改，只能生成新串。</li>
+    <li>编码解码：中文存成字节涉及 <b>UTF-8 / GBK</b>；<code>s.encode()</code> 编码为 bytes，<code>b.decode()</code> 解码为 str。</li>
+    <li>原始字符串前加 <code>r</code>（<code>r"a\b"</code> 不解释转义），常用于文件路径。</li>
+  </ul>
+</div>
+
+<h2 class="section" id="s2">二、常见转义字符</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 常见转义字符的含义。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>转义符</th><th>含义</th><th>转义符</th><th>含义</th></tr>
+    <tr><td class="nm"><code>\\n</code></td><td>换行</td><td class="nm"><code>\\t</code></td><td>制表符 Tab</td></tr>
+    <tr><td class="nm"><code>\\\\</code></td><td>反斜杠本身</td><td class="nm"><code>\\'</code></td><td>单引号</td></tr>
+    <tr><td class="nm"><code>\\"</code></td><td>双引号</td><td class="nm"><code>\\r</code></td><td>回车</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s3">三、字符串运算与切片 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 字符串的运算。</div>
+  <pre class="py">s = <span class="st">"Hello"</span>
+<span class="kw">print</span>(s + <span class="st">"!"</span>)       <span class="cm"># 连接 → Hello!</span>
+<span class="kw">print</span>(s * 2)         <span class="cm"># 重复 → HelloHello</span>
+<span class="kw">print</span>(<span class="st">len</span>(s))        <span class="cm"># 长度 5</span>
+<span class="kw">print</span>(<span class="st">"e"</span> <span class="kw">in</span> s)      <span class="cm"># True 成员测试</span>
+<span class="kw">print</span>(s[1])          <span class="cm"># e（下标从 0）</span>
+<span class="kw">print</span>(s[1:4])        <span class="cm"># ell（切片含头不含尾）</span>
+<span class="kw">print</span>(s[::-1])       <span class="cm"># olleH（反转）</span></pre>
+</div>
+
+<h2 class="section" id="s4">四、字符串处理内置函数（领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 常用内置函数。</div>
+  <code>len()</code> 长度、<code>max()/min()</code> 字符比较、<code>ord(c)</code> 字符→编码值、<code>chr(n)</code> 编码值→字符、<code>str(x)</code> 转字符串、<code>eval()</code> 求值表达式字符串。
+</div>
+
+<h2 class="section" id="s5">五、str 对象常用方法 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 拆分与连接、查找与替换、测试串、格式化、大小写转换和字符映射。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>用途</th><th>方法</th><th>例子</th></tr>
+    <tr><td class="nm">拆分 / 连接</td><td><code>split(sep)</code> · <code>join(seq)</code></td><td><code>"a,b,c".split(",")→['a','b','c']</code>；<code>"-".join(['a','b'])→"a-b"</code></td></tr>
+    <tr><td class="nm">查找</td><td><code>find(sub)</code> · <code>count(sub)</code></td><td>find 返回下标（找不到 -1）；count 出现次数</td></tr>
+    <tr><td class="nm">替换</td><td><code>replace(old,new)</code></td><td><code>"aaa".replace("a","b")→"bbb"</code></td></tr>
+    <tr><td class="nm">测试串</td><td><code>startswith / endswith / isdigit / isalpha / isalnum</code></td><td>返回 True/False；isdigit 判是否全数字</td></tr>
+    <tr><td class="nm">去空白</td><td><code>strip() / lstrip() / rstrip()</code></td><td>strip 去两端空格（读文件行常用）</td></tr>
+    <tr><td class="nm">大小写</td><td><code>upper() / lower() / title() / swapcase()</code></td><td>全大写 / 全小写 / 每词首字母 / 大小写互换</td></tr>
+    <tr><td class="nm">格式化</td><td><code>format()</code> · <code>f-string</code></td><td><code>f"{name}今年{age}岁"</code>（最常用）</td></tr>
+  </table></div>
+  <pre class="py">line = <span class="st">"  Apple, Banana  "</span>
+parts = line.strip().split(<span class="st">","</span>)     <span class="cm"># ['Apple', ' Banana']</span>
+<span class="kw">print</span>(<span class="st">"2024"</span>.isdigit())            <span class="cm"># True</span>
+<span class="kw">print</span>(<span class="st">"hi"</span>.upper())                <span class="cm"># HI</span>
+name, age = <span class="st">"小明"</span>, 20
+<span class="kw">print</span>(<span class="st">f"</span>{name}<span class="st">今年</span>{age}<span class="st">岁"</span>)          <span class="cm"># f-string 格式化</span></pre>
+</div>
+
+<h2 class="section" id="s6">六、本章速记小结</h2>
+<div class="note">
+  <b>先记住：</b>正则（re 模块、6.3）<b>不考</b>，别背。字符串三大性质：<b>有序、可切片、不可变</b>。<br>
+  <b>方法名易混：</b><code>split</code> 拆成列表 / <code>join</code> 把列表拼成串（方向相反，join 是"分隔符".join(列表)）；<code>find</code> 找不到返回 <b>-1</b> 不报错。<br>
+  <b>综合设计题常客：</b>读一行字符串统计大写字母个数 → 遍历 <code>for c in s: if c.isupper(): cnt+=1</code>。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 6 章 字符串 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

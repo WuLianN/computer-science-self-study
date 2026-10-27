@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 8 章 安全管理｜权限表 · CREATE USER · GRANT / REVOKE</title>
+<meta name="description" content="数据库原理与技术 13009 第 8 章速记卡：MySQL 权限表所在的 mysql 库及其包含的表（user/db/host/tables_priv/columns_priv/procs_priv），用户管理 CREATE USER / RENAME USER / SET PASSWORD / DROP USER，权限管理的权限组类与权限级别值格式（*.* / db.* / db.tb / 列级），GRANT 授予与 REVOKE 撤销权限语句，FLUSH PRIVILEGES 与 SHOW GRANTS。建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0f766e,#4f46e5)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 8 章 · 安全管理</h1>
+  <p>纯"语句记忆章"：<b>六条用户/权限语句</b>（CREATE USER、RENAME USER、SET PASSWORD、DROP USER、GRANT、REVOKE）＋ <b>权限表在哪个库、有哪些表</b>。选择题和补空题的主战场。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：用户与权限六条语句</span><span class="pill">难点：GRANT / REVOKE 的层级写法</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../数据完整性/完整性约束.html">← 第 7 章</a>
+    <a href="../规范化/关系数据库设计理论.html">→ 第 9 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、安全性的含义与措施（识记）</a>
+  <a href="#s2">二、权限表：所在库与包含的表（识记）⭐</a>
+  <a href="#s3">三、用户管理四条语句（识记/简单应用）⭐</a>
+  <a href="#s4">四、权限的组类与权限级别值（领会）⭐</a>
+  <a href="#s5">五、GRANT 授予权限（简单应用）⭐⭐</a>
+  <a href="#s6">六、REVOKE 撤销权限（简单应用）⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、安全性的含义与措施（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据库安全性概念（与第 7 章完整性对照记忆）。</div>
+  <b>安全性（Security）</b>：保护数据库<b>防止不合法的使用</b>造成数据<b>泄露、篡改、破坏</b>——防的是"坏人"（未经授权的用户）；<b>完整性</b>防的是"坏数据"（不符合语义的数据）。这是常考的一对辨析。
+  <div class="th"><b>MySQL 提供的安全手段：</b>①<b>用户标识与鉴别</b>（用户名＋口令＋主机）；②<b>访问控制</b>——自主存取控制 <b>DAC</b>（GRANT/REVOKE 授权）与强制存取控制 MAC；③<b>视图机制</b>（不同用户只见被授权的视图，见第 6 章）；④<b>审计</b>（记录操作日志）；⑤<b>数据加密</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、权限表：所在库与包含的表 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 权限表所在的数据库名、包含哪些表。</div>
+  <b>所有权限信息都存放在 <code>mysql</code> 这个系统数据库中</b>（不是 information_schema！），常用<b>六张权限表</b>：
+  <div class="tscroll"><table class="law">
+    <tr><th>权限表</th><th>级别</th><th>存放内容</th></tr>
+    <tr><td class="nm"><code>user</code></td><td><b>全局级</b></td><td>账号名、<b>认证口令</b>、连接资源限制，以及<b>针对所有库的权限</b>（Grant_priv 等）</td></tr>
+    <tr><td class="nm"><code>db</code></td><td><b>库级</b></td><td>账号对<b>某些数据库</b>的操作权限（含 Host、Db 与各种 priv 列）</td></tr>
+    <tr><td class="nm"><code>host</code></td><td>库级（按主机）</td><td>结合 db 表使用，规定<b>某主机上某数据库</b>的权限（老版本；MySQL 8.0 已<b>不再使用该表</b>，属了解）</td></tr>
+    <tr><td class="nm"><code>tables_priv</code></td><td><b>表级</b></td><td>账号对<b>具体表</b>（含视图）的操作权限</td></tr>
+    <tr><td class="nm"><code>columns_priv</code></td><td><b>列级</b></td><td>账号对<b>具体列</b>的 SELECT / INSERT / UPDATE / REFERENCES 权限</td></tr>
+    <tr><td class="nm"><code>procs_priv</code></td><td><b>子程序级</b></td><td>存储过程与函数的 EXECUTE / ALTER ROUTINE 权限</td></tr>
+  </table></div>
+  <div class="note">🔑 记忆口诀：<b>"库（mysql）里有六表，从大到小 user → db → tables_priv → columns_priv，外加 host（按主机）与 procs_priv（按子程序）"</b>。MySQL 8 还有 <code>proxies_priv</code>、<code>role_db</code>、<code>default_roles</code> 等角色相关表，答教材要求的六张即可。</div>
+</div>
+
+<h2 class="section" id="s3">三、用户管理四条语句 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 用户管理的操作及语句；<span class="lvl c">简单应用</span> <code>CREATE USER</code> / <code>DROP USER</code> / <code>RENAME USER</code> / <code>SET PASSWORD</code>。</div>
+  <pre class="sql"><span class="cm">-- ① 创建用户（'用户'@'主机'；% 表示任意主机）</span>
+<span class="kw">CREATE USER</span> <span class="st">'zhang'</span>@<span class="st">'%'</span> <span class="kw">IDENTIFIED BY</span> <span class="st">'Abc@1234'</span>;
+<span class="kw">CREATE USER</span> <span class="st">'li'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED BY</span> <span class="st">'123456'</span>;
+
+<span class="cm">-- ② 修改用户口令（SET PASSWORD 与 ALTER USER 两种写法都要认）</span>
+<span class="kw">SET PASSWORD FOR</span> <span class="st">'zhang'</span>@<span class="st">'%'</span> = <span class="st">'New@2026'</span>;
+<span class="kw">ALTER USER</span> <span class="st">'zhang'</span>@<span class="st">'%'</span> <span class="kw">IDENTIFIED BY</span> <span class="st">'New@2026'</span>;   <span class="cm">-- MySQL 8 推荐写法</span>
+<span class="kw">SET PASSWORD</span> = <span class="st">'MyPwd'</span>;                              <span class="cm">-- 改当前登录账号自己的口令</span>
+
+<span class="cm">-- ③ 重命名用户（也可用来改主机限定）</span>
+<span class="kw">RENAME USER</span> <span class="st">'zhang'</span>@<span class="st">'%'</span> <span class="kw">TO</span> <span class="st">'zhangsan'</span>@<span class="st">'192.168.1.%'</span>;
+
+<span class="cm">-- ④ 删除用户（只删账号，不影响它建的库表）</span>
+<span class="kw">DROP USER</span> IF <span class="kw">EXISTS</span> <span class="st">'zhangsan'</span>@<span class="st">'%'</span>;
+
+<span class="cm">-- 查看账号</span>
+<span class="kw">SELECT</span> user, host <span class="kw">FROM</span> mysql.user;
+<span class="kw">SHOW GRANTS FOR</span> <span class="st">'li'</span>@<span class="st">'localhost'</span>;      <span class="cm">-- 查看某账号已获得的全部权限</span></pre>
+  <div class="note">⚠️ 三个判分点：①账号永远写成 <b><code>'user'@'host'</code> 成对形式</b>，只写用户名不规范；②口令在 MySQL 5.7.6+ 要用 <code>IDENTIFIED BY '明文'</code>（系统自动哈希），<b>不要写 PASSWORD('…')</b>（旧语法）；③手工改 <code>mysql.user</code> 表后必须执行 <code>FLUSH PRIVILEGES;</code> 才生效，用 <code>CREATE USER</code> 等语句则不需要。</div>
+</div>
+
+<h2 class="section" id="s4">四、权限的组类与权限级别值（领会）⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 可以授予的权限有几种类别（组类）及其含义；权限级别值的格式及其含义。</div>
+  <b>可授予权限的组类（按操作对象划分）：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>组类</th><th>典型权限</th><th>含义</th></tr>
+    <tr><td class="nm"><b>库（数据库）级</b>权限</td><td><code>ALTER</code>、<code>CREATE</code>、<code>DROP</code>、<code>INDEX</code>、<code>CREATE VIEW</code>、<code>SHOW VIEW</code>、<code>CREATE ROUTINE</code>、<code>LOCK TABLES</code>、<b><code>ALL [PRIVILEGES]</code></b>、<code>GRANT OPTION</code></td><td>对整个库中所有对象的 DDL 类操作许可</td></tr>
+    <tr><td class="nm"><b>表（对象）级</b>权限</td><td><code>SELECT</code>、<code>INSERT</code>、<code>UPDATE</code>、<code>DELETE</code>、<code>REFERENCES</code>、<code>TRIGGER</code>、<code>CREATE TEMPORARY TABLES</code></td><td>对表/视图的 DML 类操作许可</td></tr>
+    <tr><td class="nm"><b>列级</b>权限</td><td><code>SELECT(col)</code>、<code>INSERT(col)</code>、<code>UPDATE(col)</code>、<code>REFERENCES(col)</code></td><td>只允许操作某表的<b>指定列</b></td></tr>
+    <tr><td class="nm"><b>子程序级</b>权限</td><td><code>EXECUTE</code>、<code>ALTER ROUTINE</code>、<code>CREATE ROUTINE</code>、<code>EVENT</code></td><td>对存储过程 / 函数 / 事件的许可</td></tr>
+    <tr><td class="nm"><b>管理类</b>权限</td><td><code>SUPER</code>、<code>PROCESS</code>、<code>RELOAD</code>、<code>SHUTDOWN</code>、<code>FILE</code>、<code>REPLICATION …</code></td><td>服务器管理与运维操作（一般只给 DBA）</td></tr>
+  </table></div>
+  <b>权限级别值（ON 后面写什么）：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>写法</th><th>级别</th><th>含义</th></tr>
+    <tr><td class="nm"><code>*.*</code></td><td>全局级</td><td>服务器上<b>所有库、所有表</b>（对应 mysql.user 表）</td></tr>
+    <tr><td class="nm"><code>db_name.*</code></td><td>库级</td><td>指定库中的<b>全部对象</b>（对应 db 表）</td></tr>
+    <tr><td class="nm"><code>db_name.tb_name</code></td><td>表级</td><td>指定库中的<b>指定表/视图</b>（对应 tables_priv）</td></tr>
+    <tr><td class="nm"><code>db_name.routine_name</code></td><td>子程序级</td><td>指定的存储过程/函数</td></tr>
+    <tr><td class="nm"><code>(列名)</code> 跟在权限后</td><td>列级</td><td><code>SELECT(sname, sage)</code> 只授这<b>两列</b>的查询权</td></tr>
+  </table></div>
+  <div class="note">🔑 由上到下一级比一级<b>更细</b>；<code>ON *.* TO</code> 是"全局授权"（往往要 DBA 权限才能给），<code>ALL PRIVILEGES</code> 指<b>当前级别下所有静态权限</b>，<b>不含 GRANT OPTION</b>（要让人能转授必须再写 <code>WITH GRANT OPTION</code>）。</div>
+</div>
+
+<h2 class="section" id="s5">五、GRANT 授予权限 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 用 GRANT 语句授予权限。</div>
+  <pre class="sql"><span class="cm">-- 骨架：GRANT 权限[,权限…] ON 级别值 TO 用户@主机 [IDENTIFIED BY '口令'] [WITH GRANT OPTION];</span>
+
+<span class="cm">① 库级：给 zhang 对 student_mgr 库所有表的查询、插入权限</span>
+<span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">INSERT ON</span> student_mgr.* <span class="kw">TO</span> <span class="st">'zhang'</span>@<span class="st">'%'</span>;
+
+<span class="cm">② 表级 + 允许转授</span>
+<span class="kw">GRANT</span> <span class="kw">SELECT</span>, <span class="kw">UPDATE ON</span> student_mgr.student <span class="kw">TO</span> <span class="st">'li'</span>@<span class="st">'localhost'</span>
+    <span class="kw">WITH GRANT OPTION</span>;
+
+<span class="cm">③ 列级：只允许查询和修改 sname、sage 两列</span>
+<span class="kw">GRANT</span> (<span class="kw">SELECT</span>(sname, sage), <span class="kw">UPDATE</span>(sname, sage))
+    <span class="kw">ON</span> student_mgr.student <span class="kw">TO</span> <span class="st">'wang'</span>@<span class="st">'%'</span>;
+
+<span class="cm">④ 全局（所有库）+ 顺带建账号（IDENTIFIED BY 一起写）</span>
+<span class="kw">GRANT ALL PRIVILEGES ON</span> *.* <span class="kw">TO</span> <span class="st">'dba'</span>@<span class="st">'localhost'</span> <span class="kw">IDENTIFIED BY</span> <span class="st">'Pwd@2026'</span>
+    <span class="kw">WITH GRANT OPTION</span>;
+
+<span class="cm">⑤ 子程序级</span>
+<span class="kw">GRANT EXECUTE ON PROCEDURE</span> student_mgr.sp_avg <span class="kw">TO</span> <span class="st">'li'</span>@<span class="st">'localhost'</span>;</pre>
+  <div class="note">⚠️ MySQL 8 的两个变化：①<b>GRANT 不再自动创建用户</b>（5.7 可以），所以应先 <code>CREATE USER</code> 再授权，否则报 "Access denied for user …"；②给<b>全局权限</b>时 <code>ON *.*</code> 与 <code>TO user</code> 之间不能插库名。写答案时按教材的标准语法即可，但上机要记这两点。</div>
+</div>
+
+<h2 class="section" id="s6">六、REVOKE 撤销权限 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 用 REVOKE 语句撤销权限。</div>
+  <pre class="sql"><span class="cm">-- ① 撤销某项具体权限（对称于 GRANT）</span>
+<span class="kw">REVOKE</span> <span class="kw">INSERT ON</span> student_mgr.* <span class="kw">FROM</span> <span class="st">'zhang'</span>@<span class="st">'%'</span>;
+
+<span class="cm">-- ② 撤销全部权限（保留账号）</span>
+<span class="kw">REVOKE ALL PRIVILEGES, GRANT OPTION FROM</span> <span class="st">'li'</span>@<span class="st">'localhost'</span>;
+
+<span class="cm">-- ③ 只撤销"转授权利"</span>
+<span class="kw">REVOKE GRANT OPTION FOR</span> <span class="kw">SELECT ON</span> student_mgr.student <span class="kw">FROM</span> <span class="st">'li'</span>@<span class="st">'localhost'</span>;
+
+<span class="cm">-- ④ 撤销角色（MySQL 8，了解）</span>
+<span class="kw">REVOKE</span> reader_role <span class="kw">FROM</span> <span class="st">'wang'</span>@<span class="st">'%'</span>;
+
+<span class="kw">FLUSH PRIVILEGES</span>;   <span class="cm">-- 权限变更一般自动生效；手工改表时才必须刷</span></pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>对比</th><th>GRANT</th><th>REVOKE</th></tr>
+    <tr><td class="nm">介词</td><td><code>… TO 用户</code></td><td><code>… FROM 用户</code>（易错！）</td></tr>
+    <tr><td class="nm">撤销全部</td><td><code>ALL PRIVILEGES</code></td><td><code>ALL PRIVILEGES, GRANT OPTION</code>（要连转授权一起撤）</td></tr>
+    <tr><td class="nm">是否删账号</td><td>—</td><td><b>不删账号</b>，只是收权；删账号用 <code>DROP USER</code></td></tr>
+    <tr><td class="nm">级联</td><td><code>WITH GRANT OPTION</code> 允许被授权人再转授</td><td>撤上级权限时，<b>由他转授出去的权限一并失效</b>（可用 <code>CASCADE</code>/<code>RESTRICT</code> 语义理解）</td></tr>
+  </table></div>
+  <div class="note">⚠️ 高频选择：<code>REVOKE</code> 用 <b>FROM</b> 不用 TO；<code>GRANT OPTION</code> 是"能否把权限再授予别人"的权限本身，撤掉后该用户转授给别人的权限也随之作废；<code>DROP USER</code> 会连带删掉该账号的所有 <code>GRANT</code> 记录。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>权限表在 <code>mysql</code> 库：</b>user（全局）、db（库）、host（按主机）、tables_priv（表）、columns_priv（列）、procs_priv（子程序）。<br>
+  <b>用户四条：</b><code>CREATE USER 'u'@'h' IDENTIFIED BY 'p'</code> → <code>SET PASSWORD FOR …=…</code>（或 ALTER USER）→ <code>RENAME USER … TO …</code> → <code>DROP USER</code>。<br>
+  <b>权限五种组类：</b>库级 DDL 类、表级 DML 类、列级、子程序级、管理类。<br>
+  <b>ON 的四种级别值：</b><code>*.*</code> 全局 ｜ <code>db.*</code> 库 ｜ <code>db.tb</code> 表 ｜ <code>PROCEDURE/FUNCTION db.routine</code> 子程序；列级在权限后用<b>括号写列名</b>。<br>
+  <b>GRANT … TO ｜ REVOKE … FROM</b>；转授用 <code>WITH GRANT OPTION</code>，撤转授用 <code>REVOKE GRANT OPTION FOR …</code>。<br>
+  <b>手工改权限表后要 <code>FLUSH PRIVILEGES</code></b>；用语句改则不必。<br>
+  <b>安全性 vs 完整性：</b>安全性防非法用户（泄露/篡改），完整性防非法数据（不符语义）。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 8 章 安全管理 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

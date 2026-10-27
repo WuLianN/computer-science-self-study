@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 7 章 数据完整性｜PRIMARY KEY / UNIQUE / FOREIGN KEY / CHECK / NOT NULL</title>
+<meta name="description" content="数据库原理与技术 13009 第 7 章速记卡：数据完整性与约束机制的优点，MySQL 三类完整性（实体/参照/用户定义）与对应约束，主键约束与唯一性约束的含义及区别，定义外键必须遵守的规则、参照完整性与级联动作 CASCADE/SET NULL/RESTRICT，CHECK 与非空约束，CREATE TABLE 与 ALTER TABLE 添加/删除四类约束的完整语句对照表。建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#1d4ed8,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 7 章 · 数据完整性 ⭐ 约束语句必考</h1>
+  <p>把第 2 章的三条完整性规则<b>翻译成 SQL 约束</b>：实体→<code>PRIMARY KEY/UNIQUE</code>，参照→<code>FOREIGN KEY</code>，用户定义→<code>CHECK/NOT NULL</code>。考试要求<b>建表时写</b>和<b>用 ALTER TABLE 追加/删除</b>两种都能写。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：四类约束的创建与删除</span><span class="pill">难点：外键规则与级联动作</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../视图索引/视图和索引.html">← 第 6 章</a>
+    <a href="../安全管理/用户与权限.html">→ 第 8 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、概述：完整性与约束机制（识记/领会）</a>
+  <a href="#s2">二、实体完整性：主键约束 vs 唯一性约束（领会）⭐简答</a>
+  <a href="#s3">三、参照完整性：外键的六条规则（识记/领会）⭐</a>
+  <a href="#s4">四、外键约束的创建、修改、删除（简单应用）⭐</a>
+  <a href="#s5">五、用户定义完整性：CHECK 与非空（识记/领会）</a>
+  <a href="#s6">六、四类约束语句总对照表（综合应用）⭐⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、概述：完整性与约束机制（识记 / 领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据完整性的概念、约束机制的优点；<span class="lvl b">领会</span> MySQL 支持的完整性类型及各约束的含义。</div>
+  <b>数据完整性（Data Integrity）</b>：数据库中数据的<b>正确性、有效性和相容性</b>——防止不符合语义（错误、无效）的数据被输入或输出，从而保证数据库里的数据与现实世界的约束一致。
+  <div class="th"><b>约束机制的优点（简答）：</b>完整性规则以<b>数据库对象（约束）的形式定义并存储在数据字典中</b>，由 DBMS 自动检查并强制执行，因此①<b>无须在应用程序中重复编写检查代码</b>，简化程序；②<b>集中定义、修改方便</b>（改约束即可，不必改所有程序）；③<b>检查效率高、更可靠</b>，避免人为绕过；④规则与数据一起存储、随表存在，<b>不会失效</b>。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>MySQL 完整性类型</th><th>对应约束</th><th>约束的含义（保证什么）</th></tr>
+    <tr><td class="nm">实体完整性</td><td><code>PRIMARY KEY</code>、<code>UNIQUE</code></td><td>每一行都能被<b>唯一标识</b>：主码非空且不重复</td></tr>
+    <tr><td class="nm">参照完整性</td><td><code>FOREIGN KEY</code></td><td>表间关系有效：外码值要么为空，要么在被参照表中<b>确实存在</b></td></tr>
+    <tr><td class="nm">用户定义的完整性</td><td><code>CHECK</code>、<code>NOT NULL</code>、<code>DEFAULT</code>、数据类型与长度</td><td>满足<b>具体应用的语义</b>要求（取值范围、非空、枚举值）</td></tr>
+  </table></div>
+  <div class="note">⚠️ MySQL 特有的坑：<b>CHECK 约束在 8.0.16 之前会被解析但直接忽略</b>（不生效）；MyISAM 引擎<b>不支持外键</b>——只有 <b>InnoDB</b> 才真正实施这些约束。答题按"支持"的标准 SQL 语义写，但实操时记着版本与引擎。</div>
+</div>
+
+<h2 class="section" id="s2">二、实体完整性：主键约束与唯一性约束 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 主键约束、唯一性约束的含义及区别；<span class="lvl d">综合应用</span> 在设计中正确使用语句实现实体完整性。</div>
+  <b>实体完整性规则：</b>若属性 <span class="m">A</span> 是基本关系的主属性（属于某个<b>候选码</b>），则 <span class="m">A</span> 不能为空——即主码的<b>取值唯一且非空</b>，保证每个元组可区分。
+  <div class="tscroll"><table class="law">
+    <tr><th>对比项</th><th><code>PRIMARY KEY</code>（主键约束）</th><th><code>UNIQUE</code>（唯一性约束）</th></tr>
+    <tr><td class="nm">取值唯一</td><td>✅</td><td>✅</td></tr>
+    <tr><td class="nm">允许 NULL</td><td>❌ <b>绝不允许</b></td><td>✅ 允许（MySQL 中可存在<b>多个 NULL</b>）</td></tr>
+    <tr><td class="nm">一张表能有几个</td><td><b>只能 1 个</b></td><td>可以<b>多个</b></td></tr>
+    <tr><td class="nm">作用</td><td>唯一<b>标识实体</b>（行的身份证）</td><td>保证某列值<b>不重复</b>（如手机号、邮箱）</td></tr>
+    <tr><td class="nm">物理实现</td><td>InnoDB 中是<b>聚簇索引</b>，表数据按它组织</td><td>非聚簇的唯一索引</td></tr>
+    <tr><td class="nm">能否被外键参照</td><td>通常被参照（标准 SQL 要求主码）</td><td>MySQL <b>也允许</b>被外键参照</td></tr>
+  </table></div>
+  <pre class="sql"><span class="cm">-- 建表时定义</span>
+<span class="kw">CREATE TABLE</span> student (
+  sno  <span class="kw">CHAR</span>(8)  <span class="kw">PRIMARY KEY</span>,          <span class="cm">-- 列级：单列主键</span>
+  sname <span class="kw">VARCHAR</span>(20) <span class="kw">NOT NULL</span>,
+  email <span class="kw">VARCHAR</span>(30) <span class="kw">UNIQUE</span>,           <span class="cm">-- 唯一性约束</span>
+  idcard <span class="kw">CHAR</span>(18) <span class="kw">UNIQUE</span>
+);
+<span class="kw">CREATE TABLE</span> sc (
+  sno <span class="kw">CHAR</span>(8), cno <span class="kw">CHAR</span>(3), grade <span class="kw">SMALLINT</span>,
+  <span class="kw">CONSTRAINT</span> pk_sc <span class="kw">PRIMARY KEY</span> (sno, cno),   <span class="cm">-- 多列主键必须写成表级，可给约束名</span>
+  <span class="kw">CONSTRAINT</span> uk_sc UNIQUE (sno, cno)          <span class="cm">-- 组合唯一性约束</span>
+);
+
+<span class="cm">-- 事后用 ALTER TABLE 追加 / 删除</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD CONSTRAINT</span> pk_sno <span class="kw">PRIMARY KEY</span> (sno);
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD CONSTRAINT</span> uk_mail <span class="kw">UNIQUE</span> (email);
+<span class="kw">ALTER TABLE</span> student <span class="kw">DROP PRIMARY KEY</span>;              <span class="cm">-- 删主键（主键不用写约束名）</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">DROP INDEX</span> uk_mail;            <span class="cm">-- 删唯一约束＝删它对应的唯一索引</span></pre>
+  <div class="note">📝 <b>简答模板（区别）：</b>两者都要求列值不重复。<b>主键约束</b>额外要求<b>非空</b>、一张表<b>只能定义一个</b>，用于唯一标识元组，且可作为外键被参照的规范目标；<b>唯一性约束</b>允许空值（可多个 NULL）、一张表可定义<b>多个</b>，只用于保证某列（组）取值不重复。</div>
+</div>
+
+<h2 class="section" id="s3">三、参照完整性：外键的六条规则 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 定义外键时必须遵守的规则；<span class="lvl b">领会</span> 参照完整性规则与外键约束的含义。</div>
+  <b>参照完整性规则：</b>若属性（组）<span class="m">F</span> 是基本关系 R 的外码，它与基本关系 S 的主码 <span class="m">K</span> 相对应，则 R 中每个元组在 <span class="m">F</span> 上的值必须<b>或者取 NULL（F 中每个属性都取空值）、或者等于 S 中某个元组的主码值</b>。
+  <div class="fig">
+    <svg viewBox="0 0 720 180" role="img" aria-label="参照完整性：sc.sno 必须引用 student.sno 中已有的值">
+      <rect x="24" y="26" width="230" height="130" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="139" y="48" text-anchor="middle" font-size="14.5" fill="#4f46e5" font-weight="700">被参照表 student</text>
+      <text x="60" y="72" font-size="12.5" fill="#1f2430">sno（主键）</text>
+      <text x="60" y="94" font-size="12.5" fill="#1f2430">20210001</text>
+      <text x="60" y="114" font-size="12.5" fill="#1f2430">20210002</text>
+      <text x="60" y="134" font-size="12.5" fill="#1f2430">20210003</text>
+      <rect x="460" y="26" width="236" height="130" rx="10" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="578" y="48" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">参照表 sc</text>
+      <text x="496" y="72" font-size="12.5" fill="#1f2430">sno（外键）</text>
+      <text x="496" y="94" font-size="12.5" fill="#15803d">20210001 ✓</text>
+      <text x="496" y="114" font-size="12.5" fill="#15803d">NULL ✓</text>
+      <text x="496" y="134" font-size="12.5" fill="#b91c1c">20219999 ✗ 拒绝</text>
+      <line x1="254" y1="94" x2="496" y2="94" stroke="#059669" stroke-width="2" marker-end="url(#ar)"/>
+      <line x1="254" y1="134" x2="496" y2="134" stroke="#b91c1c" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="375" y="86" text-anchor="middle" font-size="12" fill="#059669">值必须存在</text>
+      <text x="375" y="156" text-anchor="middle" font-size="12" fill="#b91c1c">不存在则违反参照完整性</text>
+      <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#059669"/></marker></defs>
+    </svg>
+    <div class="cap">外键把两张表"钉"在一起：允许的取值 = 被参照表主键的现有值 ∪ {NULL}</div>
+  </div>
+  <div class="th"><b>定义外键必须遵守的规则（识记，多选/简答）：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li>外键所在的参照表与<b>被参照表必须是存在的表</b>：先建被参照（父）表，再建参照（子）表；<b>删除时顺序相反</b>（先删子表）。</li>
+      <li>外键列与被参照列<b>的数据类型必须相容</b>（可以转换）。</li>
+      <li><b>被参照的列必须是主键或唯一键</b>（保证能被唯一定位）。</li>
+      <li>外键列名<b>可以与被参照列名不同</b>，但含义（域）要一致。</li>
+      <li>外键列的<b>取值必须为空或等于被参照表中某行主键值</b>。</li>
+      <li>只有 <b>InnoDB</b> 引擎支持外键；外键列会自动创建索引，被参照列也必须有索引。</li>
+    </ol>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、外键约束的创建、修改、删除（简单应用）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 用 SQL 语句创建、删除和修改外键约束；<span class="lvl d">综合应用</span> 设计中实现参照完整性。</div>
+  <pre class="sql"><span class="cm">-- ① 建表时创建外键</span>
+<span class="kw">CREATE TABLE</span> sc (
+  sno <span class="kw">CHAR</span>(8), cno <span class="kw">CHAR</span>(3), grade <span class="kw">SMALLINT</span>,
+  <span class="kw">CONSTRAINT</span> fk_sc_stu <span class="kw">FOREIGN KEY</span> (sno) <span class="kw">REFERENCES</span> student (sno)
+        <span class="kw">ON DELETE CASCADE ON UPDATE CASCADE</span>,
+  <span class="kw">CONSTRAINT</span> fk_sc_course <span class="kw">FOREIGN KEY</span> (cno) <span class="kw">REFERENCES</span> course (cno)
+        <span class="kw">ON DELETE SET NULL</span>            <span class="cm">-- 课程被删则把该列置空（要求列可为 NULL）</span>
+);
+
+<span class="cm">-- ② 事后追加外键（结构与 ① 中的表级写法一致）</span>
+<span class="kw">ALTER TABLE</span> sc <span class="kw">ADD CONSTRAINT</span> fk_sc_stu
+    <span class="kw">FOREIGN KEY</span> (sno) <span class="kw">REFERENCES</span> student (sno);
+
+<span class="cm">-- ③ 删除外键约束（必须写约束名，MySQL 中不能只写列名）</span>
+<span class="kw">ALTER TABLE</span> sc <span class="kw">DROP FOREIGN KEY</span> fk_sc_stu;
+<span class="kw">ALTER TABLE</span> sc <span class="kw">DROP KEY</span> fk_sc_stu;               <span class="cm">-- 等价写法（同时删掉它建的索引）</span>
+
+<span class="cm">-- ④ "修改"外键：MySQL 没有 ALTER ... MODIFY FOREIGN KEY，须先删后加</span>
+<span class="kw">ALTER TABLE</span> sc <span class="kw">DROP FOREIGN KEY</span> fk_sc_stu;
+<span class="kw">ALTER TABLE</span> sc <span class="kw">ADD CONSTRAINT</span> fk_sc_stu <span class="kw">FOREIGN KEY</span> (sno)
+    <span class="kw">REFERENCES</span> student (sno) <span class="kw">ON DELETE SET NULL</span>;
+
+<span class="cm">-- ⑤ 临时关闭 / 恢复外键检查（导入数据时用，了解）</span>
+<span class="kw">SET FOREIGN_KEY_CHECKS</span> = 0;   <span class="kw">SET FOREIGN_KEY_CHECKS</span> = 1;</pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>级联动作</th><th>含义（当父表行被 DELETE / 主键被 UPDATE 时）</th></tr>
+    <tr><td class="nm"><code>CASCADE</code></td><td><b>连锁处理</b>：子表中相应行一起删除 / 外码值一起改成新值</td></tr>
+    <tr><td class="nm"><code>SET NULL</code></td><td>把子表的外码<b>置为 NULL</b>（该列必须允许空）</td></tr>
+    <tr><td class="nm"><code>RESTRICT</code> / <code>NO ACTION</code></td><td><b>拒绝</b>父表的删除/修改操作（<b>默认动作</b>）——子表还有引用就不许动</td></tr>
+    <tr><td class="nm"><code>SET DEFAULT</code></td><td>置为默认值（标准 SQL 有，<b>MySQL 不支持</b>）</td></tr>
+  </table></div>
+  <div class="note">⚠️ <code>ON DELETE</code> 与 <code>ON UPDATE</code> 要<b>分别</b>声明，只写一个则另一个用默认 RESTRICT。自建外键时<b>约束名（CONSTRAINT 名字）要记住</b>——删除时只能按名字删；不写名字的话 MySQL 自动生成，可通过 <code>SHOW CREATE TABLE sc</code> 查到。</div>
+</div>
+
+<h2 class="section" id="s5">五、用户定义完整性：CHECK 与非空约束（识记 / 领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 检查约束和非空约束的含义；<span class="lvl b">领会</span> 实现用户定义完整性可以使用的语句。</div>
+  <b>非空约束 <code>NOT NULL</code>：</b>该列<b>不允许取空值</b>，插入或修改时必须给值（且不能显式赋 NULL）。默认允许为空。
+  <b>检查约束 <code>CHECK (条件表达式)</code>：</b>把具体的<b>语义约束</b>写成布尔表达式，插入/修改的值必须使表达式为<b>真</b>，否则拒绝（值使表达式为 UNKNOWN 也视为通过，这是 SQL 标准的三值逻辑特性）。
+  <pre class="sql"><span class="cm">-- 建表时声明</span>
+<span class="kw">CREATE TABLE</span> student (
+  sno   <span class="kw">CHAR</span>(8)  <span class="kw">NOT NULL</span> <span class="kw">PRIMARY KEY</span>,
+  sname <span class="kw">VARCHAR</span>(20) <span class="kw">NOT NULL</span>,
+  sage  <span class="kw">SMALLINT</span> <span class="kw">CONSTRAINT</span> ck_age <span class="kw">CHECK</span> (sage <span class="kw">BETWEEN</span> 15 <span class="kw">AND</span> 50),
+  ssex  <span class="kw">CHAR</span>(2)  <span class="kw">CHECK</span> (ssex <span class="kw">IN</span> (<span class="st">'男'</span>,<span class="st">'女'</span>)),
+  dept  <span class="kw">VARCHAR</span>(20) <span class="kw">DEFAULT</span> <span class="st">'计算机'</span>       <span class="cm">-- 默认值约束</span>
+);
+<span class="kw">CREATE TABLE</span> sc (
+  sno <span class="kw">CHAR</span>(8), cno <span class="kw">CHAR</span>(3), grade <span class="kw">SMALLINT</span>,
+  <span class="kw">CONSTRAINT</span> ck_grade <span class="kw">CHECK</span> (grade &gt;= 0 <span class="kw">AND</span> grade &lt;= 100)   <span class="cm">-- 表级检查约束</span>
+);
+
+<span class="cm">-- 事后增删</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD CONSTRAINT</span> ck_name <span class="kw">CHECK</span> (CHAR_LENGTH(sname) &gt;= 2);
+<span class="kw">ALTER TABLE</span> student <span class="kw">DROP CHECK</span> ck_name;                 <span class="cm">-- 删检查约束</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">MODIFY</span> sname <span class="kw">VARCHAR</span>(20) <span class="kw">NOT NULL</span>;   <span class="cm">-- 加非空约束</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">MODIFY</span> sname <span class="kw">VARCHAR</span>(20) <span class="kw">NULL</span>;       <span class="cm">-- 取消非空约束</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">ALTER COLUMN</span> sage <span class="kw">SET DEFAULT</span> 20;</pre>
+  <div class="note">🔑 <b>非空与 CHECK 的分工：</b>"这一列<b>必须有值</b>"用 <code>NOT NULL</code>；"这一列的值<b>要满足什么条件</b>"用 <code>CHECK</code>；"没给值时<b>默认填什么</b>"用 <code>DEFAULT</code>；"取值<b>只能是有限几个</b>"还可选择 <code>ENUM('男','女')</code> 类型（属用户定义完整性靠数据类型实现的思路）。<b>MySQL 没有 <code>ALTER TABLE ... DROP NOT NULL</code></b>，取消非空要用 MODIFY 重写列定义。</div>
+</div>
+
+<h2 class="section" id="s6">六、四类约束语句总对照表 ⭐⭐ 考前默写</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 数据库设计中正确选用语句实现三类完整性。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>约束</th><th>建表时（列级 / 表级）</th><th>ALTER 添加</th><th>ALTER 删除</th></tr>
+    <tr><td class="nm">主键 PK</td><td><code>sno CHAR(8) PRIMARY KEY</code><br><code>CONSTRAINT pk_x PRIMARY KEY(sno,cno)</code></td><td><code>ADD CONSTRAINT pk_x PRIMARY KEY(sno)</code></td><td><code>DROP PRIMARY KEY</code></td></tr>
+    <tr><td class="nm">唯一 UK</td><td><code>email VARCHAR(30) UNIQUE</code><br><code>CONSTRAINT uk_x UNIQUE(email)</code></td><td><code>ADD CONSTRAINT uk_x UNIQUE(email)</code></td><td><code>DROP INDEX uk_x</code><br>（或 <code>DROP KEY</code>）</td></tr>
+    <tr><td class="nm">外键 FK</td><td><code>CONSTRAINT fk_x FOREIGN KEY(sno)<br>REFERENCES student(sno) ON DELETE CASCADE</code></td><td><code>ADD CONSTRAINT fk_x FOREIGN KEY(sno) REFERENCES student(sno)</code></td><td><code>DROP FOREIGN KEY fk_x</code></td></tr>
+    <tr><td class="nm">检查 CHECK</td><td><code>sage SMALLINT CONSTRAINT ck_x CHECK(sage BETWEEN 15 AND 50)</code></td><td><code>ADD CONSTRAINT ck_x CHECK(...)</code></td><td><code>DROP CHECK ck_x</code></td></tr>
+    <tr><td class="nm">非空 NOT NULL</td><td><code>sname VARCHAR(20) NOT NULL</code></td><td><code>MODIFY sname VARCHAR(20) NOT NULL</code></td><td><code>MODIFY sname VARCHAR(20) NULL</code></td></tr>
+    <tr><td class="nm">默认 DEFAULT</td><td><code>dept VARCHAR(20) DEFAULT '计算机'</code></td><td><code>ALTER COLUMN dept SET DEFAULT '计算机'</code></td><td><code>ALTER COLUMN dept DROP DEFAULT</code></td></tr>
+  </table></div>
+  <div class="note">📝 <b>综合题套路（考纲·题型举例·综合题）：</b>题目给若干实体与约束，要求"转换成关系模式并指出主码外码"再"用 SQL 建表"。建表时按三步写全不丢分：①每列给出<b>合适类型与长度</b>；②<b>主码</b>用 PRIMARY KEY（多列写表级）；③引用别的表的关系用<b>外键 FOREIGN KEY ... REFERENCES</b>，并按题意补 <code>ON DELETE</code> 动作。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>三条规则 → 四类约束：</b>实体→<code>PRIMARY KEY / UNIQUE</code>；参照→<code>FOREIGN KEY</code>；用户定义→<code>CHECK / NOT NULL / DEFAULT</code>。<br>
+  <b>主键 vs 唯一：</b>主键<b>非空、只能一个、标识行</b>；唯一<b>可有 NULL、可以多个</b>。<br>
+  <b>外键六条规则：</b>父表先建子表后建（删相反）、类型相容、被参照列必须主键或唯一、列名可不同、取值须为空或存在于父表、只有 InnoDB 支持。<br>
+  <b>级联动作：</b><code>CASCADE</code> 连锁 / <code>SET NULL</code> 置空 / <code>RESTRICT·NO ACTION</code>（<b>默认</b>）拒绝。<br>
+  <b>删约束的名字差异：</b>主键不写名（<code>DROP PRIMARY KEY</code>）、唯一约束<b>按索引名</b>删、外键与检查约束<b>按约束名</b>删。<br>
+  <b>修改外键＝先 DROP 再 ADD</b>；MySQL 8.0.16 之前 CHECK 不生效，MyISAM 不认外键。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 7 章 数据完整性 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

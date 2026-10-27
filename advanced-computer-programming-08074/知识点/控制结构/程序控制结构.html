@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 3 章 程序控制结构｜分支 / 循环 / 异常处理</title>
+<meta name="description" content="计算机高级程序设计 08074 第 3 章速记卡：流程图与 N-S 图、if/elif/else 单双多分支与嵌套、while/for 循环与 break/continue/else、异常处理 try-except-else-finally。设计题高发章，含完数等典型例题代码。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔀</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 3 章 · 程序控制结构</h1>
+  <p>⭐ 设计题高发章。三种结构（顺序/选择/循环）+ 异常处理，是"简单设计题、综合设计题"的主力考点，也是后面所有编程题的骨架。建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">综合应用：分支/循环程序设计</span><span class="pill">难点：异常处理</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../数据类型/数据类型与内置函数.html">← 第 2 章</a>
+    <a href="../组合数据类型/列表元组集合字典.html">→ 第 4 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、控制结构概述与流程图（识记）</a>
+  <a href="#s2">二、选择结构 if / elif / else（综合应用）⭐</a>
+  <a href="#s3">三、循环结构 while / for（综合应用）⭐</a>
+  <a href="#s4">四、break / continue / else（简单应用）</a>
+  <a href="#s5">五、异常处理 try…except（简单应用）</a>
+  <a href="#s6">六、典型设计题套路</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、控制结构概述与流程图</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 传统流程图、N-S 流程图的描述方法。</div>
+  <b>三种基本控制结构：</b>顺序结构、选择（分支）结构、循环结构。结构化程序设计就是只用这三种。<br>
+  <b>流程图常见符号：</b>椭圆=起止、平行四边形=输入输出、矩形=处理（赋值/计算）、菱形=判断（分支）。<br>
+  <b>N-S 图（盒图）</b>：把流程图画在矩形框内，用嵌套的盒子表示三种结构，<b>没有随意跳转的流程线</b>，天然强制结构化。
+</div>
+
+<h2 class="section" id="s2">二、选择结构 if / elif / else ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 单分支、双分支、多分支、嵌套分支程序设计。</div>
+  <pre class="py"><span class="cm"># 单分支</span>
+<span class="kw">if</span> score &gt;= 60:
+    <span class="kw">print</span>(<span class="st">"及格"</span>)
+
+<span class="cm"># 双分支</span>
+<span class="kw">if</span> n % 2 == 0:
+    <span class="kw">print</span>(<span class="st">"偶数"</span>)
+<span class="kw">else</span>:
+    <span class="kw">print</span>(<span class="st">"奇数"</span>)
+
+<span class="cm"># 多分支（elif 只能配在 if 下）</span>
+<span class="kw">if</span> score &gt;= 90:      g = <span class="st">"A"</span>
+<span class="kw">elif</span> score &gt;= 80:    g = <span class="st">"B"</span>
+<span class="kw">elif</span> score &gt;= 60:    g = <span class="st">"C"</span>
+<span class="kw">else</span>:               g = <span class="st">"D"</span></pre>
+  <ul>
+    <li>条件后面必须有<b>冒号 <code>:</code></b>，分支体靠<b>缩进</b>区分。</li>
+    <li>任何非零数、非空对象作条件都视为 <b>True</b>；0、空串、空列表为 False。</li>
+    <li>三目写法：<code>大 if 条件 else 小</code>，如 <code>m = a if a&gt;b else b</code>（取较大值）。</li>
+  </ul>
+</div>
+
+<h2 class="section" id="s3">三、循环结构 while / for ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> while、for 进行简单循环及多重循环程序设计。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>循环</th><th>语法</th><th>适用</th></tr>
+    <tr><td class="nm">while</td><td><code>while 条件: 循环体</code></td><td>次数未知、靠条件控制</td></tr>
+    <tr><td class="nm">for</td><td><code>for 变量 in 序列: 循环体</code></td><td>遍历序列 / 已知次数（配 range）</td></tr>
+  </table></div>
+  <pre class="py"><span class="cm"># while：累加 1~100</span>
+s, i = 0, 1
+<span class="kw">while</span> i &lt;= 100:
+    s += i
+    i += 1
+
+<span class="cm"># for：等价写法</span>
+s = 0
+<span class="kw">for</span> i <span class="kw">in</span> <span class="st">range</span>(1, 101):   <span class="cm"># 1..100</span>
+    s += i
+
+<span class="cm"># 多重循环：九九乘法表（外层行、内层列）</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="st">range</span>(1, 10):
+    <span class="kw">for</span> j <span class="kw">in</span> <span class="st">range</span>(1, i + 1):
+        <span class="kw">print</span>(<span class="st">f"{j}×{i}={i*j}"</span>, end=<span class="st">" "</span>)
+    <span class="kw">print</span>()               <span class="cm"># 每行结束换行</span></pre>
+</div>
+
+<h2 class="section" id="s4">四、break / continue / else</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> break、continue、else 语句在循环中的使用。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>关键字</th><th>作用</th></tr>
+    <tr><td class="nm">break</td><td><b>立即跳出整个循环</b>（离开循环体，执行循环后面的语句）</td></tr>
+    <tr><td class="nm">continue</td><td>跳过<b>本次</b>循环体剩余语句，进入下一次迭代</td></tr>
+    <tr><td class="nm">循环的 else</td><td>循环<b>正常结束（没有被 break）</b>时才执行 else 块；被 break 打断则不执行</td></tr>
+  </table></div>
+  <pre class="py"><span class="kw">for</span> i <span class="kw">in</span> <span class="st">range</span>(1, 6):
+    <span class="kw">if</span> i == 3: <span class="kw">break</span>       <span class="cm"># 到 3 就整个退出 → 只打印 1 2</span>
+    <span class="kw">print</span>(i)
+
+<span class="kw">for</span> i <span class="kw">in</span> <span class="st">range</span>(1, 6):
+    <span class="kw">if</span> i == 3: <span class="kw">continue</span>    <span class="cm"># 跳过 3，其余都打印 → 1 2 4 5</span>
+    <span class="kw">print</span>(i)</pre>
+</div>
+
+<h2 class="section" id="s5">五、异常处理 try…except</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 异常的分类；<span class="lvl c">简单应用</span> try…except / else / finally。</div>
+  <b>异常</b>是运行时发生的错误（如除零、类型错、文件找不到），不处理就程序崩溃。四种写法层层加强：
+  <pre class="py"><span class="cm"># ① 基本：捕获异常</span>
+<span class="kw">try</span>:
+    x = <span class="st">int</span>(<span class="st">input</span>(<span class="st">"输入："</span>))
+    <span class="kw">print</span>(10 / x)
+<span class="kw">except</span> <span class="st">ValueError</span>:        <span class="cm"># 转换失败</span>
+    <span class="kw">print</span>(<span class="st">"不是数字"</span>)
+<span class="kw">except</span> <span class="st">ZeroDivisionError</span>:  <span class="cm"># 除零</span>
+    <span class="kw">print</span>(<span class="st">"不能除 0"</span>)
+<span class="kw">else</span>:                      <span class="cm"># 没出异常才执行</span>
+    <span class="kw">print</span>(<span class="st">"成功"</span>)
+<span class="kw">finally</span>:                   <span class="cm"># 无论如何都执行（常做收尾/关文件）</span>
+    <span class="kw">print</span>(<span class="st">"结束"</span>)</pre>
+  <div class="th">主动抛异常用 <code>raise</code>；常见异常类型：<code>ZeroDivisionError、ValueError、TypeError、IndexError、FileNotFoundError、KeyError</code>。</div>
+</div>
+
+<h2 class="section" id="s6">六、典型设计题套路</h2>
+<div class="rule">
+  考纲"简单设计题"样例：<b>输出 1000 以内所有完数</b>（完数=各因子之和等于自身，如 28=1+2+4+7+14）。这是"循环 + 求因子 + 判断"的标准组合：
+  <pre class="py"><span class="kw">for</span> n <span class="kw">in</span> <span class="st">range</span>(2, 1000):
+    s = 0
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="st">range</span>(1, n):        <span class="cm"># 找真因子</span>
+        <span class="kw">if</span> n % i == 0:
+            s += i
+    <span class="kw">if</span> s == n:
+        <span class="kw">print</span>(n)                <span class="cm"># 6 28 496</span></pre>
+  <b>可复用套路：</b>① 素数判断（内层试除到 √n）；② 水仙角/完数（拆位或求因子）；③ 累加累乘、计数；④ 穷举（百钱买百鸡）。都是"for 循环 + if 判断 + 计数器/累加器"。
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>答题硬规则：</b>条件/循环行末的<b>冒号别漏</b>、循环体<b>缩进要对</b>、Python <b>没有 do-while</b>、没有 switch（多分支用 if-elif-else）。<br>
+  <b>三个易混：</b>break 退整个循环、continue 跳本次、else 在"没被 break"时执行。<br>
+  <b>异常四段式：</b>try（冒险做）→ except（出错补救）→ else（没出错才做）→ finally（一定做）。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 3 章 程序控制结构 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

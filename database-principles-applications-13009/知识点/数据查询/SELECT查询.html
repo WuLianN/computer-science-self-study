@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 5 章 数据查询｜SELECT 六大子句 · 连接 · 子查询 · 联合查询</title>
+<meta name="description" content="数据库原理与技术 13009 第 5 章速记卡（全课程学时最多、分值最重）：SELECT 语句包含的子句与执行顺序、投影查询 DISTINCT 与别名与计算列、选择查询比较/范围/空值/LIKE/REGEXP、分组查询与聚合函数 HAVING、ORDER BY 与 LIMIT、内连接外连接交叉连接自连接、IN/比较/EXISTS 三类子查询、UNION 联合查询规则，含大量可默写 SQL 例题。建议 12 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#d97706,#be185d)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  .ord{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0;font-size:13.5px;font-weight:700}
+  .ord span{background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:4px 10px}
+  .ord i{color:var(--muted);font-style:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 5 章 · 数据查询 ⭐⭐ 全课程最重章</h1>
+  <p>考纲给了 <b>12 学时</b>（全课程最多），试卷上<b>大题基本都落在这一章</b>：写 SELECT 语句、判断给定 SQL 的结果、改错。六大子句 + 连接 + 子查询 + 联合查询四条线必须各自能默写。建议 12 学时。</p>
+  <span class="pill">建议 12 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：六大子句 + 连接/子查询</span><span class="pill">难点：综合查询语句</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../表数据操作/增删改数据.html">← 第 4 章</a>
+    <a href="../视图索引/视图和索引.html">→ 第 6 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、SELECT 语句的子句与执行顺序（识记）⭐⭐</a>
+  <a href="#s2">二、投影查询（简单应用）</a>
+  <a href="#s3">三、选择查询：WHERE 七类条件（简单应用）⭐</a>
+  <a href="#s4">四、LIKE vs REGEXP（领会）⭐简答</a>
+  <a href="#s5">五、分组查询与聚合函数（识记/简单应用）⭐</a>
+  <a href="#s6">六、排序与限制行数 ORDER BY / LIMIT</a>
+  <a href="#s7">七、连接查询（识记/领会/简单应用）⭐⭐</a>
+  <a href="#s8">八、子查询：IN / 比较 / EXISTS（识记/领会/简单应用）⭐</a>
+  <a href="#s9">九、联合查询 UNION（识记/简单应用）</a>
+  <a href="#s10">十、综合例题与常见错因</a>
+  <a href="#s11">十一、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、SELECT 的子句与执行顺序 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> SELECT 语句包含的子句及各子句功能。</div>
+  <div class="ord">
+    <span>FROM</span><i>→</i><span>WHERE</span><i>→</i><span>GROUP BY</span><i>→</i><span>HAVING</span><i>→</i><span>SELECT</span><i>→</i><span>DISTINCT</span><i>→</i><span>ORDER BY</span><i>→</i><span>LIMIT</span>
+  </div>
+  <p style="margin:0">上面是<b>逻辑执行顺序</b>（先取数据、再筛、再分组、最后才决定输出哪些列），与书写顺序不同——这正是"为什么 WHERE 里不能写聚合函数、ORDER BY 里却能用 SELECT 的列别名"的原因。</p>
+  <div class="tscroll"><table class="law">
+    <tr><th>子句</th><th>功能</th><th>一句话要点</th></tr>
+    <tr><td class="nm"><code>FROM</code></td><td>指定查询的表（可多表、可子查询）</td><td>表可加<b>别名</b>；多表用逗号或 JOIN</td></tr>
+    <tr><td class="nm"><code>WHERE</code></td><td><b>行</b>条件（针对基本表/视图）</td><td><b>不能出现聚合函数</b>，因为分组前每行还无从统计</td></tr>
+    <tr><td class="nm"><code>GROUP BY</code></td><td>按<b>一列或多列</b>取值分成组</td><td>SELECT 里的非聚合列<b>必须全部出现在 GROUP BY 中</b></td></tr>
+    <tr><td class="nm"><code>HAVING</code></td><td><b>组</b>条件（筛选分组）</td><td>必须跟在 GROUP BY 之后，<b>可以使用聚合函数</b></td></tr>
+    <tr><td class="nm"><code>SELECT</code></td><td><b>列</b>（投影）与计算、去重</td><td>可写常量、表达式、聚合函数、别名</td></tr>
+    <tr><td class="nm"><code>ORDER BY</code></td><td>按列升序 ASC（默认）/ 降序 DESC 排序</td><td>可多列、可用别名、可用聚合结果</td></tr>
+    <tr><td class="nm"><code>LIMIT</code></td><td>限制返回的行数（MySQL 特有）</td><td><code>LIMIT 偏移量, 行数</code>，偏移从 0 开始</td></tr>
+  </table></div>
+  <div class="note">⚠️ 标准 SQL 里没有 LIMIT（用的是 <code>TOP</code> / <code>FETCH FIRST</code>）；本课程基于 <b>MySQL</b>，写 <code>LIMIT</code> 是对的。另外<b>没有 GROUP BY 时也可以直接用聚合函数</b>（整表当成一组）。</div>
+</div>
+
+<h2 class="section" id="s2">二、投影查询（简单应用）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 投影查询的含义；<span class="lvl c">简单应用</span> SELECT 子句投影指定列/全部列、修改列标题、计算列值、去掉重复行。</div>
+  <b>投影</b>＝从表中选出<b>若干列</b>（垂直方向切），关系代数里的 <span class="m">π</span>。
+  <pre class="sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> student;                          <span class="cm">-- 全部列</span>
+<span class="kw">SELECT</span> sno, sname <span class="kw">FROM</span> student;                 <span class="cm">-- 指定列（顺序自定，不必与表一致）</span>
+<span class="kw">SELECT</span> DISTINCT sdept <span class="kw">FROM</span> student;             <span class="cm">-- 去掉重复行（DISTINCT 作用于整个结果行）</span>
+<span class="kw">SELECT</span> sno <span class="kw">AS</span> 学号, sname <span class="kw">AS</span> 姓名 <span class="kw">FROM</span> student;  <span class="cm">-- 修改列标题（别名，AS 可省略）</span>
+<span class="kw">SELECT</span> sno, sname, <span class="st">'在校学生'</span> <span class="kw">AS</span> 状态 <span class="kw">FROM</span> student;   <span class="cm">-- 常量列</span>
+<span class="kw">SELECT</span> sno, <span class="st">'2026-'</span> - sage <span class="kw">AS</span> 出生年 <span class="kw">FROM</span> student;   <span class="cm">-- 计算列：表达式作用于每一行</span></pre>
+  <div class="note">🔑 <code>DISTINCT</code> 放在<b>列清单最前面</b>、只出现一次，作用于<b>整行组合</b>；<code>SELECT DISTINCT sdept, ssex</code> 是对 (系,性别) 组合去重，不是对每列分别去重。</div>
+</div>
+
+<h2 class="section" id="s3">三、选择查询：WHERE 的七类条件 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 选择查询的含义；<span class="lvl c">简单应用</span> WHERE 子句：表达式比较、指定范围、空值判断、LIKE 匹配、正则查询。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>写法</th><th>例</th><th>坑</th></tr>
+    <tr><td class="nm">比较运算</td><td><code>= &gt; &lt; &gt;= &lt;= != &lt;&gt;</code></td><td><code>WHERE sage &gt;= 20</code></td><td>MySQL 里 <code>!=</code> 与 <code>&lt;&gt;</code> 等价</td></tr>
+    <tr><td class="nm">范围</td><td><code>BETWEEN … AND …</code>（<b>闭区间</b>）</td><td><code>WHERE sage BETWEEN 20 AND 23</code></td><td>等价于 <code>sage&gt;=20 AND sage&lt;=23</code>；否定用 <code>NOT BETWEEN</code></td></tr>
+    <tr><td class="nm">集合</td><td><code>IN (…)</code> / <code>NOT IN (…)</code></td><td><code>WHERE sdept IN ('计算机','数学')</code></td><td><code>IN</code> 比多个 OR 简洁；可用子查询提供列表</td></tr>
+    <tr><td class="nm">字符匹配</td><td><code>LIKE</code> + <code>%</code> <code>_</code> <code>ESCAPE</code></td><td><code>WHERE sname LIKE '刘%'</code></td><td><code>%</code>=任意长度(含空串)，<code>_</code>=<b>一个</b>字符</td></tr>
+    <tr><td class="nm">正则匹配</td><td><code>REGEXP / RLIKE</code></td><td><code>WHERE sno REGEXP '^2021'</code></td><td>MySQL 的 LIKE <b>不支持</b>正则元字符</td></tr>
+    <tr><td class="nm">空值</td><td><code>IS NULL</code> / <code>IS NOT NULL</code></td><td><code>WHERE grade IS NULL</code></td><td><b>绝不能写 <code>= NULL</code></b>（结果永远是 UNKNOWN）</td></tr>
+    <tr><td class="nm">逻辑组合</td><td><code>AND</code> &gt; <code>OR</code> &gt; <code>NOT</code>（用括号最稳）</td><td><code>WHERE ssex='男' AND sage&lt;=20</code></td><td>AND 优先级高于 OR，复杂条件一定加括号</td></tr>
+  </table></div>
+  <pre class="sql"><span class="cm">-- 名字第二个字是"小"的同学</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> student <span class="kw">WHERE</span> sname <span class="kw">LIKE</span> <span class="st">'_小%'</span>;
+<span class="cm">-- 查含下划线 "_" 本身：用 ESCAPE 转义</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> student <span class="kw">WHERE</span> sname <span class="kw">LIKE</span> <span class="st">'a\\_b'</span> <span class="kw">ESCAPE</span> <span class="st">'\\'</span>;
+<span class="cm">-- 未选课（成绩为空）的记录</span>
+<span class="kw">SELECT</span> sno, cno <span class="kw">FROM</span> sc <span class="kw">WHERE</span> grade <span class="kw">IS NULL</span>;</pre>
+</div>
+
+<h2 class="section" id="s4">四、LIKE 与 REGEXP 的异同 ⭐ 简答</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> LIKE 与 REGEXP 的异同。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>对比项</th><th><code>LIKE</code></th><th><code>REGEXP</code></th></tr>
+    <tr><td class="nm">匹配方式</td><td><b>整串</b>模式匹配，必须从头到尾符合</td><td><b>部分</b>匹配：只要串中<b>存在</b>符合模式的部分即为真</td></tr>
+    <tr><td class="nm">通配符</td><td>只有 <code>%</code>（任意长度）与 <code>_</code>（单字符），可配 <code>ESCAPE</code></td><td>正则元字符：<code>^ $ . [] | * + ? {n,m}</code> 等</td></tr>
+    <tr><td class="nm">定位</td><td>需靠 <code>%</code> 表达前后位置</td><td>用 <code>^</code> 表头、<code>$</code> 表尾</td></tr>
+    <tr><td class="nm">表达力 / 性能</td><td>简单直观、易写；索引可用<b>前缀</b>模式（<code>'abc%'</code>）</td><td>表达力强、写法复杂；<b>以 <code>_</code> 或 <code>%</code> 开头的 LIKE 与多数 REGEXP 都全表扫描</b></td></tr>
+  </table></div>
+  <pre class="sql"><span class="kw">SELECT</span> * <span class="kw">FROM</span> student <span class="kw">WHERE</span> sname <span class="kw">LIKE</span> <span class="st">'%明%'</span>;      <span class="cm">-- 名字中含"明"</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> student <span class="kw">WHERE</span> sname <span class="kw">REGEXP</span> <span class="st">'明'</span>;      <span class="cm">-- 同上（REGEXP 不必加 %）</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> student <span class="kw">WHERE</span> sno <span class="kw">REGEXP</span> <span class="st">'^2021[0-9]{4}$'</span>;  <span class="cm">-- 2021 开头的 8 位学号</span></pre>
+  <div class="note">📝 <b>相同点：</b>都写在 <code>WHERE</code> 中做<b>字符串模式匹配</b>，都可取反（<code>NOT LIKE</code> / <code>NOT REGEXP</code>）。<b>不同点：</b>LIKE 用 % 和 _ 两种通配符且要求<b>整个值</b>匹配模式，REGEXP 用正则语法且只要<b>子串</b>匹配成功即可。</div>
+</div>
+
+<h2 class="section" id="s5">五、分组查询与聚合函数 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 聚合函数、GROUP BY、HAVING 的含义；<span class="lvl c">简单应用</span> 分组查询和统计计算。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>聚合函数</th><th>作用</th><th>对 NULL</th></tr>
+    <tr><td class="nm"><code>COUNT(*)</code></td><td>组内<b>行数</b></td><td>计入</td></tr>
+    <tr><td class="nm"><code>COUNT([DISTINCT] 列)</code></td><td>该列<b>非空</b>值的个数</td><td><b>忽略 NULL</b></td></tr>
+    <tr><td class="nm"><code>SUM / AVG</code></td><td>求和 / 平均值（只用于数值列）</td><td>忽略 NULL（所以 AVG 分母是非空个数）</td></tr>
+    <tr><td class="nm"><code>MAX / MIN</code></td><td>最大值 / 最小值（也可用于字符串、日期）</td><td>忽略 NULL</td></tr>
+  </table></div>
+  <pre class="sql"><span class="cm">-- 每个系的学生人数</span>
+<span class="kw">SELECT</span> sdept, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> 人数 <span class="kw">FROM</span> student <span class="kw">GROUP BY</span> sdept;
+
+<span class="cm">-- 平均分不低于 80 的课程号与平均分（筛"组"→ HAVING）</span>
+<span class="kw">SELECT</span> cno, <span class="kw">AVG</span>(grade) <span class="kw">AS</span> 平均
+  <span class="kw">FROM</span> sc <span class="kw">GROUP BY</span> cno <span class="kw">HAVING</span> <span class="kw">AVG</span>(grade) &gt;= 80;
+
+<span class="cm">-- 先筛行再分组：WHERE 与 HAVING 同时出现</span>
+<span class="kw">SELECT</span> sno, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> 门数, <span class="kw">MAX</span>(grade)
+  <span class="kw">FROM</span> sc <span class="kw">WHERE</span> grade <span class="kw">IS NOT NULL</span>
+  <span class="kw">GROUP BY</span> sno <span class="kw">HAVING</span> <span class="kw">COUNT</span>(*) &gt;= 3;</pre>
+  <div class="note">⚠️ 三大铁律：①<b>WHERE 里不许有聚合函数</b>（要筛组用 HAVING）；②<b>SELECT 中的非聚合列必须出现在 GROUP BY 里</b>（MySQL 8 默认 ONLY_FULL_GROUP_BY 会直接报错）；③执行顺序是 <b>WHERE 先于 GROUP BY，GROUP BY 先于 HAVING</b>——所以 WHERE 不能用 SELECT 里刚定义的别名，而 <b>ORDER BY / HAVING 里可以引用聚合</b>。</div>
+  <div class="note">🔑 <b>HAVING vs WHERE 简答模板：</b>WHERE 在<b>分组前</b>按行过滤，作用于基本表/视图的列，不能含聚合函数；HAVING 在<b>分组后</b>按组过滤，必须与 GROUP BY 一起出现，可以使用聚集函数。</div>
+</div>
+
+<h2 class="section" id="s6">六、排序与限制行数</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> ORDER BY、LIMIT 的语法格式；<span class="lvl c">简单应用</span> 排序查询、限制返回的行数。</div>
+  <pre class="sql"><span class="cm">-- ORDER BY：默认升序 ASC；可多列（前一列相同才比后一列）；可用别名/列号/表达式</span>
+<span class="kw">SELECT</span> sno, sdept, sage <span class="kw">FROM</span> student
+  <span class="kw">ORDER BY</span> sdept <span class="kw">ASC</span>, sage <span class="kw">DESC</span>;
+
+<span class="cm">-- LIMIT：MySQL 特有。LIMIT 行数 或 LIMIT 偏移量,行数（偏移从 0 计）</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> sc <span class="kw">ORDER BY</span> grade <span class="kw">DESC</span> <span class="kw">LIMIT</span> 5;         <span class="cm">-- 前 5 名</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> sc <span class="kw">ORDER BY</span> grade <span class="kw">DESC</span> <span class="kw">LIMIT</span> 5, 5;       <span class="cm">-- 跳过前 5 行，再取 5 行（6~10 名）</span>
+
+<span class="cm">-- 组合套路：求成绩最高的学生（Top-1 问题）</span>
+<span class="kw">SELECT</span> sname, grade <span class="kw">FROM</span> student <span class="kw">JOIN</span> sc <span class="kw">USING</span>(sno)
+  <span class="kw">ORDER BY</span> grade <span class="kw">DESC</span> <span class="kw">LIMIT</span> 1;</pre>
+  <div class="note">⚠️ 想取"某组的最高分记录"不能只靠 ORDER BY+LIMIT 混着分组来写，要用子查询（第八节）。另：<code>ORDER BY</code> 放在 <code>LIMIT</code> 前面，颠倒会语法错误。</div>
+</div>
+
+<h2 class="section" id="s7">七、连接查询 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 连接方式、交叉连接、等值/非等值/自然/自连接的含义；<span class="lvl b">领会</span> 单表与多表查询异同、内连接与外连接区别、左/右/全外连接区别、INNER JOIN 与 WHERE 的异同；<span class="lvl c">简单应用</span> 内连接、外连接、交叉连接。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>连接</th><th>写法</th><th>结果</th></tr>
+    <tr><td class="nm">交叉连接（笛卡尔积）</td><td><code>CROSS JOIN</code>（或 FROM a, b 不带条件）</td><td>行数＝<b>两表行数相乘</b>，一般不是想要的，用来理解其它连接</td></tr>
+    <tr><td class="nm">内连接 · 等值</td><td><code>INNER JOIN … ON A.x = B.x</code></td><td>只保留<b>匹配上</b>的行</td></tr>
+    <tr><td class="nm">内连接 · 非等值</td><td><code>ON A.x BETWEEN B.lo AND B.hi</code></td><td>用 &gt;、&lt;、BETWEEN 等条件匹配</td></tr>
+    <tr><td class="nm">自然连接</td><td><code>NATURAL JOIN</code> / <code>JOIN … USING(列)</code></td><td>自动按<b>同名属性</b>等值匹配并<b>合并重复列</b>（对应第 2 章概念）</td></tr>
+    <tr><td class="nm">左外连接</td><td><code>LEFT [OUTER] JOIN</code></td><td><b>左表全部</b> + 右表匹配，右表无匹配处补 NULL</td></tr>
+    <tr><td class="nm">右外连接</td><td><code>RIGHT [OUTER] JOIN</code></td><td><b>右表全部</b> + 左表匹配补 NULL</td></tr>
+    <tr><td class="nm">全外连接</td><td>标准 SQL <code>FULL OUTER JOIN</code></td><td>两侧都保留。<b>MySQL 不支持</b>，用 <code>LEFT JOIN UNION RIGHT JOIN</code> 实现</td></tr>
+    <tr><td class="nm">自连接</td><td>同一张表起<b>两个别名</b>再连</td><td>处理表内层级/比较（如"比小明年龄大的学生"）</td></tr>
+  </table></div>
+  <pre class="sql"><span class="cm">-- ① 等值内连接（隐式写法：条件放 WHERE —— 老教材常用）</span>
+<span class="kw">SELECT</span> s.sno, s.sname, c.cname, sc.grade
+  <span class="kw">FROM</span> student s, sc, course c
+  <span class="kw">WHERE</span> s.sno = sc.sno <span class="kw">AND</span> sc.cno = c.cno;
+
+<span class="cm">-- ② 显式内连接（推荐写法，条件放 ON）</span>
+<span class="kw">SELECT</span> s.sname, sc.grade
+  <span class="kw">FROM</span> student s <span class="kw">INNER JOIN</span> sc <span class="kw">ON</span> s.sno = sc.sno;
+
+<span class="cm">-- ③ 左外连接：没选课的学生也要显示（成绩列为 NULL）</span>
+<span class="kw">SELECT</span> s.sno, s.sname, sc.cno
+  <span class="kw">FROM</span> student s <span class="kw">LEFT JOIN</span> sc <span class="kw">ON</span> s.sno = sc.sno;
+
+<span class="cm">-- ④ 自连接：查询与"01 班学生同龄"的学生</span>
+<span class="kw">SELECT</span> <span class="kw">DISTINCT</span> a.sno, a.sname
+  <span class="kw">FROM</span> student a <span class="kw">JOIN</span> student b <span class="kw">ON</span> a.sage = b.sage
+  <span class="kw">WHERE</span> b.sdept = <span class="st">'01班'</span> <span class="kw">AND</span> a.sno &lt;&gt; b.sno;</pre>
+  <div class="note">📝 <b>简答模板（INNER JOIN + ON 与 FROM + WHERE 的异同）：</b>对<b>内连接</b>而言两者<b>结果相同</b>；差别在于——①语义上 ON 是"连接条件"、WHERE 是"筛选条件"，把连接条件写进 WHERE 会让多义混合、可读性差；②<b>外连接时二者不同</b>：条件写在 <code>ON</code> 里作用于<b>连接阶段</b>（不匹配的行仍保留并补 NULL），写在 <code>WHERE</code> 里作用于<b>连接之后</b>（会把补 NULL 的行筛掉，外连接退化成内连接）；③用 <code>CROSS JOIN</code> 或不带条件时，WHERE 写法会产生笛卡尔积中间结果，效率低。</div>
+  <div class="note">🔑 <b>内连接 vs 外连接：</b>内连接只保留两表中<b>满足连接条件</b>的元组；外连接<b>也以连接条件为基础</b>，但还把<b>不匹配的元组保留下来</b>，缺失的一侧填 NULL。左外保左表全部、右外保右表全部、全外两边都保。</div>
+</div>
+
+<h2 class="section" id="s8">八、子查询：IN / 比较 / EXISTS ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 子查询的含义；<span class="lvl b">领会</span> IN、比较、EXISTS 子查询的含义；<span class="lvl c">简单应用</span> 用 IN 谓词联结父子查询、用比较子查询关联、用 EXISTS 测试子查询是否返回行。</div>
+  <b>子查询</b>＝嵌在另一个语句中的 <code>SELECT</code>（子查询在先、父查询在后）。按位置分：WHERE 子句、FROM 子句（派生表）、SELECT 列表（标量子查询）；按是否引用外层列分：<b>不相关</b>子查询（独立执行一次）与<b>相关</b>子查询（对外层每一行执行一次）。
+  <div class="tscroll"><table class="law">
+    <tr><th>类型</th><th>规则</th><th>例</th></tr>
+    <tr><td class="nm"><code>IN</code> 子查询</td><td>子查询返回<b>一列多行</b>，父查询判断值是否属于该集合</td><td>见 ①</td></tr>
+    <tr><td class="nm">比较子查询</td><td>子查询必须返回<b>单个值</b>（标量）；配 <code>= &gt; &lt;</code>；配 <code>ANY/SOME</code>（至少一个）、<code>ALL</code>（全部）时含义不同</td><td>见 ②③</td></tr>
+    <tr><td class="nm"><code>EXISTS</code> 子查询</td><td>只判断子查询<b>结果是否非空</b>，返回真/假；几乎都是<b>相关</b>子查询，SELECT 里常写 <code>*</code>，不用关心返回什么列</td><td>见 ④</td></tr>
+  </table></div>
+  <pre class="sql"><span class="cm">-- ① IN：查询选了"数据库"这门课的学生姓名</span>
+<span class="kw">SELECT</span> sname <span class="kw">FROM</span> student
+  <span class="kw">WHERE</span> sno <span class="kw">IN</span> (<span class="kw">SELECT</span> sno <span class="kw">FROM</span> sc <span class="kw">WHERE</span> cno <span class="kw">IN</span>
+                     (<span class="kw">SELECT</span> cno <span class="kw">FROM</span> course <span class="kw">WHERE</span> cname = <span class="st">'数据库'</span>));
+
+<span class="cm">-- ② 标量子查询：查询成绩高于全表平均分的学生</span>
+<span class="kw">SELECT</span> sno, grade <span class="kw">FROM</span> sc
+  <span class="kw">WHERE</span> grade &gt; (<span class="kw">SELECT</span> <span class="kw">AVG</span>(grade) <span class="kw">FROM</span> sc);
+
+<span class="cm">-- ③ ALL / ANY：比"计算机系所有学生年龄都大"的学生</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> student
+  <span class="kw">WHERE</span> sage &gt; <span class="kw">ALL</span> (<span class="kw">SELECT</span> sage <span class="kw">FROM</span> student <span class="kw">WHERE</span> sdept = <span class="st">'计算机'</span>);
+  <span class="cm">-- &gt; ALL ＝ 大于最大值；&gt; ANY ＝ 大于最小值即可</span>
+
+<span class="cm">-- ④ EXISTS：查询至少选了一门课的学生（相关子查询）</span>
+<span class="kw">SELECT</span> sname <span class="kw">FROM</span> student s
+  <span class="kw">WHERE</span> <span class="kw">EXISTS</span> (<span class="kw">SELECT</span> * <span class="kw">FROM</span> sc <span class="kw">WHERE</span> sc.sno = s.sno);
+
+<span class="cm">-- ⑤ 派生表：子查询当表用（MySQL 要求必须给别名）</span>
+<span class="kw">SELECT</span> s.sno, s.sname, t.平均
+  <span class="kw">FROM</span> student s <span class="kw">JOIN</span> (<span class="kw">SELECT</span> sno, <span class="kw">AVG</span>(grade) <span class="kw">AS</span> 平均
+                        <span class="kw">FROM</span> sc <span class="kw">GROUP BY</span> sno) <span class="kw">AS</span> t
+    <span class="kw">ON</span> s.sno = t.sno <span class="kw">WHERE</span> t.平均 &gt;= 85;</pre>
+  <div class="note">⚠️ 四个常错：①<b>子查询必须加括号</b>；②出现在 <code>=</code>、<code>&gt;</code> 右边的子查询<b>只能返回一个值</b>，多值要用 <code>IN</code>；③经典陷阱"<code>NOT IN</code> 遇到子查询结果含 NULL 时整体为空"——要防 NULL 用 <code>NOT EXISTS</code>；④相关子查询里 <b>EXISTS 不返回数据、只返回真假</b>，别写 <code>SELECT COUNT(*)</code> 之类期望取值。</div>
+</div>
+
+<h2 class="section" id="s9">九、联合查询 UNION</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 联合查询的概念与遵循的规则；<span class="lvl c">简单应用</span> 用 UNION 将多个查询合成为一条 SQL 语句。</div>
+  <b>联合查询</b>把<b>多个 SELECT 的结果纵向合并</b>成一个结果集（对应关系代数的"并"）。
+  <pre class="sql"><span class="kw">SELECT</span> sno, sname <span class="kw">FROM</span> student <span class="kw">WHERE</span> sdept = <span class="st">'计算机'</span>
+<span class="kw">UNION</span>
+<span class="kw">SELECT</span> tno, tname <span class="kw">FROM</span> teacher <span class="kw">WHERE</span> dept = <span class="st">'计算机'</span>;
+
+<span class="kw">SELECT</span> sno <span class="kw">FROM</span> sc <span class="kw">WHERE</span> cno = <span class="st">'C01'</span>
+<span class="kw">UNION ALL</span>                              <span class="cm">-- 保留重复行、不去重，效率更高</span>
+<span class="kw">SELECT</span> sno <span class="kw">FROM</span> sc <span class="kw">WHERE</span> cno = <span class="st">'C02'</span>;</pre>
+  <div class="th"><b>UNION 必须遵循的规则：</b>①各 SELECT 的<b>列数相同</b>；②对应列<b>数据类型相容</b>（可转换）；③结果集的<b>列名取自第一个 SELECT</b>；④默认<b>自动去重</b>（等价 UNION DISTINCT），要保留重复用 <code>UNION ALL</code>；⑤<b>ORDER BY / LIMIT 只能写在最后一个 SELECT 之后</b>，作用于合并后的整体结果，且 ORDER BY 里只能用第一个 SELECT 的列名/别名/列号；⑥多个 UNION 从左到右结合，需要改变顺序用括号。</div>
+  <div class="note">🔑 用途辨析：UNION 是<b>纵向（按行）合并</b>两个结构相同的结果集；JOIN 是<b>横向（按列）拼接</b>两个表。题干说"把 A 和 B 的名单合在一起"→ UNION；"既要 A 的列又要 B 的列"→ JOIN。</div>
+</div>
+
+<h2 class="section" id="s10">十、综合例题与常见错因</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 综合运用多个知识点编写与调试 SQL。</div>
+  <pre class="sql"><span class="cm">例 1（考纲·题型举例·简单设计题）用 SQL 查询每个出版社出版的图书总数量。</span>
+<span class="kw">SELECT</span> 出版社, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> 数量 <span class="kw">FROM</span> 图书 <span class="kw">GROUP BY</span> 出版社;
+
+<span class="cm">例 2 查询选修了 3 门以上课程且至少一门不及格的学生学号、选课门数。</span>
+<span class="kw">SELECT</span> sno, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> 门数
+  <span class="kw">FROM</span> sc <span class="kw">GROUP BY</span> sno
+  <span class="kw">HAVING</span> <span class="kw">COUNT</span>(*) &gt; 3 <span class="kw">AND</span> <span class="kw">MIN</span>(grade) &lt; 60;
+
+<span class="cm">例 3 查询没选"数据库"课的学生姓名（三种写法思路都要会）。</span>
+<span class="kw">SELECT</span> sname <span class="kw">FROM</span> student <span class="kw">WHERE</span> sno <span class="kw">NOT IN</span>
+   (<span class="kw">SELECT</span> s.sno <span class="kw">FROM</span> student s <span class="kw">JOIN</span> sc <span class="kw">ON</span> s.sno = sc.sno
+     <span class="kw">JOIN</span> course c <span class="kw">ON</span> c.cno = sc.cno <span class="kw">WHERE</span> c.cname = <span class="st">'数据库'</span>);
+
+<span class="cm">例 4 每门课的平均分并按平均分降序取前 3 名。</span>
+<span class="kw">SELECT</span> cno, <span class="kw">AVG</span>(grade) <span class="kw">AS</span> 平均 <span class="kw">FROM</span> sc
+  <span class="kw">GROUP BY</span> cno <span class="kw">ORDER BY</span> 平均 <span class="kw">DESC</span> <span class="kw">LIMIT</span> 3;</pre>
+  <div class="note">⚠️ 卷面常见扣分点：<b>关键字拼错</b>（GROUP BY 写成 GROUP、ORDER BY 写成 ORDER）、<b>子句顺序颠倒</b>（把 HAVING 写在 GROUP BY 前）、<b>逗号/引号漏写</b>、<b>非聚合列没进 GROUP BY</b>、<code>=</code> 写成 <code>==</code>、用 <code>WHERE grade = NULL</code>。写完按"FROM→WHERE→GROUP BY→HAVING→SELECT→ORDER BY→LIMIT"顺序默念一遍。</div>
+</div>
+
+<h2 class="section" id="s11">十一、本章速记小结</h2>
+<div class="note">
+  <b>执行顺序：</b>FROM → WHERE → GROUP BY → HAVING → SELECT(→DISTINCT) → ORDER BY → LIMIT。<br>
+  <b>投影：</b><code>DISTINCT</code> 放列清单前、作用于整行；<code>AS</code> 改列标题；表达式可算列值。<br>
+  <b>选择：</b>BETWEEN 是<b>闭</b>区间；空值只能 <code>IS NULL</code>；LIKE 用 % 和 _，REGEXP 用正则且<b>子串匹配</b>即真。<br>
+  <b>分组：</b>WHERE 不能放聚合、HAVING 专管组；非聚合列必须进 GROUP BY；<code>COUNT(列)</code> 忽略 NULL、<code>COUNT(*)</code> 不忽略。<br>
+  <b>连接：</b>内连只留匹配；外连保留不匹配补 NULL（左保左、右保右，MySQL 无全外）；自连接同表起两别名；<b>外连接的条件要写在 ON，写在 WHERE 会退化成内连接</b>。<br>
+  <b>子查询：</b>多值配 IN、单值配比较运算符、判存在用 EXISTS（返回真假、常写 SELECT *）；<code>&gt; ALL</code>＝比最大值、<code>&gt; ANY</code>＝比最小值。<br>
+  <b>联合：</b>列数相同、类型相容、列名取第一个、默认去重（ALL 不去重）、ORDER BY/LIMIT 只在最后写一次。<br>
+  <b>Top-N：</b><code>ORDER BY 列 DESC LIMIT n</code>；MySQL 里"取每组前几名"要用相关子查询或窗口函数（<code>ROW_NUMBER()</code>，了解）。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 5 章 数据查询 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

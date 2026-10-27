@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 3 章 MySQL 数据库和表｜CREATE/ALTER/DROP DATABASE · 数据类型 · CREATE TABLE</title>
+<meta name="description" content="数据库原理与技术 13009 第 3 章速记卡：SHOW DATABASES 查看数据库，CREATE/ALTER/DROP/USE DATABASE 四类语句，表的概念与组成、表结构含义，MySQL 常用数据类型（整数/浮点/定点/字符串/日期时间/ENUM）与类型选择原则，CREATE TABLE / ALTER TABLE（ADD·MODIFY·CHANGE·DROP·RENAME）/ DROP TABLE / SHOW TABLES / DESC 的使用。建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 3 章 · MySQL 数据库和表</h1>
+  <p>本章开始全是 <b>DDL 语句</b>，考试形式是"写语句 / 补空 / 判断执行结果"。四条建库语句 + 四条建表语句务必手敲到能默写；数据类型选择原则是概念题常客。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：建库建表改表</span><span class="pill">难点：语句的实际使用</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../关系模型/关系数据库系统模型.html">← 第 2 章</a>
+    <a href="../表数据操作/增删改数据.html">→ 第 4 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、MySQL 简介与查看数据库（识记）</a>
+  <a href="#s2">二、定义数据库：CREATE / ALTER / DROP / USE（识记/简单应用）⭐</a>
+  <a href="#s3">三、表的基本概念与表结构（识记/领会）</a>
+  <a href="#s4">四、MySQL 常用数据类型（识记/领会）⭐</a>
+  <a href="#s5">五、定义表：CREATE TABLE（简单应用）⭐</a>
+  <a href="#s6">六、改表与删表：ALTER / DROP / SHOW / DESC（简单应用）⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、MySQL 简介与查看数据库（识记）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 用 SHOW DATABASES 查看已有数据库。</div>
+  <b>MySQL</b> 是<b>开源的关系型数据库管理系统</b>（DBMS），采用<b>客户端 / 服务器</b>体系结构：一个 MySQL 服务器可管理<b>多个数据库</b>，一个数据库含<b>多张表</b>，一张表含多行多列。常用组件：MySQL Server、命令行客户端 <code>mysql</code>、图形工具（MySQL Workbench、phpMyAdmin、Navicat）。
+  <pre class="sql"><span class="cm">-- 登录</span>
+mysql -u root -p
+<span class="kw">SHOW DATABASES</span>;            <span class="cm">-- 查看所有数据库（本章唯一要求识记的查看语句）</span>
+<span class="kw">SELECT</span> VERSION();           <span class="cm">-- 查看版本（了解）</span></pre>
+  <b>MySQL 8 自带的四个系统库：</b><code>mysql</code>（用户与<b>权限表</b>所在库，见第 8 章）、<code>information_schema</code>（元数据/表结构）、<code>performance_schema</code>（性能统计）、<code>sys</code>（性能视图封装）。
+</div>
+
+<h2 class="section" id="s2">二、定义数据库四条语句 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> CREATE / ALTER / DROP DATABASE 与 USE 语句；<span class="lvl c">简单应用</span> 四类语句的使用。</div>
+  <pre class="sql"><span class="cm">-- ① 创建数据库（IF NOT EXISTS 可省略，重复创建不报错）</span>
+<span class="kw">CREATE DATABASE</span> IF NOT <span class="kw">EXISTS</span> student_mgr
+    <span class="kw">DEFAULT</span> CHARACTER <span class="kw">SET</span> utf8mb4;
+<span class="cm">-- ② 使用（选择）数据库：之后的操作都在这个库里</span>
+<span class="kw">USE</span> student_mgr;
+<span class="cm">-- ③ 修改数据库属性（只能改字符集/排序规则，不能改名→改名要新建再迁移）</span>
+<span class="kw">ALTER DATABASE</span> student_mgr <span class="kw">DEFAULT</span> CHARACTER <span class="kw">SET</span> gbk;
+<span class="cm">-- ④ 删除数据库：连同其中所有表一起删除，慎用</span>
+<span class="kw">DROP DATABASE</span> IF <span class="kw">EXISTS</span> student_mgr;</pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>语句</th><th>作用</th><th>关键细节</th></tr>
+    <tr><td class="nm"><code>CREATE DATABASE 库名</code></td><td>建库</td><td>可加 <code>IF NOT EXISTS</code> 与字符集子句</td></tr>
+    <tr><td class="nm"><code>USE 库名</code></td><td>选为当前库</td><td>未 USE 时用 <code>库名.表名</code> 全限定访问</td></tr>
+    <tr><td class="nm"><code>ALTER DATABASE</code></td><td>改库的属性</td><td><b>改的是字符集/排序规则，不改名</b></td></tr>
+    <tr><td class="nm"><code>DROP DATABASE</code></td><td>删库</td><td>可加 <code>IF EXISTS</code>；<b>不可回滚</b></td></tr>
+    <tr><td class="nm"><code>SHOW DATABASES</code></td><td>列出所有库</td><td>—</td></tr>
+  </table></div>
+  <div class="note">⚠️ 三个高频错：① <code>CREATE DATABASE</code> 后<b>不写分号</b>直接接下一条语句；② 库名/表名在 MySQL 中<b>区分大小写取决于操作系统</b>（Linux 敏感、Windows 不敏感），答题按 SQL 标准写即可；③ 别把 <code>USE</code> 当成"创建"——它只是<b>选择当前数据库</b>。</div>
+</div>
+
+<h2 class="section" id="s3">三、表的基本概念与表结构（识记 / 领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 表的概念与组成；<span class="lvl b">领会</span> 表结构的含义、表 / 列 / 属性的关系。</div>
+  <b>表（Table）</b>是 MySQL 中存储数据的<b>基本逻辑单元</b>，一个表由<b>行（记录/元组）</b>和<b>列（字段/属性）</b>构成。
+  <div class="tscroll"><table class="law">
+    <tr><th>三层视角</th><th>叫法</th><th>说明</th></tr>
+    <tr><td class="nm">物理/日常</td><td>数据库 → <b>表</b> → 记录（行）→ 字段（列）→ 值</td><td>一个库多张表，一张表多行</td></tr>
+    <tr><td class="nm">关系模型术语</td><td>关系 → <b>元组</b> → <b>属性</b> → 分量</td><td>表 = 关系；行 = 元组；列 = 属性（第 2 章已学）</td></tr>
+    <tr><td class="nm">三级模式对应</td><td><b>基本表 = 模式</b>；<b>视图 = 外模式</b>；存储文件 = 内模式</td><td>选择题常客，SQL 支持三级模式</td></tr>
+  </table></div>
+  <b>表结构由什么决定：</b>每张表的<b>列名、列的数据类型、宽度/精度、约束（主键/非空/唯一/默认值）、字符集、存储引擎</b>等构成<b>表结构（元数据）</b>，可通过 <code>DESC 表名</code> 查看。<b>表结构是"型"，表数据是"值"</b>——定义表就是定义结构，与插入数据是两回事（第 4 章）。
+</div>
+
+<h2 class="section" id="s4">四、MySQL 常用数据类型 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> MySQL 常用数据类型；<span class="lvl b">领会</span> 各类型含义、数字类型的选择、类型选择遵循的原则。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>类别</th><th>类型</th><th>范围 / 长度</th><th>说明</th></tr>
+    <tr><td class="nm" rowspan="4">整数</td><td><code>TINYINT</code></td><td>有符号 −128 ~ 127</td><td>1 字节，适合年龄、布尔标记</td></tr>
+    <tr><td><code>SMALLINT</code></td><td>−2¹⁵ ~ 2¹⁵−1</td><td>2 字节</td></tr>
+    <tr><td><code>INT / INTEGER</code></td><td>−2³¹ ~ 2³¹−1</td><td>4 字节，最常用的整数</td></tr>
+    <tr><td><code>BIGINT</code></td><td>−2⁶³ ~ 2⁶³−1</td><td>8 字节，大流水号</td></tr>
+    <tr><td class="nm" rowspan="3">浮点与定点</td><td><code>FLOAT</code></td><td>单精度约 7 位有效数字</td><td>4 字节，近似值</td></tr>
+    <tr><td><code>DOUBLE</code></td><td>双精度约 15～16 位</td><td>8 字节，近似值</td></tr>
+    <tr><td><code>DECIMAL(M,D)</code></td><td>M 总位数、D 小数位</td><td><b>精确存储</b>，金额必用</td></tr>
+    <tr><td class="nm" rowspan="4">字符串</td><td><code>CHAR(n)</code></td><td>0～255（固定长度）</td><td>定长、速度快，不足补空格</td></tr>
+    <tr><td><code>VARCHAR(n)</code></td><td>最大 65535 字节（可变）</td><td>变长、省空间，最常用</td></tr>
+    <tr><td><code>TEXT / BLOB</code></td><td>最大约 64KB（还有 MEDIUM/LONG 变体）</td><td>TEXT 存长文本，BLOB 存二进制</td></tr>
+    <tr><td><code>ENUM(...)</code> / <code>SET(...)</code></td><td>枚举 / 集合</td><td>ENUM 只能取<b>其中一个</b>值，SET 可取多个</td></tr>
+    <tr><td class="nm" rowspan="5">日期时间</td><td><code>DATE</code></td><td>YYYY-MM-DD</td><td>3 字节</td></tr>
+    <tr><td><code>TIME</code></td><td>HH:MM:SS</td><td>3 字节</td></tr>
+    <tr><td><code>DATETIME</code></td><td>YYYY-MM-DD HH:MM:SS</td><td>8 字节，范围 1000~9999</td></tr>
+    <tr><td><code>TIMESTAMP</code></td><td>同上格式</td><td>4 字节，范围 1970~2038，<b>与时区相关</b>，可做自动更新时间戳</td></tr>
+    <tr><td><code>YEAR</code></td><td>1901~2155</td><td>1 字节</td></tr>
+  </table></div>
+  <div class="th"><b>类型选择遵循的原则（简答/领会）：</b>①在满足取值范围前提下<b>选占存储空间最小的类型</b>（能 TINYINT 就不用 INT）；②<b>长度要"够用就好"</b>，不要一律 VARCHAR(255)；③<b>定长用 CHAR、变长用 VARCHAR</b>（性别、国家码、学号→CHAR；姓名、备注→VARCHAR）；④<b>涉及精确计算（货币）用 DECIMAL，不用 FLOAT/DOUBLE</b>；⑤日期时间用专门类型，<b>不要用字符串存</b>，否则无法直接比较与函数计算；⑥尽量<b>避免使用 BLOB/TEXT</b>，必要时单独建表存放；⑦考虑<b>将来扩展</b>与索引长度限制。</div>
+  <div class="note">⚠️ 高频辨析：<code>TIMESTAMP</code> vs <code>DATETIME</code>——前者<b>4 字节、受时区影响、范围只到 2038</b>，且列可设<b>自动填充/自动更新</b>；后者 8 字节、范围大、不受时区影响。</div>
+</div>
+
+<h2 class="section" id="s5">五、定义表 CREATE TABLE ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 创建表的语句；<span class="lvl c">简单应用</span> <code>CREATE TABLE</code> 的使用。</div>
+  <pre class="sql"><span class="cm">-- 列级约束写法（最常见）</span>
+<span class="kw">CREATE TABLE</span> student (
+    sno    <span class="kw">CHAR</span>(8)  <span class="kw">NOT NULL</span> <span class="kw">PRIMARY KEY</span>,   <span class="cm">-- 主码</span>
+    sname  <span class="kw">VARCHAR</span>(20) <span class="kw">NOT NULL</span>,              <span class="cm">-- 非空</span>
+    ssex   <span class="kw">ENUM</span>(<span class="st">'男'</span>,<span class="st">'女'</span>) <span class="kw">DEFAULT</span> <span class="st">'男'</span>,    <span class="cm">-- 默认值</span>
+    sage   <span class="kw">SMALLINT</span>,
+    sdept  <span class="kw">VARCHAR</span>(20)
+);
+
+<span class="cm">-- 表级约束写法（多列共同构成主键时必须这样写）</span>
+<span class="kw">CREATE TABLE</span> sc (
+    sno <span class="kw">CHAR</span>(8), cno <span class="kw">CHAR</span>(3), grade <span class="kw">SMALLINT</span>,
+    <span class="kw">PRIMARY KEY</span> (sno, cno)              <span class="cm">-- 复合主键</span>
+);</pre>
+  <b>建表时能一起声明的东西：</b>列名与类型、<code>NOT NULL</code> / <code>DEFAULT</code> / <code>AUTO_INCREMENT</code>、<code>PRIMARY KEY</code>、<code>UNIQUE</code>、<code>FOREIGN KEY ... REFERENCES</code>、<code>CHECK</code>（8.0.16 起生效）、表选项 <code>ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>。约束语句的<b>增删改</b>在第 7 章详讲。
+  <div class="note">📝 <b>考纲·题型举例·综合题第 (3) 问</b>就是"用 SQL 语句建立'科室'表"——科室(科室名, 地址, 电话)，主码科室名。范答：<br><code>CREATE TABLE 科室 (科室名 VARCHAR(20) PRIMARY KEY, 地址 VARCHAR(50), 电话 CHAR(12));</code>（写清主码、给出合理类型即得分）</div>
+</div>
+
+<h2 class="section" id="s6">六、改表、删表与查看 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 查看 / 修改 / 删除表的语句；<span class="lvl c">简单应用</span> <code>ALTER TABLE</code>、<code>DROP TABLE</code>、<code>SHOW TABLES</code>。</div>
+  <pre class="sql"><span class="cm">-- 查看</span>
+<span class="kw">SHOW TABLES</span>;                    <span class="cm">-- 当前库中所有表</span>
+<span class="kw">DESC</span> student;                   <span class="cm">-- 查看表结构（= DESCRIBE / SHOW COLUMNS FROM student）</span>
+<span class="kw">SHOW CREATE TABLE</span> student;      <span class="cm">-- 查看建表原语句（了解）</span>
+
+<span class="cm">-- 修改表结构：ALTER TABLE 表名 动作</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD</span> email <span class="kw">VARCHAR</span>(30);          <span class="cm">-- ① 增加列</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">DROP</span> email;                     <span class="cm">-- ② 删除列</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">MODIFY</span> sname <span class="kw">VARCHAR</span>(30) <span class="kw">NOT NULL</span>;  <span class="cm">-- ③ 改列的类型/约束（不改名）</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">CHANGE</span> sname stuname <span class="kw">VARCHAR</span>(30);    <span class="cm">-- ④ 改列名（必须重写类型！）</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">RENAME TO</span> stu;                  <span class="cm">-- ⑤ 改表名</span>
+
+<span class="cm">-- 删除表：先删有外键引用的表会报错，要先删子表</span>
+<span class="kw">DROP TABLE</span> IF <span class="kw">EXISTS</span> stu;</pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>动作</th><th>关键字</th><th>易混点</th></tr>
+    <tr><td class="nm">加列 / 加约束</td><td><code>ADD</code></td><td>加约束也写作 <code>ADD CONSTRAINT 名 PRIMARY KEY(列)</code></td></tr>
+    <tr><td class="nm">删列 / 删约束</td><td><code>DROP</code></td><td><code>DROP PRIMARY KEY</code>、<code>DROP FOREIGN KEY 名</code></td></tr>
+    <tr><td class="nm">改列属性（不改名）</td><td><code>MODIFY</code></td><td>只重写类型和约束</td></tr>
+    <tr><td class="nm">改列名（可带属性）</td><td><code>CHANGE 旧名 新名 类型</code></td><td><b>必须把类型一起写全</b>，否则报错</td></tr>
+    <tr><td class="nm">只改新名</td><td><code>RENAME COLUMN 旧 TO 新</code></td><td>等价于 CHANGE 的改名用法（了解）</td></tr>
+  </table></div>
+  <div class="note">⚠️ <b>MODIFY 与 CHANGE 的区别</b>是简答/选择爱考点：CHANGE 能改列名、且<b>要重复写数据类型</b>；MODIFY 不能改名、只改类型与约束。另一个坑：<code>ALTER TABLE</code> 改的是<b>表结构</b>（DDL），<code>UPDATE</code> 改的是<b>表数据</b>（DML），别写反。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>库五句：</b><code>SHOW DATABASES</code> / <code>CREATE DATABASE</code> / <code>USE</code> / <code>ALTER DATABASE</code> / <code>DROP DATABASE</code>。<br>
+  <b>表六句：</b><code>SHOW TABLES</code> / <code>DESC</code> / <code>CREATE TABLE</code> / <code>ALTER TABLE（ADD·DROP·MODIFY·CHANGE·RENAME）</code> / <code>DROP TABLE</code>。<br>
+  <b>复合主键</b>只能写在表级：<code>PRIMARY KEY (sno, cno)</code>。<br>
+  <b>类型口诀：</b>整数从小往大选、定长 CHAR 变长 VARCHAR、钱用 DECIMAL、日期别用字符串。<br>
+  <b>模式对应：</b>基本表=模式、视图=外模式、存储文件=内模式。<br>
+  <b>改名只能新建迁移：</b>MySQL <b>没有</b> <code>ALTER DATABASE ... RENAME</code>；改表名用 <code>ALTER TABLE ... RENAME TO</code>。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 3 章 MySQL 数据库和表 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

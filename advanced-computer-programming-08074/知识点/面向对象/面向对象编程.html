@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 8 章 面向对象编程｜类与实例 / 封装 / 继承 / 多态</title>
+<meta name="description" content="计算机高级程序设计 08074 第 8 章速记卡：面向对象 vs 面向过程、类与对象、__init__构造方法与self、属性与实例方法、公有/私有、类方法与静态方法、继承与方法重写、多态、常用特殊方法。课程难点章，含完整类示例代码。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧱</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#1d4ed8,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 8 章 · 面向对象编程 ⭐ 难点章</h1>
+  <p>课程两大难点之一。概念题多（简答常考"面向对象 vs 面向过程区别"），也会要求写一个简单类。核心链：类→实例→属性/方法→封装(私有)→继承→多态。建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">整章考</span><span class="pill">重点：类的定义</span><span class="pill">难点：类方法/静态方法</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../文件/文件与数据维度.html">← 第 7 章</a>
+    <a href="../科学计算/科学计算与可视化.html">→ 第 9 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、面向对象 vs 面向过程（识记）⭐简答</a>
+  <a href="#s2">二、类与实例、构造方法 __init__（领会）⭐</a>
+  <a href="#s3">三、对象成员：属性与方法（简单应用）</a>
+  <a href="#s4">四、公有与私有、类方法/静态方法（识记/领会）</a>
+  <a href="#s5">五、继承与方法重写（领会）</a>
+  <a href="#s6">六、多态与常用特殊方法（识记）</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、面向对象 vs 面向过程 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 面向过程、面向对象、对象、类、封装、继承、多态的概念。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>名词</th><th>一句话理解</th></tr>
+    <tr><td class="nm">面向过程</td><td>以"步骤/函数"为中心，一步步指挥计算机怎么做（如 C 语言）</td></tr>
+    <tr><td class="nm">面向对象</td><td>以"对象"为中心，把数据和行为封装成对象，靠对象间协作完成</td></tr>
+    <tr><td class="nm">类 class</td><td>对象的<b>模板/蓝图</b>，定义这一类对象共有的属性和方法</td></tr>
+    <tr><td class="nm">对象 object</td><td>类的<b>实例</b>，是具体存在的（"小明"是"学生类"的一个对象）</td></tr>
+    <tr><td class="nm">封装</td><td>把数据和操作包进类里，隐藏内部细节、只暴露接口</td></tr>
+    <tr><td class="nm">继承</td><td>子类复用父类的属性与方法，可扩展新功能</td></tr>
+    <tr><td class="nm">多态</td><td>同一方法名，不同对象调用产生不同行为</td></tr>
+  </table></div>
+  <div class="note">📝 <b>简答模板（面向对象和面向过程的区别）：</b>面向过程自顶向下、逐步分解为函数调用，性能高但缺少复用；面向对象以对象为单位、有<b>封装、继承、多态</b>，更易维护、复用、扩展，可读性好、适合大型程序。</div>
+</div>
+
+<h2 class="section" id="s2">二、类与实例、构造方法 __init__ ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 类的定义方法、构造方法、实例创建与访问方法。</div>
+  <pre class="py"><span class="kw">class</span> Student:                 <span class="cm"># 类名大写开头</span>
+    <span class="kw">def</span> __init__(self, name, age):   <span class="cm"># 构造方法，创建实例时自动调用</span>
+        self.name = name          <span class="cm"># 实例属性</span>
+        self.age = age
+    <span class="kw">def</span> intro(self):              <span class="cm"># 实例方法</span>
+        <span class="kw">return</span> <span class="st">f"我叫</span>{self.name}<span class="st">，</span>{self.age}<span class="st">岁"</span>
+
+s = Student(<span class="st">"小明"</span>, 20)         <span class="cm"># 创建实例（实例化），self 不用传</span>
+<span class="kw">print</span>(s.name)                  <span class="cm"># 访问属性 → 小明</span>
+<span class="kw">print</span>(s.intro())               <span class="cm"># 调用方法</span></pre>
+  <ul>
+    <li><code>__init__</code> 是<b>构造方法</b>，创建对象时<b>自动执行</b>，用来初始化属性。</li>
+    <li><code>self</code> 代表<b>实例对象本身</b>，是方法的第一个参数；调用时不用手动传。</li>
+    <li>对象的结构 = <b>属性（数据） + 方法（行为）</b>。</li>
+  </ul>
+</div>
+
+<h2 class="section" id="s3">三、对象成员：属性与方法</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 类属性成员定义、实例属性访问、实例方法。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>成员</th><th>定义位置</th><th>归属</th></tr>
+    <tr><td class="nm">实例属性</td><td><code>__init__</code> 里 <code>self.x=…</code></td><td>每个对象各有一份</td></tr>
+    <tr><td class="nm">类属性</td><td>类体内直接 <code>x=…</code></td><td>所有对象<b>共享</b></td></tr>
+    <tr><td class="nm">实例方法</td><td>第一个参数是 <code>self</code></td><td>操作本对象数据</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s4">四、公有私有、类方法/静态方法</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 私有方法与公有方法；<span class="lvl b">领会</span> 类方法、静态方法。</div>
+  <ul>
+    <li><b>私有成员</b>：名字前加<b>双下划线 <code>__</code></b>（如 <code>__score</code>），外部不能直接访问——这就是<b>封装</b>。要读写就提供公有方法（getter/setter）。</li>
+    <li><b>公有成员</b>：普通名字，外部可访问。</li>
+    <li><b>类方法</b> <code>@classmethod</code>：第一个参数是类 <code>cls</code>，操作类属性。</li>
+    <li><b>静态方法</b> <code>@staticmethod</code>：不带 self/cls，只是逻辑上归到类里，不用实例数据。</li>
+  </ul>
+  <pre class="py"><span class="kw">class</span> Account:
+    <span class="kw">def</span> __init__(self, bal):
+        self.__balance = bal        <span class="cm"># 私有属性</span>
+    <span class="kw">def</span> get_balance(self):          <span class="cm"># 公有方法间接访问</span>
+        <span class="kw">return</span> self.__balance
+a = Account(100)
+<span class="kw">print</span>(a.get_balance())     <span class="cm"># ✓ 100</span>
+<span class="cm"># print(a.__balance)       # ✗ 私有，外部报错</span></pre>
+</div>
+
+<h2 class="section" id="s5">五、继承与方法重写</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 继承概念；<span class="lvl b">领会</span> 继承的定义、方法重写。</div>
+  子类在括号里写父类名即可继承；子类重新定义父类同名方法叫<b>方法重写</b>；<code>super()</code> 调用父类版本。
+  <pre class="py"><span class="kw">class</span> Animal:
+    <span class="kw">def</span> speak(self):
+        <span class="kw">return</span> <span class="st">"…"</span>
+<span class="kw">class</span> Dog(Animal):          <span class="cm"># Dog 继承 Animal</span>
+    <span class="kw">def</span> speak(self):        <span class="cm"># 方法重写</span>
+        <span class="kw">return</span> <span class="st">"汪汪"</span>
+<span class="kw">print</span>(Dog().speak())        <span class="cm"># 汪汪</span></pre>
+</div>
+
+<h2 class="section" id="s6">六、多态与常用特殊方法</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 多态概念、常用重载（特殊）方法。</div>
+  <b>多态：</b>不同类的对象有同名方法，调用时按对象实际类型执行——配合继承自然实现。<br>
+  <b>常用特殊方法（双下划线 __xxx__）：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>特殊方法</th><th>触发时机</th></tr>
+    <tr><td class="nm"><code>__init__</code></td><td>创建对象（初始化）</td></tr>
+    <tr><td class="nm"><code>__str__</code></td><td><code>print(对象)</code> / <code>str(对象)</code> 时的可读文本</td></tr>
+    <tr><td class="nm"><code>__len__</code></td><td><code>len(对象)</code></td></tr>
+    <tr><td class="nm"><code>__eq__</code></td><td><code>==</code> 比较</td></tr>
+    <tr><td class="nm"><code>__del__</code></td><td>对象销毁</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>一条链：</b>class 定义类 → <code>__init__</code>+<code>self</code> 建实例属性 → 方法封装行为 → <code>__私有</code> 做封装 → 类(父类) 继承 + 重写 → 多态。<br>
+  <b>必背：</b>self=实例本身、调用不传；<code>__init__</code> 自动执行；私有加 <code>__</code>；类方法用 <code>@classmethod</code>(cls)、静态用 <code>@staticmethod</code>；继承把父类写进括号、<code>super()</code> 调父类。<br>
+  <b>简答高频：</b>①面向对象三大特征=封装/继承/多态；②与面向过程的区别（见第一节模板）。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 8 章 面向对象编程 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

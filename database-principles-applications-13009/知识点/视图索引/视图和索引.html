@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 6 章 视图和索引｜CREATE VIEW · WITH CHECK OPTION · CREATE INDEX</title>
+<meta name="description" content="数据库原理与技术 13009 第 6 章速记卡：视图的含义与优点、CREATE/ALTER/DROP VIEW 与查询视图、可更新视图的条件与 WITH CHECK OPTION，索引的概念与分类（普通/唯一/主键/全文/空间）、建立索引的建议、三种创建索引方法与两种删除索引语句、SHOW INDEX 查看。建议 6 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗂️</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#7c3aed,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 6 章 · 视图和索引</h1>
+  <p>两个"表的外挂"：<b>视图</b>虚拟表（不存数据、存的是 SELECT 定义，对应<b>外模式</b>），<b>索引</b>加速结构（占空间、要维护）。考点＝视图四类操作 + 可更新条件 + 索引的三种建两种删。建议 6 学时。</p>
+  <span class="pill">建议 6 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：视图操作、索引创建</span><span class="pill">难点：可更新视图判断</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../数据查询/SELECT查询.html">← 第 5 章</a>
+    <a href="../数据完整性/完整性约束.html">→ 第 7 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、视图的含义与优点（识记/领会）⭐简答</a>
+  <a href="#s2">二、视图操作：创建 / 查看 / 修改 / 删除（简单应用）⭐</a>
+  <a href="#s3">三、查询视图与更新视图（领会/简单应用）⭐难点</a>
+  <a href="#s4">四、索引的概念与分类（识记/领会）</a>
+  <a href="#s5">五、建立索引的建议（领会）⭐简答</a>
+  <a href="#s6">六、索引操作：三建两删一看（简单应用）⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、视图的含义与优点 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 视图的含义；<span class="lvl b">领会</span> 视图的优点。</div>
+  <b>视图（View）</b>是<b>虚拟表</b>：它由一个 SELECT 语句（视图定义 / 子查询）导出，<b>本身不存放数据</b>，数据库中<b>只保存视图的定义</b>；每次通过视图查询时，DBMS 动态地从<b>基表（导出视图所依赖的表）</b>取值。视图可以与基本表一样进行查询，在一定条件下还能增删改。
+  <div class="fig">
+    <svg viewBox="0 0 720 190" role="img" aria-label="视图不存数据，只是保存的 SELECT 定义">
+      <rect x="20" y="30" width="180" height="56" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="110" y="55" text-anchor="middle" font-size="15" fill="#4f46e5" font-weight="700">基表 student</text>
+      <text x="110" y="74" text-anchor="middle" font-size="12.5" fill="#6b7280">真实存放数据</text>
+      <rect x="20" y="106" width="180" height="56" rx="8" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="110" y="131" text-anchor="middle" font-size="15" fill="#4f46e5" font-weight="700">基表 sc</text>
+      <text x="110" y="150" text-anchor="middle" font-size="12.5" fill="#6b7280">真实存放数据</text>
+      <rect x="290" y="30" width="160" height="42" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2" stroke-dasharray="6 4"/>
+      <text x="370" y="57" text-anchor="middle" font-size="14.5" fill="#7c3aed" font-weight="700">视图定义（SELECT）</text>
+      <rect x="290" y="112" width="160" height="50" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+      <text x="370" y="134" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">视图 v_stu_score</text>
+      <text x="370" y="152" text-anchor="middle" font-size="12" fill="#6b7280">不存数据</text>
+      <rect x="540" y="108" width="160" height="56" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+      <text x="620" y="133" text-anchor="middle" font-size="14.5" fill="#059669" font-weight="700">用户查询视图</text>
+      <text x="620" y="152" text-anchor="middle" font-size="12" fill="#6b7280">像查表一样 SELECT</text>
+      <line x1="200" y1="58" x2="290" y2="51" stroke="#9ca3af" stroke-width="1.8"/>
+      <line x1="200" y1="134" x2="290" y2="60" stroke="#9ca3af" stroke-width="1.8"/>
+      <line x1="370" y1="72" x2="370" y2="112" stroke="#9ca3af" stroke-width="1.8" stroke-dasharray="5 4"/>
+      <line x1="450" y1="137" x2="540" y2="136" stroke="#9ca3af" stroke-width="1.8"/>
+    </svg>
+    <div class="cap">视图＝"存起来的 SELECT"；数据永远只在基表里。<small>（对应三级模式：<b>视图 = 外模式</b>）</small></div>
+  </div>
+  <div class="th"><b>视图的优点（简答模板）：</b>①<b>简化操作</b>——把复杂的多表查询定义成视图，用户像查一张表一样使用；②<b>提供一定程度的逻辑独立性</b>——基表结构改变时可改视图定义，应用程序不必大改；③<b>保护机密数据（安全性）</b>——只让用户看到被授权的列/行；④<b>为同一数据提供多种表现角度</b>——不同用户看不同视图，方便重新组织数据；⑤<b>便于数据共享与汇总统计</b>。</div>
+  <div class="note">⚠️ 易错：视图<b>不占存储空间</b>（只占极少存定义的空间）；把物化视图/索引视图（Oracle 的 MV、MySQL 需用汇总表模拟）与普通视图区分开——本课程讲的视图一律是<b>不物化的虚视图</b>。</div>
+</div>
+
+<h2 class="section" id="s2">二、视图四类操作 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 视图操作的内容；<span class="lvl b">领会</span> CREATE / ALTER / DROP VIEW 及查询、更新视图的含义；<span class="lvl c">简单应用</span> 创建、修改、删除、查询视图。</div>
+  <pre class="sql"><span class="cm">-- ① 创建视图（可给视图的列起新名字，列数要与子查询一致）</span>
+<span class="kw">CREATE VIEW</span> v_math_stu <span class="kw">AS</span>
+    <span class="kw">SELECT</span> sno, sname, sage <span class="kw">FROM</span> student <span class="kw">WHERE</span> sdept = <span class="st">'数学'</span>;
+
+<span class="kw">CREATE VIEW</span> v_dept_age (系名, 平均年龄, 人数) <span class="kw">AS</span>
+    <span class="kw">SELECT</span> sdept, <span class="kw">AVG</span>(sage), <span class="kw">COUNT</span>(*)
+      <span class="kw">FROM</span> student <span class="kw">GROUP BY</span> sdept;
+
+<span class="cm">-- ② 修改视图定义（MySQL 8 支持；也可先 DROP 再 CREATE，或用 CREATE OR REPLACE VIEW）</span>
+<span class="kw">ALTER VIEW</span> v_math_stu <span class="kw">AS</span>
+    <span class="kw">SELECT</span> sno, sname, sage, ssex <span class="kw">FROM</span> student <span class="kw">WHERE</span> sdept = <span class="st">'数学'</span>;
+
+<span class="cm">-- ③ 删除视图：只删定义，基表数据不受影响；可一次删多个</span>
+<span class="kw">DROP VIEW</span> IF <span class="kw">EXISTS</span> v_math_stu, v_dept_age;
+
+<span class="cm">-- ④ 查看视图结构 / 定义</span>
+<span class="kw">SHOW TABLES</span>;                        <span class="cm">-- 视图与表列在一起</span>
+<span class="kw">DESC</span> v_math_stu;                    <span class="cm">-- 看视图的列</span>
+<span class="kw">SHOW CREATE VIEW</span> v_math_stu;        <span class="cm">-- 看视图的定义语句</span></pre>
+  <div class="note">🔑 用 <code>DROP TABLE</code> 删<b>基表</b>后，由它导出的视图会<b>失效</b>（查询报错），但视图定义仍留在数据字典里；用 <code>DROP VIEW</code> 删视图对基表<b>毫无影响</b>。这是常出的判断/选择题。</div>
+</div>
+
+<h2 class="section" id="s3">三、查询视图与更新视图 ⭐ 难点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 通过 SELECT 查询视图、更新视图的含义；<span class="lvl c">简单应用</span> 通过视图插入、删除、修改数据。</div>
+  <pre class="sql"><span class="cm">-- 查询视图：写法与查表一致，DBMS 会把它与视图定义"合并"成对基表的查询（视图消解）</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> v_math_stu <span class="kw">WHERE</span> sage &lt; 20;
+<span class="kw">SELECT</span> s.sname, g.grade <span class="kw">FROM</span> v_stu_score g <span class="kw">JOIN</span> student s <span class="kw">ON</span> s.sno = g.sno;</pre>
+  <b>更新视图</b>＝通过视图执行 <code>INSERT / UPDATE / DELETE</code>。DBMS 同样把它<b>转换（消解）</b>成对基表的操作，所以<b>不是任何视图都能更新</b>。
+  <div class="tscroll"><table class="law">
+    <tr><th>情形</th><th>能否更新</th><th>原因</th></tr>
+    <tr><td class="nm">视图由<b>单个基表</b>的部分行/列导出，且<b>包含了主码列与 NOT NULL 列</b></td><td>✅ 可增删改</td><td>能唯一地把改动映射回基表的行</td></tr>
+    <tr><td class="nm">视图含<b>聚合函数</b>、<code>GROUP BY</code>、<code>DISTINCT</code>、<code>UNION</code></td><td>❌ 不可更新</td><td>一行视图对应多行基表数据，无法逆映射</td></tr>
+    <tr><td class="nm">视图含<b>多表连接</b>（MySQL：一个可更新视图只能引用一张基表）</td><td>❌ 一般不可</td><td>无法确定改动落到哪张表</td></tr>
+    <tr><td class="nm">视图<b>缺少基表的非空列</b></td><td>❌ 插入失败</td><td>插入时那些列没有值，违反 NOT NULL</td></tr>
+  </table></div>
+  <pre class="sql"><span class="kw">INSERT INTO</span> v_math_stu(sno, sname, sage) <span class="kw">VALUES</span> (<span class="st">'20210088'</span>,<span class="st">'小周'</span>,19);
+<span class="cm">-- 实际向 student 表插入一行，但 sdept 没赋值 → 新行不满足 WHERE sdept='数学'，视图里看不到它</span>
+
+<span class="cm">-- 加 WITH CHECK OPTION：通过视图做插入/修改时，强制新行仍满足视图的 WHERE 条件</span>
+<span class="kw">CREATE VIEW</span> v_math_stu <span class="kw">AS</span>
+    <span class="kw">SELECT</span> sno, sname, sage, sdept <span class="kw">FROM</span> student <span class="kw">WHERE</span> sdept = <span class="st">'数学'</span>
+    <span class="kw">WITH CHECK OPTION</span>;                     <span class="cm">-- 违约的操作会被拒绝（上面那条 INSERT 将失败）</span>
+
+<span class="kw">UPDATE</span> v_math_stu <span class="kw">SET</span> sdept = <span class="st">'物理'</span> <span class="kw">WHERE</span> sno = <span class="st">'20210001'</span>;  <span class="cm">-- ❌ 被 CHECK 拦下</span>
+<span class="kw">DELETE FROM</span> v_math_stu <span class="kw">WHERE</span> sno = <span class="st">'20210001'</span>;              <span class="cm">-- ✅ 删除基表对应行</span></pre>
+  <div class="note">📝 <b>简答模板（视图消解）：</b>对视图的查询并不能直接从视图取数据（视图不存数据），DBMS 需先把对视图的查询<b>与视图定义相结合、转换成等价的对基表的查询</b>再执行，这个转换过程称为<b>视图消解（View Resolution / 修改算法）</b>。</div>
+</div>
+
+<h2 class="section" id="s4">四、索引的概念与分类（识记 / 领会）</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 索引的概念与分类。</div>
+  <b>索引（Index）</b>是<b>对表中一列或多列值排序后建立的、用于加速存取的查找结构</b>（MySQL 主要用 <b>B+ 树</b>），相当于书的目录：按索引找到指针再回表取数据。索引<b>物理上独立于基表存储</b>，由 DBMS <b>自动维护</b>，对用户透明。
+  <div class="tscroll"><table class="law">
+    <tr><th>分类</th><th>关键字</th><th>特点</th></tr>
+    <tr><td class="nm">普通索引（常规索引）</td><td><code>INDEX / KEY</code></td><td>最基本的索引，<b>允许重复值和 NULL</b>，只为加速查询</td></tr>
+    <tr><td class="nm">唯一索引</td><td><code>UNIQUE</code></td><td>列值<b>必须唯一</b>，允许 NULL（可多个）</td></tr>
+    <tr><td class="nm">主键索引</td><td><code>PRIMARY KEY</code></td><td>唯一 + 非空，<b>一张表只能有一个</b>；InnoDB 中它就是<b>聚簇索引</b>（叶子结点存整行数据）</td></tr>
+    <tr><td class="nm">全文索引</td><td><code>FULLTEXT</code></td><td>针对 <code>CHAR/VARCHAR/TEXT</code> 的大文本检索，配合 <code>MATCH … AGAINST</code></td></tr>
+    <tr><td class="nm">空间索引</td><td><code>SPATIAL</code></td><td>用于地理空间数据类型</td></tr>
+    <tr><td class="nm">组合（多列）索引</td><td><code>INDEX(col1, col2)</code></td><td>遵循<b>最左前缀</b>原则：只用到 col2 时索引不生效</td></tr>
+  </table></div>
+  <div class="th"><b>使用索引的优点（领会）：</b>大大<b>加快查询速度</b>（尤其是选择、连接、排序、分组操作）；<b>保证数据唯一性</b>（唯一/主键索引）；加快表间连接；<b>帮助优化器避免排序</b>。<b>代价：</b>①索引<b>占物理存储空间</b>；②表增删改时 DBMS 要<b>额外维护索引</b>，<b>降低写效率</b>；③建立索引本身耗时。</div>
+</div>
+
+<h2 class="section" id="s5">五、建立索引的建议 ⭐ 简答</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 建立索引的建议。</div>
+  <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px">
+    <div class="rule" style="margin:0;background:#f0fdf4;border-color:#bbf7d0">
+      <b style="color:#15803d">✔ 适合建索引的列</b>
+      <ul style="margin:6px 0 0 1.2em;padding:0">
+        <li>作为<b>主键 / 外键</b>的列</li>
+        <li>常出现在 <code>WHERE</code>、<code>ON</code>、连接条件中的列</li>
+        <li>常用于 <code>ORDER BY</code>、<code>GROUP BY</code>、<code>DISTINCT</code> 的列</li>
+        <li><code>LIKE</code> 的<b>前缀</b>匹配列（<code>'abc%'</code>）</li>
+        <li>列的<b>取值范围大</b>（选择性高）、表大且<b>读多写少</b></li>
+      </ul>
+    </div>
+    <div class="rule" style="margin:0;background:#fef2f2;border-color:#fecaca">
+      <b style="color:#b91c1c">✘ 不宜建索引的列</b>
+      <ul style="margin:6px 0 0 1.2em;padding:0">
+        <li><b>很少查询</b>的列、很少出现在条件中的列</li>
+        <li>取值<b>极少</b>的列（如性别，只有两个值）</li>
+        <li><b>频繁更新</b>的列；<b>小表</b>（全表扫描更快）</li>
+        <li><code>TEXT / BLOB</code> 列、<b>长字符串</b>列（只能前缀索引）</li>
+        <li>视图中一般不单独建索引（<b>视图上不能建索引</b>）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<h2 class="section" id="s6">六、索引操作：三建、两删、一看 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 三种创建索引的方法；<span class="lvl b">领会</span> 两种删除索引的方法；<span class="lvl c">简单应用</span> <code>CREATE INDEX</code> / <code>ALTER TABLE</code> 建索引、<code>SHOW INDEX</code> 查看、<code>DROP INDEX</code> / <code>ALTER TABLE</code> 删除。</div>
+  <pre class="sql"><span class="cm">-- ========== 三种创建方法 ==========</span>
+<span class="cm">-- ① 用 CREATE INDEX 单独创建（最常用）</span>
+<span class="kw">CREATE INDEX</span> idx_sname <span class="kw">ON</span> student (sname);
+<span class="kw">CREATE UNIQUE INDEX</span> uk_email <span class="kw">ON</span> student (email);        <span class="cm">-- 唯一索引</span>
+<span class="kw">CREATE INDEX</span> idx_dept_age <span class="kw">ON</span> student (sdept <span class="kw">DESC</span>, sage); <span class="cm">-- 组合索引（可指定降序）</span>
+
+<span class="cm">-- ② 用 ALTER TABLE 创建</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD INDEX</span> idx_sname (sname);
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD UNIQUE</span> uk_email (email);
+<span class="kw">ALTER TABLE</span> student <span class="kw">ADD PRIMARY KEY</span> (sno);           <span class="cm">-- 加主键即建主键索引</span>
+
+<span class="cm">-- ③ 创建表的同时定义索引</span>
+<span class="kw">CREATE TABLE</span> sc (
+  sno <span class="kw">CHAR</span>(8), cno <span class="kw">CHAR</span>(3), grade <span class="kw">SMALLINT</span>,
+  <span class="kw">PRIMARY KEY</span>(sno, cno),           <span class="cm">-- 主键索引</span>
+  <span class="kw">UNIQUE</span> uk_g (cno, grade),         <span class="cm">-- 唯一索引</span>
+  <span class="kw">INDEX</span> idx_grade (grade)           <span class="cm">-- 普通索引</span>
+);
+
+<span class="cm">-- ========== 查看 ==========</span>
+<span class="kw">SHOW INDEX FROM</span> student;            <span class="cm">-- 列出该表所有索引（Seq_in_index、Cardinality 等）</span>
+
+<span class="cm">-- ========== 两种删除方法 ==========</span>
+<span class="kw">DROP INDEX</span> idx_sname <span class="kw">ON</span> student;                    <span class="cm">-- 方式一：DROP INDEX 名 ON 表名（MySQL 特有语法）</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">DROP INDEX</span> idx_sname;            <span class="cm">-- 方式二：ALTER TABLE ... DROP INDEX</span>
+<span class="kw">ALTER TABLE</span> student <span class="kw">DROP PRIMARY KEY</span>;                <span class="cm">-- 删主键索引（见第 7 章）</span></pre>
+  <div class="note">⚠️ 三个细节：①<b>索引名与列名是两回事</b>——<code>idx_sname (sname)</code> 中前者是索引名，可省略让系统用列名当索引名；②<code>DROP INDEX</code> 必须写 <code>ON 表名</code>，因为索引不属于独立对象；③主键索引<b>不能只删索引不删约束</b>，用 <code>ALTER TABLE ... DROP PRIMARY KEY</code>。另：<b>视图上不能创建索引</b>。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>视图三句话：</b>虚表不存数据、只存 SELECT 定义；<b>视图＝外模式</b>；查询要走"视图消解"转成对基表的查询。<br>
+  <b>视图四操作：</b><code>CREATE VIEW</code>（可给列名）→ <code>ALTER VIEW</code> → <code>SHOW CREATE VIEW / DESC</code> → <code>DROP VIEW</code>。<br>
+  <b>可更新视图条件：</b>来自<b>单表</b>、含主码与非空列、无聚合/分组/DISTINCT/UNION；要限制"插入的行必须还看得见"就加 <code>WITH CHECK OPTION</code>。<br>
+  <b>索引五类：</b>普通、唯一、主键（唯一+非空、每表仅 1 个、InnoDB 聚簇）、全文、空间；组合索引按<b>最左前缀</b>生效。<br>
+  <b>索引三建：</b><code>CREATE INDEX</code> / <code>ALTER TABLE ADD INDEX</code> / <code>CREATE TABLE</code> 内写 <code>INDEX(...)</code>；<b>两删：</b><code>DROP INDEX 名 ON 表</code> / <code>ALTER TABLE DROP INDEX 名</code>；<b>一看：</b><code>SHOW INDEX FROM 表</code>。<br>
+  <b>建索引的原则：</b>大表、常作条件/排序、选择性高的列建；小表、频繁更新、取值少的列不建——索引<b>提速查询、拖累更新、消耗空间</b>。
+</div>
+
+<footer>数据库原理与技术 13009 · 第 6 章 视图和索引 · 指定教材《数据库原理与应用（基于 MySQL）》赵明渊主编，清华大学出版社 2022 年版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

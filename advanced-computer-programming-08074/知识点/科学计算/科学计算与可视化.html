@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 9 章 科学计算与可视化｜numpy / pandas / matplotlib</title>
+<meta name="description" content="计算机高级程序设计 08074 第 9 章速记卡：numpy 的 ndarray 属性/创建函数/运算/访问，pandas 的 Series 与 DataFrame 创建访问与统计排序，matplotlib 折线图/柱形图/散点图绘制步骤。课程难点章，含三大库常用 API 表与示例代码。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#7c3aed,#0891b2)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 9 章 · 科学计算与可视化 ⭐ 难点章</h1>
+  <p>三大第三方库：<b>numpy</b>（数值数组）、<b>pandas</b>（表格数据）、<b>matplotlib</b>（画图）。考纲重"创建、访问、常用方法 + 图形绘制"，多为读代码写结果与概念题。建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">整章考</span><span class="pill">重点：DataFrame 创建访问</span><span class="pill">难点：可视化绘图</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../面向对象/面向对象编程.html">← 第 8 章</a>
+    <a href="../index.html">回到导航 ↑</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、numpy：ndarray 数组（简单应用）</a>
+  <a href="#s2">二、numpy：常用创建函数与运算（识记/简单应用）</a>
+  <a href="#s3">三、pandas：Series 一维序列（简单应用）</a>
+  <a href="#s4">四、pandas：DataFrame 二维表（领会）⭐重点</a>
+  <a href="#s5">五、matplotlib：绘图三步法（识记/领会）</a>
+  <a href="#s6">六、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、numpy：ndarray 数组</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> ndarray 基本属性。</div>
+  <b>numpy</b>（Numerical Python）核心对象是 <b>ndarray</b>（N 维数组）：同类型元素、比列表快、支持向量化运算。
+  <div class="tscroll"><table class="law">
+    <tr><th>属性</th><th>含义</th></tr>
+    <tr><td class="nm"><code>arr.ndim</code></td><td>维度数</td></tr>
+    <tr><td class="nm"><code>arr.shape</code></td><td>形状（各维大小，元组）</td></tr>
+    <tr><td class="nm"><code>arr.size</code></td><td>元素总个数</td></tr>
+    <tr><td class="nm"><code>arr.dtype</code></td><td>元素数据类型</td></tr>
+  </table></div>
+  <pre class="py"><span class="kw">import</span> numpy <span class="kw">as</span> np            <span class="cm"># 约定别名 np</span>
+a = np.array([[1,2,3],[4,5,6]])
+<span class="kw">print</span>(a.ndim, a.shape, a.size)  <span class="cm"># 2  (2, 3)  6</span></pre>
+</div>
+
+<h2 class="section" id="s2">二、numpy：创建函数与运算</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 常用数组创建函数、访问数组元素；<span class="lvl b">领会</span> 数组运算与方法。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>创建</th><th>作用</th></tr>
+    <tr><td class="nm"><code>np.array(列表)</code></td><td>由列表建数组</td></tr>
+    <tr><td class="nm"><code>np.arange(n)</code></td><td>0..n-1（类似 range）</td></tr>
+    <tr><td class="nm"><code>np.linspace(a,b,n)</code></td><td>a 到 b 均分 n 份</td></tr>
+    <tr><td class="nm"><code>np.zeros/zeros_like/ones/eye(n)</code></td><td>全 0 / 全 1 / 单位阵</td></tr>
+    <tr><td class="nm"><code>np.random.rand(...)</code></td><td>随机数数组</td></tr>
+  </table></div>
+  <b>运算与方法：</b>数组<b>逐元素</b>运算（<code>a*2、a+b、np.sqrt(a)</code>）；聚合方法 <code>sum() mean() max() min() std()</code>；访问用下标 <code>a[0,1]</code>、切片 <code>a[:,1]</code>（第 1 列）。
+  <pre class="py">b = np.arange(1, 6)          <span class="cm"># [1 2 3 4 5]</span>
+<span class="kw">print</span>(b * 2)                <span class="cm"># [2 4 6 8 10]（逐元素）</span>
+<span class="kw">print</span>(b.sum(), b.mean())     <span class="cm"># 15 3.0</span></pre>
+</div>
+
+<h2 class="section" id="s3">三、pandas：Series</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> Series 数据结构；<span class="lvl c">简单应用</span> 创建与访问。</div>
+  <b>Series</b> 是<b>一维带标签</b>数组（有索引 index + 值 values）。
+  <pre class="py"><span class="kw">import</span> pandas <span class="kw">as</span> pd
+s = pd.Series([90, 85, 78], index=[<span class="st">"语文"</span>,<span class="st">"数学"</span>,<span class="st">"英语"</span>])
+<span class="kw">print</span>(s[<span class="st">"数学"</span>])            <span class="cm"># 85（按标签访问）</span>
+<span class="kw">print</span>(s.values, s.index)     <span class="cm"># 值 / 索引</span></pre>
+</div>
+
+<h2 class="section" id="s4">四、pandas：DataFrame ⭐ 重点</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> DataFrame 统计、排序；<span class="lvl c">简单应用</span> 创建与访问。</div>
+  <b>DataFrame</b> 是<b>二维表格</b>（行索引 + 列名），是 pandas 核心，最常用从字典创建：
+  <pre class="py">df = pd.DataFrame({
+    <span class="st">"姓名"</span>: [<span class="st">"小明"</span>, <span class="st">"小红"</span>],
+    <span class="st">"成绩"</span>: [88, 95]
+})
+<span class="kw">print</span>(df[<span class="st">"成绩"</span>])          <span class="cm"># 取一列（Series）</span>
+<span class="kw">print</span>(df.loc[0])           <span class="cm"># 按标签取第 0 行</span>
+<span class="kw">print</span>(df.describe())       <span class="cm"># 统计摘要</span>
+df.sort_values(<span class="st">"成绩"</span>, ascending=<span class="st">False</span>)   <span class="cm"># 按列排序</span></pre>
+  <div class="tscroll"><table class="law">
+    <tr><th>操作</th><th>方法</th></tr>
+    <tr><td class="nm">查看</td><td><code>head() / shape / columns / index</code></td></tr>
+    <tr><td class="nm">取数据</td><td><code>df["列名"]</code> · <code>df.loc[行标]</code> · <code>df.iloc[行号]</code></td></tr>
+    <tr><td class="nm">统计</td><td><code>describe() / mean() / sum() / count()</code></td></tr>
+    <tr><td class="nm">排序</td><td><code>sort_values(列, ascending=)</code></td></tr>
+    <tr><td class="nm">读文件</td><td><code>read_csv() / to_csv()</code></td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s5">五、matplotlib：绘图</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 图像制作过程步骤；<span class="lvl b">领会</span> 折线图、柱形图、散点图绘制。</div>
+  <b>绘图三步（套路固定）：</b>① 准备 x、y 数据；② 调用绑图函数（<code>plot/bar/scatter</code>）；③ <code>show()</code> 显示。中间可加标题、轴标签、图例美化。
+  <pre class="py"><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+x = [1, 2, 3, 4]
+y = [2, 4, 1, 5]
+plt.plot(x, y)          <span class="cm"># 折线图（换 bar(x,y) 柱形、scatter(x,y) 散点）</span>
+plt.title(<span class="st">"示例"</span>)       <span class="cm"># 标题</span>
+plt.xlabel(<span class="st">"X"</span>); plt.ylabel(<span class="st">"Y"</span>)   <span class="cm"># 轴标签</span>
+plt.show()              <span class="cm"># 显示（一定要）</span></pre>
+  <div class="th">三种图对应函数：<b>折线图 <code>plot()</code></b>（趋势）、<b>柱形图 <code>bar()</code></b>（比较）、<b>散点图 <code>scatter()</code></b>（相关性）。</div>
+</div>
+
+<h2 class="section" id="s6">六、本章速记小结</h2>
+<div class="note">
+  <b>三库分工：</b>numpy 管数组（ndarray，逐元素运算）→ pandas 管表格（Series 一维 / DataFrame 二维）→ matplotlib 管画图。<br>
+  <b>约定别名：</b><code>import numpy as np</code>、<code>import pandas as pd</code>、<code>import matplotlib.pyplot as plt</code>——考试爱按这个写法出题，记牢。<br>
+  <b>高频访问：</b>DataFrame 取列 <code>df["列"]</code>、取行 <code>df.loc/iloc</code>；统计 <code>describe()</code>；排序 <code>sort_values()</code>。<br>
+  <b>画图三查：</b>数据→绑图函数→<code>show()</code> 别忘了；分清 plot/bar/scatter 对应折线/柱形/散点。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 9 章 科学计算与可视化 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

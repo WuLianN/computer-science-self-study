@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13009 · 第 9 章 关系数据库设计理论｜函数依赖 · 范式 1NF~4NF · Armstrong 公理</title>
+<meta name="description" content="数据库原理与技术 13009 第 9 章速记卡：关系数据库设计理论概述，函数依赖与完全依赖/部分依赖/传递依赖、多值依赖，码与五级范式 1NF/2NF/3NF/BCNF/4NF 的定义与判别，规范化的目的、原则、方法和过程，Armstrong 公理系统与属性集闭包的计算、由闭包确定候选码，含「分析主码＋写出函数依赖＋逐步分解到 3NF」综合大题例题。建议 8 学时。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧩</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.sql .cm{color:#94a3b8}
+  pre.sql .kw{color:#7dd3fc}
+  pre.sql .st{color:#86efac}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
+  .fd{background:#faf5ff;border-left:4px solid #7c3aed;border-radius:0 10px 10px 0;padding:10px 14px;margin:10px 0;font-size:14.5px}
+  .fd b{color:#6d28d9}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 9 章 · 关系数据库设计理论 ⭐⭐ 大题高发</h1>
+  <p>考纲明写的<b>全课程最难</b>：一个关系模式摆在你面前，要你<b>指出候选码 → 列出函数依赖 → 判断它属于第几范式 → 说明存在的问题 → 分解到 3NF</b>。本章只有一种正确解法：<b>先找码，再依赖，后套定义</b>。建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：规范化目的·原则·方法</span><span class="pill">难点：范式判定与分解</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../安全管理/用户与权限.html">← 第 8 章</a>
+    <a href="../数据库设计/E-R图与数据库设计.html">→ 第 10 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、理论概述：好的关系模式怎么判断（识记/领会）</a>
+  <a href="#s2">二、函数依赖：完全·部分·传递（领会）⭐⭐</a>
+  <a href="#s3">三、码与五级范式 1NF→4NF（识记/领会）⭐⭐</a>
+  <a href="#s4">四、规范化的目的、原则与方法（领会）⭐简答</a>
+  <a href="#s5">五、Armstrong 公理与属性集闭包（识记/简单应用）⭐</a>
+  <a href="#s6">六、综合例题：一步步分解到 3NF（综合应用）⭐⭐</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、理论概述：怎么算"好"的关系模式</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 关系数据库设计理论的概念、该理论包含的内容；<span class="lvl b">领会</span> 各内容之间的关系、如何判断一个关系模式的好坏。</div>
+  <b>关系数据库设计理论</b>（规范化理论）研究的核心问题是：<b>如何把一个"不好"的关系模式改造成"好"的关系模式</b>，即如何构造无冗余、无插入/删除/修改异常的关系模式集合。它包含三大块内容：
+  <div class="tscroll"><table class="law">
+    <tr><th>内容</th><th>解决什么问题</th><th>与其他内容的关系</th></tr>
+    <tr><td class="nm"><b>函数依赖</b>（含多值依赖）</td><td>描述属性之间固有的约束，是<b>衡量工具</b></td><td>是定义范式、公理系统的基础</td></tr>
+    <tr><td class="nm"><b>范式</b>（1NF~4NF）</td><td>给出关系模式<b>好坏的等级标准</b></td><td>用依赖来定义，是规范化的目标</td></tr>
+    <tr><td class="nm"><b>模式分解</b>（规范化方法）</td><td>把低一级模式<b>拆</b>成高一级模式的算法</td><td>分解要求无损连接、保持函数依赖</td></tr>
+  </table></div>
+  <div class="th"><b>判断一个关系模式好不好的四条标准（简答）：</b>①<b>数据结构简单、清晰</b>；②<b>数据冗余小</b>；③<b>不出现插入异常、删除异常、修改异常</b>；④<b>符合语义、易于理解</b>。</div>
+  <div class="note">⚠️ 反直觉但必考：范式<b>越高不一定越好</b>。规范化过头会导致关系过多、查询时要大量连接，<b>性能下降</b>。实际设计通常<b>做到 3NF 即可</b>，必要时故意"反规范化"（冗余存储）来提速。</div>
+</div>
+
+<h2 class="section" id="s2">二、函数依赖：完全、部分、传递 ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 数据依赖的类型和含义；<span class="lvl b">领会</span> 函数依赖、完全函数依赖、部分函数依赖、传递函数依赖的含义。</div>
+  <b>数据依赖</b>：一个关系内部<b>属性值之间</b>应满足的约束条件，反映属性间的相互依赖关系，主要包括<b>函数依赖（FD）</b>和<b>多值依赖（MVD）</b>两类（还有连接依赖等）。它是"不好好设计就会出问题"的根源。
+
+  <div class="fd"><b>函数依赖 FD：</b>设 R(U) 是属性集 U 上的关系模式，X、Y ⊆ U。对 R 的任一具体关系 r，若不可能存在两条元组在 X 上值相等而在 Y 上值不等，则称 <b>X 函数决定 Y</b>，记作 <span class="m">X → Y</span>。X 叫<b>决定因素</b>，Y 叫<b>依赖因素</b>。<br>
+  通俗记法：<b>知道了 X 的值，就唯一确定了 Y 的值</b>（如学号 → 姓名）。</div>
+
+  <div class="tscroll"><table class="law">
+    <tr><th>名称</th><th>定义（关键条件）</th><th>例子（码为 <span class="m">(Sno,Cno)</span>）</th></tr>
+    <tr><td class="nm"><b>完全函数依赖</b><br><span class="m">X →<sup>f</sup> Y</span></td><td><span class="m">X → Y</span>，且 X 的<b>任何一个真子集</b> X′ 都<b>不能</b>决定 Y（X 中一个属性都不能少）</td><td><span class="m">(Sno, Cno) →<sup>f</sup> Grade</span>：只有同时知道学号和课程号才能确定成绩</td></tr>
+    <tr><td class="nm"><b>部分函数依赖</b><br><span class="m">X →<sup>p</sup> Y</span></td><td><span class="m">X → Y</span>，但 Y 依赖于 X 的<b>某一部分</b>（存在真子集 X′ 使 X′→Y 成立）</td><td><span class="m">(Sno, Cno) →<sup>p</sup> Sname</span>：单靠 Sno 就能定姓名 → <b>2NF 要消灭它</b></td></tr>
+    <tr><td class="nm"><b>传递函数依赖</b><br><span class="m">X →<sup>t</sup> Y</span></td><td><span class="m">X → Y</span> 是通过 <span class="m">X → Z</span>、<span class="m">Z → Y</span> 传过去的，且 <span class="m">Z ↛ X</span>（Z 不能决定 X，即 Z 不是候选码）</td><td><span class="m">Sno → Dept</span>、<span class="m">Dept → Dloc</span> ⇒ <span class="m">Sno →<sup>t</sup> Dloc</span> → <b>3NF 要消灭它</b></td></tr>
+    <tr><td class="nm">平凡 / 非平凡函数依赖</td><td>若 <span class="m">Y ⊆ X</span> 则称 <span class="m">X → Y</span> 为<b>平凡的</b>（恒成立、无研究价值）；否则为<b>非平凡的</b>。讨论的都是<b>非平凡</b>依赖</td><td><span class="m">(Sno,Cno) → Sno</span> 是平凡的</td></tr>
+    <tr><td class="nm"><b>多值依赖</b> <span class="m">X →→ Y</span></td><td>对 X 的每个值，有一组<b>相互独立</b>的 Y 值与之对应，且这组值只由 X 决定、与剩余属性 Z 无关（Y 与 Z 彼此独立）</td><td>教师 Tno 教多门课 Cno、多用本教材 Bookno：Cno 与 Bookno 互不影响 ⇒ <span class="m">Tno →→ Cno</span></td></tr>
+  </table></div>
+  <div class="note">🔑 <b>函数依赖 vs 多值依赖</b>：FD 要求"唯一确定"（一对一/多对一的映射感觉），MVD 是"确定一组且这组与其余属性无关"（一对多、且两边独立）。MVD 是 FD 的推广：<span class="m">X → Y</span> 成立时必有 <span class="m">X →→ Y</span> 成立，反之不真。</div>
+  <div class="note">⚠️ 传递依赖的坑：若 <span class="m">X → Z</span> 且 <span class="m">Z → Y</span>，但 <span class="m">Z → X</span> 也成立（Z 与 X 互为候选码），则 <span class="m">X → Y</span> 是<b>直接</b>依赖而非传递依赖。定义里那句"<span class="m">Z ↛ X</span>"就是为排除这种情况。</div>
+</div>
+
+<h2 class="section" id="s3">三、码与五级范式 1NF → 4NF ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 码的含义、范式的含义；<span class="lvl b">领会</span> 1NF/2NF/3NF/BCNF/4NF 与多值依赖的含义。</div>
+  <b>码（Key）的四个概念先分清：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>术语</th><th>定义</th></tr>
+    <tr><td class="nm"><b>超码（超键）</b></td><td>能唯一标识元组的属性（组）。<span class="m">(Sno, Sname)</span> 也是超码</td></tr>
+    <tr><td class="nm"><b>候选码</b></td><td><b>最小</b>的超码——去掉任何一个属性就不再唯一。一个关系可有<b>多个</b>候选码</td></tr>
+    <tr><td class="nm"><b>主码（主键）</b></td><td>由设计者从候选码中<b>选定一个</b>用来标识元组的</td></tr>
+    <tr><td class="nm"><b>主属性 / 非主属性</b></td><td><b>包含在任一候选码中</b>的属性为主属性；其余为非主属性（注意：不是"在主码中"才算主属性）</td></tr>
+  </table></div>
+  <div class="th"><b>五级范式（层层加严，低范式是高范式的必要不充分条件）：</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>范式</th><th>定义（在原子上加什么条件）</th><th>消灭了什么</th><th>口诀</th></tr>
+    <tr><td class="nm"><b>1NF</b></td><td>关系 R 的每个分量都是<b>不可再分的数据项</b>（原子性）——所有关系模式默认都满足 1NF</td><td><b>非原子值</b>（重复组、多值列）</td><td><b>列不分</b></td></tr>
+    <tr><td class="nm"><b>2NF</b></td><td>R ∈ 1NF，且<b>每一个非主属性</b>都<b>完全函数依赖</b>于候选码</td><td>非主属性对码的<b>部分依赖</b></td><td><b>不留半截依赖</b></td></tr>
+    <tr><td class="nm"><b>3NF</b></td><td>R ∈ 2NF，且每一个非主属性都<b>不传递函数依赖</b>于候选码</td><td>非主属性对码的<b>传递依赖</b></td><td><b>非主属性不靠"中间人"</b></td></tr>
+    <tr><td class="nm"><b>BCNF</b></td><td>R ∈ 1NF，且<b>每一个</b>函数依赖 <span class="m">X → Y</span>（Y ↄ X）的<b>决定因素 X 必含有候选码</b>（X 是超码）</td><td><b>主属性对码的部分/传递依赖</b>、决定因素不含码的依赖</td><td><b>每个决定因素都是码</b></td></tr>
+    <tr><td class="nm"><b>4NF</b></td><td>R ∈ 1NF，若存在非平凡函数依赖 <span class="m">X → Y</span>，则 X 必含候选码；即允许<b>非平凡多值依赖</b>存在但决定因素必须含码</td><td>非主属性对码的<b>多值依赖</b></td><td><b>连多值依赖也不许</b></td></tr>
+  </table></div>
+  <div class="fig">
+    <svg viewBox="0 0 720 220" role="img" aria-label="范式之间的包含关系：4NF 最严，被 3NF、2NF、1NF 依次包含">
+      <rect x="20" y="18" width="680" height="188" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.8"/>
+      <text x="682" y="40" text-anchor="end" font-size="14" fill="#475569" font-weight="700">1NF（属性原子性）</text>
+      <rect x="60" y="50" width="600" height="140" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.8"/>
+      <text x="648" y="72" text-anchor="end" font-size="14" fill="#4338ca" font-weight="700">2NF（消除非主属性对码的部分依赖）</text>
+      <rect x="100" y="82" width="520" height="96" rx="12" fill="#dcfce7" stroke="#15803d" stroke-width="1.8"/>
+      <text x="608" y="104" text-anchor="end" font-size="14" fill="#15803d" font-weight="700">3NF（再消除传递依赖）</text>
+      <rect x="140" y="114" width="440" height="52" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="1.8"/>
+      <text x="568" y="134" text-anchor="end" font-size="14" fill="#b45309" font-weight="700">BCNF（每个决定因素都含码）</text>
+      <rect x="180" y="140" width="360" height="22" rx="10" fill="#fce7f3" stroke="#be185d" stroke-width="1.8"/>
+      <text x="360" y="156" text-anchor="middle" font-size="13.5" fill="#be185d" font-weight="700">4NF（消除非主属性对码的多值依赖）</text>
+      <text x="360" y="216" text-anchor="middle" font-size="13" fill="#6b7280">4NF ⊂ BCNF ⊂ 3NF ⊂ 2NF ⊂ 1NF　←　越往里要求越严、冗余越小</text>
+    </svg>
+    <div class="cap">高范式一定满足低范式；不满足高层时，只能退回低一层作答</div>
+  </div>
+  <div class="th"><b>三种异常（简答常与"规范化目的"一起问）：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li><b>插入异常</b>：应插入的信息因<b>缺少主码</b>而插不进去（如新系还没招学生，就录不进该系的地点）。</li>
+      <li><b>删除异常</b>：删除某信息时<b>连带删掉了不该删的</b>（最后一名学生退学，该系的信息随之消失）。</li>
+      <li><b>修改（更新）异常</b>：同一信息<b>多处冗余</b>，改一处漏一处导致数据不一致（改系地址要改所有学生记录）。</li>
+    </ol>
+  </div>
+</div>
+
+<h2 class="section" id="s4">四、规范化的目的、原则与方法 ⭐ 简答必背</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 规范化的目的、方法和过程；<span class="lvl d">综合应用</span> 用 1NF/2NF/3NF 的规范化方法解决应用问题。</div>
+  <div class="th"><b>目的：</b>解决关系模式中存在的<b>数据冗余</b>和<b>插入、删除、修改异常</b>——通过<b>分解</b>关系模式，使每个关系模式"一对主题、一件事"，达到所需的范式（通常 3NF）。</div>
+  <div class="th"><b>基本原则（"一事一地"）：</b><b>一个关系模式只描述一个实体或一种联系</b>，即每个非主属性都<b>直接、完全</b>依赖于候选码；一个基本表不要既谈学生又谈系部。分解时要尽量保证①<b>无损连接</b>（分解后自然连接能还原原关系，不丢信息）、②<b>保持函数依赖</b>（原依赖集在分解后的各模式上仍能全部推出，不必跨表检查）。</div>
+  <div class="th"><b>过程（逐步升范式，考试按这三步写）：</b>
+    <ol class="steps">
+      <li><b>先保证 1NF</b>：把重复组、多值列拆成独立的行/列（属性原子化）。</li>
+      <li><b>升到 2NF</b>：找出<b>候选码</b>，把<b>部分依赖</b> <span class="m">X′ → Y</span>（X′ ⊂ 码）<b>单独成表</b>——决定因素当主码，Y 跟着它走；原表只保留对码的完全依赖。</li>
+      <li><b>升到 3NF</b>：把<b>传递依赖</b> <span class="m">Z → Y</span>（Z 非码）<b>单独成表</b>——Z 作主码，Y 放它那张表；原表保留 Z 作外码即可。</li>
+      <li>（若还要升 <b>BCNF</b>）对每一个决定因素<b>不含码</b>的依赖 <span class="m">X → Y</span>，都以 X 为主码拆出新表，并在原表保留 X。</li>
+    </ol>
+  </div>
+  <div class="note">🔑 <b>拆表的机械口诀</b>：看到 <span class="m">A → B</span> 且 <b>A 不是候选码</b> → 就拆成"AB 一张表（A 作主码）"＋"原表去掉 B"。反复做，直到每个决定因素都是码 ⇒ BCNF；只做非主属性的部分/传递依赖 ⇒ 3NF 就够。</div>
+</div>
+
+<h2 class="section" id="s5">五、Armstrong 公理与属性集闭包 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> Armstrong 公理系统的含义；<span class="lvl b">领会</span> 闭包及其计算；<span class="lvl c">简单应用</span> 确定候选码。</div>
+  <b>Armstrong 公理系统</b>：给定函数依赖集 F，用来<b>推出 F 所逻辑蕴含的全部依赖</b>（F 的闭包 F⁺）的一组推理规则，它既是<b>正确的</b>（推出的都成立）又是<b>完备的</b>（凡成立的都能推出）。<b>三条公理：</b>
+  <div class="tscroll"><table class="law">
+    <tr><th>公理</th><th>形式</th><th>直觉</th></tr>
+    <tr><td class="nm"><b>自反律</b></td><td>若 <span class="m">Y ⊆ X ⊆ U</span>，则 <span class="m">X → Y</span> 成立</td><td>大的决定它包含的（平凡依赖）</td></tr>
+    <tr><td class="nm"><b>增广律</b></td><td>若 <span class="m">X → Y</span>，且 <span class="m">Z ⊆ U</span>，则 <span class="m">XZ → YZ</span> 成立</td><td>两边同时加属性，依赖不变</td></tr>
+    <tr><td class="nm"><b>传递律</b></td><td>若 <span class="m">X → Y</span>、<span class="m">Y → Z</span>，则 <span class="m">X → Z</span></td><td>依赖可以接力</td></tr>
+  </table></div>
+  <b>三条推论（由公理导出，选择题会考"哪条不是公理"）：</b><b>合并规则</b>（X→Y、X→Z ⇒ X→YZ）；<b>分解规则</b>（X→YZ、Z⊆Y ⇒ X→Z）；<b>伪传递规则</b>（X→Y、WY→Z ⇒ XW→Z）。
+
+  <div class="fd"><b>属性集闭包 <span class="m">X<sup>+</sup></span>：</b>在 F 存在下，由 X <b>能函数决定</b>的全部属性的集合。判定利器：<br>
+  ① <span class="m">X → Y</span> 成立 ⇔ <span class="m">Y ⊆ X<sup>+</sup></span>；　② <b>X 是超码 ⇔ <span class="m">X<sup>+</sup> = U</span></b>；　③ X 是<b>候选码</b> ⇔ <span class="m">X<sup>+</sup> = U</span> 且 X 的任何真子集闭包都 ≠ U。</div>
+  <div class="th"><b>闭包计算算法：</b>令 X⁽⁰⁾ = X；反复把 F 中<b>左部已包含于当前集合</b>的那些依赖的右部并进来，直到集合不再增大。</div>
+  <pre class="sql"><span class="cm">例1  R(A,B,C,D)，F = { A→B, B→C, A→D }，求 A⁺ 并判断候选码</span>
+   X⁽⁰⁾ = {A}
+   A→B 左部 A ⊆ {A} ⇒ X⁽¹⁾ = {A,B}
+   B→C 左部 B ⊆ {A,B} ⇒ X⁽²⁾ = {A,B,C}
+   A→D 左部 A ⊆ {A,B,C} ⇒ X⁽³⁾ = {A,B,C,D} = U，且不再增大
+   ∴ A⁺ = U ⇒ A 是超码；A 是单属性、无真子集 ⇒ <span class="kw">A 是唯一的候选码</span>
+
+<span class="cm">例2  R(Sno,Cno,Grade,Credit)，F = { (Sno,Cno)→Grade, Cno→Credit }，求候选码</span>
+   分类：只在左边出现 = {Sno}；只在右边出现 = {Grade, Credit}；两边都出现 = {Cno}
+   ⇒ 候选码<b>必含</b> Sno，<b>必不含</b> Grade/Credit，再按需补 Cno
+   (Sno)⁺ = {Sno} ≠ U（推不出任何东西）
+   (Sno,Cno)⁺ = {Sno,Cno} →Grade →Credit = U  ⇒ <span class="kw">唯一候选码 (Sno, Cno)</span></pre>
+  <div class="th"><b>求候选码三步快捷法（先分类再验闭包，比全排列快得多）：</b>
+    <ol class="steps">
+      <li>把属性按在 F 中<b>出现位置</b>分四类：<b>L</b>（只在左）、<b>R</b>（只在右）、<b>LR</b>（左右都出现）、<b>N</b>（两边都不出现）。</li>
+      <li><b>L 类和 N 类属性必属于任何候选码</b>；<b>R 类属性必不属于任何候选码</b>。</li>
+      <li>求 <span class="m">(L∪N)<sup>+</sup></span>：若 = U，它就是唯一候选码；若 ≠ U，再依次加入 LR 类属性（一个、两个……）求闭包，凡是闭包 = U 且<b>已最小</b>的都是候选码。</li>
+    </ol>
+  </div>
+  <div class="note">📝 若题目只让"分析关系模式的主码"，写答案时补一句依据：<i>因为 X 能决定全部属性且去掉任一属性后不能再决定全部属性，所以 X 是候选码，取为主码</i>——踩点给分。</div>
+</div>
+
+<h2 class="section" id="s6">六、综合例题：一步步分解到 3NF ⭐⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 综合运用依赖、范式、分解方法解决设计问题（大题模板）。</div>
+  <b>题目：</b>关系模式 <span class="m">SCK(Sno, Sname, Dept, Dloc, Cno, Cname, Grade)</span>，语义：每个学生属于一个系、每个系只有一个坐落地，每门课有唯一课名，一个学生选一门课有一个成绩。已知函数依赖集
+  <div class="fd"><span class="m">F = { Sno → Sname, Sno → Dept, Dept → Dloc, Cno → Cname, (Sno, Cno) → Grade }</span></div>
+  请：① 求候选码；② 写出存在部分依赖与传递依赖的属性；③ 判断它最高属于第几范式并说明理由；④ 分解到 3NF。
+  <ol class="steps">
+    <li><b>求候选码。</b>按出现位置分类：<b>L 类（只在左）= {Sno}</b>；<b>R 类（只在右）= {Sname, Dloc, Cname, Grade}</b>；<b>LR 类（左右都有）= {Dept, Cno}</b>。⇒ 候选码<b>必含 Sno</b>、必不含 R 类四个属性。
+      单靠 Sno 推不出 Cname、Grade，故需补 LR 类；求 <span class="m">(Sno,Cno)<sup>+</sup></span>：由 F 依次得 Sname、Dept、Dloc、Cname、Grade ⇒ 闭包 = 全属性 U，且去掉 Sno 或 Cno 都不能决定 Grade，
+      ∴ <b>候选码 = (Sno, Cno)，取为主码</b>。主属性 {Sno, Cno}，非主属性 {Sname, Dept, Dloc, Cname, Grade}。</li>
+    <li><b>列出违反 2NF 的部分依赖。</b><span class="m">Sno → Sname</span>、<span class="m">Sno → Dept</span>（决定因素只是码的一部分）；<span class="m">Cno → Cname</span> 同理。⇒ <b>Sname、Dept、Cname 部分依赖于码</b>。</li>
+    <li><b>列出违反 3NF 的传递依赖。</b><span class="m">Sno → Dept</span>、<span class="m">Dept → Dloc</span> 且 <span class="m">Dept ↛ Sno</span> ⇒ <b>Dloc 传递依赖于码</b>。</li>
+    <li><b>判定范式。</b>属性全为原子值 ⇒ 满足 <b>1NF</b>；但存在非主属性对码的部分依赖 ⇒ <b>不满足 2NF</b>。故 <b>SCK 最高属于 1NF</b>。</li>
+    <li><b>存在的问题（按异常答）。</b>数据<b>冗余大</b>（姓名随选课次数重复、系址随每个学生重复）；<b>插入异常</b>（新专业/新系尚无选课记录时，Dept、Dloc 因主码 Sno·Cno 为空而插不进去）；<b>删除异常</b>（删掉某生全部选课记录会连带删掉他的学籍信息）；<b>修改异常</b>（系址搬迁需改所有相关行，易不一致）。</li>
+    <li><b>分解。</b>把部分依赖、传递依赖的"决定因素＋其依赖属性"各自独立成表，原表只留对码的完全依赖：
+      <pre class="sql"><span class="cm">-- 消除部分依赖（→2NF）后，再消除传递依赖（→3NF），最终得到四个关系：</span>
+学生 (<span class="kw">Sno</span>, Sname, Dept)              <span class="cm">-- 码 Sno；Dept 为外码，Sno→Dept 是完全依赖</span>
+院系 (<span class="kw">Dept</span>, Dloc)                     <span class="cm">-- 码 Dept；把 Sno→Dept→Dloc 的传递链切断</span>
+课程 (<span class="kw">Cno</span>, Cname)                     <span class="cm">-- 码 Cno</span>
+选课 (<span class="kw">Sno, Cno</span>, Grade)                <span class="cm">-- 码 (Sno,Cno)；只留完全依赖 Grade</span>
+<span class="cm">-- 检查：每个决定因素都是所在表的码，非主属性既不部分也不传递依赖码</span>
+<span class="cm">--       ⇒ 已达 3NF（此例同时满足 BCNF）</span>
+<span class="cm">-- 分解无损：连接键 Sno / Dept / Cno 均为相关表的主码</span>
+<span class="cm">--       ⇒ 自然连接可还原原关系，且保持了全部函数依赖</span></pre></li>
+  </ol>
+  <div class="note">🔑 <b>另一个高频小问："判断下列模式各属于第几范式"</b>——答题格式固定为"<b>① 候选码是 X；② 所有非主属性完全/传递依赖情况；③ 所以属/不属 几 NF</b>"。特别注意 <b>BCNF 与 3NF 的分界</b>：只要出现<b>决定因素不含候选码</b>的依赖（典型如 <span class="m">(Sno,Cno)→Teacher</span> 与 <span class="m">Teacher→Cno</span> 并存），就只到 3NF 不到 BCNF。</div>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="rule">
+  <div class="th"><b>五条一句话：</b>
+    <ol style="margin:4px 0 0 1.4em;padding:0">
+      <li><b>依赖是尺子</b>：完全/部分/传递 FD 看<b>非主属性与码</b>的关系，MVD 看<b>独立的一组值</b>。</li>
+      <li><b>范式是等级</b>：1NF 列不分 → 2NF 去部分 → 3NF 去传递 → BCNF 决定因素必含码 → 4NF 去多值依赖。</li>
+      <li><b>规范化＝分解</b>：见 <span class="m">A→B</span> 且 A 不是码，就把 A＋B 拆一张表，A 作主码。</li>
+      <li><b>求码靠闭包</b>：L/N 类必入选，R 类必出局，剩下补 LR 类逐个验 <span class="m">X<sup>+</sup> = U</span>。</li>
+      <li><b>Armstrong 三公理</b>：自反、增广、传递（合并/分解/伪传递是<b>推论</b>，不是公理）。</li>
+    </ol>
+  </div>
+  <div class="note">📌 考核层次提醒：本章<span class="lvl c">简单应用</span>（分析主码、写出函数依赖、确定候选码）＋<span class="lvl d">综合应用</span>（用 1NF/2NF/3NF 方法解决应用问题）合计占分高，务必<b>手写完整推导过程</b>，只写结论通常只得一半分。</div>
+</div>
+
+<div class="gotos" style="margin-top:22px">
+  <a href="../概论/数据库概论.html">第 1 章</a>
+  <a href="../关系模型/关系数据库系统模型.html">第 2 章</a>
+  <a href="../MySQL数据库和表/建库与建表.html">第 3 章</a>
+  <a href="../表数据操作/增删改数据.html">第 4 章</a>
+  <a href="../数据查询/SELECT查询.html">第 5 章</a>
+  <a href="../视图索引/视图和索引.html">第 6 章</a>
+  <a href="../数据完整性/完整性约束.html">第 7 章</a>
+  <a href="../安全管理/用户与权限.html">第 8 章</a>
+  <a href="../数据库设计/E-R图与数据库设计.html">第 10 章 →</a>
+</div>
+
+<footer>
+  <p>13009《数据库原理与技术》· 第 9 章 关系数据库设计理论 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
+  <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

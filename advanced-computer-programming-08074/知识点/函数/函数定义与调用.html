@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 5 章 函数｜定义调用 / 参数传递 / 作用域 / lambda</title>
+<meta name="description" content="计算机高级程序设计 08074 第 5 章速记卡：函数定义与调用、return 返回值、形参与实参、参数传递（默认/可变长/解包）、全局与局部变量作用域、递归调用、lambda 表达式。标注 5.1.4、5.3.3 不考。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0d9488,#0284c7)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 5 章 · 函数</h1>
+  <p>函数是"模块化程序设计"的核心，也是综合设计题里"以函数方式实现"的硬性要求。重点记：定义/调用/返回、形参实参与传参方式、全局局部作用域、递归、lambda。<b>（5.1.4、5.3.3 两小节不考）</b></p>
+  <span class="pill">建议 6 学时</span><span class="pill">✂️ 5.1.4、5.3.3 不考</span><span class="pill">重点：定义调用、参数传递</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../组合数据类型/列表元组集合字典.html">← 第 4 章</a>
+    <a href="../字符串/字符串处理.html">→ 第 6 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、函数的定义与调用（领会）⭐</a>
+  <a href="#s2">二、返回值 return（简单应用）</a>
+  <a href="#s3">三、参数传递（识记/领会）⭐</a>
+  <a href="#s4">四、变量作用域：全局 / 局部（领会）</a>
+  <a href="#s5">五、递归调用（简单应用）</a>
+  <a href="#s6">六、lambda 表达式（领会）</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、函数的定义与调用 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 函数概念与作用；<span class="lvl b">领会</span> 定义方法、调用及返回。</div>
+  <b>作用：</b>把重复的代码封装起来，<b>提高复用、便于模块化</b>。用 <code>def</code> 定义，函数体靠缩进；定义≠执行，必须<b>调用</b>才运行。
+  <pre class="py"><span class="kw">def</span> greet(name):          <span class="cm"># name 是形参</span>
+    <span class="kw">return</span> <span class="st">f"你好，</span>{name}<span class="st">"</span>
+
+msg = greet(<span class="st">"小明"</span>)        <span class="cm"># "小明" 是实参，调用</span>
+<span class="kw">print</span>(msg)</pre>
+  <ul>
+    <li>函数<b>必须先定义后调用</b>（调用点在 def 之后）。</li>
+    <li>没有 return 时，函数默认返回 <code>None</code>。</li>
+  </ul>
+</div>
+
+<h2 class="section" id="s2">二、返回值 return</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 用返回值传递结果。</div>
+  <code>return</code> 一次可返回<b>多个值</b>（其实返回的是元组），接收时可解包：
+  <pre class="py"><span class="kw">def</span> min_max(a, b):
+    <span class="kw">return</span> <span class="st">min</span>(a, b), <span class="st">max</span>(a, b)   <span class="cm"># 返回元组 (小, 大)</span>
+
+lo, hi = min_max(3, 8)          <span class="cm"># 解包 → lo=3, hi=8</span></pre>
+</div>
+
+<h2 class="section" id="s3">三、参数传递 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 形参、实参概念；<span class="lvl b">领会</span> 参数传递方法、可变长形参；<span class="lvl c">简单应用</span> 实参解包。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>参数类型</th><th>写法</th><th>说明</th></tr>
+    <tr><td class="nm">位置参数</td><td><code>f(a,b)</code></td><td>按顺序一一对应</td></tr>
+    <tr><td class="nm">关键字参数</td><td><code>f(name="小明")</code></td><td>按名传，顺序无关</td></tr>
+    <tr><td class="nm">默认参数</td><td><code>def f(a, b=10)</code></td><td>调用可省略 b；<b>默认参数要写在非默认参数后面</b></td></tr>
+    <tr><td class="nm">可变长 *args</td><td><code>def f(*args)</code></td><td>收多个位置实参 → 元组</td></tr>
+    <tr><td class="nm">可变长 **kwargs</td><td><code>def f(**kwargs)</code></td><td>收多个关键字实参 → 字典</td></tr>
+    <tr><td class="nm">实参解包</td><td><code>f(*[1,2])</code> / <code>f(**{"a":1})</code></td><td>把列表/字典拆开传给形参</td></tr>
+  </table></div>
+  <div class="note">⚠️ <b>可变与不可变的传参差异（高频）：</b>传<b>不可变对象</b>（数字/字符串/元组）相当于值传递，函数内改不影响外部；传<b>可变对象</b>（列表/字典）时，函数内 <code>append</code> 等内容修改<b>会影响外部</b>（传的是引用）。</div>
+</div>
+
+<h2 class="section" id="s4">四、变量作用域：全局 / 局部</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 作用域类型；<span class="lvl b">领会</span> 全局变量与局部变量的作用域和使用。</div>
+  <ul>
+    <li><b>局部变量</b>：函数内定义，只在函数内有效，函数结束就销毁。</li>
+    <li><b>全局变量</b>：函数外定义，整个程序有效。</li>
+    <li>函数内<b>要修改</b>全局变量，必须先用 <code>global</code> 声明，否则会被当局部变量。</li>
+    <li>同名时<b>局部优先</b>（遮蔽全局）。</li>
+  </ul>
+  <pre class="py">x = 10                 <span class="cm"># 全局</span>
+<span class="kw">def</span> f():
+    x = 5             <span class="cm"># 局部，与全局 x 无关</span>
+<span class="kw">def</span> g():
+    <span class="kw">global</span> x
+    x = 99            <span class="cm"># 真正改全局 x</span></pre>
+</div>
+
+<h2 class="section" id="s5">五、递归调用</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl c">简单应用</span> 递归函数解决实际问题。</div>
+  <b>递归</b>＝函数自己调用自己。必须有两要素：<b>① 递归终止条件</b>（否则无限递归报错）、<b>② 递归推进</b>（问题规模缩小）。
+  <pre class="py"><span class="kw">def</span> fact(n):
+    <span class="kw">if</span> n == 1:              <span class="cm"># 终止条件</span>
+        <span class="kw">return</span> 1
+    <span class="kw">return</span> n * fact(n - 1)   <span class="cm"># 递归推进</span>
+
+<span class="kw">print</span>(fact(5))              <span class="cm"># 120</span></pre>
+  经典递归题：阶乘、Fibonacci、汉诺塔、求和。
+</div>
+
+<h2 class="section" id="s6">六、lambda 表达式</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> lambda 表达式函数的定义和调用。</div>
+  <b>匿名函数</b>：一行小函数，<code>lambda 参数: 返回值表达式</code>（只能一个表达式，自动返回其值）。常作排序 key：
+  <pre class="py">f = <span class="kw">lambda</span> x, y: x + y
+<span class="kw">print</span>(f(2, 3))              <span class="cm"># 5</span>
+
+pts = [(1, 5), (3, 2), (2, 9)]
+pts.sort(key=<span class="kw">lambda</span> p: p[1])  <span class="cm"># 按第二个元素排序</span></pre>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>必答模板：</b>综合设计题若要求"以函数方式实现"，就 <code>def 函数名(参数): ... return 结果</code>，再在主程序调用——别只写裸代码。<br>
+  <b>易错点：</b>① 默认参数放最后；② 改全局要 <code>global</code>；③ 递归必须有终止条件；④ 传可变对象（列表/字典）函数内修改会影响外部；⑤ lambda 只能一个表达式、无需 return。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 5 章 函数 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

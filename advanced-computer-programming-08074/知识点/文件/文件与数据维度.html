@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 第 7 章 文件与数据维度｜打开读写关闭 / CSV / JSON</title>
+<meta name="description" content="计算机高级程序设计 08074 第 7 章速记卡：文件类型、基本处理流程（打开-读写-关闭）、open 打开模式 r/w/a、read/readline/readlines/write 读写、with 语句、文件定位 seek/tell、一维二维高维数据概念、CSV 与 JSON 格式。标注 7.3 不考。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📁</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0369a1,#0d9488)}
+  .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
+  .lvl.a{background:#e0f2fe;color:#0369a1}
+  .lvl.b{background:#dcfce7;color:#15803d}
+  .lvl.c{background:#fef3c7;color:#b45309}
+  .lvl.d{background:#fce7f3;color:#be185d}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>第 7 章 · 文件与数据维度</h1>
+  <p>综合设计题的高频舞台（"按行读取文件、统计……"）。核心：open 打开模式、三种读法、写文件、with 自动关闭，以及 CSV/JSON 两种数据格式。<b>（7.3 节不考）</b>建议 8 学时。</p>
+  <span class="pill">建议 8 学时</span><span class="pill">✂️ 7.3 不考</span><span class="pill">综合应用：文件读写</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+    <a href="../字符串/字符串处理.html">← 第 6 章</a>
+    <a href="../面向对象/面向对象编程.html">→ 第 8 章</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本章目录</div>
+  <a href="#s1">一、文件概念与处理流程（识记）</a>
+  <a href="#s2">二、打开模式 r / w / a（领会）⭐</a>
+  <a href="#s3">三、读文件三种方式（综合应用）⭐</a>
+  <a href="#s4">四、写文件与 with 语句（综合应用）</a>
+  <a href="#s5">五、数据维度：一维 / 二维 / 高维（识记）</a>
+  <a href="#s6">六、CSV 与 JSON 格式（领会）</a>
+  <a href="#s7">七、本章速记小结</a>
+</div>
+
+<h2 class="section" id="s1">一、文件概念与处理流程</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 文件类型、基本处理流程。</div>
+  <b>三步流程：</b><code>打开（open） → 读写（read/write） → 关闭（close）</code>。<br>
+  <b>文件分类：</b>按数据形式分 <b>文本文件</b>（字符，如 .txt/.csv，读写用字符串）和 <b>二进制文件</b>（字节，如图片、.dat，模式带 b）。文本文件是本章重点。
+</div>
+
+<h2 class="section" id="s2">二、打开模式 r / w / a ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> 文件打开模式。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>模式</th><th>含义</th><th>文件不存在时</th></tr>
+    <tr><td class="nm"><code>r</code></td><td>只读（默认）</td><td>报错 FileNotFoundError</td></tr>
+    <tr><td class="nm"><code>w</code></td><td>只写，<b>会清空原内容</b></td><td>新建</td></tr>
+    <tr><td class="nm"><code>a</code></td><td>追加写（保留原内容）</td><td>新建</td></tr>
+    <tr><td class="nm"><code>r+ / w+ / a+</code></td><td>读写</td><td>视模式而定</td></tr>
+    <tr><td class="nm">加 <code>b</code></td><td><code>rb / wb</code> 二进制</td><td>—</td></tr>
+  </table></div>
+  <div class="note">⚠️ <code>w</code> 一打开就把原文件清空——想保留旧内容、在后面加，用 <code>a</code>。</div>
+</div>
+
+<h2 class="section" id="s3">三、读文件三种方式 ⭐</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 文件打开、关闭、读写方法。</div>
+  <pre class="py">f = <span class="st">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>, encoding=<span class="st">"utf-8"</span>)
+content = f.read()          <span class="cm"># ① 一次读全部 → 一个字符串</span>
+<span class="cm"># line = f.readline()     # ② 读一行 → 字符串（带末尾换行）</span>
+<span class="cm"># lines = f.readlines()   # ③ 读全部行 → 列表，每行是元素</span>
+f.close()
+
+<span class="cm"># 最推荐：with 自动关闭 + for 逐行遍历</span>
+<span class="kw">with</span> <span class="st">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> line <span class="kw">in</span> f:
+        <span class="kw">print</span>(line.strip())   <span class="cm"># strip 去掉行末换行</span></pre>
+  <div class="th">区分：<code>read()</code>→整串；<code>readline()</code>→一行；<code>readlines()</code>→行的列表。</div>
+</div>
+
+<h2 class="section" id="s4">四、写文件与 with 语句</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl d">综合应用</span> 写入。</div>
+  <pre class="py"><span class="kw">with</span> <span class="st">open</span>(<span class="st">"out.txt"</span>, <span class="st">"w"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"第一行\n"</span>)       <span class="cm"># write 不会自动换行，需自己加 \n</span>
+    f.writelines([<span class="st">"a\n"</span>, <span class="st">"b\n"</span>])</pre>
+  <b>with</b> 的好处：代码块结束<b>自动 close</b>，即使中途异常也保证关闭，推荐替代手写 close。<br>
+  <b>文件定位</b>：<code>tell()</code> 当前指针位置、<code>seek(n)</code> 移到第 n 字节、<code>flush()</code> 刷新缓冲。
+</div>
+
+<h2 class="section" id="s5">五、数据维度：一维 / 二维 / 高维</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl a">识记</span> 一维、二维、高维数据概念。</div>
+  <div class="tscroll"><table class="law">
+    <tr><th>维度</th><th>结构</th><th>Python 表示</th><th>例子</th></tr>
+    <tr><td class="nm">一维</td><td>一条数据序列</td><td>列表 <code>[1,2,3]</code></td><td>一周气温</td></tr>
+    <tr><td class="nm">二维</td><td>行列表格</td><td>列表的列表 <code>[[..],[..]]</code></td><td>成绩表、CSV</td></tr>
+    <tr><td class="nm">高维</td><td>多维 / 嵌套结构</td><td>多维列表 / 字典嵌套</td><td>多维数据、JSON</td></tr>
+  </table></div>
+</div>
+
+<h2 class="section" id="s6">六、CSV 与 JSON 格式</h2>
+<div class="rule">
+  <div class="kd"><span class="lvl b">领会</span> CSV 文件格式、JSON 格式。</div>
+  <ul>
+    <li><b>CSV</b>（逗号分隔值）：纯文本表格，每行一条记录、字段用逗号分隔，是<b>二维数据</b>典型载体。用 <code>csv</code> 模块或直接 split(",") 处理。</li>
+    <li><b>JSON</b>（键值/层次结构文本）：用 <code>{}</code> 对象、<code>[]</code> 数组表达<b>高维/层级数据</b>；Python 用 <code>json</code> 模块转换：<code>json.dumps(dict)</code> 转字符串、<code>json.loads(s)</code> 转回对象、<code>dump/load</code> 对文件操作。</li>
+  </ul>
+  <pre class="py"><span class="kw">import</span> json
+d = {<span class="st">"name"</span>: <span class="st">"小明"</span>, <span class="st">"age"</span>: 20}
+s = json.dumps(d, ensure_ascii=<span class="st">False</span>)   <span class="cm"># dict → JSON 字符串</span>
+back = json.loads(s)                     <span class="cm"># JSON 字符串 → dict</span></pre>
+</div>
+
+<h2 class="section" id="s7">七、本章速记小结</h2>
+<div class="note">
+  <b>流程三句：</b>open(文件名,模式,encoding) → read*/write → close（用 with 免写 close）。<br>
+  <b>模式口诀：</b>r 读(不存在报错)、w 写(清空!)、a 追加(不清空)。<br>
+  <b>读法区分：</b>read 整串 / readline 一行 / readlines 行列表。<b>write 不自动换行，自己加 \n。</b><br>
+  <b>设计题套路：</b>"按行读取 + 处理 + 函数实现" → <code>with open(...) as f: for line in f: 调用函数统计</code>。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 7 章 文件与数据维度 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a>
+</body>
+</html>

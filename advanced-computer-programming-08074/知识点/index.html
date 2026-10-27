@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>计算机高级程序设计 08074 · 知识点导航</title>
+<meta name="description" content="计算机高级程序设计 08074（Python）知识点导航：按考纲 9 章拆成 9 页速记卡，每页按考纲能力层次（识记/领会/简单应用/综合应用）组织，含代码示例与易错点。指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261027c">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#4f46e5)}
+  .section-sub{color:var(--muted);font-size:13.5px;margin:0 0 12px 18px}
+  .pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin:0 0 6px}
+  .pcard{display:block;text-decoration:none;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:#fff;transition:.15s;min-height:118px}
+  .pcard:hover{border-color:var(--brand);background:#f5faff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(37,99,235,.10)}
+  .pcard .t{font-weight:700;color:var(--brand);margin-bottom:4px;font-size:15px}
+  .pcard .t .ico{margin-right:6px}
+  .pcard .d{font-size:13px;color:var(--muted);line-height:1.65}
+  .pcard .badge{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;margin-right:6px;margin-top:6px}
+  .pcard .badge.warn{background:var(--warn-soft);color:var(--warn)}
+  .pcard .badge.hot{background:#fce7f3;color:#be185d}
+  .jump{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0 20px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .jump .lbl{font-size:12.5px;color:var(--muted);margin-right:4px}
+  .jump a{font-size:13px;padding:6px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand);text-decoration:none;font-weight:600;transition:.15s}
+  .jump a:hover{background:var(--brand);color:#fff}
+  footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:13px}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>计算机高级程序设计 08074 · 知识点导航</h1>
+  <p>按考纲 <b>9 章</b>拆成 <b>9 页速记卡</b>，每页按<b>考核知识点 + 能力层次（识记/领会/简单应用/综合应用）</b>组织，配 Python 代码示例与易错点。<b>指定教材是《Python语言程序设计基础教程》（傅清平等，清华大学出版社 2022 第 1 版），不是 C 语言（那是 13013）。</b></p>
+  <span class="pill">9 章速记卡</span><span class="pill">考纲驱动</span><span class="pill">✂️ 正则/5.1.4/5.3.3/7.3 不考</span>
+  <div class="gotos">
+    <a href="../../index.html">🏠 首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+  </div>
+</header>
+
+<div class="note">
+  ⏰ <b>本知识点为「考纲驱动 + 公开资料补充」版：</b>08074 是新开课，2026.1 首考、<b>暂无可靠成套真题</b>，故页面标注的是<b>考纲能力层次</b>而非真题题号；内容深度以覆盖考纲考核知识点为目标，拔高仍需翻教材原文。考纲会修订，报考前请以广东省教育考试院当期发布为准。
+</div>
+
+<nav class="jump">
+  <span class="lbl">📍 章节快速跳转：</span>
+  <a href="#g1">1 概述</a>
+  <a href="#g2">2 数据类型</a>
+  <a href="#g3">3 控制结构</a>
+  <a href="#g4">4 组合类型</a>
+  <a href="#g5">5 函数</a>
+  <a href="#g6">6 字符串</a>
+  <a href="#g7">7 文件</a>
+  <a href="#g8">8 面向对象</a>
+  <a href="#g9">9 科学计算</a>
+</nav>
+
+<h2 class="section" id="g1">基础语法（第 1–2 章）</h2>
+<p class="section-sub">地基章，概念题多、送分多。先扫清"标识符/缩进/运算符/内置函数"这些死知识，后面才不卡。</p>
+<div class="pgrid">
+  <a class="pcard" href="概述/Python概述.html">
+    <div class="t"><span class="ico">🐍</span>第 1 章 · Python 概述</div>
+    <div class="d">机器/汇编/高级语言、解释型与两种运行方式、标识符与关键字、<b>强制缩进</b>、模块与 pip、math / random 常用成员</div>
+    <span class="badge">重点：基本语法规则</span>
+  </a>
+  <a class="pcard" href="数据类型/数据类型与内置函数.html">
+    <div class="t"><span class="ico">🔢</span>第 2 章 · 数据类型、表达式、内置函数</div>
+    <div class="d">int/float/complex/bool 描述、常量变量、算术/关系/逻辑/位/身份/成员运算符、<b>优先级结合性</b>、类型转换/range/len 等内置函数</div>
+    <span class="badge">送分章</span>
+  </a>
+</div>
+
+<h2 class="section" id="g3">程序设计（第 3–5 章）</h2>
+<p class="section-sub">⭐ 设计题高发区。分支/循环是编程题的骨架，列表/元组/集合/字典是每道题都要用的容器，函数是"以函数方式实现"的硬要求。</p>
+<div class="pgrid">
+  <a class="pcard" href="控制结构/程序控制结构.html">
+    <div class="t"><span class="ico">🔀</span>第 3 章 · 程序控制结构</div>
+    <div class="d">流程图/N-S 图、if-elif-else 分支、while/for 循环、break/continue/else、异常处理 try-except、完数等设计题套路</div>
+    <span class="badge hot">设计题高发</span>
+  </a>
+  <a class="pcard" href="组合数据类型/列表元组集合字典.html">
+    <div class="t"><span class="ico">🧩</span>第 4 章 · 组合数据类型</div>
+    <div class="d">列表/元组/集合/字典的创建·访问·切片·操作、可变与不可变、四者对比、切片 <code>[::-1]</code> 与推导式</div>
+    <span class="badge hot">设计题高发</span>
+  </a>
+  <a class="pcard" href="函数/函数定义与调用.html">
+    <div class="t"><span class="ico">🧮</span>第 5 章 · 函数</div>
+    <div class="d">def 定义调用、return 多返回值、形参实参/默认参数/*args/**kwargs、全局局部与 global、递归、lambda</div>
+    <span class="badge warn">✂️ 5.1.4、5.3.3 不考</span>
+  </a>
+</div>
+
+<h2 class="section" id="g6">数据与处理（第 6–7 章）</h2>
+<p class="section-sub">字符串方法与文件读写是综合设计题的两大常客（"读一行字符串统计…""按行读文件…"）。</p>
+<div class="pgrid">
+  <a class="pcard" href="字符串/字符串处理.html">
+    <div class="t"><span class="ico">🔤</span>第 6 章 · 字符串</div>
+    <div class="d">字符串表示与编码、转义字符、运算与切片、split/join、find/replace、isdigit 测试、strip、大小写、f-string 格式化</div>
+    <span class="badge warn">✂️ 6.3 正则表达式不考</span>
+  </a>
+  <a class="pcard" href="文件/文件与数据维度.html">
+    <div class="t"><span class="ico">📁</span>第 7 章 · 文件与数据维度</div>
+    <div class="d">打开-读写-关闭流程、模式 r/w/a、read/readline/readlines、write、with 语句、一维二维高维、CSV 与 JSON</div>
+    <span class="badge warn">✂️ 7.3 不考</span>
+  </a>
+</div>
+
+<h2 class="section" id="g8">进阶与拓展（第 8–9 章）</h2>
+<p class="section-sub">课程两大难点章。面向对象概念题多（简答常问区别），科学计算爱考"读代码写结果"。</p>
+<div class="pgrid">
+  <a class="pcard" href="面向对象/面向对象编程.html">
+    <div class="t"><span class="ico">🧱</span>第 8 章 · 面向对象编程</div>
+    <div class="d">面向对象 vs 面向过程、类与实例、__init__ 与 self、属性/方法、私有与封装、类方法/静态方法、继承重写、多态、特殊方法</div>
+    <span class="badge hot">课程难点</span>
+  </a>
+  <a class="pcard" href="科学计算/科学计算与可视化.html">
+    <div class="t"><span class="ico">📊</span>第 9 章 · 科学计算与可视化</div>
+    <div class="d">numpy ndarray 属性与创建、pandas Series / DataFrame 创建访问统计排序、matplotlib 折线/柱形/散点图三步法</div>
+    <span class="badge hot">课程难点</span>
+  </a>
+</div>
+
+<div class="note">
+  <b>怎么用：</b>先按 1→9 顺序通读一遍（每页 10–15 分钟），把每页末尾「速记小结」和黄色 ⚠️ 易错框抄成笔记；重点把 <b>第 3、4、7 章</b>（设计题高发）的代码套路手敲一遍。<br>
+  <b>不考内容别花时间：</b>正则表达式（6.3）、5.1.4、5.3.3、7.3。详见<a href="../考纲.html">课程考纲</a>页首速查表。
+</div>
+
+<footer>
+  <div class="fl">
+    <a href="../../index.html">🏠 返回首页</a>
+    <a href="../考纲.html">📋 课程考纲</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
+  </div>
+  <div>计算机高级程序设计 08074 · 广东省高等教育自学考试 · 计算机科学与技术（专升本）</div>
+</footer>
+</div>
+</body>
+</html>
