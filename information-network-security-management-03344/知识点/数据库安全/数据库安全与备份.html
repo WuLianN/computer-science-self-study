@@ -6,7 +6,7 @@
 <title>03344 · 第 10 章 网络数据库安全与备份技术｜安全策略与需求 · 强制访问控制 · 冷热与备份方法</title>
 <meta name="description" content="信息与网络安全管理 03344 第 10 章速记卡：网络数据库的四项安全策略（存在安全、可用性、机密性、完整性）与七项安全需求（物理数据库完整性、逻辑数据库完整性、元素安全性、可审计性、访问控制、身份验证、可用性）；强制访问控制的两种强制策略（基于保密性、基于完整性）与基于完整性强制策略的两条控制原则（不能向下读、不能向上写）；多级安全模型的多实例问题（多实例关系、多实例元组、多实例元素）与完整性锁的作用；数据库服务器安全漏洞的四类来源（默认安装漏洞、人为使用漏洞、数据库设计缺陷、数据库产品漏洞）；系统备份方案的四个组成、网络数据库备份的五种常用方法与分类、软件备份功能的六个组成、物理热备份（联机备份）与冷备份（脱机备份）的实施方法和特点。建议 6 学时，对应教材第 10 章。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💾</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
 <style>
   header.hero{background:linear-gradient(135deg,#1d4ed8,#0f766e)}
   .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
@@ -227,7 +227,7 @@
     <li><b>热备份</b>＝联机备份，<b>只能在归档模式下</b>做，流程 <b>MOUNT → ALTER DATABASE 归档 → 打开 → 置备份模式 → 复制 → 结束备份模式</b>；五特点记住"<b>开着备、能点恢复、参数文件与归档日志靠 OS 复制、几乎全能恢复、恢复快</b>"。<b>冷备份</b>简单一致但停机、不能点恢复。</li>
   </ol>
   <div class="note">🎯 6 学时分配：安全策略与需求 1.5 → 强制访问控制两策略与多实例 1.5 → 服务器漏洞 0.5 → 备份组成与方法 1.5 → 冷热备份实施与特点 + 方案设计 1。整章<b>只考清单与实施</b>，计算量为零，属于"背了就有分"的收官章。⚠️ 页首"✂️ 10.3、10.5、10.6"按<b>教材节号</b>统计，但考纲<b>考核知识点（一）～（四）全部要求掌握</b>（含"数据库服务器安全漏洞"），以清单为准。</div>
-  <div class="gotos">
+  <div class="gotos plain">
     <a href="../入侵防御/入侵防御系统.html">← 第 9 章 入侵防御系统</a>
     <a href="../index.html">📚 回到知识点导航</a>
     <a href="../../考纲.html#chapters">📋 十章考纲对照</a>

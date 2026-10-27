@@ -13,6 +13,10 @@ h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);
 .gotos{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .gotos a{text-decoration:none;border:1px solid var(--brand);background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 13px;font-size:13.5px}
 .gotos a:hover{background:#fff;color:var(--brand)}
+/* 页尾“上一章/下一章”导航：.gotos 原本是为 hero 深底写的（color:#fff），放到正文或卡片的浅底上会白字不可见。
+   需要浅底的容器加 .plain 修饰符——只覆盖配色，尺寸/布局/hover 行为不变，hero 内的 .gotos 不受影响。 */
+.gotos.plain a{background:var(--brand-soft);color:var(--brand);border-color:var(--brand-soft)}
+.gotos.plain a:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
 a.inline{color:var(--brand);font-weight:700;text-decoration:none}
 a.inline:hover{text-decoration:underline}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
@@ -71,6 +75,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;-webkit-tap-highlight-
 a:active,button:active,.btn:active{opacity:.55;transition:opacity .12s}
 @media (hover:none){
   .gotos a:hover{background:rgba(255,255,255,.16);color:#fff}
+  .gotos.plain a:hover{background:var(--brand-soft);color:var(--brand);border-color:var(--brand-soft)}
   .toc a:hover{color:var(--ink);padding-left:0}
   a.inline:hover{text-decoration:none}
 }

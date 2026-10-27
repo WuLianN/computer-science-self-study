@@ -6,7 +6,7 @@
 <title>13009 · 第 10 章 数据库设计｜六步流程 · E-R 图 · 关系模式转换</title>
 <meta name="description" content="数据库原理与技术 13009 第 10 章速记卡：数据库设计的特点与方法、六个基本步骤；需求分析的任务与方法；概念结构设计（局部 E-R 模型设计、全局 E-R 模型合并与冲突消解）；逻辑结构设计与 E-R 图向关系模式的转换规则（1:1 / 1:n / m:n 三种联系的处理）；物理结构设计任务。含考纲·题型举例的医院病房 E-R 综合题完整解答（画 E-R 图、转关系模式并标主码外码、建表）。建议 4 学时。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏗️</text></svg>">
-<link rel="stylesheet" href="../../../assets/theme.css?v=20261027c">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261027d">
 <style>
   header.hero{background:linear-gradient(135deg,#15803d,#0369a1)}
   .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
@@ -73,7 +73,7 @@
 <h2 class="section" id="s2">二、需求分析：任务与方法</h2>
 <div class="rule">
   <div class="kd"><span class="lvl a">识记</span> 需求分析的任务；<span class="lvl b">领会</span> 需求分析的方法。</div>
-  <b>任务：</b>准确了解<b>现实世界</b>要"做什么"（而不是"怎么做"），包括<b>信息要求</b>（要处理和使用什么数据，导出对<b>数据</b>的需求）、<b>处理要求</b>（要完成什么处理功能与处理精度）、<b>安全性与完整性要求</b>。需求分析是<b>最重要、最难、最需要与人沟通</b>的一步，是设计开发的<b>基础</b>。</div>
+  <div class="th"><b>任务：</b>准确了解<b>现实世界</b>要"做什么"（而不是"怎么做"），包括<b>信息要求</b>（要处理和使用什么数据，导出对<b>数据</b>的需求）、<b>处理要求</b>（要完成什么处理功能与处理精度）、<b>安全性与完整性要求</b>。需求分析是<b>最重要、最难、最需要与人沟通</b>的一步，是设计开发的<b>基础</b>。</div>
   <div class="th"><b>方法与做法：</b>①<b>建立数据流图（DFD）与数据字典（DD）</b>——DFD 描述<b>处理</b>（外部实体、加工、数据流、数据存储四种符号），DD 描述<b>数据</b>（对数据项、数据结构、数据流、数据存储、处理过程的定义），二者<b>互相配合</b>构成需求规格说明；②<b>需求调查方法</b>：访谈、问卷、参加业务实践、查阅原有系统的档案与报表、召开调查会；③<b>自顶向下逐层分解</b>的结构化分析方式。</div>
   <div class="note">📝 <b>数据字典是"关于数据的数据"</b>（元数据），是需求分析的<b>核心工具</b>，也是后续设计、维护的<b>共同依据</b>；它一旦建立应<b>集中管理、随时修改</b>。</div>
 </div>
@@ -224,7 +224,7 @@
   <div class="note">📌 学 4 学时但分值不低：综合题（E-R 图＋转换＋建表）约 10～15 分。<b>拿分技巧是把每一步都写出来</b>——即使图有小错，转换规则与建表语句仍能独立得分。</div>
 </div>
 
-<div class="gotos" style="margin-top:22px">
+<div class="gotos plain" style="margin-top:22px">
   <a href="../概论/数据库概论.html">第 1 章</a>
   <a href="../关系模型/关系数据库系统模型.html">第 2 章</a>
   <a href="../MySQL数据库和表/建库与建表.html">第 3 章</a>
