@@ -67,13 +67,13 @@
 <h2 class="section" id="s2">二、关系的形式化定义与术语 ⭐</h2>
 <div class="rule">
   <div class="kd"><span class="lvl b">领会</span> 关系数据结构的形式化定义。</div>
-  <div class="th">设 <span class="m">D = {d₁, d₂, …, dₙ}</span> 为<b>域（Domain）</b>，<span class="m">D₁ × D₂ × … × Dₙ</span> 的<b>子集</b>叫做在域上<span class="m">n</span> 度（元）的<b>关系（Relation）</b>，记作 <span class="m">R(D₁, D₂, …, Dₙ)</span>。关系里的每个元素 <span class="m">(d₁, d₂, …, dₙ)</span> 叫做一个<b>元组</b>。</div>
+  <div class="th">设 <span class="m">Dᵢ = {d₁, d₂, …, dₖ}</span> 为<b>域（Domain）</b>——<b>一组具有相同数据类型的值的集合</b>，<span class="m">D₁ × D₂ × … × Dₙ</span> 的<b>子集</b>叫做在域 <span class="m">D₁, D₂, …, Dₙ</span> 上<span class="m">n</span> 度（元）的<b>关系（Relation）</b>，记作 <span class="m">R(D₁, D₂, …, Dₙ)</span>。关系里的每个元素 <span class="m">t = (d₁, d₂, …, dₙ)</span> 叫做一个<b>元组</b>。</div>
   <div class="tscroll"><table class="law">
     <tr><th>形式化术语</th><th>二维表里的通俗说法</th><th>示例（学生表）</th></tr>
     <tr><td class="nm">关系 R</td><td><b>一张表</b></td><td>学生表 Student</td></tr>
     <tr><td class="nm">元组（tuple）</td><td><b>一行</b>记录</td><td>(2021001, 小明, 20)</td></tr>
     <tr><td class="nm">属性（attribute）</td><td><b>一列</b></td><td>学号 / 姓名 / 年龄</td></tr>
-    <tr><td class="nm">域 Domain</td><td>某属性<b>取值的类型范围</b></td><td>年龄 ∈ 0~150 的整数</td></tr>
+    <tr><td class="nm">域 Domain</td><td><b>一组具有相同数据类型的值的集合</b>（教材原文，识记）</td><td>0~150 的整数（年龄的取值域）</td></tr>
     <tr><td class="nm">分量</td><td>元组中的<b>一个值</b></td><td>第 2 个分量"小明"</td></tr>
     <tr><td class="nm">目 / 度（arity）</td><td><b>列数</b>（属性个数）</td><td>3 列 → 度为 3</td></tr>
     <tr><td class="nm">基数（cardinality）</td><td><b>行数</b>（元组个数）</td><td>50 个学生 → 基数 50</td></tr>
@@ -81,7 +81,7 @@
     <tr><td class="nm">主属性 / 非主属性</td><td>包含在<b>任一</b>候选码中的属性 / 其余属性</td><td>学号是主属性，年龄是非主属性</td></tr>
     <tr><td class="nm">外码（外键）</td><td>本表属性是<b>另一张表的主码</b></td><td>选课表的"学号"</td></tr>
   </table></div>
-  <b>关系的性质（规范化的二维表应满足）：</b>①列是同质的（同域、类型一致）；②不同列可同名但须有唯一<b>属性名</b>；③<b>行列次序无关</b>（集合无序，交换两行仍是同一关系）；④分量是<b>不可再分</b>的基本数据项（原子性 → 这正是 1NF 的要求）；⑤元组<b>不允许重复</b>。
+  <b>关系的性质（规范化的二维表应满足）：<br></b>① <b>列的同质性:</b> 同域、类型一致。<br>② <b>列名唯一性：</b>每列具有不同的属性名。<br>③ <b>行列次序无关：</b>（集合无序，交换两行仍是同一关系）。<br>④ <b>分量原子性：</b>分量值是原子的，即每个分量都必须是不可分的数据项。<br>⑤ <b>元组相异性</b>：关系中任意两个元组的候选码不能相同。
   <div class="note">⚠️ 易错："行列次序无关"是关系模型的数学性质，但 <b>MySQL 表里加 <code>ORDER BY</code> 才能控制显示顺序</b>——理论题按"无关"答。</div>
 </div>
 
@@ -112,7 +112,7 @@
   <div class="th"><b>运算三要素：</b>①<b>运算对象</b>（一个或两个关系）；②<b>运算符</b>；③<b>运算结果</b>（仍是一个关系）。</div>
   <div class="tscroll"><table class="law">
     <tr><th>分类</th><th>运算符</th><th>目数</th><th>说明</th></tr>
-    <tr><td class="nm">传统集合运算</td><td><span class="m">∪</span> 并、<span class="m">−</span> 差、<span class="m">∩</span> 交、<span class="m">×</span> 笛卡尔积</td><td>二目</td><td>前三者要求<b>Union 相容</b>（同度、对应列同源）</td></tr>
+    <tr><td class="nm">传统集合运算</td><td><span class="m">∪</span> 并、<span class="m">−</span> 差、<span class="m">∩</span> 交、<span class="m">×</span> 笛卡尔积</td><td>二目</td><td>前三者要求<b>Union 相容</b>，即列数相同，且对应的属性列都出自同一个域</td></tr>
     <tr><td class="nm">专门关系运算</td><td><span class="m">σ</span> 选择、<span class="m">π</span> 投影、<span class="m">⋈</span> 连接、<span class="m">÷</span> 除</td><td>一目 / 二目</td><td>关系运算的核心特色</td></tr>
     <tr><td class="nm">扩展运算</td><td>外连接、<span class="m">ℑ</span> 分组聚合、<span class="m">ρ</span> 更名</td><td>—</td><td>了解即可，考试以上面两栏为主</td></tr>
   </table></div>
@@ -165,13 +165,13 @@
     <tr><td class="nm">数据查询语言</td><td><b>DQL</b></td><td><code>SELECT</code></td><td>查询数据（第 5 章，占分最重）</td></tr>
     <tr><td class="nm">数据控制语言</td><td><b>DCL</b></td><td><code>GRANT / REVOKE</code></td><td>权限与安全性控制（第 8 章）；事务 <code>COMMIT / ROLLBACK</code> 亦属控制类</td></tr>
   </table></div>
-  <div class="th"><b>SQL 的特点（简答）：</b>①<b>一体化</b>——DDL/DML/DQL/DCL 一种语言贯通，语言风格一致；②<b>高度非过程化</b>——只需指出"做什么"，不必指明"怎么做"，存取路径由系统决定；③<b>两种使用方式</b>——交互式（独立在客户端执行）与<b>嵌入式</b>（嵌入 C/Python 等宿主语言，需配<b>SQLCA 与主变量</b>）；④<b>语言简洁、易学</b>——核心动词只有 9 个；⑤<b>面向集合</b>——一次操作一批元组；⑥<b>支持三级模式</b>：视图对应外模式、基本表对应模式、存储文件对应内模式。</div>
+  <div class="th"><b>SQL 的特点（简答）：<br></b>① <b>一体化</b>——DDL/DML/DQL/DCL 一种语言贯通，语言风格一致；<br>② <b>高度非过程化</b>——只需指出"做什么"，不必指明"怎么做"，存取路径由系统决定；<br>③ <b>两种使用方式</b>——交互式（独立在客户端执行）与<b>嵌入式</b>（嵌入 C/Python 等宿主语言，需配<b>SQLCA 与主变量</b>）；<br>④ <b>语言简洁、易学</b>——核心动词只有 9 个；<br>⑤ <b>面向集合</b>——一次操作一批元组；<br>⑥ <b>支持三级模式</b>：视图对应外模式、基本表对应模式、存储文件对应内模式。</div>
   <div class="note">🔑 第⑥条几乎每年换种问法出现："SQL 中，视图对应三级模式中的哪一级？"→ <b>外模式</b>；基本表 → 模式；存储文件 → 内模式。</div>
 </div>
 
 <h2 class="section" id="s9">九、本章速记小结</h2>
 <div class="note">
-  <b>一张表 = 一个关系：</b>行=元组、列=属性、列的取值范围=域、一个值=分量；<b>度=列数、基数=行数</b>；行列无序、分量原子、元组不重复。<br>
+  <b>一张表 = 一个关系：</b>行=元组、列=属性、列出自的集合（同类型值的集合）=域、一个值=分量；<b>度=列数、基数=行数</b>；行列无序、分量原子、元组不重复。<br>
   <b>三类完整性：</b>实体（主码唯一非空）→ <code>PRIMARY KEY</code>；参照（外码为空或在被参照表中存在）→ <code>FOREIGN KEY</code>；用户定义 → <code>CHECK / NOT NULL</code>。<br>
   <b>八种运算口诀：</b>选择管行、投影管列（且去重）；并差交要相容；笛卡尔积<b>度相加、基数相乘</b>；连接=笛卡尔积+条件筛选；<b>"全部"用除法</b>。<br>
   <b>等值 vs 自然：</b>自然连接在同名列上做且<b>删重复列</b>。<br>
