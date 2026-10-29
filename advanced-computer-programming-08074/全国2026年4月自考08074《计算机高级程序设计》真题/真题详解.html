@@ -54,7 +54,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <div class="tip">
   📚 <b>本卷共 31 题满分 100 分</b>，题干常显、答案和解析折叠，可直接当卷子做。建议答题顺序：单选（20分，全是送分概念题）→ 简答（30分，背概念即可拿分）→ 简单设计（32分，水仙花数/递归/查找/列表移动都是经典套路）→ 综合设计（文件+面向对象两大高频压轴）。<b>完整答案速查表在页面最下方</b>。<br>
-  ⚠️ 本卷原卷为网络流传图片版，<b>官方未发布标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，第 13、14 题存在命题瑕疵（详见题内说明），供学习参考。
+  ⚠️ 本卷原卷为网络流传图片版，<b>官方未发布标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，第 14 题存在命题瑕疵（详见题内说明），供学习参考。
 </div>
 
 <div class="toolbar">
@@ -200,25 +200,30 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <details class="q" id="q13"><summary>
   <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">已知 a,b=map(int,'21','10')，那么表达式 a-b 的值为</div>
+  <div class="stem">已知 a,b=map(int,['21','10'])，那么表达式 a-b 的值为</div>
   <div class="opts"><span>A. 10</span><span>B. 11</span><span>C. 21</span><span>D. 31</span></div>
 </summary>
 <div class="body">
-  <div class="answer">答案：B（命题有瑕疵，见解析）</div>
-  <div class="sol"><span class="lab">解析：</span>命题意图：把两个"数字串"各自转成整数再相减，即 <code class="c">21-10 = 11</code>。<br>
-  ⚠️ 但严格按 Python 3 语法，原题写法 <code class="c">map(int,'21','10')</code> 有两处问题：① map 以 int 作用到字符串每个字符上，且第二串 '10' 不足时补 None，得到的是 map 对象 (2,1,None)，map 对象之间不能相减（TypeError）；② 若按常见网传版本 <code class="c">a,b=map(int,['21','10'])</code> 理解，则 a=21、b=10，<code class="c">a-b=11</code>。考试按命题意图选 <b>B</b>；自己写代码时要用 <code class="c">int('21')-int('10')</code> 这种正确写法。</div>
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">map(int, ['21','10'])</code> 把 <code class="c">int</code> 逐个作用到列表元素上，得到两个整数 21、10，再<b>解包</b>赋给 a、b，故 <code class="c">a-b = 21-10 = 11</code>。两个易错点：① 若误写成 <code class="c">a,b=map(int,'21','10')</code>（没有列表包裹）则解包时报 TypeError——字符串被逐字符拆开，且第二串不足时补 None，<code class="c">int(None)</code> 报错；② 若只写 <code class="c">a=map(int,['21','10'])</code>，a 拿到的是 map 对象而非整数，需 <code class="c">list()</code> 或解包才能取值。</div>
   <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s5">考点：map() 与类型转换</a>
 </div></details>
 
 <details class="q" id="q14"><summary>
   <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">与 print(a=3,b=4,c=5) 语句输出结果一样的是</div>
-  <div class="opts"><span>A. print('a={0} b={1} c={2}'.format(3,4,5))</span><span>B. print('a=b==c={0}{1}{2}'.format(3,4,5))</span><span>C. print('a={0} b={1} c={2}'.format(3,4,5))</span><span>D. print('a={1} b={2} c={3}'.format(3,4,5))</span></div>
+  <div class="stem">与 print('a=',3,'b=',4,'c=',5) 语句输出结果一样的是</div>
+  <div class="opts"><span>A. print('a={0} b={1} c={2}'.format(3,4,5))</span><span>B. print('a=b=c={0}{1}{2}'.format(3,4,5))</span><span>C. print('a={0} b={1} c={2}'.format(3,4,5))</span><span>D. print('a={1} b={2} c={3}'.format(3,4,5))</span></div>
 </summary>
 <div class="body">
-  <div class="answer">答案：C</div>
-  <div class="sol"><span class="lab">解析：</span>命题意图：把"a=3 b=4 c=5"这种"名字=值、空格分隔"的输出用 format 模板复现，考查<b>"{序号} 占位符与参数按序对应"</b>。<b>C 完全吻合</b>——<code class="c">{0}{1}{2}</code> 按编号取参数 3、4、5，模板文字与空格与原句一致。A 错：模板没写空格，输出 <code class="c">a=3b=4c=5</code>；B 错：模板文字"a=b==c="与原句不符；D 错：占位符编号 1/2/3，只有 3 个参数（编号 0~2），下标 3 <b>越界报错</b>（IndexError）。<br>
-  ⚠️ 严格按 Python 3 实跑，<code class="c">print(a=3,b=4,c=5)</code> 会报 <b>TypeError</b>：print 只接受 sep/end/file/flush 四个关键字参数，a/b/c 是未知关键字——属命题瑕疵，考试按意图选 C。</div>
+  <div class="answer">答案：C（命题有双重瑕疵，见解析）</div>
+  <div class="sol"><span class="lab">解析：</span>考查 <code class="c">print()</code> 多参数输出与 <code class="c">str.format()</code> 占位符。先把各句<b>实跑结果</b>列出对比：<br>
+  题干 <code class="c">print('a=',3,'b=',4,'c=',5)</code> → <code class="c">a= 3 b= 4 c= 5</code><br>
+  A <code class="c">print('a={0} b={1} c={2}'.format(3,4,5))</code> → <code class="c">a=3 b=4 c=5</code><br>
+  B <code class="c">print('a=b=c={0}{1}{2}'.format(3,4,5))</code> → <code class="c">a=b=c=345</code><br>
+  C <code class="c">print('a={0} b={1} c={2}'.format(3,4,5))</code> → <code class="c">a=3 b=4 c=5</code><br>
+  D <code class="c">print('a={1} b={2} c={3}'.format(3,4,5))</code> → 报 <b>IndexError</b>（只有 3 个参数，占位符 <code class="c">{3}</code> 下标越界）<br>
+  ⚠️ <b>两处命题瑕疵：</b>① <b>A 与 C 选项完全相同</b>（真卷如此），本身即失误；② 题干中 print 用 sep（默认空格）隔开每个参数，<code class="c">'a='</code> 与 <code class="c">3</code> 之间也有空格，真实输出是 <code class="c">a= 3 b= 4 c= 5</code>（<b>= 后带空格</b>）；而 A/C 的 format 模板 <code class="c">a={0}</code> 中 = 与占位符相连，输出 <code class="c">a=3 b=4 c=5</code>（= 后无空格）——严格看<b>四个选项都对不上</b>。出题人误以为 <code class="c">print('a=',3,...)</code> 输出 <code class="c">a=3 b=4 c=5</code>，据此把答案设为 <b>C</b>。<br>
+  📌 结论：考试按出题意图选 <b>C</b>；自己写代码若要真正复现 <code class="c">a= 3 b= 4 c= 5</code>，应用 <code class="c">'a= {0} b= {1} c= {2}'.format(3,4,5)</code>（= 后补空格）或直接沿用题干的 <code class="c">print('a=',3,...)</code>。</div>
   <a class="tag" href="../知识点/字符串/字符串处理.html#s5">考点：format() 格式化输出</a>
 </div></details>
 
@@ -503,7 +508,7 @@ d.display_dog()</pre>
 </table>
 
 <div class="note">
-  ✍️ <b>答案可信度说明</b>：本卷为网络流传图片版，<b>无官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 abs(3+4j)=5.0、0 and 9=0、连续比较等易错点）；<b>第 13、14 题存在命题瑕疵</b>：第 13 题 <code>map(int,'21','10')</code> 实跑报 TypeError，按命题意图（21−10）选 B；第 14 题 <code>print(a=3,b=4,c=5)</code> 实跑报 TypeError（print 不接受未知关键字），按"占位符与参数对应"的考查意图选 C（两题题内均有详细说明）。设计题 26~31 的参考代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
+  ✍️ <b>答案可信度说明</b>：本卷为网络流传图片版，<b>无官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 abs(3+4j)=5.0、0 and 9=0、连续比较等易错点）；<b>第 14 题存在命题瑕疵</b>：题干 <code>print('a=',3,'b=',4,'c=',5)</code> 真实输出为 <code>a= 3 b= 4 c= 5</code>（= 后带空格），四个 format 选项均对不上，且 A、C 选项重复；出题人按“= 后无空格”的误解设答案为 C（题内已逐选项列出实跑输出）。设计题 26~31 的参考代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
 </div>
 
 <footer>2026年4月广东省高等教育自学考试 · 计算机高级程序设计（08074）真题详解 · 教材：傅清平等《Python语言程序设计基础教程》清华大学出版社 2022 · 仅供学习交流参考</footer>
