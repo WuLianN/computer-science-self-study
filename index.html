@@ -70,12 +70,27 @@
     .hero h1{font-size:1.35rem;margin-bottom:4px}
     .hero .tagline{font-size:.88rem;margin-bottom:10px}
     .hero .stats{gap:8px;margin-top:10px}
-    .hero .stats .chip{flex:0 1 auto;padding:7px 13px}
-    .hero .stats .chip b{font-size:.85rem}
+    /* 科目快捷入口：窄屏双列等宽，每枚只显标题一行，避免长短不一零散换行 */
+    .hero .stats .chip{flex:0 1 calc(50% - 4px);justify-content:center;min-height:44px;padding:7px 13px;font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hero .stats .chip b{font-size:.8rem;overflow:hidden;text-overflow:ellipsis}
     .hero .stats .chip span{display:none}
     .stats-sum{font-size:.78rem;margin-top:8px}
-    .entries{grid-template-columns:1fr}
-    .subject{padding:20px}
+    .entries{grid-template-columns:1fr;gap:12px}
+    .subject{padding:16px 14px}
+    .subject h2{font-size:1.15rem}
+    /* 窄屏收紧胶囊与标题间距；超长科目名（如 08074）标题占满余宽自然换行，不再整行跳下 */
+    .subject-head{gap:8px}
+    .subject-head h2{flex:1 1 0;min-width:0}
+    .subject .desc{font-size:.84rem;margin:5px 0 14px}
+    /* 大入口卡片窄屏收紧：缩内边距/图标/字号，减少文字换行撑高 */
+    .entry{padding:13px 14px;gap:11px;border-radius:12px}
+    .entry .icon{font-size:1.45rem}
+    .entry .txt .t{font-size:.97rem}
+    .entry .txt .d{font-size:.84rem}
+    .entry .txt .m{font-size:.75rem;margin-top:4px}
+    /* 长文案卡片：描述最多 3 行截断，元信息窄屏隐藏（点进对应页面可见全文） */
+    .entry .txt .d{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .entry .txt .m{display:none}
   }
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
