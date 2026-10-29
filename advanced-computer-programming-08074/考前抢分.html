@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>计算机高级程序设计 08074 · 考前抢分一页纸（目标 60+）</title>
+<meta name="description" content="基于 2026.4 广东真题卷逐题统计与考纲对照的 Python 考前抢分页：简答 5 题全文可背、6 个可默写代码模板、选择题送分/陷阱清单、考场时间分配与及格算式，专为 60+ 冲刺设计。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="stylesheet" href="../assets/theme.css?v=20261027d">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#0e7490; --brand-soft:#ecfeff; --deep:#155e75;
+    --ok:#059669; --ok-soft:#ecfdf5; --warn:#d97706; --warn-soft:#fffbeb;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 16px 70px}
+  header.hero{background:linear-gradient(135deg,#1d4ed8,#0891b2)}
+  .toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--deep);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;font-weight:600}
+  .btn:hover{background:var(--brand);color:#fff}
+  h2.sec{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px 18px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--brand-soft);color:var(--deep);font-weight:700}
+  td.c,th.c{text-align:center}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}
+  .tag.hot{background:var(--brand);color:#fff}
+  .tag.mid{background:var(--warn-soft);color:var(--warn)}
+  .tag.score{background:var(--ok-soft);color:var(--ok)}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .ok b{color:var(--ok)}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;background:#fff}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--deep)}
+  .card h3 .n{display:inline-block;background:var(--brand);color:#fff;border-radius:7px;width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;margin-right:8px}
+  .tpl{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:10px 13px;font-size:14px;margin:8px 0}
+  .tpl b{color:var(--deep)}
+  .ex{background:var(--brand-soft);border-left:4px solid var(--brand);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13.6px;margin:8px 0}
+  .ex .h{font-weight:700;color:var(--deep)}
+  code,.mono{font-family:"SFMono-Regular",Consolas,monospace;background:#eef2ff;color:#4338ca;border-radius:4px;padding:1px 6px;font-size:.9em}
+  pre.code{font-family:"SFMono-Regular",Consolas,"Courier New",monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 15px;font-size:13px;line-height:1.58;overflow-x:auto;margin:10px 0;white-space:pre}
+  .steps{margin:6px 0 0;padding-left:22px;font-size:13.6px}
+  .steps li{margin:3px 0}
+  ul.tips{padding-left:20px;font-size:14px}
+  ul.tips li{margin:6px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:620px){.grid2{grid-template-columns:1fr}th,td{padding:7px 8px;font-size:13px}}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.gotos,footer .fl{display:none}
+    header.hero{border-radius:0}
+    .card,.note,.ok,table,pre.code{box-shadow:none;break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🔥 计算机高级程序设计 08074 · 考前抢分一页纸</h1>
+  <p>基于 <b>2026.4 广东卷逐题统计</b> ＋ 考纲 9 章对照 · 唯一目标：<b>及格 60+</b> · 教材：傅清平等《Python语言程序设计基础教程》清华社 2022</p>
+  <span class="pill">简答 30 + 设计 32 = 62 分可纯背</span><span class="pill">选择 20 分只是保险</span><span class="pill">闭卷 150 分钟 · 31 题</span>
+  <div class="gotos">
+    <a href="../index.html">🏠 首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="真题/index.html">📝 历年真题</a>
+    <a href="考纲.html">📋 考纲</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存 PDF</button>
+  <button class="btn" onclick="document.querySelectorAll('details.ans').forEach(d=>d.open=!d.open)">👁 展开 / 收起答案</button>
+</div>
+
+<div class="ok"><b>一句话策略：</b>这门卷<b>选择题 20 分性价比全场最低</b>（每题才 1 分），别在计算抠细节题上恋战。<b>简答题 5 题 30 分全部背原文</b>（本页第三节直接可抄）＋ <b>6 个设计题模板练到默写</b>（第四节，本卷 26~31 题全在其中）＝ <b>62 分保底</b>；选择题只稳拿"背概念就对"的那一半（10~14 分），总分 <b>72+</b>，及格线绰绰有余。</div>
+
+<h2 class="sec">一、分数结构与及格路线</h2>
+<div class="sub">总分 100、31 题、及格 60。按"性价比"从高到低投入时间（性价比 = 分值 ÷ 需要花的功夫）。</div>
+<div class="tscroll"><table>
+  <tr><th>题型</th><th class="c">题量×分</th><th class="c">合计</th><th>抢分定位</th></tr>
+  <tr><td>简答题 21–25</td><td class="c">5×6</td><td class="c"><span class="tag hot">30 分</span></td><td>⭐⭐⭐ <b>全场性价比之王</b>：5 题全是概念背诵，本页可整题背下来，目标 26+</td></tr>
+  <tr><td>简单设计题 26–29</td><td class="c">4×8</td><td class="c"><span class="tag hot">32 分</span></td><td>⭐⭐⭐ 四大固定套路（拆位/递归/find循环/切片移位），背模板即得，目标 26+</td></tr>
+  <tr><td>综合设计题 30–31</td><td class="c">2×9</td><td class="c">18 分</td><td>⭐⭐ 文件+函数封装、类继承 super()，按步骤给分，目标 8–14</td></tr>
+  <tr><td>单项选择题 1–20</td><td class="c">20×1</td><td class="c">20 分</td><td>⭐ <b>每题 1 分，投入产出最低</b>：只拿概念题（约一半），计算题第一感觉作答，目标 12+</td></tr>
+</table></div>
+<div class="note">🎯 <b>及格算式</b>：简答 26 ＋ 简单设计 26 ＝ 52，选择随便对 10 个就 <b>62</b>；综合设计再写个框架拿 6~8 分 → <b>68+</b>。反过来说：<b>把时间全花在抠选择题上才是最亏的</b>。⚠️ 注意本门是省考新课，目前仅流传 2026.4 一套卷，题型配比（尤其简答/设计的题数分值）后续考期可能微调，以当时卷面标注为准。</div>
+
+<h2 class="sec">二、📚 考纲 9 章的火力分布（一套卷还原）</h2>
+<div class="sub">2026.4 卷 31 题按章归位——第 3、4、5、6、7、8 章承包了全部大题，这就是复习重心。</div>
+<div class="tscroll"><table>
+  <tr><th>章</th><th>本卷出处</th><th class="c">约分值</th><th>速记卡</th></tr>
+  <tr><td>1 概述</td><td>选择 1 · 简答 21（执行原理）</td><td class="c">7</td><td><a href="知识点/概述/Python概述.html">Python概述</a></td></tr>
+  <tr><td>2 数据类型与内置函数</td><td>选择 4/6/9/10/11/12/13/15 · 简答 22（结合性）· 简答 25（np.ones 归第9章更准，此处按卷序）</td><td class="c">18</td><td><a href="知识点/数据类型/数据类型与内置函数.html">数据类型与内置函数</a></td></tr>
+  <tr><td>3 控制结构</td><td>选择 16/17/18/19/20 · <b>设计 26（四叶玫瑰数）</b></td><td class="c">13</td><td><a href="知识点/控制结构/程序控制结构.html">程序控制结构</a></td></tr>
+  <tr><td>4 组合数据类型</td><td><b>设计 29（列表切片移位）</b></td><td class="c">9</td><td><a href="知识点/组合数据类型/列表元组集合字典.html">列表元组集合字典</a></td></tr>
+  <tr><td>5 函数</td><td>选择 5 · 简答 23 · <b>设计 27（递归）</b> · 综合 30（函数封装）</td><td class="c">17</td><td><a href="知识点/函数/函数定义与调用.html">函数定义与调用</a></td></tr>
+  <tr><td>6 字符串</td><td>选择 3/7/14/17 · <b>设计 28（find 查子串）</b></td><td class="c">12</td><td><a href="知识点/字符串/字符串处理.html">字符串处理</a></td></tr>
+  <tr><td>7 文件</td><td><b>综合 30（按行读文件统计）</b></td><td class="c">9</td><td><a href="知识点/文件/文件与数据维度.html">文件与数据维度</a></td></tr>
+  <tr><td>8 面向对象</td><td>简答 24 · <b>综合 31（类继承，压轴）</b></td><td class="c">15</td><td><a href="知识点/面向对象/面向对象编程.html">面向对象编程</a></td></tr>
+  <tr><td>9 科学计算</td><td>简答 25（np.ones 元素数）</td><td class="c">6</td><td><a href="知识点/科学计算/科学计算与可视化.html">科学计算与可视化</a></td></tr>
+</table></div>
+<div class="note">✂️ <b>不考内容别花时间</b>：正则表达式（6.3）、5.1.4、5.3.3、7.3（见<a href="考纲.html">考纲页首速查表</a>）。</div>
+
+<h2 class="sec">三、🔴 简答 5 题（30 分）——关键词背到能默写</h2>
+<div class="sub">本卷原题即 2026.4 考过的问法；同一知识点换个问法概率极高。每题记"骨架词"，考试扩写成句。</div>
+<div class="grid2">
+  <div class="card"><h3><span class="n">21</span>高级语言执行原理与方式</h3>
+    <div class="tpl"><b>骨架：</b>硬件只认机器语言 → 高级语言须<b>翻译</b>。① <b>解释</b>：逐句翻译立即执行、不留结果，交互好效率低（Python/JS）；② <b>编译</b>：整体一次译成目标程序，效率高流程固定（C/C++）。加分句：Python 实为混合——先编译成字节码再逐条解释。</div>
+    <a href="知识点/概述/Python概述.html#s2">▶ 去第 1 章页背</a></div>
+  <div class="card"><h3><span class="n">22</span>运算符结合性（举例）</h3>
+    <div class="tpl"><b>骨架：</b>同优先级连着写时先算哪边。① <b>左结合</b>：绝大多数，<code>100-30-20=(100-30)-20</code>；② <b>右结合</b>：幂 <code>**</code>（<code>2**3**2=2**9=512</code>）、连续赋值 <code>a=b=3</code>；③ <b>连续比较</b> Python 特有：<code>13&lt;15&gt;0 ⇔ 13&lt;15 and 15&gt;0</code>。</div>
+    <a href="知识点/数据类型/数据类型与内置函数.html#s4">▶ 去第 2 章页背</a></div>
+  <div class="card"><h3><span class="n">23</span>函数保留字与参数形式</h3>
+    <div class="tpl"><b>骨架：</b><code>def</code> 定义、<code>return</code> 返回、<code>lambda</code> 匿名。参数三形式：① 普通（位置）参数按序传；② 默认参数 <code>b=10</code>（须排在普通参数后，调用可省略）；③ 可变长 <code>*args</code> 收位置参数成<b>元组</b>、<code>**kwargs</code> 收关键字参数成<b>字典</b>。参数=接收什么输入，函数体=对输入做什么处理。</div>
+    <a href="知识点/函数/函数定义与调用.html#s1">▶ 去第 5 章页背</a></div>
+  <div class="card"><h3><span class="n">24</span>面向对象三特性</h3>
+    <div class="tpl"><b>骨架：</b>① <b>封装</b>——数据与方法包进类、隐藏实现，私有成员<b>双下划线开头</b>；② <b>继承</b>——子类 <code>class Cat(Animal):</code> 复用父类并可重写；③ <b>多态</b>——同名方法不同对象表现不同行为。</div>
+    <a href="知识点/面向对象/面向对象编程.html#s5">▶ 去第 8 章页背</a></div>
+  <div class="card"><h3><span class="n">25</span>np.ones((5,4)) 元素个数</h3>
+    <div class="tpl"><b>骨架：</b><code>np.ones(shape)</code> 生成指定形状<b>全 1</b> 数组；(5,4)=5 行 4 列 → 个数 = <b>各维度长度之积</b> = 5×4 = <b>20</b>（<code>arr.size</code> 可验证）。</div>
+    <a href="知识点/科学计算/科学计算与可视化.html#s2">▶ 去第 9 章页背</a></div>
+  <div class="card"><h3>🧭 同章换问法预防针</h3>
+    <div class="tpl">简答从这 9 章轮换，本卷没考的下一期最可能考：<b>面向过程 vs 面向对象的区别</b>、<b>列表/元组/集合/字典四者对比</b>（可变性与重复性）、<b>split/join 的作用</b>、<b>with 打开文件的好处</b>、<b>全局变量与 global</b>。都在速记卡的黄色框里，顺手多背 5 个不亏。</div></div>
+</div>
+
+<h2 class="sec">四、📌 6 个可默写代码模板（本卷 26~31 全覆盖）</h2>
+<div class="sub">全部经 Python 3 实跑验证。设计题按步骤给分——把框架写出来就有大半分。每模板背"<b>加粗行</b>"即可。</div>
+
+<div class="card"><h3><span class="n">1</span>拆位求幂和（本卷 26 题 · 水仙花/自幂数/完数通用）</h3>
+<pre class="code">result = []
+for n in range(1000, 10000):      # ① 枚举范围
+    s, x = 0, n
+    <b>while x:                       # ② 拆位循环
+        s += (x % 10) ** 4         # %10 取末位、//10 去末位
+        x //= 10</b>
+    if s == n:
+        result.append(str(n))
+<b>print(';'.join(result))</b>          # ③ 一行输出、分隔符收尾干净</pre>
+<div class="tpl">运行：<code>1634;8208;9474</code>。简写版拆位：<code>sum(int(d)**4 for d in str(n))</code>。</div></div>
+
+<div class="card"><h3><span class="n">2</span>递归两要素（本卷 27 题 · 求和/阶乘/斐波那契通用）</h3>
+<pre class="code">def sub(n):
+    <b>if n == 1: return 1            # 出口！漏写=RecursionError</b>
+    <b>return n + sub(n - 1)          # 体：f(n) 化为 n + f(n-1)</b>
+print(sub(5))                      # 15</pre>
+<div class="tpl">阶乘换 <code>if n==0: return 1</code> / <code>return n*fac(n-1)</code>；斐波那契换双出口。骨架一模一样。</div></div>
+
+<div class="card"><h3><span class="n">3</span>find() 循环查所有位置（本卷 28 题 · 字符串查找标准答案）</h3>
+<pre class="code">def find_positions(main_str, sub_str):
+    pos = []
+    i = main_str.find(sub_str)         # 找不到返回 -1
+    <b>while i != -1:
+        pos.append(i)
+        i = main_str.find(sub_str, i + 1)   # 从下一位续查</b>
+    return pos
+print(find_positions('abcabcdeabcefgh', 'abc'))   # [0, 3, 8]</pre></div>
+
+<div class="card"><h3><span class="n">4</span>列表切片移位（本卷 29 题 · 三个得分点缺一不可）</h3>
+<pre class="code">lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+<b>n = int(input("请输入一个小于10的整数n："))   # ① input 要套 int
+lst = lst[n:] + lst[:n]                        # ② 后段接前段=前移尾部
+print("将前{}个元素移到后面后的列表为：{}".format(n, lst))   # ③ format 输出</b></pre>
+<div class="tpl">切片口诀：<code>[n:]</code> 从下标 n 到末尾、<code>[:n]</code> 前 n 个。倒序 <code>[::-1]</code> 同理常考。</div></div>
+
+<div class="card"><h3><span class="n">5</span>按行读文件 + 函数封装（本卷 30 题 · 文件综合题骨架）</h3>
+<pre class="code">def count_lower(s):                 # 题目要求"统计用函数实现"→ 必须封装！
+    cnt = 0
+    for ch in s:
+        if 'a' <= ch <= 'z':        # 或 ch.islower()
+            cnt += 1
+    return cnt
+
+<b>with open('data.txt', 'r') as f:    # with 自动关文件（加分习惯）
+    for line in f:                  # 文件对象直接按行迭代
+        print("小写字母个数：{}".format(count_lower(line)))</b></pre></div>
+
+<div class="card"><h3><span class="n">6</span>类继承 + super()（本卷 31 题 · 压轴必背）</h3>
+<pre class="code">class Animal:
+    <b>def __init__(self, species, age):
+        self.species = species      # 公共属性放基类
+        self.age = age</b>
+    def display_info(self):
+        print("种类：{}，年龄：{}".format(self.species, self.age))
+
+class Cat(<b>Animal</b>):                  # ① 括号里写父类=继承
+    def __init__(self, species, age, color):
+        <b>super().__init__(species, age)   # ② 调父类构造！漏写丢大分</b>
+        self.color = color              # ③ 本类新增属性
+    def display_cat(self):
+        print("种类：{}，年龄：{}，毛色：{}".format(self.species, self.age, self.color))
+
+c = Cat("哺乳动物", 3, "橘白")
+c.display_cat()</pre>
+<div class="tpl">评分点全在加粗行：<code>__init__</code> 构造、<code>class 子类(父类)</code>、<code>super().__init__(...)</code>、<code>对象.方法()</code> 调用。</div></div>
+
+<h2 class="sec">五、🟡 选择题 20 分：只抢"背概念就对"的一半</h2>
+<div class="sub">本卷 20 题里 10 题纯概念（1/2/3/4/5/6/7/18/19/20），背过=白捡；10 题计算抠细节（8~17 中的计算型），第一感觉作答别超 40 秒/题。</div>
+<div class="grid2">
+  <div class="card"><h3>🎁 背了就能拿的 10 题</h3><div class="tpl">Python 支持命令式+函数式（1）· 机器/汇编/高级三语言（2）· <code>#</code> 与 <code>'''</code> 注释（3）· 变量名不能数字开头/关键字/运算符（4）· 第三方包<b>需 pip 安装</b>（5）· 布尔只有 True/False（6）· <b>input() 永远返回字符串</b>（7）· elif 不是 elseif、多分支只执行一个（18）· 菱形=判断（19）· for 都能改写成 while、break 只跳<b>当前层</b>、for/while 都可带 else（20）。</div></div>
+  <div class="card"><h3>⚡ 计算题高频陷阱 6 连</h3><div class="tpl">① 真值：<b>0 假非 0 真</b>（含 -1 为真，17 题）；② <code>and</code> 短路返回<b>操作数本身</b>：<code>0 and 9 → 0</code>（12）；③ 连续比较 <code>13&lt;15&gt;0 → True</code>（11）；④ <code>int("103",8)</code> 是八进制转十进制 = 67（9）；⑤ <code>abs(3+4j)=5.0</code> 复数模是<b>浮点</b>（10）；⑥ <code>eval("2+4/5")=2.8</code>，Python 3 的 <code>/</code> 永远真除法（15）。</div></div>
+</div>
+<div class="note">⚠️ <b>瑕疵题预防针</b>（2026.4 卷两题本身有毛病，<a href="全国2026年4月自考08074《计算机高级程序设计》真题/真题详解.html">详解</a>已标注）：第 13 题 <code>a,b=map(int,['21','10'])</code> 正常选 <b>B(11)</b>；第 14 题 <code>print('a=',3,'b=',4,'c=',5)</code> 真实输出 <code>a= 3 b= 4 c= 5</code>（= 后带空格）且 A/C 选项重复——<b>考试按出题意图选 C，别在考场较真</b>。</div>
+
+<h2 class="sec">六、🎯 考场策略与时间分配（150 分钟）</h2>
+<ul class="tips">
+  <li><b>答题顺序</b>：简答（40'，背出来写得飞快，先把 30 分锁袋）→ 设计+综合（60'，套模板）→ 选择题（25'，20 题别超 25 分钟）→ 检查（25'，回头补空着的话）。</li>
+  <li><b>大题绝不留白</b>：设计题按步骤给分，写不出完整程序就把 <code>for/while</code> 框架、拆位两行、<code>open()</code> 一行写上；选择题空格=零分，第一感觉涂满。</li>
+  <li><b>input 必套 int</b>：<code>input()</code> 返回字符串，凡"从键盘输入整数"必须 <code>int(input(...))</code>——本卷 29 题明晃晃的得分点。</li>
+  <li><b>题目要求"用函数实现"就必须 def</b>：30 题没封装函数，统计再对也扣大分。</li>
+  <li><b>format/切片/join 是三大高频工具</b>：输出格式照题干示例抄（示例里有中文提示就带上中文提示）。</li>
+  <li><b>目标管理</b>：简答 26 + 设计 26 + 选择 12 + 综合 8 ≈ <b>72</b>，60 分线外还有 12 分容错——哪题翻车都不影响及格。</li>
+</ul>
+
+<footer>
+  <div class="fl">
+    <a href="../index.html">🏠 返回首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="全国2026年4月自考08074《计算机高级程序设计》真题/真题详解.html">📝 真题详解</a>
+    <a href="考纲.html">📋 考纲</a>
+  </div>
+  <div>统计基于 2026.4 广东卷逐题核对（本门新课仅此一套流传）· 代码均经 Python 3 实跑验证 · 打印或 ⌘/Ctrl+P 存 PDF 带走</div>
+</footer>
+
+</div>
+<a href="#" class="totop" aria-label="回到顶部" title="回到顶部">↑</a></body>
+</html>
