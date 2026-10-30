@@ -85,6 +85,20 @@ a:active,button:active,.btn:active{opacity:.55;transition:opacity .12s}
   box-shadow:0 4px 14px rgba(0,0,0,.22);opacity:.82;display:none}
 .totop:active{opacity:.5;transform:scale(.94)}
 @media (max-width:640px){.totop{display:block}}
+/* ===== 全站统一「停靠胶囊」.dock（右下角竖排 🏠首页 + ↑顶部）=====
+   由 assets/dock.js 自动注入，页面只需 </body> 前放 <script src="{前缀}assets/dock.js" defer></script>。
+   取代旧 .totop 与页尾"回到顶部"链接；仅窄屏显示、桌面隐藏（与 .totop 一致）。新增页不要再手写 .totop。
+   竖排：🏠 常驻右下角；↑ 滚过阈值才淡入浮现于 🏠 上方（.show-top 由 dock.js 随滚动切换）。 */
+.dock{position:fixed;right:calc(12px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;
+  display:none;flex-direction:column;align-items:center;gap:10px}
+.dock a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:20px;line-height:1;box-shadow:0 4px 14px rgba(0,0,0,.18);
+  transition:opacity .25s ease,transform .25s ease}
+.dock a.home{background:rgba(255,255,255,.94);color:var(--brand);border:1px solid var(--line);backdrop-filter:blur(4px)}
+.dock a.top{background:var(--brand);color:#fff;opacity:0;transform:translateY(8px) scale(.6);pointer-events:none}
+.dock.show-top a.top{opacity:1;transform:none;pointer-events:auto}
+.dock a.home:active,.dock.show-top a.top:active{transform:scale(.9)}
+@media (max-width:640px){.dock{display:flex}}
 
 /* 跟随系统「减少动态效果」设置：关掉平滑滚动与过渡/动画 */
 @media (prefers-reduced-motion:reduce){

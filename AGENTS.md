@@ -35,6 +35,15 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 - ⚠️ **`.gotos` 只能裸用在 `header.hero` 深底内**：theme 里它写死 `color:#fff`+半透明白底，放到正文/页尾的浅底上会变白字不可见（已两次踩坑）。浅底场景一律加修饰符写成 **`.gotos plain`**（theme 已提供，只换配色不换布局）；新页若含页尾 `.gotos` 导航，自检时全局搜 `class="gotos"` 确认无遗漏。
 - 动画、`svg`/`table.*`、`.def/.thm/.ext` 等族专属样式保持**页内自包含**。
 
+### 2.1 页内导航统一走「停靠胶囊」`.dock`（右下角）
+
+全站浮动导航已收敛为**单一组件**：右下角**竖排**两枚独立圆钮（🏠返回首页 + ↑回到顶部），**仅窄屏(≤640px)显示、桌面隐藏**。🏠 常驻角落；↑ 默认透明隐藏、滚过阈值才淡入浮现于 🏠 上方（由 dock.js 监听 scroll 切换 `nav.dock` 的 `.show-top` 类实现自动显隐）。
+- **启用方式**：`</body>` 前放一行 `<script src="{相对前缀}assets/dock.js?v=版本号" defer></script>` 即可（样式在 theme.css 的 `.dock`）。**不要再手写** `<a class="totop">` 或页尾"回到顶部"链接。
+- **首页链接自适应深度**：`dock.js` 读自身 `<script>` 的 `src`（回退到 theme.css 的 `link`）算出仓库根相对前缀，因此任意目录层级、`file://` 双击、GitHub Pages 都能拼出正确的 `index.html`，**无需按页手写 `../`**。
+- **单一真源**：想改导航动作/样式/加按钮，只改 `assets/dock.js` + theme.css 的 `.dock`，**不动那 95 个页面**。
+- **例外**：根 `index.html` 与 4 个 `试卷.html` 是**刻意不外链 theme.css 的自包含页**，无 `.dock`（保持纯净）；给这类页加组件须自带内联样式，勿依赖 theme。
+- **版本联动**：theme.css 有改动就全站把 `theme.css?v=` 与 `dock.js?v=` 同步成新日期串破缓存（沿用现有批量脚本做法）。
+
 ## 3. 内容规范
 
 - **引用真题须标注年份与题型**（如「2025.10 真题·第X题」）。
