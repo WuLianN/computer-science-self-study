@@ -79,15 +79,9 @@ a:active,button:active,.btn:active{opacity:.55;transition:opacity .12s}
   .toc a:hover{color:var(--ink);padding-left:0}
   a.inline:hover{text-decoration:none}
 }
-/* 长内容页浮动"回到顶部"：页面 </body> 前放 <a href="#" class="totop">↑</a>，样式统一在此；仅窄屏显示、桌面隐藏 */
-.totop{position:fixed;right:calc(14px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;width:44px;height:44px;border-radius:50%;
-  background:var(--brand);color:#fff;text-decoration:none;font-size:20px;line-height:44px;text-align:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.22);opacity:.82;display:none}
-.totop:active{opacity:.5;transform:scale(.94)}
-@media (max-width:640px){.totop{display:block}}
 /* ===== 全站统一「停靠胶囊」.dock（右下角竖排 🏠首页 + ↑顶部）=====
    由 assets/dock.js 自动注入，页面只需 </body> 前放 <script src="{前缀}assets/dock.js" defer></script>。
-   取代旧 .totop 与页尾"回到顶部"链接；仅窄屏显示、桌面隐藏（与 .totop 一致）。新增页不要再手写 .totop。
+   取代旧的 .totop 浮动按钮与页尾"回到顶部"链接（均已废弃）；仅窄屏显示、桌面隐藏。新增页不要再手写 .totop。
    竖排：🏠 常驻右下角；↑ 滚过阈值才淡入浮现于 🏠 上方（.show-top 由 dock.js 随滚动切换）。 */
 .dock{position:fixed;right:calc(12px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;
   display:none;flex-direction:column;align-items:center;gap:10px}
