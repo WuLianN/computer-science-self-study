@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>13011 考纲技术 vs 2026 主流技术 · 人工智能与大数据技术前沿速览</title>
+<meta name="description" content="把 13011《人工智能与大数据》考纲 13 章逐一对照 2026 年行业主流技术：湖仓一体/Iceberg、Flink 2.x、Spark 4.0、向量数据库、LLM/Agent/RAG、PyTorch、YOLO 等，帮助考生在应考之外了解真实业界现状。内容由 AI 于 2026 年 10 月 30 日生成。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔭</text></svg>">
+<link rel="stylesheet" href="../assets/theme.css?v=20261027d">
+<style>
+header.hero{background:linear-gradient(135deg,#0ea5e9,#9333ea)}
+.ai-mark{display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1px dashed #94a3b8;border-radius:8px;padding:5px 12px;font-size:12.5px;color:#475569;margin-top:10px}
+.map{display:grid;grid-template-columns:minmax(0,5fr) 24px minmax(0,7fr);gap:10px;align-items:stretch;margin:10px 0 4px}
+.map .old,.map .new{border-radius:10px;padding:10px 14px;font-size:13.5px;line-height:1.7}
+.map .old{background:#fef2f2;border:1px solid #fecaca}
+.map .new{background:#f0fdf4;border:1px solid #bbf7d0}
+.map .arrow{display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted)}
+.map .tag{display:block;font-weight:800;font-size:12px;letter-spacing:.5px;margin-bottom:4px}
+.map .old .tag{color:#b91c1c}
+.map .new .tag{color:#15803d}
+.ch-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.ch-h .no{font-weight:800;color:var(--brand);font-size:15px}
+.ch-h .hot-lv{font-size:12px;font-weight:700;border-radius:6px;padding:1px 8px;background:#fef3c7;color:#b45309;white-space:nowrap}
+.gauge{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.gauge span{font-size:12.5px;font-weight:700;border-radius:999px;padding:4px 12px;border:1px solid var(--line);background:#fff}
+.gauge .g1{background:#dcfce7;color:#15803d;border-color:#bbf7d0}
+.gauge .g2{background:#fef3c7;color:#b45309;border-color:#fde68a}
+.gauge .g3{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+@media (max-width:760px){
+  .map{grid-template-columns:1fr}
+  .map .arrow{justify-self:center;transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🔭 考纲里的技术 vs 2026 业界主流</h1>
+  <p>13011《人工智能与大数据》考纲 13 章逐章对照 · 应考归应考，求职眼界归这一页</p>
+  <span class="pill">教材版次：2022 年第 1 版</span>
+  <span class="pill">技术快照：2026 年 10 月</span>
+  <span class="pill">阅读 15~20 分钟</span>
+  <div class="gotos">
+    <a href="#verdict">📌 先读：为什么教材显得"落后"</a>
+    <a href="#bigdata">大数据侧（1~6 章）</a>
+    <a href="#ai">人工智能侧（7~13 章）</a>
+    <a href="#job">2026 招聘市场关键词</a>
+    <a href="#path">给考生的延伸学习路线</a>
+  </div>
+  <div class="ai-mark">🤖 <b>本页由 AI 生成</b> · 生成时间：2026 年 10 月 30 日 · 依据 2026 年公开行业资讯与招聘市场信息整理，技术迭代快，请以最新官方/社区动态为准</div>
+</header>
+
+<div class="note">
+  ⚠️ <b>考试提醒（最重要）：</b>本页只是<b>眼界拓展</b>材料，<b>不是考试内容</b>。自考命题严格以考纲和指定教材（郏东耀主编《大数据与人工智能》2022 年版）为准——<b>卷面上问"Hadoop 生态组成"，答案就必须按教材答</b>，写"Iceberg/数据湖仓"不得分。请先保证 60 分及格，再用本页对接业界。
+</div>
+
+<div class="toc">
+  <div class="toc-h">📑 本页目录</div>
+  <a href="#verdict">Ⅰ 结论先行：教材落后在哪、没落后在哪</a>
+  <a href="#bigdata">Ⅱ 大数据侧逐章对照（考纲第 1~6 章）</a>
+  <a href="#ai">Ⅲ 人工智能侧逐章对照（考纲第 7~13 章）</a>
+  <a href="#gauge">Ⅳ 一张图：哪些知识点还"保值"</a>
+  <a href="#job">Ⅴ 2026 招聘市场关键词</a>
+  <a href="#path">Ⅵ 延伸学习路线（不占备考时间版）</a>
+</div>
+
+<!-- ================= Ⅰ ================= -->
+<h2 class="section" id="verdict">Ⅰ · 结论先行：教材"落后"在哪、其实没落后在哪</h2>
+<div class="rule">
+  <div class="th">你的 AI 朋友说得对一半</div>
+  教材出版于 <b>2022 年</b>，取材自更早的业界实践（不少内容对应 2015—2019 年的技术版图）。到 2026 年，<b>"工具层"确实整体换了一代</b>：MapReduce 在工业界基本无人新写、Hive/Pig 被新湖仓格式替代、经典 NLP 与手工特征提取被预训练模型碾压。<br>
+  但<b>"概念层"几乎没有过时</b>：分而治之、分布式存储副本、CAP/BASE、批流差异、监督/无监督/强化学习、熵与信息增益、决策树、K-均值……这些正是 2026 年所有新技术的地基。<b>考纲考的大部分内容，换个新名字你照样得靠这些老概念才能学懂。</b>
+  <div class="th">三个具体的"时间错位"</div>
+  <ol style="margin:0 0 0 1.4em;padding:0">
+    <li><b>存储与计算</b>：教材以 Hadoop 全家桶为中心；2026 年主流是「<b>对象存储 + 湖仓表格式（Iceberg）+ 存算分离 + Spark/Flink 双引擎</b>」，Gartner 预测 2026 年底全球财富 1000 强中超 65% 用湖仓一体替代传统数仓或独立数据湖。</li>
+    <li><b>人工智能</b>：教材的 AI 部分停留在"神经网络 + Sigmoid + 常用深度学习网络"；2026 年一切围绕 <b>Transformer / 大语言模型（LLM）/ AI Agent / RAG</b> 展开，DeepSeek、Qwen 等国产模型已进入"百万 token 上下文"时代，《2026 年 AI 指数报告》称中美大模型性能差距已缩小至 2.7%。</li>
+    <li><b>自然语言与目标检测</b>：教材讲语言认知模型、贝叶斯网络、多视角人脸跟踪；2026 年这些场景分别被 <b>大模型（Prompt/Agent）</b>和 <b>YOLO 系列 / DETR / 多模态大模型</b>统治。</li>
+  </ol>
+  <div class="th">为什么要"应考用教材、看世界用本页"</div>
+  自考是合格性考试，<b>考点在教材里</b>；而简历、面试、实际工作里，面试官默认你会 2026 年的工具链。两头都要顾：先用 66 学时拿下证书，再用业余时间把本页的"新侧"逐项补成实操经验。
+</div>
+
+<!-- ================= Ⅱ ================= -->
+<h2 class="section" id="bigdata">Ⅱ · 大数据侧逐章对照（考纲第 1~6 章）</h2>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 1 章</span><b>大数据的来源、采集与基本概念</b><span class="hot-lv">概念仍保值</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>4V/5V 特征、结构化/半结构化/非结构化分类、传统采集与预处理工具（Flume、Sqoop 一类）。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>"V"已扩展出 <b>Value（价值密度）与 Velocity 实时性</b>的强调；数据来源新增 <b>AI 生成内容与 Agent 日志</b>；采集端主流是 <b>Kafka / Redpanda 数据管道 + Flink CDC 实时捕获业务库变更</b>，批量 ETL 交给 <b>dbt、Airbyte、DataX</b>；调度用 <b>Airflow / DolphinScheduler</b>。"4V"名词照旧考试，工程上没人再按此选型。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 2 章</span><b>大数据处理架构 Hadoop（Hive/HBase/Pig/ZooKeeper）</b><span class="hot-lv">❗ 工具层置换最严重</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>Hadoop 生态体系全家桶：Hive 数据仓库、HBase 列族存储、Pig Latin 脚本、ZooKeeper 协调、容量/公平/FIFO 三种调度器。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>Hadoop 的<b>理念（分布式、主从、副本）仍在</b>，但"全家桶"地位明显削弱：<b>Hive → 湖仓表格式 Iceberg</b>（Spark/Flink/Trino/DuckDB/Snowflake 共读同一张表，2026 年 V3 格式主流化）；<b>Pig 已近乎消亡</b>（连教材都标注不考并不意外）；<b>HBase 存量维护为主</b>，新选型转向云原生 KV（DynamoDB/TiKV）与 OLAP 引擎（<b>ClickHouse、Apache Doris/StarRocks</b>，ClickHouse 已与 Microsoft Fabric 集成）；<b>ZooKeeper → Raft 自管或 etcd</b>（Kafka 已于 2023 年彻底移除 ZooKeeper）；<b>YARN → Kubernetes 统一调度</b>。考点"CAP/BASE、生态组件功能"仍是理解新架构的语言。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 3 章</span><b>分布式文件系统 HDFS</b><span class="hot-lv">从"标准答案"变成"历史原型"</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>NameNode/DataNode/Block 架构、默认 3 副本、读写流程、异构存储策略、擦除码。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>工业界主流是<b>对象存储</b>：AWS S3、阿里云 OSS、兼容协议的 <b>MinIO</b>，配合<b>存算分离</b>（弹性扩展提升 40%+、存储成本平均降 28%）；热数据加速层用 <b>Alluxio</b> 或新一代流存储 <b>Apache Fluss</b>（2026 年从 Apache 孵化器毕业成为顶级项目，阿里/小红书/爱奇艺生产落地）。HDFS 的<b>三副本 vs 擦除码权衡、"分而治之"思想</b>在对象存储里原样继承——这一章的概念保值率其实很高，只是载体换了。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 4 章</span><b>MapReduce 与 Spark</b><span class="hot-lv">❗ MapReduce 已退出一线</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>MapReduce 设计思想、主从结构、WordCount 作业流程；Spark 优势与架构（教材 4.7 节）。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span><b>手工编写 MapReduce 作业在工业界已基本消失</b>，它只剩两个身份：YARN 上的兼容引擎、以及理解分布式计算的"活化石教材"。<b>Spark 4.x</b>（新增 VARIANT 类型处理半结构化数据、SPARK-60101 开放 Rust/C++ 原生数据源）稳坐批处理与统一分析头把交椅；<b>Flink 2.x</b> 统一流批 API，承担实时数仓与事件驱动场景，"批流一体"从口号变成默认架构。值得注意的是：<b>MapReduce 的 map/reduce 抽象反而赢了</b>——Spark RDD、DataFrame 算子、GPU 上的 all-reduce，全是它的后代。考试照答教材流程，理解时请对照 Spark 算子模型。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 5 章</span><b>NoSQL、HBase、云数据库</b><span class="hot-lv">分类框架仍在，成员大换血</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>NoSQL 体系框架与分类（键值/列族/文档/图形）、与关系数据库的区别、CAP/BASE、云数据库概念与 UMP 架构。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>四大类划分教学上依然成立，但 2026 年的明星成员是：<b>Redis</b>（KV 事实标准）、<b>MongoDB</b>（文档）、<b>Neo4j / 图计算+GraphRAG 复兴</b>，以及考纲完全没有的<b>第五类——向量数据库</b>：<b>Milvus、Qdrant、Chroma、pgvector</b>，为 RAG/大模型检索而生，是国内招聘刚需技能。云数据库侧：教材的 UMP 是淘宝早年开放平台，业界已是 <b>Aurora / PolarDB / TDSQL 等计算存储分离架构</b>与 <b>Serverless 数据库</b>；Aurora 甚至已能直接查询数据湖里的 Iceberg/Parquet 数据（业务库与湖"免搬运"互通，2026 年 10 月刚刚落地）。CAP/BASE 请继续背熟——面试照样常问。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 6 章</span><b>大数据的应用与展望</b><span class="hot-lv">展望已部分兑现</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>五大应用方向、成功指标、数据分析四层次、挖掘六任务、挑战与机遇。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>教材的"展望"很多已兑现：<b>金融风控与反欺诈</b>仍是渗透最深的场景（大数据优化后不良贷款率平均降约 15%）；制造业<b>预测性维护</b>成熟（非计划停机时间减少约 18%）；新增教材没提的两条主线——<b>数据要素市场化与治理</b>（中国 2026 年六部门印发《国家数据标准体系建设指南》，目标年底基本建成国家数据标准体系）和 <b>"Data for AI / AI for Data" 双向融合</b>（数据平台为大模型供给语料与特征，大模型反过来做数据清洗、分析与 SQL 生成）。分析层次说法没变，只是 BI 报表正在被 ChatBI（自然语言问数）替代。</div>
+  </div>
+</div>
+
+<!-- ================= Ⅲ ================= -->
+<h2 class="section" id="ai">Ⅲ · 人工智能侧逐章对照（考纲第 7~13 章）</h2>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 7 章</span><b>人工智能的基本概念</b><span class="hot-lv">💎 最保值的一章</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>AI 定义、发展史、图灵测试、中文屋、自动驾驶 L0–L5 分级、AI 的社会影响。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>这章几乎不落后——<b>图灵测试和中文屋在 ChatGPT/大模型时代反而被重新讨论得更热烈</b>（"生成式 AI 通过图灵测试了吗"是 2026 年热门辩题）。发展史需要续写两页：2017 Transformer 论文、2022 ChatGPT 发布、2023 百模大战、2024—2026 <b>DeepSeek 等国产模型以开源+低成本冲击格局，中美性能差距缩至 2.7%</b>；自动驾驶分级标准沿用，L2+/城市领航辅助已普及，L4  Robotaxi 在多城市试点。考点照旧答，历史线自己心里有数。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 8 章</span><b>特征提取（手工特征、前向/后向选择、图像特征）</b><span class="hot-lv">❗ 被表示学习整体取代</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>特征选择作用与方法、皮尔逊相关系数、前向/后向选择算法、颜色/纹理/形状/空间关系四大图像特征、灰度转二值。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>图像侧的 <b>SIFT/HOG/手工颜色纹理特征已全面让位于"表示学习"</b>：CNN（ResNet）→ Vision Transformer → 2026 年的<b>多模态大模型与 CLIP 类视觉-语言嵌入</b>，一张图直接编码成向量入库检索。特征工程的形态变了但没死：<b>Embedding 就是新的"特征提取"</b>；表格数据场景里<b>特征工程/特征存储（Feature Store）仍是风控建模核心手艺</b>；自动特征选择演化进 AutoML（<b>auto-sklearn、Hyperopt、大模型辅助建模</b>）。教材的"相关性计算、前向/后向选择"作为<b>可计算的经典思想</b>仍值得动手练——它训练的直觉在选型时照样用得上。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 9 章</span><b>机器学习（含神经网络、深度学习概念）</b><span class="hot-lv">💎 概念层完全保值</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>监督/无监督分类、强化学习原理、推荐系统过滤算法、人工神经元、神经网络三基础、AI⊃ML⊃DL、前馈网络与 Sigmoid、全连接结构。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>概念框架（监督/无监督/强化、AI⊃ML⊃DL）<b>一个字没改</b>，换的是工具与 SOTA：<b>sklearn + XGBoost/LightGBM</b> 仍是表格数据王者与工业默认；<b>深度学习框架 PyTorch 一统科研与工业</b>（2026 年仍是 Agent/RAG/LLM 训练微调的核心依赖），国内信创场景<b>飞桨 PaddlePaddle</b>占一席；激活函数主力早从 Sigmoid 换成 <b>ReLU/GELU</b>（Sigmoid 因梯度消失问题只在特定场合幸存）；推荐系统从"协同过滤"演进到<b>多模态大模型推荐 + 生成式推荐</b>；强化学习因 <b>RLHF/RLVR（用强化学习对齐与大模型推理训练）</b>第一次成为大模型训练的核心工序——教材里最冷清的 9.2 节反而成了 2026 年最热的方向。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 10 章</span><b>自然语言理解</b><span class="hot-lv">❗ 范式整体更替</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>语言认知模型与层次、汉语特点、直言推理与换位法、Olson 语言理解四标志、计算机识字原理。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>2022 年前的 NLP 管线（分词→句法→语义→对话）已被<b>端到端大模型吞并</b>：2026 年的"自然语言理解"= <b>LLM + Prompt 工程 + RAG（检索增强生成）+ Agent（智能体）</b>。技术栈关键词：<b>Transformer 架构</b>（2017 提出，如今绝对主流）、<b>Hugging Face Transformers/Hub</b>（开源模型生态中心）、<b>LangChain/LangGraph</b>（应用编排事实标准，2026 版教程已讲到 1.x 中间件与上下文工程）、<b>LlamaIndex</b>（知识库/RAG 专精）、<b>MCP 协议</b>（2024 年底才出现，现已成模型连接外部工具/数据源的标准接口——完全在教材出版之后）。教材这套认知模型/符号推理理论属于"计算语言学古典流派"，作为<b>理解"机器到底理不理解语言"的哲学与理论底色</b>仍有价值（也与第 7 章中文屋呼应），但没有任何公司按这套管线做产品。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 11 章</span><b>AI 方法在目标检测中的应用（视频监控、人脸识别）</b><span class="hot-lv">❗ 方法换代，场景仍在</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>贝叶斯网络、视频监控系统框架、多视角目标识别/消失重现识别、异常行为描述、人脸识别流程、多视角人脸检测与跟踪、多任务决策融合。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>场景（安防、人脸识别）依然巨大，但方法全面深度学习化：<b>目标检测 = YOLO 系列（YOLOv8~v11，实时检测工业首选）+ DETR 类 Transformer 检测器 + RT-DETR</b>；跟踪用 <b>ByteTrack</b> 一类检测-关联范式；人脸识别以 <b>ArcFace 系深度嵌入</b>为标配，并叠加活体检测与<b>深度伪造（Deepfake）攻防</b>——这是教材时代不存在的新战场（生成式视频普及后的头号安防新课题）。贝叶斯网络作为概率图模型经典仍在部分风控/医疗模型中使用，但已非视觉主线。"监控框架分层（采集-传输-分析-展示）"的结构思想不变，照背无害。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 12 章</span><b>云计算、大数据与人工智能</b><span class="hot-lv">💎 概念保值，形态升级</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>云计算 5 特征/3 模式（IaaS/PaaS/SaaS）/4 部署、优势、兼容与迁移用例、云—物—数—智融合。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>SPI 模型和部署形态分类<b>至今原样使用</b>，这章概念完全没过时。升级的是形态：<b>云原生三件套 Docker/Kubernetes/Serverless</b> 成为应用默认底座（也因此取代了 YARN 的资源调度地位）；出现教材没有的新层级——<b>MaaS/模型即服务与 GPU 云</b>（推理服务、微调平台），"云—物—数—智"融合在 2026 年演进为 <b>"云—边—端协同的 AI 基础设施"</b>与 Agentic AI 平台（如阿里称其大数据平台正面向 Agentic AI 重构）。答题按教材，理解按现实。</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="ch-h"><span class="no">第 13 章</span><b>机器学习算法实验（距离、K-均值、回归、决策树）</b><span class="hot-lv">💎 永远的算法内功</span></div>
+  <div class="map">
+    <div class="old"><span class="tag">📖 考纲/教材</span>距离度量计算、K-均值聚类 trace、线性回归最小二乘、精确率/召回率、熵与信息增益、手工生成决策树。</div>
+    <div class="arrow">➜</div>
+    <div class="new"><span class="tag">🚀 2026 主流</span>这些是<b>面试白板题与算法内功</b>，不过时：K-均值/欧氏距离的新身份是<b>向量数据库里的 ANN 近邻检索与聚类索引</b>（Milvus/Qdrant 内部就在跑 K-均值类聚类建 IVF 索引）——学考纲的 K-均值，等于提前理解 RAG 检索引擎的一半。决策树的现代形态是<b>梯度提升树 GBDT/XGBoost/LightGBM</b>（表格数据 2026 年仍是它的地盘）；熵与信息增益则一路通向<b>交叉熵损失——今天所有大模型训练的默认损失函数</b>。线性回归升级为逻辑回归与大模型微调里的各种头。这一章请放心学，每个公式都有现代后代。</div>
+  </div>
+</div>
+
+<!-- ================= Ⅳ ================= -->
+<h2 class="section" id="gauge">Ⅳ · 一张图：考纲知识点的"保值率"分级</h2>
+<div class="rule">
+  <div class="gauge">
+    <span class="g1">💎 高度保值（概念即通用，学完直接迁移）</span>
+    <span class="g2">🟡 半保值（思想仍在，载体/工具已换）</span>
+    <span class="g3">🔻 工具已过时（为考试而学，别当求职技能）</span>
+  </div>
+  <div class="tscroll"><table class="law">
+    <tr><th>保值级</th><th>考纲内容</th><th>说明</th></tr>
+    <tr><td class="g1" style="background:#dcfce7;color:#15803d">💎 高</td><td>4V 概念 · CAP/BASE · 分而治之 · 副本/擦除码权衡 · 监督/无监督/强化 · 熵与信息增益 · K-均值/距离度量 · 精确率召回率 · 图灵测试/中文屋 · 云计算 SPI 模型</td><td>这些是"道"层面的知识，2026 年一切新架构（湖仓、向量库、LLM 训练）都建立在其上，背熟并用本页新词复述一遍，双倍收益。</td></tr>
+    <tr><td style="background:#fef3c7;color:#b45309">🟡 中</td><td>HDFS 架构与读写流程 · MapReduce 作业流程 · Spark 架构 · HBase 数据模型 · NoSQL 四分类 · Hive 执行流程 · 神经网络/前馈/Sigmoid · 特征选择算法 · 人脸识别流程</td><td>思想可迁移，但工程载体已换代：HDFS→对象存储、MR→Spark/Flink 算子、Hive→Iceberg、Sigmoid→GELU、手工特征→Embedding。</td></tr>
+    <tr><td style="background:#fef2f2;color:#b91c1c">🔻 低</td><td>Pig Latin · ZooKeeper 五角色 · UMP 云数据库 · 容量/公平调度器 · 贝叶斯网络做视觉 · 直言推理工程化 · 教材"云数据库产品"清单</td><td>工业界几乎无新增使用或已被替代。为"识记 20%"的分照背，但<b>不要</b>写进简历技能栏。</td></tr>
+  </table></div>
+  <div class="note">📌 一句话总结：<b>约 70% 的概念层知识在 2026 年依然成立，落伍的是那 30% 的工具名。</b>教材"技术偏落后"的说法，精确版应该是——<b>"工程栈落后一代，理论栈仍然通用"</b>。</div>
+</div>
+
+<!-- ================= Ⅴ ================= -->
+<h2 class="section" id="job">Ⅴ · 2026 招聘市场关键词（对照教材没教的）</h2>
+<div class="rule">
+  以下为 2026 年国内"大数据 + AI 方向"岗位 JD（职位描述）中的高频技能词，按出现频率分档（依据公开招聘信息与社区调研整理）：
+  <div class="tscroll"><table class="law">
+    <tr><th>方向</th><th>2026 高频技能词</th><th>与考纲的关系</th></tr>
+    <tr><td>🤖 大模型应用 / Agent 开发</td><td>LLM API 调用、<b>Prompt 工程、RAG、LangChain / LangGraph、Agent、MCP</b>、vLLM/Ollama 推理部署、LoRA/PEFT 微调</td><td>考纲第 10 章的"现实续集"，全部未写入教材（MCP 出现于 2024 年末）</td></tr>
+    <tr><td>🗄️ 向量检索 / AI Infra</td><td><b>Milvus、Qdrant、pgvector</b>、Embedding、混合检索、GPU 集群、推理服务化</td><td>考纲第 5 章 NoSQL 的"第五类新成员"</td></tr>
+    <tr><td>🌊 实时数仓 / 湖仓</td><td><b>Flink（2.x）、Kafka、Iceberg、StarRocks/Doris、Spark 4.x</b>、CDC、流批一体、存算分离</td><td>分别替代考纲第 2/4/5 章的 Hive、MapReduce、HBase 岗位位</td></tr>
+    <tr><td>📊 传统数据工程</td><td>SQL 调优、Airflow/DolphinScheduler 调度、dbt、数据治理、数据标准</td><td>与考纲第 1/6 章的采集、分析层次一脉相承，工具更新</td></tr>
+    <tr><td>🧠 算法 / 机器学习</td><td><b>PyTorch</b>、XGBoost/LightGBM、sklearn、特征平台、MLOps（MLflow）、推荐/风控建模</td><td>考纲第 9/13 章的直接现代版，概念可无缝对接</td></tr>
+    <tr><td>👁️ 视觉 / 多模态</td><td><b>YOLO 系列、DETR/RT-DETR</b>、CLIP、多模态大模型、Deepfake 检测、端侧推理（TensorRT、国产芯片适配）</td><td>考纲第 8/11 章的"现实续集"</td></tr>
+    <tr><td>☁️ 云原生底座</td><td><b>Docker、Kubernetes</b>、Serverless、对象存储（S3/OSS/MinIO）</td><td>考纲第 12 章的"实现层"，也是替代 YARN/HDFS 岗位位的实际技术</td></tr>
+  </table></div>
+  <div class="th">给备考者的现实建议</div>
+  13011 考点 ≈ "2015—2019 年技术栈的概念总结"。它能帮你<b>拿到学历证书</b>、建立分布式与机器学习的正确心智模型；但要敲开 2026 年技术岗的门，需在此之上另练三件套：<b>SQL + Python（PyTorch/pandas）+ 一个现代组件上手</b>（Kafka 或 Milvus 或 Flink 任选其一跑通 demo）。
+</div>
+
+<!-- ================= Ⅵ ================= -->
+<h2 class="section" id="path">Ⅵ · 延伸学习路线（放到考完之后再学）</h2>
+<div class="rule">
+  <ol class="steps" style="margin:0 0 0 1.4em;padding:0">
+    <li><b>第 0 步 · 考过它（现在）：</b>忘掉本页，按<a class="inline" href="考纲.html">考纲</a>与<a class="inline" href="知识点/index.html">知识点速记卡</a>复习。考卷只认教材说法。</li>
+    <li><b>第 1 步 · 换词表（考后 1 周）：</b>拿本页 Ⅳ 的保值表，把每个"教材概念"挂上"2026 对应物"——CAP/BASE→NewSQL 与对象存储一致性、副本机制→S3 冗余、信息增益→交叉熵。建立一张自己的新旧映射卡。</li>
+    <li><b>第 2 步 · 数据工程入门（1~2 月）：</b>Python + SQL 练熟；用 Docker 起一套 <b>PostgreSQL + pgvector</b>，再用 <b>Kafka + Flink</b> 或 <b>Spark 4.x + Iceberg</b> 做一个迷你实时/湖仓 pipeline。亲手摸一遍考纲第 2~5 章组件的"现代替身"。</li>
+    <li><b>第 3 步 · AI 侧上手（1~2 月）：</b><b>PyTorch</b> 基础 → 用 <b>Hugging Face transformers</b> 跑通一个预训练模型 → 用 <b>LangChain/LlamaIndex + Milvus</b> 搭一个属于自己的 RAG 问答库（比如把 13011 全部知识点喂进去——一举两得）→ 了解 <b>Agent 与 MCP</b>。</li>
+    <li><b>第 4 步 · 选一个纵深方向：</b>实时数仓 / 大模型应用 / 算法建模 / 视觉多模态，按 Ⅴ 表选一条刷项目。教材第 13 章的决策树、K-均值亲手实现过的人，走 XGBoost 或向量检索都比纯速成者快。</li>
+    <li><b>持续跟进：</b>技术快照保质期短（本页信息截至 <b>2026 年 10 月</b>）。关注 Apache 项目动态（Iceberg V3、Flink 2.x、Fluss）、主流大模型发布与各招聘网站 JD 关键词变化。</li>
+  </ol>
+</div>
+
+<div class="note">
+  🤖 <b>本页生成信息：</b>由 <b>AI 于 2026 年 10 月 30 日</b>根据 13011 考纲（2026 年 10 月收集版）与 2026 年公开行业资讯（湖仓一体/Iceberg 生态进展、Flink 2.x 与 Fluss 毕业、Spark 4.x 动态、Gartner 湖仓预测、国内大模型岗位 JD 关键词、《2026 年 AI 指数报告》等）对照整理生成。<br>
+  ⚠️ 本页内容<b>不构成任何考试依据</b>，行业技术描述存在时效性与口径差异，求职/选型前请自行核实最新版本信息；考试请以<a class="inline" href="考纲.html">课程考纲</a>与指定教材原文为准。
+</div>
+
+<div class="gotos plain" style="margin-top:20px">
+  <a href="考纲.html">📋 返回考纲页</a>
+  <a href="知识点/index.html">📚 知识点导航</a>
+  <a href="../index.html">🏠 13011 首页</a>
+</div>
+
+</div>
+<a href="#" class="totop">↑</a>
+</body>
+</html>

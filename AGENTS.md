@@ -32,6 +32,7 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 - **不要**在页内重复 `:root`、`body`、`.wrap`、`.card/.rule/.note/.toc/.law/.m` 等已在 theme 中定义的公共类——直接用这些类名。改主色/字体只改 theme.css 的 `:root` 一处。
 - **分章 hero 渐变**用页内一行 `header.hero{background:linear-gradient(...)}` 覆盖（theme 用 `var(--hero, 默认紫)` 暴露），这是有意保留的章节识别色，勿上收。
 - ⚠️ **同名类跨页语义可能不同**，抽公共样式前必须先确认语义一致。已知陷阱：`.ok` 在「内容页」= 绿底提示框、在「动画页(Prim/Kruskal)」= 步骤日志的绿色文字 → 因此 `.ok` **故意不进 theme**，各页自留。新增共享样式时若遇类名复用，宁可保留页内也不要盲目上收，避免属性渗漏/串色。
+- ⚠️ **`.gotos` 只能裸用在 `header.hero` 深底内**：theme 里它写死 `color:#fff`+半透明白底，放到正文/页尾的浅底上会变白字不可见（已两次踩坑）。浅底场景一律加修饰符写成 **`.gotos plain`**（theme 已提供，只换配色不换布局）；新页若含页尾 `.gotos` 导航，自检时全局搜 `class="gotos"` 确认无遗漏。
 - 动画、`svg`/`table.*`、`.def/.thm/.ext` 等族专属样式保持**页内自包含**。
 
 ## 3. 内容规范
