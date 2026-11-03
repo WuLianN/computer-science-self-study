@@ -9,6 +9,11 @@
 <link rel="stylesheet" href="../../../assets/theme.css?v=20261030d">
 <style>
   header.hero{background:linear-gradient(135deg,#1d4ed8,#0891b2)}
+  .qref{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;text-decoration:none}
+  a.qref:hover{text-decoration:underline}
+  .law td.q{white-space:nowrap}
+  .qtab th,.qtab td:nth-child(2){white-space:nowrap}
+  @media (max-width:640px){.qtab{min-width:560px}}  /* 窄屏宁可在 .tscroll 里横滑，也不把「考点」列挤成一竖条 */
   .lvl{display:inline-block;font-size:12.5px;font-weight:700;border-radius:6px;padding:0 8px;margin-right:6px;white-space:nowrap}
   .lvl.a{background:#e0f2fe;color:#0369a1}
   .lvl.b{background:#dcfce7;color:#15803d}
@@ -45,6 +50,7 @@
   <a href="#s5">五、继承与方法重写（领会）</a>
   <a href="#s6">六、多态与常用特殊方法（识记）</a>
   <a href="#s7">七、本章速记小结</a>
+  <a href="#s8">八、本章真题呼应（2026.4）</a>
 </div>
 
 <h2 class="section" id="s1">一、面向对象 vs 面向过程 ⭐</h2>
@@ -148,7 +154,16 @@ a = Account(100)
   <b>简答高频：</b>①面向对象三大特征=封装/继承/多态；②与面向过程的区别（见第一节模板）。
 </div>
 
-<footer>计算机高级程序设计 08074 · 第 8 章 面向对象编程 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版</footer>
+<h2 class="section" id="s8">八、本章真题呼应（2026.4 广东卷）</h2>
+<div class="rule"><div class="tscroll"><table class="law qtab">
+  <tr><th>题号</th><th>题型·分值</th><th>考点一句话</th></tr>
+  <tr><td class="q"><a class="qref" href="../../全国2026年4月自考08074《计算机高级程序设计》真题/真题详解.html#q24">第 24 题</a></td><td>简答 · 6 分</td><td>面向对象三大特性：背骨架词<b>封装·继承·多态</b>再扩写成句</td></tr>
+  <tr><td class="q"><a class="qref" href="../../全国2026年4月自考08074《计算机高级程序设计》真题/真题详解.html#q31">第 31 题</a></td><td>综合设计 · 9 分</td><td>Animal / Cat / Dog 三层继承：<code>__init__</code> 定公共属性、<code>class Cat(Animal):</code>、各写信息输出方法</td></tr>
+</table></div>
+  ⚠️ 子类构造里漏写 <code>super().__init__(species, age)</code> 则属性未初始化，直接丢分。
+</div>
+
+<footer>计算机高级程序设计 08074 · 第 8 章 面向对象编程 · 指定教材《Python语言程序设计基础教程》清华大学出版社 2022 第 1 版 · 题号链接对应 <a href="../../全国2026年4月自考08074《计算机高级程序设计》真题/真题详解.html">2026.4 真题详解</a></footer>
 </div>
 
 <script src="../../../assets/dock.js?v=20261030d" defer></script>
