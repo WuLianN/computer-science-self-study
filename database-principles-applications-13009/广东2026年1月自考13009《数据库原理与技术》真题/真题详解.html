@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>2026年1月广东省考 13009《数据库原理与技术》真题详解</title>
+<meta name="description" content="2026年1月广东省高等教育自学考试 13009《数据库原理与技术》真题逐题详解：单选15题+简答6题+综合设计4题（共25题），题干常显、答案折叠，可当卷子自测。含参考答案速查表与考点链回知识点速记卡。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗄️</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261030d">
+<style>
+header.hero{background:linear-gradient(135deg,#0284c7,#7c3aed)}  /* 13009 主题：蓝→紫，与知识点导航页一致 */
+.links{margin-top:12px}
+.links a{display:inline-block;background:#fff;color:var(--brand);border-radius:8px;padding:4px 12px;font-size:13px;text-decoration:none;margin-right:8px}
+.toolbar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+button.btn:hover{background:var(--brand);color:#fff}
+details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}
+details.q>summary{cursor:pointer;padding:14px 18px;list-style:none;display:block}
+details.q>summary::-webkit-details-marker{display:none}
+details.q>summary:hover{background:#fafbff}
+.qno{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:8px;font-size:13px;font-weight:700;padding:2px 10px;margin-right:8px;vertical-align:middle}
+.stem{display:inline;font-weight:600;vertical-align:middle}
+.toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
+details.q[open]>summary .toggle::after{content:" ▴"}
+details.q:not([open])>summary .toggle::after{content:" ▾"}
+.opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
+.opts span{font-size:15px;color:#374151}
+.body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
+.answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
+.ref{background:#fff;color:var(--warn)}
+.sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
+.sol .lab{font-weight:700;color:var(--brand)}
+.tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0;text-decoration:none}
+a.tag:hover{background:var(--warn);color:#fff}
+pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 16px;overflow-x:auto;font-size:13.5px;line-height:1.7;margin:8px 0}
+table.mini{border-collapse:collapse;font-size:13.5px;margin:8px 0;background:#fff}
+table.mini th,table.mini td{border:1px solid var(--line);padding:4px 12px;text-align:center}
+table.mini th{background:var(--brand-soft);color:var(--brand)}
+.tables{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+.er{background:#f1f5f9;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;overflow-x:auto;white-space:pre;margin:8px 0}
+table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
+table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center;word-break:break-word}
+table.anskey th:first-child,table.anskey td:first-child{width:62px}
+table.anskey th{background:var(--brand-soft);color:var(--brand)}
+table.anskey td b{color:var(--ok)}
+.tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>2026年1月广东省高等教育自学考试 · 数据库原理与技术（13009）真题详解</h1>
+  <p>广东省卷 · 教材：赵明渊主编《数据库原理与应用（基于 MySQL）》清华大学出版社 2022 年版（注意教材名与课程名不同）。题干与选项默认显示，<b>点开才看参考答案与解析</b>，先自测再核对。</p>
+  <span class="pill">单选 15×2 = 30分</span><span class="pill">简答 6题 = 26分</span><span class="pill">综合/设计 4题 = 40分</span><span class="pill">闭卷 150 分钟</span>
+  <div class="links"><a href="../../index.html">🏠 首页</a><a href="../真题/index.html">📝 真题导航</a><a href="../知识点/index.html">📚 知识点速记卡</a><a href="../考纲.html">📋 考纲</a></div>
+</header>
+
+<div class="tip">
+  📚 <b>本卷共 25 题满分 100 分</b>，题干常显、答案与解析折叠，可直接当卷子做。建议答题顺序：单选（30分，概念辨析为主）→ 综合/设计大题（40分，E-R 图 + 关系代数 + SQL 写作 + 规范化推导，按小问给分）→ 简答（26分，分条作答）。<b>完整答案速查表在页面最下方</b>。<br>
+  ⚠️ 本卷为逐题整理收录，<b>官方未发布标准答案</b>；参考答案均依据当期《考试大纲》与指定教材内容逐题推定复核，供学习参考。个别截图未显示各题分值处已按题型结构推定并标注。
+</div>
+
+<div class="toolbar">
+  <button class="btn" onclick="document.querySelectorAll('details.q').forEach(d=>d.open=true)">全部展开（看答案）</button>
+  <button class="btn" onclick="document.querySelectorAll('details.q').forEach(d=>d.open=false)">全部收起（自测模式）</button>
+  <button class="btn" onclick="document.getElementById('anskey').scrollIntoView({behavior:'smooth'})">🔑 答案速查表（页尾）</button>
+  <span style="color:var(--muted);font-size:13px">提示：题干常显，点开才看答案。</span>
+</div>
+
+<h2 class="section">一、单项选择题（15 小题，共 30 分）</h2>
+
+<details class="q" id="q1"><summary>
+  <span class="qno">第1题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">数据管理技术发展历程中,具有数据不保存、不共享特点的是</div>
+  <div class="opts"><span>A. 人工管理阶段</span><span>B. 文件系统阶段</span><span>C. 数据库系统阶段</span><span>D. 操作系统阶段</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>数据管理三阶段中，<b>人工管理阶段</b>（20世纪50年代以前）数据随程序而生、随程序而灭，<b>不保存</b>、程序之间<b>不共享</b>、每组数据对应一个程序；文件系统阶段数据可长期保存但共享性差、冗余度大；数据库系统阶段高共享、低冗余、独立性好。D 是干扰项（操作系统不是数据管理的一个阶段）。故选 A。</div>
+  <a class="tag" href="../知识点/概论/数据库概论.html#s2">考点：数据管理技术的发展</a>
+</div></details>
+
+<details class="q" id="q2"><summary>
+  <span class="qno">第2题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">数据库系统的三级模式结构中,位于最外层,又称为子模式或用户模式的是</div>
+  <div class="opts"><span>A. 模式</span><span>B. 外模式</span><span>C. 设计模式</span><span>D. 内模式</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>三级模式由外到内：<b>外模式</b>（最外层，用户可见的局部数据逻辑结构，又称<b>子模式/用户模式</b>）→ <b>模式</b>（全体数据的逻辑结构，即数据库本身）→ <b>内模式</b>（物理存储结构，又称存储模式）。C 为干扰项。故选 B。</div>
+  <a class="tag" href="../知识点/概论/数据库概论.html#s6">考点：三级模式两级映像</a>
+</div></details>
+
+<details class="q" id="q3"><summary>
+  <span class="qno">第3题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关系模式中的一个主码</div>
+  <div class="opts"><span>A. 只能由一个属性组成</span><span>B. 至少由一个属性组成</span><span>C. 必须由多个属性组成</span><span>D. 必须由关系模式的所有属性组成</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>主码（主键）是<b>能唯一标识元组的属性或属性组</b>：可以由单个属性组成（如学号），也可以由多个属性共同组成（如选修表的（学号,课程编号)）。"只能一个"（A）与"必须多个"（C）都太绝对，D 混淆了"全码"概念。故"至少由一个属性组成"最准确，选 B。</div>
+  <a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s2">考点：关系的形式化定义与码</a>
+</div></details>
+
+<details class="q" id="q4"><summary>
+  <span class="qno">第4题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关系模型上的关系操作语言包括</div>
+  <div class="opts"><span>A. 关系代数语言、集合运算语言和关系演算语言</span><span>B. 关系代数语言、集合运算语言和结构化查询语言</span><span>C. 结构化查询语言、集合运算语言和关系演算语言</span><span>D. 关系代数语言、关系演算语言和结构化查询语言</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>按教材分类，关系模型上的关系操作语言包括三类：<b>关系代数语言、集合运算语言、关系演算语言</b>（前两者基于运算，后者基于谓词演算）。<b>SQL（结构化查询语言）是语言的实际实现标准</b>，不属于这一形式化分类，含"结构化查询语言"的 B/C/D 均排除。故选 A。</div>
+  <a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s4">考点：关系操作及其特点</a>
+</div></details>
+
+<details class="q" id="q5"><summary>
+  <span class="qno">第5题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关系数据库的约束规则中,关系的主码属性不能取空值。</div>
+  <div class="opts"><span>A. 实体完整性</span><span>B. 参照完整性</span><span>C. 用户定义完整性</span><span>D. 外码完整性</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span><b>实体完整性规则</b>：若属性（或属性组）K 是基本关系的主码，则 K 中的每个属性<b>都不能取空值</b>（主码是实体的唯一标识，为空就无法区分元组）。参照完整性约束的是外码与另一关系主码的对应关系；用户定义完整性是针对具体应用的条件约束；"外码完整性"不是标准名称（即参照完整性）。故选 A。</div>
+  <a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s3">考点：关系的三类完整性规则</a>
+</div></details>
+
+<details class="q" id="q6"><summary>
+  <span class="qno">第6题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL中,使字段的输入值大于0的约束是</div>
+  <div class="opts"><span>A. CHECK</span><span>B. PRIMARY KEY</span><span>C. UNIQUE KEY</span><span>D. FOREIGN KEY</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>"输入值大于 0"是列取值的<b>条件约束</b>，属于<b>用户定义完整性</b>，用 <code>CHECK(分数&gt;0)</code> 实现。PRIMARY KEY 保证唯一+非空（实体完整性），UNIQUE KEY 只保证不重复，FOREIGN KEY 实现表间参照（参照完整性），三者都管不了"大于 0"这种取值范围。故选 A。</div>
+  <a class="tag" href="../知识点/数据完整性/完整性约束.html#s5">考点：CHECK 与非空约束</a>
+</div></details>
+
+<details class="q" id="q7"><summary>
+  <span class="qno">第7题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL数据库中,修改数据库的SQL命令是</div>
+  <div class="opts"><span>A. ALTER DATABASE</span><span>B. DELETE DATABASE</span><span>C. INSERT DATABASE</span><span>D. UPDATE DATABASE</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>MySQL 定义数据库四条语句：<code>CREATE DATABASE</code>（创建）、<code>ALTER DATABASE</code>（<b>修改</b>，常改字符集/排序规则）、<code>DROP DATABASE</code>（删除）、<code>SHOW DATABASES</code>（查看）。删除数据库用 DROP 而非 DELETE；INSERT/UPDATE 是操作<b>数据</b>的 DML，不能作用于数据库。故选 A。</div>
+  <a class="tag" href="../知识点/MySQL数据库和表/建库与建表.html#s2">考点：定义数据库四条语句</a>
+</div></details>
+
+<details class="q" id="q8"><summary>
+  <span class="qno">第8题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL中,用于删除数据表数据的命令是</div>
+  <div class="opts"><span>A. UPDATE</span><span>B. DELETE</span><span>C. INSERT</span><span>D. FIND</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>删除表中<b>数据</b>（行）用 <code>DELETE FROM 表 [WHERE 条件]</code>（另有 <code>TRUNCATE TABLE</code> 一次性清空）。UPDATE 修改、INSERT 插入；MySQL 根本没有 FIND 命令（查询用 SELECT）。注意与删除<b>表本身</b>的 <code>DROP TABLE</code> 区分。故选 B。</div>
+  <a class="tag" href="../知识点/表数据操作/增删改数据.html#s4">考点：DELETE 与 TRUNCATE</a>
+</div></details>
+
+<details class="q" id="q9"><summary>
+  <span class="qno">第9题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL查询中,如果WHERE子句为:姓名LIKE%民,下列姓名不会被查询出来的是</div>
+  <div class="opts"><span>A. 民子</span><span>B. 全民</span><span>C. 大民子</span><span>D. 民民民</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>通配符 <code>%</code> 匹配任意长度（含 0 长度）字符串，<code>'%民'</code> 的语义是<b>以“民”结尾</b>。逐字符核验四个姓名：A“民子”结尾是“子”→不匹配；B“全民”结尾是“民”→匹配；C“大民子”结尾是“子”→不匹配；D“民民民”结尾是“民”→匹配。<br>⚠️ <b>存疑标注</b>：按上述规则题面会出现 A、C 两个“不会被查询出来”的选项，疑为原卷模式实为 <code>'民%'</code>（以民开头，则不匹配的是 B、C）或截图个别字符失真——<b>截图清晰度有限，本题为争议题</b>。流传参考答案取 <b>A</b>，按“单选题选最先命中项”暂记 A，复习时重点掌握 % 与 _ 通配符本身。</div>
+  <a class="tag" href="../知识点/数据查询/SELECT查询.html#s3">考点：WHERE 的七类条件（LIKE）</a>
+</div></details>
+
+<details class="q" id="q10"><summary>
+  <span class="qno">第10题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL中,LIMIT1,3描述的是</div>
+  <div class="opts"><span>A. 获取第1条到第3条记录</span><span>B. 获取第1条到第4条记录</span><span>C. 获取第2条到第4条记录</span><span>D. 获取第2条到第5条记录</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span><code>LIMIT 偏移量, 行数</code>：<b>偏移量从 0 开始计</b>。<code>LIMIT 1,3</code> = 跳过第 1 条，从<b>第 2 条</b>开始取 <b>3 条</b>，即第 2、3、4 条记录。故选 C。</div>
+  <a class="tag" href="../知识点/数据查询/SELECT查询.html#s6">考点：排序与限制行数（LIMIT）</a>
+</div></details>
+
+<details class="q" id="q11"><summary>
+  <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在关系表:学校(编号,校名,分数线)中,编号是主键,要查询所有分数线不是最高的学校的编号,不正确的MySQL查询语句是</div>
+  <div class="opts"><span>A. SELECT编号FROM学校WHERE分数线&lt;(SELECT MAX(分数线)FROM 学校);</span><span>B. SELECT S2.编号FROM学校S1,学校S2 WHERE S1.分数线&lt;S2.分数线;</span><span>C. SELECT编号FROM学校S1 WHERE EXISTS (SELECT*FROM学校S2 WHERE (S1.分数线&lt;S2.分数线));</span><span>D. SELECT编号FROM学校WHERE分数线&lt;SOME(SELECT分数线FROM学 校);</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>逐项验证语义"分数线 &lt; 最高分数线"：<br>A：标量子查询取 <code>MAX(分数线)</code> 再比较，✔ 正确。<br>C：相关子查询 EXISTS——"存在另一所学校分数线比我校高" ⇔ 本校不是最高，✔ 正确。<br>D：<code>&lt; SOME(子查询)</code>（SOME=ANY，小于集合中某一个值）⇔ 小于最大值，✔ 正确。<br>B：意图做自身连接 <code>FROM 学校 S1, 学校 S2</code>，但连接条件里 <b>S1 一侧的"分数线"未加表前缀</b>（写成 <code>WHERE S1.分数线&lt;S2.分数线</code> 才合法），且即便补全，<code>SELECT S2.编号</code> 取的是"分数线更高那所"的编号，方向也反了——该句要么报错要么查错，✔ 即"不正确"的选项。故选 B。</div>
+  <a class="tag" href="../知识点/数据查询/SELECT查询.html#s8">考点：子查询 IN/比较/EXISTS</a><a class="tag" href="../知识点/数据查询/SELECT查询.html#s7">另见：连接查询</a>
+</div></details>
+
+<details class="q" id="q12"><summary>
+  <span class="qno">第12题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL中,下列关于视图的描述不正确的是</div>
+  <div class="opts"><span>A. 基表中的数据发生变化,从视图中查询出的数据也随之改变</span><span>B. 视图也叫虚表,是从一个或几个基本表(或视图)导出的表</span><span>C. 视图只存储视图的定义,不存放视图对应的数据</span><span>D. 视图中总是存储数据</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>视图是<b>虚表</b>：数据库中<b>只存视图定义（B、C 正确）</b>，不存放视图对应的数据，数据仍来自基表，基表变化时视图查询结果随之变化（A 正确）。D"视图中总是存储数据"与"虚表、只存定义"直接矛盾（只有物化视图才存数据，MySQL 默认视图不物化），是错误的描述。故选 D。</div>
+  <a class="tag" href="../知识点/视图索引/视图和索引.html#s1">考点：视图的含义与优点</a>
+</div></details>
+
+<details class="q" id="q13"><summary>
+  <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">需要使用关键字UNIQUE创建的索引是</div>
+  <div class="opts"><span>A. 唯一性索引</span><span>B. 主键</span><span>C. 空值索引</span><span>D. 聚簇索引</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span><code>CREATE UNIQUE INDEX</code> / 建表时 <code>UNIQUE KEY</code> 创建的就是<b>唯一性索引</b>（列值不许重复，允许空值）。主键约束虽然底层也是唯一+非空索引，但定义它用 <code>PRIMARY KEY</code> 关键字、无须 UNIQUE；聚簇索引由 PRIMARY KEY（InnoDB 默认）等产生；"空值索引"不存在。故选 A。</div>
+  <a class="tag" href="../知识点/视图索引/视图和索引.html#s6">考点：索引操作（三建两删一看）</a><a class="tag" href="../知识点/数据完整性/完整性约束.html#s2">另见：主键与唯一性约束</a>
+</div></details>
+
+<details class="q" id="q14"><summary>
+  <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在MySQL中,存储了用户对某个数据库的操作权限的表是</div>
+  <div class="opts"><span>A. Columns_priv</span><span>B. db</span><span>C. procs_priv</span><span>D. tables_priv</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>mysql 库六张权限表各管一级：<code>user</code>（全局级）、<b><code>db</code>（库级——用户对某个数据库的操作权限）</b>、<code>tables_priv</code>（表级）、<code>columns_priv</code>（列级）、<code>procs_priv</code>（存储过程/函数级）、<code>proxies_priv</code>（代理用户）。题干"对某个数据库"→ db 表。故选 B。</div>
+  <a class="tag" href="../知识点/安全管理/用户与权限.html#s2">考点：权限表所在库与包含的表</a>
+</div></details>
+
+<details class="q" id="q15"><summary>
+  <span class="qno">第15题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列范式中,限制了主属性对码的依赖关系的是</div>
+  <div class="opts"><span>A. 1NF</span><span>B. 2NF</span><span>C. 3NF</span><span>D. BCNF</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>逐级看消除的依赖：2NF 消除<b>非主属性</b>对码的部分依赖；3NF 消除<b>非主属性</b>对码的传递依赖——两者都只管非主属性，<b>主属性对码的部分/传递依赖没被限制</b>。<b>BCNF</b> 要求每个非平凡的函数依赖的决定域都必含码，等价于消除<b>主属性对码的部分和传递依赖</b>（连主属性也被约束）。故选 D。</div>
+  <a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s3">考点：码与五级范式</a>
+</div></details>
+
+<h2 class="section">二、简答题（6 小题，共 26 分）</h2>
+
+<details class="q" id="q16"><summary>
+  <span class="qno">第16题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述在数据库技术中,数据模型按应用层次可分成的三类模型。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>①数据模型按应用层次可分为<b>概念模型、逻辑模型、物理模型</b>三类。<br>②<b>概念模型</b>：面向数据库用户的现实世界的模型，按用户的观点对数据和信息建模，是对现实世界的<b>第一层抽象</b>，又称信息模型（典型表示：E-R 图）。<br>③<b>逻辑模型</b>：直接面向数据库的逻辑结构，按计算机的观点对数据建模，是对现实世界的<b>第二层抽象</b>，是概念模型的数据化，是事务以及事务之间联系的数据描述，并提供了表示和组织数据的方法，是具体的 DBMS 所支持的数据模型（如关系模型）。<br>④<b>物理模型</b>：面向计算机物理表示的模型，面向计算机系统，是对数据<b>最底层的抽象</b>，描述数据在储存介质的组织结构，既与具体 DBMS 有关，也与操作系统和硬件有关，如存取路径、存储方式、索引等，由 DBMS 具体实现。</div>
+  <a class="tag" href="../知识点/概论/数据库概论.html#s3">考点：数据模型概念与分类</a>
+</div></details>
+
+<details class="q" id="q17"><summary>
+  <span class="qno">第17题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述关系代数运算的三要素及关系代数中的操作。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>①<b>三要素</b>：运算符、运算对象、运算结果。<br>②关系代数中的操作分为以下两类：<br><b>传统的集合运算</b>：并、交、差、笛卡儿积。<br><b>专门的关系运算</b>：如选择、投影、连接、除。</div>
+  <a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s5">考点：关系代数运算三要素与分类</a>
+</div></details>
+
+<details class="q" id="q18"><summary>
+  <span class="qno">第18题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述在关系型数据库中,定义外键时应遵守的规则。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点（评分参考：写出任意 5 点即可，每 1 点 1 分）：</span>①被参照表必须已经使用 CREATE TABLE 语句创建，或必须是当前正在创建的表。<br>②必须为被参照表定义主键或唯一性约束。<br>③必须在被参照表的表名后面指定列名或列名的组合，该列名或列名的组合必须是被参照表的主键或唯一性约束。<br>④主键不能包含空值，但允许外键中出现空值。<br>⑤外键对应列的数目必须和主键对应列的数目相同。<br>⑥外键对应列的数据类型必须和主键对应列的数据类型相同。</div>
+  <a class="tag" href="../知识点/数据完整性/完整性约束.html#s3">考点：参照完整性外键六条规则</a>
+</div></details>
+
+<details class="q" id="q19"><summary>
+  <span class="qno">第19题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述关系型数据库中索引的概念及其作用。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点（评分参考：写出任意 3 点即可，每 1 点 1 分）：</span>①<b>概念</b>：索引是按照数据表中一列或多列进行索引排序，并为其建立指向数据表记录所在位置的指针。<br>②<b>作用</b>：提高查询速度；保证列值的唯一性；查询优化依靠索引起作用；提高 ORDER BY 和 GROUP BY 的执行速度。</div>
+  <a class="tag" href="../知识点/视图索引/视图和索引.html#s4">考点：索引的概念与分类</a>
+</div></details>
+
+<details class="q" id="q20"><summary>
+  <span class="qno">第20题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">使用MySQL命令完成以下要求:数据库salesDB中有order表。将order表上的select和delete权限,授予已存在的本地用户song,并允许该用户将自身的该权限授予其他用户。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">语句：</span><pre class="sql">GRANT SELECT, DELETE ON salesDB.`order` TO 'song'@'localhost' WITH GRANT OPTION;</pre></div>
+  <div class="sol"><span class="lab">说明：</span>①<b>对象级权限</b>用 <code>ON 库名.表名</code> 定位到 <code>salesDB.order</code>；②"允许把该权限再授予其他用户"靠子句 <code>WITH GRANT OPTION</code>（漏掉它就只得一半分）；③用户须已存在（题干已说明），故不写 IDENTIFIED BY；④⚠️ <code>order</code> 是 MySQL 8.0 <b>保留字</b>，实际执行须加反引号（截图流传版写作 <code>salesDB.order</code> 且句中出现"TO‘song’@’localhost’"式引号，均为小程序转写失真，考试手写按上述规范即可）。</div>
+  <a class="tag" href="../知识点/安全管理/用户与权限.html#s5">考点：GRANT 授予权限</a>
+</div></details>
+
+<details class="q" id="q21"><summary>
+  <span class="qno">第21题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述数据库设计过程中,需求分析阶段的主要任务及使用的方法。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>①<b>主要任务</b>：对现实世界要处理的对象（公司、部门）进行详细调查，在了解现行系统的概况、确定新系统功能的过程中，收集支持系统目标的基础数据及其处理方法。<br>②<b>方法</b>：结构化分析方法采用<b>自顶向下、逐层分解</b>的方法来分析系统；通过<b>数据流图（DFD）、数据字典（DD）</b>等来描述系统。</div>
+  <a class="tag" href="../知识点/数据库设计/E-R图与数据库设计.html#s2">考点：需求分析任务与方法</a>
+</div></details>
+
+<h2 class="section">三、综合题 / 设计题（4 小题，共 40 分）</h2>
+
+<details class="q" id="q22"><summary>
+  <span class="qno">第22题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">某工厂的计算机管理中只需要保存如下信息：<br>车间:车间名称、车间主任<br>产品:产品编号、产品名、成本价<br>电商:电商名、负责人<br>其中:(1)一个车间可生产多种产品,每种产品只能在一个车间生产;<br>(2)一种产品可在多个电商售卖,一个电商可售卖多种产品;<br>(3)车间的车间名称是唯一的,产品的产品编号是唯一的,电商的电商名是唯一的。<br>要求:(1)画出符合上述要求的全局E-R图(不必画实体的属性);(6分)<br>(2)将E-R图转换成一组符合3NF规范的关系模式,并指出每个关系模式的主码和外码;(6分)<br>(3)用MySQL命令建立“车间”表,要包含主码约束,各属性的数据类型自行定义。(4分)</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">(1) 全局 E-R 图示意：</span>
+  <div class="er">[车间] ── 1 ──〈生产〉── n ── [产品] ── m ──〈售卖〉── n ── [电商]
+
+图例：[ ] 矩形 = 实体，〈 〉菱形 = 联系，连线旁标注基数 1/n/m
+车间—产品：1:n（一个车间生产多种产品，每种产品只能在一个车间生产）
+产品—电商：m:n（一种产品可在多个电商售卖，一个电商可售卖多种产品）</div>
+评分参考：1:n 关系（生产）画正确得 3 分；m:n 关系（售卖）画正确得 3 分。矩形=实体、菱形=联系、连线旁标注 1/n/m。</div>
+  <div class="sol"><span class="lab">(2) 转换为 3NF 关系模式：</span>①<b>车间</b>（<u>车间名称</u>，车间主任）——主码：车间名称；无外码。<br>②<b>产品</b>（<u>产品编号</u>，产品名，成本价，车间名称）——主码：产品编号；<b>外码：车间名称</b>（参照"车间"的车间名称，1:n 联系把"一"端主码并入"多"端）。<br>③<b>电商</b>（<u>电商名</u>，负责人）——主码：电商名；无外码。<br>④<b>售卖</b>（<u>电商名，产品编号</u>）——主码：(电商名, 产品编号) 组合；外码：电商名（参照"电商"）、产品编号（参照"产品"）（m:n 联系单独成一个关系）。<br>四个关系均无非主属性对码的部分/传递依赖，符合 3NF。</div>
+  <div class="sol"><span class="lab">(3) 建立"车间"表：</span><pre class="sql">CREATE TABLE 车间 (
+    车间名称 VARCHAR(20) PRIMARY KEY,
+    车间主任 VARCHAR(10)
+);</pre>要点：主码约束 <code>PRIMARY KEY</code> 必须写出；数据类型自行定义、合理即可（中文表名列名 MySQL 允许，实际项目建议用 workshop 等英文名）。</div>
+  <a class="tag" href="../知识点/数据库设计/E-R图与数据库设计.html#s3">考点：概念结构设计 E-R 图</a><a class="tag" href="../知识点/数据库设计/E-R图与数据库设计.html#s4">考点：E-R 转关系模式</a><a class="tag" href="../知识点/MySQL数据库和表/建库与建表.html#s5">考点：CREATE TABLE</a>
+</div></details>
+
+<details class="q" id="q23"><summary>
+  <span class="qno">第23题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">关系R和S如题22表所示。完成以下关系代数表达式的计算,要求写出中间计算过程。<br>题22表 关系 R, S</div>
+  <div class="tables">
+    <table class="mini"><tr><th>A</th><th>B</th><th>C</th></tr><tr><td>p</td><td>2</td><td>c</td></tr><tr><td>p</td><td>3</td><td>a</td></tr><tr><td>q</td><td>3</td><td>d</td></tr></table>
+    <table class="mini"><tr><th>C</th><th>D</th></tr><tr><td>a</td><td>x</td></tr><tr><td>c</td><td>y</td></tr><tr><td>c</td><td>z</td></tr></table>
+  </div>
+  <div class="opts" style="flex-direction:column;gap:4px;padding-left:46px"><span>(1) Π<sub>C</sub>(R) ∪ Π<sub>C</sub>(S) = ?（4分）</span><span>(2) σ<sub>B=2</sub>(R ⋈ S) = ?（4分）</span></div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">(1) 中间步骤：</span><code>Π<sub>C</sub>(R)</code>：取 R 的 C 列并<b>去重</b> = {(a), (c), (d)}；<code>Π<sub>C</sub>(S)</code> = {(a), (c)}。<br><span class="lab">最终结果：</span>并运算 {(a), (c), (d)} ∪ {(a), (c)} = <b>{(a), (c), (d)}</b>（列名 C，3 个元组）。</div>
+  <div class="sol"><span class="lab">(2) 中间步骤：</span>先算选择 <code>σ<sub>B=2</sub>(R)</code> = {(p, 2, c)}（仅第一行 B=2）；再与 S 做<b>自然连接</b>：公共属性为 C，该行 C=c，S 中 C=c 的元组有 (c,y)、(c,z) 两条。<br><span class="lab">最终结果：</span>σ<sub>B=2</sub>(R ⋈ S) = <b>{(p, 2, c, y), (p, 2, c, z)}</b>（属性列 A,B,C,D，共 2 个元组）。</div>
+  <a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s6">考点：关系代数八种运算</a><a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s7">考点：自然连接</a>
+</div></details>
+
+<details class="q" id="q24"><summary>
+  <span class="qno">第24题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">某学生-课程管理数据库中包含学生表、课程表和选修表。三个表的表结构分别如题23表(a)至题23表(c)所示。<br>题23 表(a) 学生表的表结构：学号 varchar(6) 主键 ｜ 姓名 varchar(10) ｜ 性别 char(2) ｜ 年龄 int<br>题23 表(b) 课程表的表结构：课程编号 varchar(6) 主键 ｜ 课程名称 varchar(40) ｜ 系名 varchar(40) ｜ 学分 tinyint<br>题23 表(c) 选修表的表结构：学号 varchar(6) 主键 ｜ 课程编号 varchar(6) 主键 ｜ 成绩 int ｜（备注列截图未完整显示）<br>使用MySQL命令完成下列操作:<br>(1)查询平均成绩在60分及60分以上的课程的课程编号和平均成绩;(2分)<br>(2)查找选修了课程名称为“数据结构”的所有学生的姓名和年龄;(2分)<br>(3)修改学号为“202345”学生的年龄,年龄改为19岁;(2分)<br>(4)创建一个视图("V1"),该视图能够查询每门课程的课程编号和最高成绩。(2分)</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">(1) 分组+HAVING：</span><pre class="sql">SELECT 课程编号, AVG(成绩) AS 平均成绩
+FROM 选修表
+GROUP BY 课程编号
+HAVING AVG(成绩) &gt;= 60;</pre>要点：聚合条件必须放 <code>HAVING</code>（WHERE 里不能写聚合函数），"60 分及以上"用 <code>&gt;=</code>。</div>
+  <div class="sol"><span class="lab">(2) 三表连接（或子查询）：</span><pre class="sql">SELECT s.姓名, s.年龄
+FROM 学生表 s
+JOIN 选修表 x ON s.学号 = x.学号
+JOIN 课程表 c ON c.课程编号 = x.课程编号
+WHERE c.课程名称 = '数据结构';</pre>等价写法：学号 IN (子查询查"数据结构"的选修学号)。</div>
+  <div class="sol"><span class="lab">(3) UPDATE：</span><pre class="sql">UPDATE 学生表 SET 年龄 = 19 WHERE 学号 = '202345';</pre>要点：学号是 varchar，值要加引号；WHERE 不能漏。</div>
+  <div class="sol"><span class="lab">(4) 创建视图：</span><pre class="sql">CREATE VIEW V1 AS
+SELECT 课程编号, MAX(成绩) AS 最高成绩
+FROM 选修表
+GROUP BY 课程编号;</pre>要点：<code>CREATE VIEW 视图名 AS 子查询</code>，每门课程一行用 GROUP BY 分组取 MAX。</div>
+  <a class="tag" href="../知识点/数据查询/SELECT查询.html#s5">考点：分组查询与聚合函数</a><a class="tag" href="../知识点/数据查询/SELECT查询.html#s7">考点：连接查询</a><a class="tag" href="../知识点/表数据操作/增删改数据.html#s3">考点：UPDATE</a><a class="tag" href="../知识点/视图索引/视图和索引.html#s2">考点：视图操作</a>
+</div></details>
+
+<details class="q" id="q25"><summary>
+  <span class="qno">第25题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">给定关系模式R&lt;U,F&gt;,其中属性全集U={A,B,C,D,E,G},函数依赖集F={A→CD, B→E, AB→G}<br>(1)请计算属性集AB的属性集闭包(AB)+F。(3分)<br>(2)该关系模式是否属于第三范式?为什么?(5分)</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">(1) 求 (AB)+：</span>X⁺ 求闭包三步：初值 X⁺=AB；用 A→CD 得 ABCD；用 B→E 得 ABCDE；用 AB→G 得 <b>ABCDEG = U</b>。<br>∴ <b>(AB)⁺<sub>F</sub> = ABCDEG</b>。（AB 能推出全部属性，且其任何真子集 A⁺=ACD、B⁺=BE 都≠U，故 <b>AB 是唯一候选码</b>，A、B 均为主属性，C、D、E、G 为非主属性。）</div>
+  <div class="sol"><span class="lab">(2) 不属于 3NF。理由：</span>3NF 要求<b>每一个非平凡函数依赖 X→Y，要么 X 必含码，要么 Y 属于某个候选码（主属性）</b>。考察依赖 <b>B→E</b>：B⁺=BCE≠U，B 不是超码（B 单独只是候选码 AB 的一部分）；而右端属性 E 是非主属性、不属于任何候选码。即存在<b>非主属性 E 对候选码 AB 的传递依赖</b>（AB→B→E，且 B↛AB），违反 3NF。∴ R 不属于第三范式。（评分参考：结论 2 分，原因 3 分。）</div>
+  <a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s5">考点：Armstrong 公理与属性集闭包</a><a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s3">考点：范式判定 3NF</a><a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s2">考点：完全/部分/传递依赖</a>
+</div></details>
+
+<h2 class="section" id="anskey">答案速查表</h2>
+<div class="tip" style="margin:0 0 10px">选择题 1~15 答案一页看完，适合考前 5 分钟扫一遍；主观题记"关键词"即可，请回到上方各题背套路。</div>
+<table class="anskey">
+  <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr>
+  <tr><td><b>答案</b></td><td><b>A</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>B</b></td><td><b>A</b>⚠️</td><td><b>C</b></td><td><b>B</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td></tr>
+  <tr><th>题号</th><th colspan="15">16~25 主观题关键词</th></tr>
+  <tr><td><b>答案</b></td><td colspan="15" style="text-align:left;font-size:13px">16 概念·逻辑·物理三层抽象 · 17 运算符/对象/结果＋集合运算(并交差笛卡儿积)+专门运算(选择投影连接除) · 18 外键六规则(任答5点) · 19 索引=排序+指针；提速/保唯一/优化/ORDER·GROUP · 20 GRANT SELECT,DELETE ON salesDB.order TO 'song'@'localhost' WITH GRANT OPTION · 21 调查收集数据；自顶向下逐层分解；DFD+DD · 22 车间1:n产品m:n电商→四关系+主外码+CREATE TABLE · 23 (1){a,c,d} (2){(p,2,c,y),(p,2,c,z)} · 24 GROUP BY+HAVING≥60／三表JOIN／UPDATE SET／CREATE VIEW MAX · 25 (AB)⁺=ABCDEG，AB唯一候选码；B→E 使非主属性E传递依赖于码→非3NF</td></tr>
+</table>
+
+<div class="note">
+  ✍️ <b>答案可信度说明</b>：本卷为逐题整理收录，<b>无官方标准答案</b>。选择题 1~15 依据当期《考试大纲》与指定教材《数据库原理与应用（基于 MySQL）》（赵明渊主编）内容逐题推定复核，第 9 题截图清晰度有限、存在命题瑕疵嫌疑（题内已标注 ⚠️）；简答/综合题的参考答案给出的是<b>得分关键词与要点</b>，考试按点给分，意思到位、关键词齐全即可得分。各题分值：单选 2 分/题、大题按小问标注，简答题分值截图未显示、按总分结构（26 分）推定。
+</div>
+
+<footer>2026年1月广东省高等教育自学考试 · 数据库原理与技术（13009）真题详解 · 教材：赵明渊主编《数据库原理与应用（基于 MySQL）》清华大学出版社 2022 年版 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+(function () {
+  function openTarget() {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      el.scrollIntoView();
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', openTarget);
+  } else {
+    openTarget();
+  }
+  window.addEventListener('hashchange', openTarget);
+})();
+</script>
+<script src="../../assets/dock.js?v=20261030d" defer></script>
+</body>
+</html>

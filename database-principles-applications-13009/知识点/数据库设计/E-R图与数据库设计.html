@@ -23,6 +23,11 @@
   .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:4px}
   .pk{text-decoration:underline;text-decoration-thickness:1.5px}
   .fk{text-decoration:underline wavy;text-decoration-thickness:1.5px}
+  .qref{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;text-decoration:none}
+  a.qref:hover{text-decoration:underline}
+  .law td.q{white-space:nowrap}
+  .qtab th,.qtab td:nth-child(2){white-space:nowrap}
+  @media (max-width:640px){.qtab{min-width:560px}}  /* 窄屏在 .tscroll 内横滑，不把「考点」列挤成一竖条 */
 </style>
 </head>
 <body>
@@ -50,6 +55,7 @@
   <a href="#s5">五、物理结构设计（识记）</a>
   <a href="#s6">六、综合例题：医院病房（考纲·题型举例）</a>
   <a href="#s7">七、本章速记小结</a>
+  <a href="#s8">八、本章真题呼应（2026.1 广东卷）</a>
 </div>
 
 <h2 class="section" id="s1">一、数据库设计概述 ⭐</h2>
@@ -236,6 +242,13 @@
   <a href="../规范化/关系数据库设计理论.html">第 9 章</a>
 </div>
 
+<h2 class="section" id="s8">八、本章真题呼应（2026.1 广东卷）</h2>
+<div class="rule"><div style="font-weight:700;color:var(--brand);margin:2px 0 6px">▸ 2026.1 卷 · 本章呼应 2 题</div><div class="tscroll"><table class="law qtab">
+  <tr><th>题号</th><th>题型·答案/分值</th><th>考点一句话</th></tr>
+  <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q21">第 21 题</a></td><td>简答 · 任务+方法</td><td>需求分析：调查收集数据；自顶向下；<b>DFD+DD</b></td></tr>
+  <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q22">第 22 题</a></td><td>综合 · 10分</td><td>画全局 <b>E-R 图</b>（1:n＋m:n）并转 3NF 关系模式</td></tr>
+</table></div>
+<div class="note">🔑 题号可点击跳到详解页对应题（题干常显、答案折叠）；锚点即本章正文对应小节。</div></div>
 <footer>
   <p>13009《数据库原理与技术》· 第 10 章 数据库设计 速记卡 ｜ 依据《课程考试大纲》Ⅲ 课程内容与考核要求整理（考纲驱动 + 公开资料补充，非教材原文逐字）。</p>
   <p><a href="../../../index.html">返回首页</a> · <a href="../index.html">知识点导航</a> · <a href="../../考纲.html">本页考纲原文</a></p>
