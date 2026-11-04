@@ -25,6 +25,17 @@ details.q[open]>summary .toggle::after{content:" ▴"}
 details.q:not([open])>summary .toggle::after{content:" ▾"}
 .opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
 .opts span{font-size:15px;color:#374151;word-break:break-all}
+/* 综合题长题干分块排版：.stem 保持 inline 不改动其余 24 题；块内容与题号徽章左对齐，不再额外缩进 */
+.qstem{clear:both;margin:10px 0 2px;font-size:14.5px;line-height:1.75}
+.qstem table.mini{margin:2px 0 10px;min-width:320px}
+.qstem table.mini caption{text-align:left;color:var(--brand)}
+.qstem table.mini th,.qstem table.mini td{text-align:left}
+.qstem table.mini th:first-child,.qstem table.mini td:first-child{text-align:center;white-space:nowrap}
+.qlab{font-weight:700;color:var(--brand);font-size:14px;margin:10px 0 4px;padding-left:8px;border-left:3px solid var(--brand)}
+ol.qlist{margin:0;padding-left:22px}
+ol.qlist li{margin:3px 0;padding-left:2px}
+ol.qlist li::marker{color:var(--brand);font-weight:700}
+.score{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;font-size:12px;font-weight:700;padding:0 7px;margin-left:6px;white-space:nowrap}
 .body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
 .answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
 .ref{background:#fff;color:var(--warn)}
@@ -38,7 +49,9 @@ table.mini th,table.mini td{border:1px solid var(--line);padding:4px 12px;text-a
 table.mini th{background:var(--brand-soft);color:var(--brand)}
 table.mini caption{caption-side:top;font-size:13px;font-weight:700;color:var(--muted);padding-bottom:4px;text-align:center}
 .tables{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
-.er{background:#f1f5f9;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;overflow-x:auto;white-space:pre;margin:8px 0}
+.fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0;overflow-x:auto}
+.fig svg{max-width:100%;min-width:560px;height:auto;display:block;margin:0 auto}
+.fig .cap{text-align:center;font-size:12.5px;color:var(--muted);margin-top:4px}
 table.anskey{width:100%;min-width:600px;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
 table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 4px;text-align:center;white-space:nowrap}
 table.anskey td.ks{white-space:normal;text-align:left;font-size:13px}
@@ -305,17 +318,66 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <details class="q" id="q22"><summary>
   <span class="qno">第22题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">某工厂的计算机管理中只需要保存如下信息：<br>车间:车间名称、车间主任<br>产品:产品编号、产品名、成本价<br>电商:电商名、负责人<br>其中:(1)一个车间可生产多种产品,每种产品只能在一个车间生产;<br>(2)一种产品可在多个电商售卖,一个电商可售卖多种产品;<br>(3)车间的车间名称是唯一的,产品的产品编号是唯一的,电商的电商名是唯一的。<br>要求:(1)画出符合上述要求的全局E-R图(不必画实体的属性);(6分)<br>(2)将E-R图转换成一组符合3NF规范的关系模式,并指出每个关系模式的主码和外码;(6分)<br>(3)用MySQL命令建立“车间”表,要包含主码约束,各属性的数据类型自行定义。(4分)</div>
+  <div class="stem">某工厂的计算机管理中只需要保存如下信息：</div>
+  <div class="qstem">
+    <table class="mini"><caption>需要保存的信息</caption>
+      <tr><th>实体</th><th>属性</th></tr>
+      <tr><td><b>车间</b></td><td>车间名称、车间主任</td></tr>
+      <tr><td><b>产品</b></td><td>产品编号、产品名、成本价</td></tr>
+      <tr><td><b>电商</b></td><td>电商名、负责人</td></tr>
+    </table>
+    <div class="qlab">其中（约束条件）</div>
+    <ol class="qlist">
+      <li>一个车间可生产多种产品，每种产品只能在一个车间生产；</li>
+      <li>一种产品可在多个电商售卖，一个电商可售卖多种产品；</li>
+      <li>车间的车间名称是唯一的，产品的产品编号是唯一的，电商的电商名是唯一的。</li>
+    </ol>
+    <div class="qlab">要求</div>
+    <ol class="qlist">
+      <li>画出符合上述要求的全局 E-R 图（不必画实体的属性）<span class="score">6 分</span></li>
+      <li>将 E-R 图转换成一组符合 3NF 规范的关系模式，并指出每个关系模式的主码和外码<span class="score">6 分</span></li>
+      <li>用 MySQL 命令建立“车间”表，要包含主码约束，各属性的数据类型自行定义<span class="score">4 分</span></li>
+    </ol>
+  </div>
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
-  <div class="sol"><span class="lab">(1) 全局 E-R 图示意：</span>
-  <div class="er">[车间] ── 1 ──〈生产〉── n ── [产品] ── m ──〈售卖〉── n ── [电商]
-
-图例：[ ] 矩形 = 实体，〈 〉菱形 = 联系，连线旁标注基数 1/n/m
-车间—产品：1:n（一个车间生产多种产品，每种产品只能在一个车间生产）
-产品—电商：m:n（一种产品可在多个电商售卖，一个电商可售卖多种产品）</div>
-评分参考：1:n 关系（生产）画正确得 3 分；m:n 关系（售卖）画正确得 3 分。矩形=实体、菱形=联系、连线旁标注 1/n/m。</div>
+  <div class="sol"><span class="lab">(1) 全局 E-R 图：</span>
+  <div class="fig">
+    <svg viewBox="0 0 880 200" role="img" aria-label="全局 E-R 图：车间与产品经生产联系为 1:n，产品与电商经售卖联系为 m:n">
+      <text x="440" y="28" text-anchor="middle" font-size="14" fill="#64748b" font-weight="700">全局 E-R 图（不必画实体属性）</text>
+      <rect x="25" y="73" width="140" height="64" rx="6" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+      <text x="95" y="102" text-anchor="middle" font-size="17" fill="#14532d" font-weight="700">车间</text>
+      <text x="95" y="123" text-anchor="middle" font-size="11.5" fill="#4b5563">实体（1 端）</text>
+      <polygon points="265,70 333,105 265,140 197,105" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="265" y="111" text-anchor="middle" font-size="15.5" fill="#92400e" font-weight="700">生产</text>
+      <rect x="365" y="73" width="140" height="64" rx="6" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+      <text x="435" y="102" text-anchor="middle" font-size="17" fill="#1e3a8a" font-weight="700">产品</text>
+      <text x="435" y="123" text-anchor="middle" font-size="11.5" fill="#4b5563">实体（n 端 / m 端）</text>
+      <polygon points="615,70 683,105 615,140 547,105" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+      <text x="615" y="111" text-anchor="middle" font-size="15.5" fill="#92400e" font-weight="700">售卖</text>
+      <rect x="715" y="73" width="140" height="64" rx="6" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+      <text x="785" y="102" text-anchor="middle" font-size="17" fill="#9d174d" font-weight="700">电商</text>
+      <text x="785" y="123" text-anchor="middle" font-size="11.5" fill="#4b5563">实体（n 端）</text>
+      <line x1="165" y1="105" x2="197" y2="105" stroke="#334155" stroke-width="2"/>
+      <line x1="333" y1="105" x2="365" y2="105" stroke="#334155" stroke-width="2"/>
+      <line x1="505" y1="105" x2="547" y2="105" stroke="#334155" stroke-width="2"/>
+      <line x1="683" y1="105" x2="715" y2="105" stroke="#334155" stroke-width="2"/>
+      <rect x="168" y="78" width="26" height="22" rx="6" fill="#fff" stroke="#fcd34d"/>
+      <text x="181" y="94" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">1</text>
+      <rect x="336" y="78" width="26" height="22" rx="6" fill="#fff" stroke="#fcd34d"/>
+      <text x="349" y="94" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">n</text>
+      <rect x="513" y="78" width="26" height="22" rx="6" fill="#fff" stroke="#fcd34d"/>
+      <text x="526" y="94" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">m</text>
+      <rect x="686" y="78" width="26" height="22" rx="6" fill="#fff" stroke="#fcd34d"/>
+      <text x="699" y="94" text-anchor="middle" font-size="14.5" fill="#b45309" font-weight="700">n</text>
+      <text x="265" y="170" text-anchor="middle" font-size="13.5" fill="#92400e" font-weight="700">1 : n 联系</text>
+      <text x="615" y="170" text-anchor="middle" font-size="13.5" fill="#92400e" font-weight="700">m : n 联系</text>
+    </svg>
+    <div class="cap">矩形＝实体，菱形＝联系，连线旁的 1 / n / m ＝联系的基数；题目要求不必画属性，故不画椭圆</div>
+  </div>
+  车间—产品：<b>1 : n</b>（一个车间生产多种产品，每种产品只能在一个车间生产）；产品—电商：<b>m : n</b>（一种产品可在多个电商售卖，一个电商可售卖多种产品）。<br>
+  评分参考：1:n 联系（生产）画正确得 3 分；m:n 联系（售卖）画正确得 3 分——矩形＝实体、菱形＝联系、连线旁标注 1/n/m，三样缺一扣分。</div>
   <div class="sol"><span class="lab">(2) 转换为 3NF 关系模式：</span>①<b>车间</b>（<u>车间名称</u>，车间主任）——主码：车间名称；无外码。<br>②<b>产品</b>（<u>产品编号</u>，产品名，成本价，车间名称）——主码：产品编号；<b>外码：车间名称</b>（参照"车间"的车间名称，1:n 联系把"一"端主码并入"多"端）。<br>③<b>电商</b>（<u>电商名</u>，负责人）——主码：电商名；无外码。<br>④<b>售卖</b>（<u>电商名，产品编号</u>）——主码：(电商名, 产品编号) 组合；外码：电商名（参照"电商"）、产品编号（参照"产品"）（m:n 联系单独成一个关系）。<br>四个关系均无非主属性对码的部分/传递依赖，符合 3NF。</div>
   <div class="sol"><span class="lab">(3) 建立"车间"表：</span><pre class="sql">CREATE TABLE 车间 (
     车间名称 VARCHAR(20) PRIMARY KEY,
