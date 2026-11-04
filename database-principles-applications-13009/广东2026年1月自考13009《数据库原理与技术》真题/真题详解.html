@@ -24,7 +24,7 @@ details.q>summary:hover{background:#fafbff}
 details.q[open]>summary .toggle::after{content:" ▴"}
 details.q:not([open])>summary .toggle::after{content:" ▾"}
 .opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
-.opts span{font-size:15px;color:#374151}
+.opts span{font-size:15px;color:#374151;word-break:break-all}
 .body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
 .answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
 .ref{background:#fff;color:var(--warn)}
@@ -36,11 +36,13 @@ pre.sql{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 16px;ov
 table.mini{border-collapse:collapse;font-size:13.5px;margin:8px 0;background:#fff}
 table.mini th,table.mini td{border:1px solid var(--line);padding:4px 12px;text-align:center}
 table.mini th{background:var(--brand-soft);color:var(--brand)}
+table.mini caption{caption-side:top;font-size:13px;font-weight:700;color:var(--muted);padding-bottom:4px;text-align:center}
 .tables{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
 .er{background:#f1f5f9;border-radius:10px;padding:12px 16px;font-family:ui-monospace,Consolas,monospace;font-size:13.5px;overflow-x:auto;white-space:pre;margin:8px 0}
-table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
-table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center;word-break:break-word}
-table.anskey th:first-child,table.anskey td:first-child{width:62px}
+table.anskey{width:100%;min-width:600px;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
+table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 4px;text-align:center;white-space:nowrap}
+table.anskey td.ks{white-space:normal;text-align:left;font-size:13px}
+.anskey-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
 table.anskey th{background:var(--brand-soft);color:var(--brand)}
 table.anskey td b{color:var(--ok)}
 .tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
@@ -184,11 +186,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 <details class="q" id="q11"><summary>
   <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
   <div class="stem">在关系表:学校(编号,校名,分数线)中,编号是主键,要查询所有分数线不是最高的学校的编号,不正确的MySQL查询语句是</div>
-  <div class="opts"><span>A. SELECT编号FROM学校WHERE分数线&lt;(SELECT MAX(分数线)FROM 学校);</span><span>B. SELECT S2.编号FROM学校S1,学校S2 WHERE S1.分数线&lt;S2.分数线;</span><span>C. SELECT编号FROM学校S1 WHERE EXISTS (SELECT*FROM学校S2 WHERE (S1.分数线&lt;S2.分数线));</span><span>D. SELECT编号FROM学校WHERE分数线&lt;SOME(SELECT分数线FROM学 校);</span></div>
+  <div class="opts" style="flex-direction:column;gap:6px;padding-left:46px"><span>A. SELECT编号FROM学校WHERE分数线&lt;(SELECT MAX(分数线)FROM 学校);</span><span>B. SELECT S2.编号FROM学校S1,学校S2 WHERE S1.分数线&lt;S2.分数线;</span><span>C. SELECT编号FROM学校S1 WHERE EXISTS (SELECT*FROM学校S2 WHERE (S1.分数线&lt;S2.分数线));</span><span>D. SELECT编号FROM学校WHERE分数线&lt;SOME(SELECT分数线FROM学校);</span></div>
 </summary>
 <div class="body">
   <div class="answer">答案：B</div>
-  <div class="sol"><span class="lab">解析：</span>逐项验证语义"分数线 &lt; 最高分数线"：<br>A：标量子查询取 <code>MAX(分数线)</code> 再比较，✔ 正确。<br>C：相关子查询 EXISTS——"存在另一所学校分数线比我校高" ⇔ 本校不是最高，✔ 正确。<br>D：<code>&lt; SOME(子查询)</code>（SOME=ANY，小于集合中某一个值）⇔ 小于最大值，✔ 正确。<br>B：意图做自身连接 <code>FROM 学校 S1, 学校 S2</code>，但连接条件里 <b>S1 一侧的"分数线"未加表前缀</b>（写成 <code>WHERE S1.分数线&lt;S2.分数线</code> 才合法），且即便补全，<code>SELECT S2.编号</code> 取的是"分数线更高那所"的编号，方向也反了——该句要么报错要么查错，✔ 即"不正确"的选项。故选 B。</div>
+  <div class="sol"><span class="lab">解析：</span>逐项验证语义"分数线 &lt; 最高分数线"：<br>A：标量子查询取 <code>MAX(分数线)</code> 再比较，✔ 正确。<br>C：相关子查询 EXISTS——"存在另一所学校分数线比我校高" ⇔ 本校不是最高，✔ 正确。<br>D：<code>&lt; SOME(子查询)</code>（SOME=ANY，小于集合中某一个值）⇔ 小于最大值，✔ 正确。<br>B：自身连接写法失真且方向反了——<code>FROM 学校 S1, 学校 S2</code> 与 <code>WHERE S1.分数线&lt;S2.分数线</code> 都用了 S1 别名，但 <code>SELECT</code> 侧只出现 S2；更关键的是即便按 <code>SELECT S2.编号 FROM 学校 S1, 学校 S2 WHERE S1.分数线&lt;S2.分数线</code> 的“补全”理解，S2 行取的是<b>分数线更高那所</b>的编号，恰好把“不是最高”的学校查漏/查反，语义错误。故选 B。</div>
   <a class="tag" href="../知识点/数据查询/SELECT查询.html#s8">考点：子查询 IN/比较/EXISTS</a><a class="tag" href="../知识点/数据查询/SELECT查询.html#s7">另见：连接查询</a>
 </div></details>
 
@@ -340,7 +342,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <details class="q" id="q24"><summary>
   <span class="qno">第24题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">某学生-课程管理数据库中包含学生表、课程表和选修表。三个表的表结构分别如题23表(a)至题23表(c)所示。<br>题23 表(a) 学生表的表结构：学号 varchar(6) 主键 ｜ 姓名 varchar(10) ｜ 性别 char(2) ｜ 年龄 int<br>题23 表(b) 课程表的表结构：课程编号 varchar(6) 主键 ｜ 课程名称 varchar(40) ｜ 系名 varchar(40) ｜ 学分 tinyint<br>题23 表(c) 选修表的表结构：学号 varchar(6) 主键 ｜ 课程编号 varchar(6) 主键 ｜ 成绩 int ｜（备注列截图未完整显示）<br>使用MySQL命令完成下列操作:<br>(1)查询平均成绩在60分及60分以上的课程的课程编号和平均成绩;(2分)<br>(2)查找选修了课程名称为“数据结构”的所有学生的姓名和年龄;(2分)<br>(3)修改学号为“202345”学生的年龄,年龄改为19岁;(2分)<br>(4)创建一个视图("V1"),该视图能够查询每门课程的课程编号和最高成绩。(2分)</div>
+  <div class="stem">某学生-课程管理数据库中包含学生表、课程表和选修表。三个表的表结构分别如题23表(a)至题23表(c)所示。</div>
+  <div class="tables">
+    <table class="mini"><caption>题23 表(a) 学生表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>学号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>姓名</td><td>varchar(10)</td><td>—</td></tr><tr><td>性别</td><td>char(2)</td><td>—</td></tr><tr><td>年龄</td><td>int</td><td>—</td></tr></table>
+    <table class="mini"><caption>题23 表(b) 课程表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>课程编号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>课程名称</td><td>varchar(40)</td><td>—</td></tr><tr><td>系名</td><td>varchar(40)</td><td>—</td></tr><tr><td>学分</td><td>tinyint</td><td>—</td></tr></table>
+    <table class="mini"><caption>题23 表(c) 选修表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>学号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>课程编号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>成绩</td><td>int</td><td>—</td></tr><tr></tr></table>
+  </div>
+  <div class="opts" style="flex-direction:column;gap:4px;padding-left:46px"><span>使用MySQL命令完成下列操作:</span><span>(1)查询平均成绩在60分及60分以上的课程的课程编号和平均成绩;(2分)</span><span>(2)查找选修了课程名称为“数据结构”的所有学生的姓名和年龄;(2分)</span><span>(3)修改学号为“202345”学生的年龄,年龄改为19岁;(2分)</span><span>(4)创建一个视图("V1"),该视图能够查询每门课程的课程编号和最高成绩。(2分)</span></div>
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
@@ -363,23 +371,26 @@ GROUP BY 课程编号;</pre>要点：<code>CREATE VIEW 视图名 AS 子查询</c
 
 <details class="q" id="q25"><summary>
   <span class="qno">第25题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">给定关系模式R&lt;U,F&gt;,其中属性全集U={A,B,C,D,E,G},函数依赖集F={A→CD, B→E, AB→G}<br>(1)请计算属性集AB的属性集闭包(AB)+F。(3分)<br>(2)该关系模式是否属于第三范式?为什么?(5分)</div>
+  <div class="stem">给定关系模式R&lt;U,F&gt;,其中属性全集U={A,B,C,D,E,G},函数依赖集F={A→CD, B→E, AB→G}</div>
+  <div class="opts" style="flex-direction:column;gap:4px;padding-left:46px"><span>(1)请计算属性集AB的属性集闭包(AB)+F。(3分)</span><span>(2)该关系模式是否属于第三范式?为什么?(5分)</span></div>
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
   <div class="sol"><span class="lab">(1) 求 (AB)+：</span>X⁺ 求闭包三步：初值 X⁺=AB；用 A→CD 得 ABCD；用 B→E 得 ABCDE；用 AB→G 得 <b>ABCDEG = U</b>。<br>∴ <b>(AB)⁺<sub>F</sub> = ABCDEG</b>。（AB 能推出全部属性，且其任何真子集 A⁺=ACD、B⁺=BE 都≠U，故 <b>AB 是唯一候选码</b>，A、B 均为主属性，C、D、E、G 为非主属性。）</div>
-  <div class="sol"><span class="lab">(2) 不属于 3NF。理由：</span>3NF 要求<b>每一个非平凡函数依赖 X→Y，要么 X 必含码，要么 Y 属于某个候选码（主属性）</b>。考察依赖 <b>B→E</b>：B⁺=BCE≠U，B 不是超码（B 单独只是候选码 AB 的一部分）；而右端属性 E 是非主属性、不属于任何候选码。即存在<b>非主属性 E 对候选码 AB 的传递依赖</b>（AB→B→E，且 B↛AB），违反 3NF。∴ R 不属于第三范式。（评分参考：结论 2 分，原因 3 分。）</div>
+  <div class="sol"><span class="lab">(2) 不属于 3NF。理由：</span>3NF 要求<b>每一个非平凡函数依赖 X→Y，要么 X 必含码，要么 Y 属于某个候选码（主属性）</b>。考察依赖 <b>B→E</b>：B⁺=BE≠U，B 不是超码（B 单独只是候选码 AB 的一部分）；而右端属性 E 是非主属性、不属于任何候选码。即存在<b>非主属性 E 对候选码 AB 的传递依赖</b>（AB→B→E，且 B↛AB），违反 3NF。∴ R 不属于第三范式。（评分参考：结论 2 分，原因 3 分。）</div>
   <a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s5">考点：Armstrong 公理与属性集闭包</a><a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s3">考点：范式判定 3NF</a><a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s2">考点：完全/部分/传递依赖</a>
 </div></details>
 
 <h2 class="section" id="anskey">答案速查表</h2>
 <div class="tip" style="margin:0 0 10px">选择题 1~15 答案一页看完，适合考前 5 分钟扫一遍；主观题记"关键词"即可，请回到上方各题背套路。</div>
+<div class="anskey-scroll">
 <table class="anskey">
   <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr>
   <tr><td><b>答案</b></td><td><b>A</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>B</b></td><td><b>A</b>⚠️</td><td><b>C</b></td><td><b>B</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td></tr>
   <tr><th>题号</th><th colspan="15">16~25 主观题关键词</th></tr>
-  <tr><td><b>答案</b></td><td colspan="15" style="text-align:left;font-size:13px">16 概念·逻辑·物理三层抽象 · 17 运算符/对象/结果＋集合运算(并交差笛卡儿积)+专门运算(选择投影连接除) · 18 外键六规则(任答5点) · 19 索引=排序+指针；提速/保唯一/优化/ORDER·GROUP · 20 GRANT SELECT,DELETE ON salesDB.order TO 'song'@'localhost' WITH GRANT OPTION · 21 调查收集数据；自顶向下逐层分解；DFD+DD · 22 车间1:n产品m:n电商→四关系+主外码+CREATE TABLE · 23 (1){a,c,d} (2){(p,2,c,y),(p,2,c,z)} · 24 GROUP BY+HAVING≥60／三表JOIN／UPDATE SET／CREATE VIEW MAX · 25 (AB)⁺=ABCDEG，AB唯一候选码；B→E 使非主属性E传递依赖于码→非3NF</td></tr>
+  <tr><td><b>答案</b></td><td colspan="15" class="ks" style="text-align:left;font-size:13px">16 概念·逻辑·物理三层抽象 · 17 运算符/对象/结果＋集合运算(并交差笛卡儿积)+专门运算(选择投影连接除) · 18 外键六规则(任答5点) · 19 索引=排序+指针；提速/保唯一/优化/ORDER·GROUP · 20 GRANT SELECT,DELETE ON salesDB.order TO 'song'@'localhost' WITH GRANT OPTION · 21 调查收集数据；自顶向下逐层分解；DFD+DD · 22 车间1:n产品m:n电商→四关系+主外码+CREATE TABLE · 23 (1){a,c,d} (2){(p,2,c,y),(p,2,c,z)} · 24 GROUP BY+HAVING≥60／三表JOIN／UPDATE SET／CREATE VIEW MAX · 25 (AB)⁺=ABCDEG，AB唯一候选码；B→E 使非主属性E传递依赖于码→非3NF</td></tr>
 </table>
+</div>
 
 <div class="note">
   ✍️ <b>答案可信度说明</b>：本卷为逐题整理收录，<b>无官方标准答案</b>。选择题 1~15 依据当期《考试大纲》与指定教材《数据库原理与应用（基于 MySQL）》（赵明渊主编）内容逐题推定复核，第 9 题截图清晰度有限、存在命题瑕疵嫌疑（题内已标注 ⚠️）；简答/综合题的参考答案给出的是<b>得分关键词与要点</b>，考试按点给分，意思到位、关键词齐全即可得分。各题分值：单选 2 分/题、大题按小问标注，简答题分值截图未显示、按总分结构（26 分）推定。
