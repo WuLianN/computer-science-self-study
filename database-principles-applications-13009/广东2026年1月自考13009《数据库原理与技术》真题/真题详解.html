@@ -36,6 +36,9 @@ ol.qlist{margin:0;padding-left:22px}
 ol.qlist li{margin:3px 0;padding-left:2px}
 ol.qlist li::marker{color:var(--brand);font-weight:700}
 .score{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;font-size:12px;font-weight:700;padding:0 7px;margin-left:6px;white-space:nowrap}
+/* 第24题三张结构表横排：取消单表最小宽度、恢复单元格居中 */
+.qstem .tables table.mini{min-width:0}
+.qstem .tables table.mini th,.qstem .tables table.mini td{text-align:center}
 .body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
 .answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
 .ref{background:#fff;color:var(--warn)}
@@ -388,12 +391,18 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <details class="q" id="q23"><summary>
   <span class="qno">第23题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">关系R和S如题22表所示。完成以下关系代数表达式的计算,要求写出中间计算过程。<br>题22表 关系 R, S</div>
-  <div class="tables">
-    <table class="mini"><tr><th>A</th><th>B</th><th>C</th></tr><tr><td>p</td><td>2</td><td>c</td></tr><tr><td>p</td><td>3</td><td>a</td></tr><tr><td>q</td><td>3</td><td>d</td></tr></table>
-    <table class="mini"><tr><th>C</th><th>D</th></tr><tr><td>a</td><td>x</td></tr><tr><td>c</td><td>y</td></tr><tr><td>c</td><td>z</td></tr></table>
+  <div class="stem">关系 R 和 S 如题22表所示。完成以下关系代数表达式的计算，要求写出中间计算过程。</div>
+  <div class="qstem">
+    <div class="tables">
+      <table class="mini"><caption>关系 R</caption><tr><th>A</th><th>B</th><th>C</th></tr><tr><td>p</td><td>2</td><td>c</td></tr><tr><td>p</td><td>3</td><td>a</td></tr><tr><td>q</td><td>3</td><td>d</td></tr></table>
+      <table class="mini"><caption>关系 S</caption><tr><th>C</th><th>D</th></tr><tr><td>a</td><td>x</td></tr><tr><td>c</td><td>y</td></tr><tr><td>c</td><td>z</td></tr></table>
+    </div>
+    <div class="qlab">要求</div>
+    <ol class="qlist">
+      <li>Π<sub>C</sub>(R) ∪ Π<sub>C</sub>(S) = ?<span class="score">4 分</span></li>
+      <li>σ<sub>B=2</sub>(R ⋈ S) = ?<span class="score">4 分</span></li>
+    </ol>
   </div>
-  <div class="opts" style="flex-direction:column;gap:4px;padding-left:46px"><span>(1) Π<sub>C</sub>(R) ∪ Π<sub>C</sub>(S) = ?（4分）</span><span>(2) σ<sub>B=2</sub>(R ⋈ S) = ?（4分）</span></div>
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
@@ -405,12 +414,20 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 <details class="q" id="q24"><summary>
   <span class="qno">第24题</span><span class="toggle">点击展开答案</span>
   <div class="stem">某学生-课程管理数据库中包含学生表、课程表和选修表。三个表的表结构分别如题23表(a)至题23表(c)所示。</div>
-  <div class="tables">
-    <table class="mini"><caption>题23 表(a) 学生表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>学号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>姓名</td><td>varchar(10)</td><td>—</td></tr><tr><td>性别</td><td>char(2)</td><td>—</td></tr><tr><td>年龄</td><td>int</td><td>—</td></tr></table>
-    <table class="mini"><caption>题23 表(b) 课程表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>课程编号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>课程名称</td><td>varchar(40)</td><td>—</td></tr><tr><td>系名</td><td>varchar(40)</td><td>—</td></tr><tr><td>学分</td><td>tinyint</td><td>—</td></tr></table>
-    <table class="mini"><caption>题23 表(c) 选修表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>学号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>课程编号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>成绩</td><td>int</td><td>—</td></tr><tr></tr></table>
+  <div class="qstem">
+    <div class="tables">
+      <table class="mini"><caption>表(a) 学生表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>学号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>姓名</td><td>varchar(10)</td><td>—</td></tr><tr><td>性别</td><td>char(2)</td><td>—</td></tr><tr><td>年龄</td><td>int</td><td>—</td></tr></table>
+      <table class="mini"><caption>表(b) 课程表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>课程编号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>课程名称</td><td>varchar(40)</td><td>—</td></tr><tr><td>系名</td><td>varchar(40)</td><td>—</td></tr><tr><td>学分</td><td>tinyint</td><td>—</td></tr></table>
+      <table class="mini"><caption>表(c) 选修表</caption><tr><th>字段</th><th>类型</th><th>约束</th></tr><tr><td>学号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>课程编号</td><td>varchar(6)</td><td>主键</td></tr><tr><td>成绩</td><td>int</td><td>—</td></tr></table>
+    </div>
+    <div class="qlab">使用 MySQL 命令完成下列操作</div>
+    <ol class="qlist">
+      <li>查询平均成绩在 60 分及 60 分以上的课程的课程编号和平均成绩<span class="score">2 分</span></li>
+      <li>查找选修了课程名称为“数据结构”的所有学生的姓名和年龄<span class="score">2 分</span></li>
+      <li>修改学号为“202345”学生的年龄，年龄改为 19 岁<span class="score">2 分</span></li>
+      <li>创建一个视图“V1”，该视图能够查询每门课程的课程编号和最高成绩<span class="score">2 分</span></li>
+    </ol>
   </div>
-  <div class="opts" style="flex-direction:column;gap:4px;padding-left:46px"><span>使用MySQL命令完成下列操作:</span><span>(1)查询平均成绩在60分及60分以上的课程的课程编号和平均成绩;(2分)</span><span>(2)查找选修了课程名称为“数据结构”的所有学生的姓名和年龄;(2分)</span><span>(3)修改学号为“202345”学生的年龄,年龄改为19岁;(2分)</span><span>(4)创建一个视图("V1"),该视图能够查询每门课程的课程编号和最高成绩。(2分)</span></div>
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
@@ -433,8 +450,14 @@ GROUP BY 课程编号;</pre>要点：<code>CREATE VIEW 视图名 AS 子查询</c
 
 <details class="q" id="q25"><summary>
   <span class="qno">第25题</span><span class="toggle">点击展开答案</span>
-  <div class="stem">给定关系模式R&lt;U,F&gt;,其中属性全集U={A,B,C,D,E,G},函数依赖集F={A→CD, B→E, AB→G}</div>
-  <div class="opts" style="flex-direction:column;gap:4px;padding-left:46px"><span>(1)请计算属性集AB的属性集闭包(AB)+F。(3分)</span><span>(2)该关系模式是否属于第三范式?为什么?(5分)</span></div>
+  <div class="stem">给定关系模式 R&lt;U,F&gt;，其中属性全集 U={A,B,C,D,E,G}，函数依赖集 F={A→CD, B→E, AB→G}</div>
+  <div class="qstem">
+    <div class="qlab">要求</div>
+    <ol class="qlist">
+      <li>请计算属性集 AB 的属性集闭包 (AB)+F<span class="score">3 分</span></li>
+      <li>该关系模式是否属于第三范式？为什么？<span class="score">5 分</span></li>
+    </ol>
+  </div>
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
