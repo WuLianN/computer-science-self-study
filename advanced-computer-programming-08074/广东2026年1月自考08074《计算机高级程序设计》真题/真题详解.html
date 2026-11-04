@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>2026年1月广东省考 08074《计算机高级程序设计》真题详解</title>
+<meta name="description" content="2026年1月广东省高等教育自学考试 08074《计算机高级程序设计》（Python）真题逐题详解：单选20题+简答5题+设计6题，题干常显、答案折叠，可当卷子自测。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261030d">
+<style>
+header.hero{background:linear-gradient(135deg,#306998,#0f766e)}  /* Python 蓝 → 青绿（区别于 2026.4 卷） */
+.links{margin-top:12px}
+.links a{display:inline-block;background:#fff;color:var(--brand);border-radius:8px;padding:4px 12px;font-size:13px;text-decoration:none;margin-right:8px}
+.toolbar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+button.btn:hover{background:var(--brand);color:#fff}
+details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}
+details.q>summary{cursor:pointer;padding:14px 18px;list-style:none;display:block}
+details.q>summary::-webkit-details-marker{display:none}
+details.q>summary:hover{background:#fafbff}
+.qno{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:8px;font-size:13px;font-weight:700;padding:2px 10px;margin-right:8px;vertical-align:middle}
+.stem{display:inline;font-weight:600;vertical-align:middle}
+.toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
+details.q[open]>summary .toggle::after{content:" ▴"}
+details.q:not([open])>summary .toggle::after{content:" ▾"}
+.opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
+.opts span{font-size:15px;color:#374151}
+.body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
+.answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
+.sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
+.sol .lab{font-weight:700;color:var(--brand)}
+.tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0;text-decoration:none}
+a.tag:hover{background:var(--warn);color:#fff}
+code.c{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#f3f4f6;border-radius:5px;padding:1px 6px;font-size:.92em;color:#b91c1c}
+pre.code{font-family:"Cascadia Code",Consolas,"Courier New",monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px 16px;font-size:13.5px;line-height:1.6;overflow-x:auto;margin:10px 0;white-space:pre}
+table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
+table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center;word-break:break-word}
+table.anskey th:first-child,table.anskey td:first-child{width:62px}
+table.anskey th{background:var(--brand-soft);color:var(--brand)}
+table.anskey td b{color:var(--ok)}
+.tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>2026年1月广东省高等教育自学考试 · 计算机高级程序设计（08074）真题详解</h1>
+  <p>广东省卷 · <b>Python</b> · 教材：傅清平等《Python语言程序设计基础教程》清华大学出版社 2022。题干与选项默认显示，<b>点开才看答案与解析</b>，先自测再核对。（注意：本门是 Python，C 语言是另一门 13013，别混淆）</p>
+  <span class="pill">单选 20 题</span><span class="pill">简答 5 题</span><span class="pill">设计 6 题</span><span class="pill">共 31 题 · 满分 100</span><span class="pill">闭卷 150 分钟</span>
+  <div class="links"><a href="../../index.html">🏠 首页</a><a href="../真题/index.html">📝 真题导航</a><a href="../知识点/index.html">📚 知识点速记卡</a><a href="../考纲.html">📋 考纲</a></div>
+</header>
+
+<div class="tip">
+  📚 <b>本卷共 31 题满分 100 分</b>，题干常显、答案和解析折叠，可直接当卷子做。建议答题顺序：单选（概念题为主，多为送分）→ 简答（背概念即可拿分）→ 设计（循环/字符串/函数/文件/面向对象五大高频套路）。<b>完整答案速查表在页面最下方</b>。<br>
+  ⚠️ 本卷原卷来自第三方小程序逐题截图，<b>官方未发布标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，第 11、13 题截图清晰度有限已在题内标注，供学习参考。
+</div>
+
+<div class="toolbar">
+  <button class="btn" onclick="document.querySelectorAll('details.q').forEach(d=>d.open=true)">全部展开（看答案）</button>
+  <button class="btn" onclick="document.querySelectorAll('details.q').forEach(d=>d.open=false)">全部收起（自测模式）</button>
+  <button class="btn" onclick="document.getElementById('anskey').scrollIntoView({behavior:'smooth'})">🔑 答案速查表（页尾）</button>
+  <span style="color:var(--muted);font-size:13px">提示：题干常显，点开才看答案。</span>
+</div>
+
+<h2 class="section">一、单项选择题（共20题）</h2>
+
+<details class="q" id="q1"><summary>
+  <span class="qno">第1题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">能被计算机执行的语言是</div>
+  <div class="opts"><span>A. 汇编语言</span><span>B. 机器语言</span><span>C. 高级语言</span><span>D. 自然语言</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>计算机硬件只能<b>直接识别并执行机器语言</b>（二进制指令）。汇编语言须汇编、高级语言须编译/解释成机器语言后才能执行，自然语言不是计算机语言。故选 B。</div>
+  <a class="tag" href="../知识点/概述/Python概述.html#s1">考点：程序设计语言层次</a>
+</div></details>
+
+<details class="q" id="q2"><summary>
+  <span class="qno">第2题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">Python 程序的运行支持</div>
+  <div class="opts"><span>A. 仅程序文件执行</span><span>B. 仅编译执行</span><span>C. 交互式(直接执行)和程序文件执行</span><span>D. 仅机器语言执行</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>Python 有两种运行方式：① <b>交互式</b>（REPL，输入一句立即执行一句，如 IDLE 提示符）；② <b>程序文件执行</b>（把语句写进 <code class="c">.py</code> 文件整体运行）。故选 C。</div>
+  <a class="tag" href="../知识点/概述/Python概述.html#s2">考点：程序运行方式</a>
+</div></details>
+
+<details class="q" id="q3"><summary>
+  <span class="qno">第3题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">Python 中若一条语句过长，可作为续行符的是</div>
+  <div class="opts"><span>A. :</span><span>B. ;</span><span>C. /</span><span>D. \</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>Python 的<b>显式续行符是反斜杠 <code class="c">\</code></b>——行末加 <code class="c">\</code> 表示下一行是本行的继续（如 <code class="c">a = 1 + \</code> 换行 <code class="c">2</code>）。此外在括号/方括号/花括号内可自动续行。冒号是块起始、分号分隔语句、斜杠是除法，均非续行符。故选 D。</div>
+  <a class="tag" href="../知识点/概述/Python概述.html#s3">考点：基本语法规则·续行</a>
+</div></details>
+
+<details class="q" id="q4"><summary>
+  <span class="qno">第4题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下面标识符不属于 Python 关键字的是</div>
+  <div class="opts"><span>A. if</span><span>B. while</span><span>C. sum</span><span>D. return</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">if</code>、<code class="c">while</code>、<code class="c">return</code> 都是<b>保留字（关键字）</b>，不能用作普通标识符。<code class="c">sum</code> 是<b>内置函数名</b>而非关键字（可用 <code class="c">keyword.kwlist</code> 核对，sum 不在其中），虽不建议占用但语法上合法。故选 C。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s2">考点：关键字与保留字</a>
+</div></details>
+
+<details class="q" id="q5"><summary>
+  <span class="qno">第5题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">导入 math 模块后，执行 math.floor(12.7189) 的结果是</div>
+  <div class="opts"><span>A. 12</span><span>B. 12.7</span><span>C. 12.7189</span><span>D. 13</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">math.floor(x)</code> 是<b>向下取整（地板除）</b>，取不超过 x 的最大整数：<code class="c">math.floor(12.7189) = 12</code>。与之相对 <code class="c">math.ceil()</code> 向上取整才得 13。实跑验证结果为整数 12。故选 A。</div>
+  <a class="tag" href="../知识点/概述/Python概述.html#s5">考点：math 模块 floor()</a>
+</div></details>
+
+<details class="q" id="q6"><summary>
+  <span class="qno">第6题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列不合法的数字表示是</div>
+  <div class="opts"><span>A. 32</span><span>B. 0o12f</span><span>C. 0X2cf</span><span>D. 0b101</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>A <code class="c">32</code> 十进制整数合法；C <code class="c">0X2cf</code> 十六进制（前缀 0x/0X，可含 a~f）合法；D <code class="c">0b101</code> 二进制（前缀 0b，仅 0/1）合法。B <code class="c">0o12f</code> 想用八进制前缀 0o，却又带了小数点/字母 f——<b>八进制整数不能含 f</b>，实跑报 <code class="c">SyntaxError: invalid octal literal</code>。故选 B。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s1">考点：整数的进制表示</a>
+</div></details>
+
+<details class="q" id="q7"><summary>
+  <span class="qno">第7题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">(1+20.3j).real 是</div>
+  <div class="opts"><span>A. 1.0</span><span>B. 20</span><span>C. 20.3</span><span>D. 21.3</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>复数 <code class="c">1+20.3j</code> 中，<b>实部是 1、虚部是 20.3</b>。属性 <code class="c">.real</code> 取实部、<code class="c">.imag</code> 取虚部。实部以浮点返回，故 <code class="c">(1+20.3j).real</code> = <code class="c">1.0</code>（不是整数 1）。实跑验证 = 1.0。故选 A。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s1">考点：复数 .real/.imag</a>
+</div></details>
+
+<details class="q" id="q8"><summary>
+  <span class="qno">第8题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">执行 Python 语句 "name,age='富田',19" 后，下面说法正确的是</div>
+  <div class="opts"><span>A. name的值为'富田',age的值为19,两个变量的类型不能确定</span><span>B. 程序报错,因为两个变量没有定义,不能直接赋值</span><span>C. 定义两个变量,name是字符串类型,值为'富田',age是整型,值为19</span><span>D. 不能同时给两个变量赋值,程序报错</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>这是<b>序列解包（多元赋值）</b>：右侧元组 <code class="c">'富田',19</code> 按位置分别赋给 <code class="c">name</code>、<code class="c">age</code>。Python 动态类型，<code class="c">name</code> 自动为 str（'富田'）、<code class="c">age</code> 自动为 int（19），无需事先定义、可一行赋多值。A 错（类型可确定）、B/D 错（不报错）。故选 C。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s2">考点：多元赋值与动态类型</a>
+</div></details>
+
+<details class="q" id="q9"><summary>
+  <span class="qno">第9题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">表达式 int('1101',2) 的值为</div>
+  <div class="opts"><span>A. 11</span><span>B. 13</span><span>C. 15</span><span>D. 20</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">int(字符串, 基数)</code> 按指定进制转十进制：二进制 1101 = 1×2³ + 1×2² + 0×2¹ + 1×2⁰ = 8+4+0+1 = <b>13</b>。实跑验证 = 13。故选 B。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s5">考点：类型转换 int(s, base)</a>
+</div></details>
+
+<details class="q" id="q10"><summary>
+  <span class="qno">第10题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">表达式 int(16**0.5) 的值为</div>
+  <div class="opts"><span>A. 2</span><span>B. 4</span><span>C. 8</span><span>D. 16</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">**</code> 是幂运算，<code class="c">16**0.5</code> 即 16 的 0.5 次方 = √16 = 4.0（浮点），再 <code class="c">int(4.0)</code> 截断为 <b>4</b>。实跑验证 = 4。故选 B。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s3">考点：幂运算 ** 与开方</a>
+</div></details>
+
+<details class="q" id="q11"><summary>
+  <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">语句 <code class="c">n=6</code> ／ <code class="c">print(n * ' *')</code> 执行后的输出是</div>
+  <div class="opts"><span>A. ******</span><span>B. n' *'</span><span>C. 6**</span><span>D. ' *' ' *' ' *' ' *' ' *' ' *'</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>考查<b>字符串 × 整数 = 重复</b>。运算 <code class="c">n * ' *'</code> 把字符串 <code class="c">' *'</code> 整体重复 n(=6) 次，结果是由 6 个 <code class="c">' *'</code> 单元拼接而成的串——选项中只有 <b>D</b> 呈现了"6 组重复"这一特征。A <code class="c">******</code> 是把 <code class="c">'*'</code>（单个星号、无空格）重复 6 次的样子，与题中带空格的 <code class="c">' *'</code> 不符；B、C 是未执行重复运算的干扰项。<br>
+  ⚠️ 本行代码与选项在原卷小程序截图中排版/清晰度有限，按"字符串重复 6 次"这一唯一合理判定选 <b>D</b>；核心得分点是记住 <code class="c">整数 * 字符串</code> 会把它复制那么多次。</div>
+  <a class="tag" href="../知识点/字符串/字符串处理.html#s3">考点：字符串的 * 重复运算</a>
+</div></details>
+
+<details class="q" id="q12"><summary>
+  <span class="qno">第12题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">语句 x=input() 执行时，如果从键盘输入12并按 Enter 键，则 x 的值是</div>
+  <div class="opts"><span>A. 12</span><span>B. 12.0</span><span>C. "12"</span><span>D. (12)</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>Python 3 中 <code class="c">input()</code> <b>一律返回字符串</b>，即使输入的是数字 12，得到的也是字符串 <code class="c">"12"</code>。要当数值用须显式 <code class="c">int(input())</code> / <code class="c">float(input())</code>。故选 C。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s5">考点：input() 返回字符串</a>
+</div></details>
+
+<details class="q" id="q13"><summary>
+  <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">若字符串 s=" a t c " ，则 len(s) 的值是</div>
+  <div class="opts"><span>A. 3</span><span>B. 4</span><span>C. 5</span><span>D. 7</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">len()</code> 统计字符串中<b>所有字符（含空格）</b>的个数。按原卷截图，引号内的内容是 <code class="c">␣a␣t␣c␣</code>（首尾各有一个空格），逐个数：空格、a、空格、t、空格、c、空格 = <b>7</b>。最常见的失分点是只数了 a/t/c 三个字母（选 3）而漏掉空格。<br>
+  ⚠️ 若你手上的原卷引号内实为 <code class="c">"a t c"</code>（无首尾空格），则 len = 5（选 C）。本题截图首尾空格较明显，按 7 作答，务必以"空格也算字符"为准绳。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s5">考点：len() 与空格计数</a>
+</div></details>
+
+<details class="q" id="q14"><summary>
+  <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">表示 x 与 y 整数商的表达式是</div>
+  <div class="opts"><span>A. x/y</span><span>B. x//y</span><span>C. x%y</span><span>D. x**y</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">//</code> 是<b>整除（地板除）</b>运算符，结果为商的整数部分，即"整数商"。<code class="c">/</code> 是真除法（结果恒为 float）、<code class="c">%</code> 取余数、<code class="c">**</code> 是幂。故选 B。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s3">考点：整除运算符 //</a>
+</div></details>
+
+<details class="q" id="q15"><summary>
+  <span class="qno">第15题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">假设 x=1，x*=3+5 % 2 的运算结果是</div>
+  <div class="opts"><span>A. 3</span><span>B. 4</span><span>C. 5</span><span>D. 6</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>增量赋值 <code class="c">x*=表达式</code> 等价于 <code class="c">x = x * (整个右侧表达式)</code>——右侧先整体算完。优先级：<code class="c">%</code> 高于 <code class="c">+</code>，故 <code class="c">3 + 5%2 = 3 + 1 = 4</code>；再 <code class="c">x = 1 * 4 = 4</code>。实跑验证 = 4。两个易错点：① 误以为 <code class="c">*=</code> 只乘 3；② 把 <code class="c">5%2</code> 算错。故选 B。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s4">考点：运算符优先级与增量赋值</a>
+</div></details>
+
+<details class="q" id="q16"><summary>
+  <span class="qno">第16题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">设有如下程序段，则下面语句描述正确的是</div>
+  <pre class="code">k = 10
+while k:
+    k = k - 1
+print(k)</pre>
+  <div class="opts"><span>A. while循环执行10次</span><span>B. 循环是无限循环</span><span>C. 循环体语句一次也不执行</span><span>D. 循环体语句执行一次</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">while k:</code> 只要 k 为真（非 0）就继续。k 从 10 起，每轮 <code class="c">k = k-1</code>：10→9→…→1→0，当 k 变为 0 时条件为假退出，循环体 <code class="c">k=k-1</code> 共执行 <b>10 次</b>（最终 print 输出 0）。既非无限循环（k 会归 0），也不是"不执行/执行一次"。实跑验证循环计数 = 10。故选 A。</div>
+  <a class="tag" href="../知识点/控制结构/程序控制结构.html#s3">考点：while 循环次数与真值</a>
+</div></details>
+
+<details class="q" id="q17"><summary>
+  <span class="qno">第17题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列说法中正确的是</div>
+  <div class="opts"><span>A. break用在for语句中,而continue用在while语句中</span><span>B. break用在while语句中,而continue用在for语句中</span><span>C. continue能结束循环,而break只能结束本次循环</span><span>D. break能结束循环,而continue只能结束本次循环</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">break</code> 与 <code class="c">continue</code> 在 for 和 while 中<b>都可用</b>（A、B 错）。作用区别：<b><code class="c">break</code> 立即结束整个当前循环</b>；<b><code class="c">continue</code> 只结束本次迭代</b>，跳过本轮剩余语句直接进入下一轮（C 把二者说反，D 正确）。故选 D。</div>
+  <a class="tag" href="../知识点/控制结构/程序控制结构.html#s4">考点：break 与 continue 区别</a>
+</div></details>
+
+<details class="q" id="q18"><summary>
+  <span class="qno">第18题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">以下说法正确的是</div>
+  <div class="opts"><span>A. 带else子句的循环若因执行break语句而退出,会执行else子句中的代码</span><span>B. for i in range(20)和for i in range(2,40)的作用等价</span><span>C. 带else子句的循环语句,若循环正常结束,会执行else子句</span><span>D. for循环不用遍历元组</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>循环的 <code class="c">else</code> 子句规则：<b>循环"自然结束"（未被 break 打断）才执行 else</b>；若因 break 退出则不执行 else。故 C 对、A 错。B 错：<code class="c">range(20)</code> 产生 0~19 共 20 个，<code class="c">range(2,40)</code> 产生 2~39 共 38 个，取值不同不等价。D 错：for 完全可以遍历元组（元组是可迭代对象）。故选 C。</div>
+  <a class="tag" href="../知识点/控制结构/程序控制结构.html#s4">考点：循环 else 子句触发条件</a>
+</div></details>
+
+<details class="q" id="q19"><summary>
+  <span class="qno">第19题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">Python 中唯一的映射类型是</div>
+  <div class="opts"><span>A. 列表</span><span>B. 元组</span><span>C. 字典</span><span>D. 集合</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>映射类型指"键→值"的对应关系。<b>字典 dict 是 Python 唯一的映射类型</b>。列表/元组是序列类型（按整数下标访问），集合是无序不重复集合类型。故选 C。</div>
+  <a class="tag" href="../知识点/组合数据类型/列表元组集合字典.html#s4">考点：字典是映射类型</a>
+</div></details>
+
+<details class="q" id="q20"><summary>
+  <span class="qno">第20题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">Python 集合的特性是</div>
+  <div class="opts"><span>A. 元素可以重复</span><span>B. 元素无序且唯一</span><span>C. 元素必须按顺序存储</span><span>D. 元素只能是数字</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>集合 set 两大特性：<b>无序</b>（不保存插入顺序、不能下标索引）+ <b>元素唯一</b>（自动去重）。元素不限于数字（可放任意可哈希对象），也不能重复。故选 B。</div>
+  <a class="tag" href="../知识点/组合数据类型/列表元组集合字典.html#s3">考点：集合的无序唯一性</a>
+</div></details>
+
+<h2 class="section">二、简答题（共5题）</h2>
+
+<details class="q" id="q21"><summary>
+  <span class="qno">第21题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述 Python 语言中的数值数据类型的组成。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <div class="sol">Python 的数值类型共四种：<br>
+  ① <b>整型 int</b>：包括负整数、0 和正整数（Python 3 整数无位数上限）。<br>
+  ② <b>浮点型 float</b>：也叫实数，由整数部分、小数点和小数部分组成（如 3.14）。<br>
+  ③ <b>布尔型 bool</b>：表示一个命题的两种状态，用 <code class="c">True</code> 和 <code class="c">False</code> 表示（是 int 的子类）。<br>
+  ④ <b>复数型 complex</b>：表示数学中的复数，由实部、虚部组成，虚部以 <code class="c">j</code> 结尾（如 1+2j）。<br>
+  <span class="lab">评分参考：</span>每答对一类得大部分分，最高满分；关键词"整/浮点/布尔/复数"齐全即可。</div>
+  <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s1">考点：数值数据类型组成</a>
+</div></details>
+
+<details class="q" id="q22"><summary>
+  <span class="qno">第22题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述函数调用时的实参的含义，并列举实参的数据形式。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <div class="sol"><span class="lab">含义：</span><b>实参（实际参数）</b>是<b>调用函数时</b>真正传递给形参的具体数据，写在调用式的圆括号里；形参则是定义函数时占位的参数名，调用时由实参为其赋值。<br>
+  <span class="lab">实参的数据形式（举例）：</span><br>
+  ① <b>常量</b>：<code class="c">f(10)</code>、<code class="c">f("hi")</code>；<br>
+  ② <b>变量</b>：<code class="c">x=3; f(x)</code>；<br>
+  ③ <b>表达式</b>：<code class="c">f(a+b)</code>、<code class="c">f(2*3+1)</code>；<br>
+  ④ <b>函数调用（返回值）</b>：<code class="c">f(g(5))</code>；<br>
+  也可以是列表、字典、对象等任意数据。传递形式还可分<b>位置参数</b>与<b>关键字参数</b>（如 <code class="c">f(a=1, b=2)</code>）。</div>
+  <a class="tag" href="../知识点/函数/函数定义与调用.html#s3">考点：形参与实参·参数传递</a>
+</div></details>
+
+<details class="q" id="q23"><summary>
+  <span class="qno">第23题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述全局变量和局部变量的含义及区别。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <div class="sol"><span class="lab">含义：</span><b>全局变量</b>在函数<b>外部</b>（模块顶层）定义，作用域覆盖整个模块，函数内一般可读取；<b>局部变量</b>在函数<b>内部</b>定义，只在所属函数内有效，函数执行结束即被销毁。<br>
+  <span class="lab">主要区别：</span><br>
+  ① <b>作用域不同</b>：全局变量全局可见，局部变量仅函数内可见；<br>
+  ② <b>生命周期不同</b>：全局变量随程序/模块存在，局部变量随一次函数调用产生与消亡；<br>
+  ③ <b>同名遮蔽</b>：函数内若定义与全局同名的局部变量，则局部优先、遮蔽全局；<br>
+  ④ 要在函数<b>内部修改</b>全局变量，必须先用 <code class="c">global</code> 声明，否则会被当作新建局部变量。</div>
+  <a class="tag" href="../知识点/函数/函数定义与调用.html#s4">考点：变量作用域 global/局部</a>
+</div></details>
+
+<details class="q" id="q24"><summary>
+  <span class="qno">第24题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在 Python 的实例方法中，通常将哪个名称作为第一个形参？说明其作用。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案：self</div>
+  <div class="sol"><span class="lab">名称：</span>约定用 <code class="c">self</code>（并非关键字，只是社区强制惯例，任何名字都可但必须放第一位）。<br>
+  <span class="lab">作用：</span><code class="c">self</code> 指向<b>调用该方法的实例对象本身</b>。通过它可以在方法内部访问和绑定该实例的属性与其他方法，如 <code class="c">self.name</code>、<code class="c">self.xxx()</code>。定义实例方法时写 <code class="c">def method(self, ...)</code>，而<b>调用时无需显式传入 self</b>——解释器会自动把调用者对象绑定给第一个参数（<code class="c">obj.method()</code> 实际等价于 <code class="c">Class.method(obj)</code>）。</div>
+  <a class="tag" href="../知识点/面向对象/面向对象编程.html#s2">考点：实例方法与 self</a>
+</div></details>
+
+<details class="q" id="q25"><summary>
+  <span class="qno">第25题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">执行 len(np.random.randint(1,100,10)) 的结果是多少？请解释原因。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案：10</div>
+  <div class="sol"><span class="lab">结果：</span><code class="c">10</code>。<br>
+  <span class="lab">原因：</span><code class="c">numpy.random.randint(low, high, size)</code> 生成在区间 <code class="c">[low, high)</code>（含 low、不含 high）内均匀分布的随机整数。<b>第三个参数 size 指定生成元素的个数</b>：这里 <code class="c">low=1、high=100、size=10</code>，返回一个含 10 个随机整数的一维 ndarray，故 <code class="c">len(...)</code> = 元素个数 = <b>10</b>。（前两个参数 1 和 100 只决定取值范围，不影响长度；真正决定长度的是 size=10。）</div>
+  <a class="tag" href="../知识点/科学计算/科学计算与可视化.html#s2">考点：numpy 随机与数组长度</a>
+</div></details>
+
+<h2 class="section">三、设计题（共6题）</h2>
+
+<details class="q" id="q26"><summary>
+  <span class="qno">第26题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">编写程序，实现功能：找出200以内能被9整除的最大整数。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <pre class="code">for i in range(200, 0, -1):       # 从 200 往下倒序枚举
+    if i % 9 == 0:                # 能被 9 整除
+        print(i)
+        break                     # 找到最大的即退出</pre>
+  <div class="sol"><span class="lab">运行结果：</span><code class="c">198</code><br>
+  <span class="lab">套路：</span>要"最大"就<b>从大到小倒序遍历</b>（<code class="c">range(200,0,-1)</code>），第一个满足 <code class="c">i%9==0</code> 的就是答案，找到立刻 <code class="c">break</code>。也可一行算：<code class="c">print(200 - 200 % 9)</code> → 198，或用 <code class="c">9 * (200 // 9)</code> = 198。倒序+break 版最能体现循环思路。</div>
+  <a class="tag" href="../知识点/控制结构/程序控制结构.html#s3">考点：for 倒序遍历 · break</a>
+</div></details>
+
+<details class="q" id="q27"><summary>
+  <span class="qno">第27题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">编写程序，实现功能：计算并输出 s=0!+1!+…+n! 的值（其中 n 由用户输入）。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <pre class="code">n = int(input("请输入n："))
+fact = 1          # 边乘边累积 i!
+s = 0
+for i in range(0, n + 1):
+    if i > 0:
+        fact *= i         # fact 由 (i-1)! 变成 i!
+    s += fact             # 累加 i!
+print(s)</pre>
+  <div class="sol"><span class="lab">运行示例：</span>n=3 → 0!+1!+2!+3! = 1+1+2+6 = <code class="c">10</code>；n=5 → <code class="c">154</code>（均实跑验证）。<br>
+  <span class="lab">套路：</span>阶乘用<b>累乘变量 fact</b> 递推：每轮 <code class="c">fact *= i</code> 就得到 i!，再累加进 s，避免每次重算阶乘（也可用 <code class="c">math.factorial(i)</code>）。注意 <b>0! = 1</b>：初值 fact=1 且 i=0 时不进 if，直接 <code class="c">s += 1</code> 正好把 0! 计入。</div>
+  <a class="tag" href="../知识点/控制结构/程序控制结构.html#s3">考点：for 累加累乘</a><a class="tag" href="../知识点/函数/函数定义与调用.html#s5">考点：阶乘递推</a>
+</div></details>
+
+<details class="q" id="q28"><summary>
+  <span class="qno">第28题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">编写程序，实现功能：将包含数字和字母的日期字符串中的数字字符换为中文数字，例如输入原始字符串为"2025年5月2日"，最终输出格式为"二零二五年五月二日"。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <pre class="code">s = input("请输入日期字符串：")
+cn = "零一二三四五六七八九"
+result = ""
+for ch in s:
+    if ch.isdigit():            # 是数字字符
+        result += cn[int(ch)]   # 映射为对应中文数字
+    else:
+        result += ch            # 非数字原样保留
+print(result)</pre>
+  <div class="sol"><span class="lab">运行示例：</span>输入 <code class="c">2025年5月2日</code> → 输出 <code class="c">二零二五年五月二日</code>（实跑验证）。<br>
+  <span class="lab">套路：</span>核心是<b>建一张"数字→中文"映射表</b>（字符串 <code class="c">cn</code> 按下标 0~9 存中文数字），逐字符遍历：<code class="c">ch.isdigit()</code> 判断是否数字，是则用 <code class="c">cn[int(ch)]</code> 替换，否则原样拼接。也可用字典 <code class="c">{'0':'零',...}</code> 或 <code class="c">str.translate</code>，但逐字符 + isdigit 版最直观、最好背。</div>
+  <a class="tag" href="../知识点/字符串/字符串处理.html#s3">考点：逐字符遍历与映射替换</a>
+</div></details>
+
+<details class="q" id="q29"><summary>
+  <span class="qno">第29题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">编写一个函数，以整数 n 为参数，实现求 n 的倒序数并返回该数。例如，123 的倒序数为 321。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <pre class="code">def reverse_num(n):
+    return int(str(n)[::-1])    # 转字符串→切片倒序→转回整数
+
+print(reverse_num(123))</pre>
+  <div class="sol"><span class="lab">运行结果：</span><code class="c">321</code>（实跑验证）。<br>
+  <span class="lab">套路：</span>最简版是<b>切片三步</b>：<code class="c">str(n)</code> 转字符串 → <code class="c">[::-1]</code> 步长 -1 整体倒序 → <code class="c">int(...)</code> 转回整数（自动去掉前导 0，如 120→"021"→21）。若考"纯算术拆位"，用循环版：<br>
+  <code class="c">r = 0</code>；当 n&gt;0 时反复 <code class="c">r = r*10 + n%10; n //= 10</code>，最终 r 即倒序数。两种都对，切片版最简洁。</div>
+  <a class="tag" href="../知识点/函数/函数定义与调用.html#s1">考点：自定义函数与 return</a><a class="tag" href="../知识点/字符串/字符串处理.html#s3">考点：切片 [::-1] 倒序</a>
+</div></details>
+
+<details class="q" id="q30"><summary>
+  <span class="qno">第30题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">编写程序，实现功能：按行读取数据文件 data.txt 中的字符串，统计每一行字符串中大写字母的个数，将结果（格式："行号:大写字母个数"）写入新文件 result.txt。要求使用函数实现，数据文件与源代码在同一文件夹。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <pre class="code">def count_upper(s):
+    cnt = 0
+    for ch in s:
+        if 'A' &lt;= ch &lt;= 'Z':     # 也可写 ch.isupper()
+            cnt += 1
+    return cnt
+
+with open('data.txt', 'r') as fin, open('result.txt', 'w') as fout:
+    idx = 1
+    for line in fin:             # 文件对象可直接按行迭代
+        fout.write("{}:{}\n".format(idx, count_upper(line)))
+        idx += 1</pre>
+  <div class="sol"><span class="lab">运行示例：</span>若 data.txt 三行为 <code class="c">Hello World</code> / <code class="c">abCDeF gHI</code> / <code class="c">no upper here</code>，则 result.txt 写入 <code class="c">1:2</code>、<code class="c">2:5</code>、<code class="c">3:0</code>（实跑验证）。<br>
+  <span class="lab">套路：</span>四个得分点：① <b>统计逻辑封装成函数</b>（题目硬性要求"使用函数实现"）；② <code class="c">open('data.txt','r')</code> 只写文件名即默认与源码同目录；③ <code class="c">for line in fin</code> 按行读、<code class="c">fout.write(...)</code> 按"行号:个数"格式写，行号用计数器 idx 递增；④ 判断大写 <code class="c">'A'&lt;=ch&lt;='Z'</code> 或 <code class="c">ch.isupper()</code>。用 <code class="c">with</code> 自动关文件是加分习惯。</div>
+  <a class="tag" href="../知识点/文件/文件与数据维度.html#s3">考点：按行读文件</a><a class="tag" href="../知识点/文件/文件与数据维度.html#s4">考点：写文件与 with</a>
+</div></details>
+
+<details class="q" id="q31"><summary>
+  <span class="qno">第31题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">编写程序，设计书籍类继承体系并进行相应的类测试。<br>(1) 基类书籍类，实例属性有书名和作者。<br>(2) 小说类继承自基类，新增一个实例属性表示小说类型。<br>(3) 教材类继承自基类，新增一个实例属性表示适用的年级，如"高中三年级"。每个类需有自己的构造方法，以及信息输出方法。创建小说类和教材类的实例，并调用信息输出方法输出实例信息。</div>
+</summary>
+<div class="body">
+  <div class="answer">参考答案</div>
+  <pre class="code">class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+    def display_info(self):
+        print("书名：{}，作者：{}".format(self.title, self.author))
+
+class Novel(Book):
+    def __init__(self, title, author, genre):
+        super().__init__(title, author)   # 调用父类构造，复用公共属性
+        self.genre = genre
+    def display_novel(self):
+        print("书名：{}，作者：{}，小说类型：{}".format(self.title, self.author, self.genre))
+
+class Textbook(Book):
+    def __init__(self, title, author, grade):
+        super().__init__(title, author)
+        self.grade = grade
+    def display_textbook(self):
+        print("书名：{}，作者：{}，适用年级：{}".format(self.title, self.author, self.grade))
+
+Novel("活着", "余华", "长篇小说").display_novel()
+Textbook("Python语言程序设计基础教程", "傅清平", "高中三年级").display_textbook()</pre>
+  <div class="sol"><span class="lab">运行结果：</span><br><code class="c">书名：活着，作者：余华，小说类型：长篇小说</code><br><code class="c">书名：Python语言程序设计基础教程，作者：傅清平，适用年级：高中三年级</code>（实跑验证）。<br>
+  <span class="lab">套路：</span>面向对象继承综合题的评分点：① 基类 <code class="c">__init__</code> 定义公共属性（书名、作者）；② 子类写法 <code class="c">class Novel(Book):</code> 表达继承；③ 子类构造中用 <code class="c">super().__init__(...)</code> 调父类构造再补新增属性（漏写 super 则 title/author 未初始化，直接丢分）；④ 各类各写信息输出方法，创建实例并 <code class="c">对象.方法()</code> 调用测试。</div>
+  <a class="tag" href="../知识点/面向对象/面向对象编程.html#s2">考点：类与构造 __init__</a><a class="tag" href="../知识点/面向对象/面向对象编程.html#s5">考点：继承与 super()</a>
+</div></details>
+
+<h2 class="section" id="anskey">答案速查表</h2>
+<div class="tip" style="margin:0 0 10px">选择题 1~20 答案一页看完，适合考前 5 分钟扫一遍；主观题记"关键词"即可，请回到上方各题背套路。</div>
+<table class="anskey">
+  <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
+  <tr><td><b>答案</b></td><td><b>B</b></td><td><b>C</b></td><td><b>D</b></td><td><b>C</b></td><td><b>A</b></td><td><b>B</b></td><td><b>A</b></td><td><b>C</b></td><td><b>B</b></td><td><b>B</b></td></tr>
+  <tr><th>题号</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
+  <tr><td><b>答案</b></td><td><b>D</b></td><td><b>C</b></td><td><b>D</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>D</b></td><td><b>C</b></td><td><b>C</b></td><td><b>B</b></td></tr>
+  <tr><th>题号</th><th colspan="10">21~31 主观题关键词</th></tr>
+  <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 整型/浮点型/布尔型/复数型四类 · 22 实参＝调用时传的具体数据；常量/变量/表达式/函数返回值等形式 · 23 全局＝函数外·整个模块可见 vs 局部＝函数内·调用结束销毁·改全局需 global · 24 self·指向调用实例·自动绑定 · 25 结果 10·size 决定元素个数 · 26 倒序 range(200,0,-1)+break→198 · 27 累乘 fact 递推·0!=1→n=3 得 10 · 28 建"零一二…"映射表·isdigit 逐字符替换 · 29 int(str(n)[::-1])→321 · 30 函数统计·'A'&lt;=ch&lt;='Z'·for line in fin·write 行号:个数 · 31 __init__·class Novel(Book)·super()</td></tr>
+</table>
+
+<div class="note">
+  ✍️ <b>答案可信度说明</b>：本卷原卷来自第三方小程序逐题截图，<b>无官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 int('1101',2)=13、int(16**0.5)=4、(1+20.3j).real=1.0、5%2 优先级、循环 else 触发条件等易错点）；<b>第 11 题</b>代码行与选项在原截图中排版/清晰度有限，按"字符串重复 6 次"判定选 D；<b>第 13 题</b>按截图字符串含首尾空格取 len=7，若你的原卷无首尾空格则为 5（题内已注明）。简答与设计题 21~31 的参考答案/代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
+</div>
+
+<footer>2026年1月广东省高等教育自学考试 · 计算机高级程序设计（08074）真题详解 · 教材：傅清平等《Python语言程序设计基础教程》清华大学出版社 2022 · 仅供学习交流参考</footer>
+</div>
+
+<script>
+(function () {
+  function openTarget() {
+    var el = document.getElementById(location.hash.slice(1));
+    if (el && el.tagName === 'DETAILS') {
+      el.open = true;
+      el.scrollIntoView();
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', openTarget);
+  } else {
+    openTarget();
+  }
+  window.addEventListener('hashchange', openTarget);
+})();
+</script>
+<script src="../../assets/dock.js?v=20261030d" defer></script>
+</body>
+</html>
