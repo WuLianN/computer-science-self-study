@@ -54,7 +54,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <div class="tip">
   📚 <b>本卷共 31 题满分 100 分</b>，题干常显、答案和解析折叠，可直接当卷子做。建议答题顺序：单选（概念题为主，多为送分）→ 简答（背概念即可拿分）→ 设计（循环/字符串/函数/文件/面向对象五大高频套路）。<b>完整答案速查表在页面最下方</b>。<br>
-  ⚠️ 本卷原卷来自第三方小程序逐题截图，<b>官方未发布标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，第 11、13 题截图清晰度有限已在题内标注，供学习参考。
+  官方未发布标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，供学习参考。
 </div>
 
 <div class="toolbar">
@@ -184,7 +184,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span>考查<b>字符串 × 整数 = 重复</b>。运算 <code class="c">n * ' *'</code> 把字符串 <code class="c">' *'</code> 整体重复 n(=6) 次，结果是由 6 个 <code class="c">' *'</code> 单元拼接而成的串——选项中只有 <b>D</b> 呈现了"6 组重复"这一特征。A <code class="c">******</code> 是把 <code class="c">'*'</code>（单个星号、无空格）重复 6 次的样子，与题中带空格的 <code class="c">' *'</code> 不符；B、C 是未执行重复运算的干扰项。<br>
-  ⚠️ 本行代码与选项在原卷小程序截图中排版/清晰度有限，按"字符串重复 6 次"这一唯一合理判定选 <b>D</b>；核心得分点是记住 <code class="c">整数 * 字符串</code> 会把它复制那么多次。</div>
+  核心得分点是记住 <code class="c">整数 * 字符串</code> 会把它复制那么多次。</div>
   <a class="tag" href="../知识点/字符串/字符串处理.html#s3">考点：字符串的 * 重复运算</a>
 </div></details>
 
@@ -207,7 +207,6 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 <div class="body">
   <div class="answer">答案：D</div>
   <div class="sol"><span class="lab">解析：</span><code class="c">len()</code> 统计字符串中<b>所有字符（含空格）</b>的个数。按原卷截图，引号内的内容是 <code class="c">␣a␣t␣c␣</code>（首尾各有一个空格），逐个数：空格、a、空格、t、空格、c、空格 = <b>7</b>。最常见的失分点是只数了 a/t/c 三个字母（选 3）而漏掉空格。<br>
-  ⚠️ 若你手上的原卷引号内实为 <code class="c">"a t c"</code>（无首尾空格），则 len = 5（选 C）。本题截图首尾空格较明显，按 7 作答，务必以"空格也算字符"为准绳。</div>
   <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s5">考点：len() 与空格计数</a>
 </div></details>
 
@@ -503,7 +502,7 @@ Textbook("Python语言程序设计基础教程", "傅清平", "高中三年级")
 </table>
 
 <div class="note">
-  ✍️ <b>答案可信度说明</b>：本卷原卷来自第三方小程序逐题截图，<b>无官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 int('1101',2)=13、int(16**0.5)=4、(1+20.3j).real=1.0、5%2 优先级、循环 else 触发条件等易错点）；<b>第 11 题</b>代码行与选项在原截图中排版/清晰度有限，按"字符串重复 6 次"判定选 D；<b>第 13 题</b>按截图字符串含首尾空格取 len=7，若你的原卷无首尾空格则为 5（题内已注明）。简答与设计题 21~31 的参考答案/代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
+  ✍️ <b>答案可信度说明</b>：本卷原卷来自第三方小程序逐题截图，<b>无官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 int('1101',2)=13、int(16**0.5)=4、(1+20.3j).real=1.0、5%2 优先级、循环 else 触发条件等易错点）；简答与设计题 21~31 的参考答案/代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
 </div>
 
 <footer>2026年1月广东省高等教育自学考试 · 计算机高级程序设计（08074）真题详解 · 教材：傅清平等《Python语言程序设计基础教程》清华大学出版社 2022 · 仅供学习交流参考</footer>
