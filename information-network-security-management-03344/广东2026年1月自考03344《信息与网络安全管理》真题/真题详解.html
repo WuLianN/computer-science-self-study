@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>2026年1月广东省考 03344《信息与网络安全管理》真题详解</title>
+<meta name="description" content="2026年1月广东省高等教育自学考试 03344《信息与网络安全管理》真题逐题详解：单选20题+名词解释5题+简答6题+案例分析1题+应用计算1题（RSA，共33题），题干常显、答案折叠，可当卷子自测。含参考答案速查表与考点链回知识点速记卡。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261030d">
+<style>
+header.hero{background:linear-gradient(135deg,#0d9488,#4f46e5)}  /* 03344 主题：青→靛，与知识点导航页一致 */
+.links{margin-top:12px}
+.links a{display:inline-block;background:#fff;color:var(--brand);border-radius:8px;padding:4px 12px;font-size:13px;text-decoration:none;margin-right:8px}
+.toolbar{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+button.btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--brand);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;transition:.15s}
+button.btn:hover{background:var(--brand);color:#fff}
+details.q{background:var(--card);border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden}
+details.q>summary{cursor:pointer;padding:14px 18px;list-style:none;display:block}
+details.q>summary::-webkit-details-marker{display:none}
+details.q>summary:hover{background:#fafbff}
+.qno{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:8px;font-size:13px;font-weight:700;padding:2px 10px;margin-right:8px;vertical-align:middle}
+.stem{display:inline;font-weight:600;vertical-align:middle}
+.toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
+details.q[open]>summary .toggle::after{content:" ▴"}
+details.q:not([open])>summary .toggle::after{content:" ▾"}
+.opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
+.opts span{font-size:15px;color:#374151}
+.body{padding:4px 18px 16px 18px;border-top:1px dashed var(--line)}
+.answer{display:inline-block;font-weight:700;color:#fff;background:var(--ok);border-radius:8px;padding:3px 14px;margin:12px 0 8px;font-size:15px}
+.ref{background:#fff;color:var(--warn)}
+.sol{background:#fafafa;border-left:3px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0;margin:8px 0}
+.sol .lab{font-weight:700;color:var(--brand)}
+.sol ol,.sol ul{margin:4px 0 0 1.3em;padding:0}
+.sol li{margin:2px 0}
+.subq{margin:10px 0 0;padding:8px 12px;background:#f8fafc;border-radius:8px;border:1px solid var(--line)}
+.subq b.qh{color:var(--brand)}
+.tag{display:inline-block;font-size:12px;background:var(--warn-soft);color:var(--warn);border-radius:6px;padding:1px 8px;margin:6px 4px 0 0;text-decoration:none}
+a.tag:hover{background:var(--warn);color:#fff}
+pre.calc{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 16px;overflow-x:auto;font-size:13.5px;line-height:1.8;margin:8px 0;font-family:ui-monospace,Consolas,monospace}
+table.anskey{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0;table-layout:fixed}
+table.anskey th,table.anskey td{border:1px solid var(--line);padding:6px 8px;text-align:center;word-break:break-word}
+table.anskey th:first-child,table.anskey td:first-child{width:62px}
+table.anskey th{background:var(--brand-soft);color:var(--brand)}
+table.anskey td b{color:var(--ok)}
+.tip{background:var(--brand-soft);border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>2026年1月广东省高等教育自学考试 · 信息与网络安全管理（03344）真题详解</h1>
+  <p>广东省卷 · 教材：苏永红、蒋天发主编《网络空间信息安全》电子工业出版社 2022 年第 2 版。题干与选项默认显示，<b>点开才看参考答案与解析</b>，先自测再核对。</p>
+  <span class="pill">单选 20×1 = 20分</span><span class="pill">名解 5×3 = 15分</span><span class="pill">简答 6×5 = 30分</span><span class="pill">案例分析 15分</span><span class="pill">应用计算(RSA) 20分</span><span class="pill">闭卷 150 分钟</span>
+  <div class="links"><a href="../../index.html">🏠 首页</a><a href="../真题/index.html">📝 真题导航</a><a href="../知识点/index.html">📚 知识点速记卡</a><a href="../考纲.html">📋 考纲</a></div>
+</header>
+
+<div class="tip">
+  📚 <b>本卷共 33 题满分 100 分</b>，题干常显、答案与解析折叠，可直接当卷子做。建议答题顺序：单选（20分，概念辨析为主）→ 名解/简答（45分，分条作答、多写教材编号条目）→ 案例分析（15分，服务端/维护终端分别作答）→ 应用计算（RSA，写出 q、φ(n)、d 推导过程）。<b>完整答案速查表在页面最下方</b>。<br>
+  ⚠️ 本卷为逐题整理收录，<b>官方未发布标准答案</b>；参考答案均依据当期《考试大纲》与指定教材内容逐题推定复核，供学习参考。各题分值截图未完全显示处，已按 100 分标准题型结构推定并标注。
+</div>
+
+<div class="toolbar">
+  <button class="btn" onclick="document.querySelectorAll('details.q').forEach(d=>d.open=true)">全部展开（看答案）</button>
+  <button class="btn" onclick="document.querySelectorAll('details.q').forEach(d=>d.open=false)">全部收起（自测模式）</button>
+  <button class="btn" onclick="document.getElementById('anskey').scrollIntoView({behavior:'smooth'})">🔑 答案速查表（页尾）</button>
+  <span style="color:var(--muted);font-size:13px">提示：题干常显，点开才看答案。</span>
+</div>
+
+<h2 class="section">一、单项选择题（20 小题，共 20 分）</h2>
+
+<details class="q" id="q1"><summary>
+  <span class="qno">第1题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">网络虚拟空间的载体是指</div>
+  <div class="opts"><span>A. 通信信息系统</span><span>B. 网民</span><span>C. 网络协议</span><span>D. 计算机</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>网络空间信息安全包含两部分内容，网络虚拟空间是依托于<b>通信信息系统</b>这一载体存在的空间；网民是活动主体、计算机是终端设备、网络协议是通信规则，均非"载体"。故选 A。</div>
+  <a class="tag" href="../知识点/概论/网络空间信息安全概论.html#s1">考点：概念与两部分内容</a>
+</div></details>
+
+<details class="q" id="q2"><summary>
+  <span class="qno">第2题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在恶意代码中,能够嵌入计算机程序,通过一定触发条件破坏计算机的程序是</div>
+  <div class="opts"><span>A. 病毒</span><span>B. 木马</span><span>C. 逻辑炸弹</span><span>D. 后门</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span><b>逻辑炸弹</b>是预先嵌入程序中的一段代码，在满足<b>特定触发条件</b>（如某日期、某次运行）时才执行破坏动作。病毒需依附宿主并复制、木马靠欺骗诱骗运行、后门是绕过认证的隐蔽入口，都不以"触发条件"为核心特征。故选 C。</div>
+  <a class="tag" href="../知识点/病毒防范/计算机病毒与恶意代码.html#s3">考点：恶意代码五种类型</a>
+</div></details>
+
+<details class="q" id="q3"><summary>
+  <span class="qno">第3题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">U盘病毒通常利用文件来侵入的,该文件是</div>
+  <div class="opts"><span>A. wininit.ini</span><span>B. Win.ini</span><span>C. System.inf</span><span>D. autorun.inf</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>U 盘（移动存储）病毒典型手法是在盘符根目录写入隐藏的 <b><code>autorun.inf</code></b>，利用系统"自动播放"机制在插入时运行病毒本体。<code>Win.ini</code>、<code>system.ini</code> 是系统配置文件，非自动运行入口。故选 D。</div>
+  <a class="tag" href="../知识点/病毒防范/计算机病毒与恶意代码.html#s5">考点：U 盘病毒的检测与清除</a>
+</div></details>
+
+<details class="q" id="q4"><summary>
+  <span class="qno">第4题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在Windows7中,可以在远离办公室的地方通过网络对计算机进行远程控制的应用程序是</div>
+  <div class="opts"><span>A. 远程协助</span><span>B. 远程桌面</span><span>C. 远程监控</span><span>D. 远程服务</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>Windows 7 内置的<b>"远程桌面"（Remote Desktop）</b>允许用户从异地通过网络登录并完全操控另一台计算机的桌面会话。"远程协助"是邀请他人帮助解决当前问题的辅助功能，"远程监控""远程服务"非系统内置的远控应用程序名。故选 B。</div>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s2">考点：Windows 远程控制的实现方式</a>
+</div></details>
+
+<details class="q" id="q5"><summary>
+  <span class="qno">第5题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在计算机的软件端口中,HTTP通信协议专用的是</div>
+  <div class="opts"><span>A. 21号端口</span><span>B. 23号端口</span><span>C. 25号端口</span><span>D. 80号端口</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>常用端口：21—FTP、23—Telnet、25—SMTP、<b>80—HTTP</b>。故选 D。（补充：443—HTTPS、1433—SQL Server、3306—MySQL、53—DNS。）</div>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s3">考点：黑客入侵的基本过程（端口扫描）</a>
+</div></details>
+
+<details class="q" id="q6"><summary>
+  <span class="qno">第6题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">Internet控制消息协议的简称是</div>
+  <div class="opts"><span>A. TCP</span><span>B. UDP</span><span>C. IP</span><span>D. ICMP</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>Internet 控制消息协议 = <b>ICMP</b>（Internet Control Message Protocol），用于传递差错、控制与查询信息（ping、tracepath 即基于它）。TCP/UDP 是传输层协议，IP 是网络层协议。故选 D。</div>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s3">考点：网络协议与 ICMP</a>
+</div></details>
+
+<details class="q" id="q7"><summary>
+  <span class="qno">第7题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在黑客攻击技术中,恶意代码攻击属于</div>
+  <div class="opts"><span>A. 窃听技术</span><span>B. 欺骗术</span><span>C. 数据驱动攻击</span><span>D. 拒绝服务攻击术</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>按教材对黑客攻击技术的归类，四类基本攻击术中的<b>欺骗术（Spoofing）</b>涵盖借助伪装与诱导植入的<b>恶意代码攻击</b>（木马、后门等伪装诱导运行）。窃听、数据驱动、拒绝服务各有独立含义。故选 B。</div>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s4">考点：黑客入侵的层次与种类</a>
+</div></details>
+
+<details class="q" id="q8"><summary>
+  <span class="qno">第8题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在密码学中,消息的发送者称为</div>
+  <div class="opts"><span>A. 信令</span><span>B. 信宿</span><span>C. 信源</span><span>D. 信息</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span>密码通信模型中，<b>信源（发送方/Sender）</b>是消息的发送者，<b>信宿（接收方/Receiver）</b>是接收者。故选 C。</div>
+  <a class="tag" href="../知识点/密码技术/对称与公钥密码体制.html#s1">考点：密码技术概述与术语</a>
+</div></details>
+
+<details class="q" id="q9"><summary>
+  <span class="qno">第9题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">位于OSI网络层以上的加密,又称为脱线加密的是</div>
+  <div class="opts"><span>A. 链路加密</span><span>B. 节点加密</span><span>C. 无线加密</span><span>D. 端到端加密</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>三种典型加密方式：<b>链路加密</b>在物理层逐段加密、<b>节点加密</b>在网络层、<b>端到端加密</b>位于<b>网络层以上</b>，由源主机加密、目的主机才解密，中途节点不解密，故又称<b>脱线（离线）加密</b>。故选 D。</div>
+  <a class="tag" href="../知识点/密码技术/对称与公钥密码体制.html#s1">考点：加密方式分类（链路/节点/端到端）</a>
+</div></details>
+
+<details class="q" id="q10"><summary>
+  <span class="qno">第10题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">DSA密钥的长度为</div>
+  <div class="opts"><span>A. 64位</span><span>B. 256位</span><span>C. 512位</span><span>D. 1024位</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>DSA（数字签名算法）基于离散对数，教材口径其密钥长度为 <b>1024 位</b>（512～1024 位可变，标准取 1024）。故选 D。</div>
+  <a class="tag" href="../知识点/数字签名/数字签名与PKI验证.html#s3">考点：DSA 与 SHA</a>
+</div></details>
+
+<details class="q" id="q11"><summary>
+  <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">下列协议中,称为网络验证协议的是</div>
+  <div class="opts"><span>A. PGP</span><span>B. SSH</span><span>C. S-HTTP</span><span>D. Kerberos</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span><b>Kerberos</b> 是基于对称密码与可信第三方的<b>网络认证（验证）协议</b>。PGP 是邮件加密/签名，SSH 是安全远程登录，S-HTTP 是安全超文本传输。故选 D。</div>
+  <a class="tag" href="../知识点/安全协议/IPSec与SSL-TLS.html#s3">考点：各网络层下的经典安全协议</a>
+</div></details>
+
+<details class="q" id="q12"><summary>
+  <span class="qno">第12题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在IPSec的ESP协议中,ESP头包含安全参数索引及</div>
+  <div class="opts"><span>A. 序列号</span><span>B. 下一负载头</span><span>C. 填充长度</span><span>D. 验证数据</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>ESP（封装安全载荷）报头仅由两部分组成：<b>安全参数索引 SPI</b> 与 <b>序列号</b>（用于防重放）。"下一负载头、填充长度、验证数据"属于 ESP 尾部的 Padding/Pad Length/Next Header 及认证区字段，不在"头"中。故选 A。</div>
+  <a class="tag" href="../知识点/安全协议/IPSec与SSL-TLS.html#s4">考点：网络层安全协议 IPSec</a>
+</div></details>
+
+<details class="q" id="q13"><summary>
+  <span class="qno">第13题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">ZigBee采用的标准是</div>
+  <div class="opts"><span>A. IEEE 802.15.1</span><span>B. IEEE 802.15.4</span><span>C. IEEE 802.16</span><span>D. IEEE 802.3</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>短程无线标准对应：<b>ZigBee—IEEE 802.15.4</b>（低速、低功耗、星型/网状）；蓝牙—802.15.1；WiMAX—802.16；以太网—802.3。故选 B。</div>
+  <a class="tag" href="../知识点/无线网络/无线网络安全机制.html#s2">考点：四种短程无线通信关键技术</a>
+</div></details>
+
+<details class="q" id="q14"><summary>
+  <span class="qno">第14题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在无线网络的安全级别中,设置严格的用户口令及验证措施,防止非法用户入侵,属于</div>
+  <div class="opts"><span>A. 第一级</span><span>B. 第二级</span><span>C. 第三级</span><span>D. 第四级</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>WLAN 安全性通常分为四级：第一级—采用扩频/跳频等物理层措施；<b>第二级—设置严密的用户口令及认证措施，防止非法用户入侵</b>；第三级—在前两级基础上附加第三方数据加密；第四级—网络隔离与网络认证。题目描述与第二级完全吻合。故选 B。（注：本卷知识点页未单列此分级，答案按 WLAN 通行四级定义推定复核。）</div>
+  <a class="tag" href="../知识点/无线网络/无线网络安全机制.html#s6">考点：防范无线网络入侵的安全策略</a>
+</div></details>
+
+<details class="q" id="q15"><summary>
+  <span class="qno">第15题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">考虑前后报文的历史关联性的防火墙是</div>
+  <div class="opts"><span>A. 包过滤型防火墙</span><span>B. 代理型防火墙</span><span>C. 状态检测防火墙</span><span>D. 软件防火墙</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：C</div>
+  <div class="sol"><span class="lab">解析：</span><b>状态检测防火墙</b>不仅看单个报文的头字段，还维护<b>连接状态表</b>，考虑前后报文的<b>历史关联性与上下文状态</b>来决定是否放行。包过滤仅逐包匹配规则、不看状态；代理面向应用层转发；"软件防火墙"是按实现形态分类。故选 C。</div>
+  <a class="tag" href="../知识点/访问控制/访问控制与防火墙.html#s6">考点：各类防火墙的特点与优缺点</a>
+</div></details>
+
+<details class="q" id="q16"><summary>
+  <span class="qno">第16题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">在黑客攻击主机系统过程中,用于探测主机系统是否在线的方法是利用</div>
+  <div class="opts"><span>A. 端口扫描</span><span>B. PING命令</span><span>C. 穷举法</span><span>D. 操作系统漏洞</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>黑客信息收集中，判断目标主机<b>是否在线（存活）</b>最直接的常用手段是 <b>PING 命令</b>（基于 ICMP 回送请求/应答）。端口扫描是在线之后探测开放服务，穷举法猜口令、利用系统漏洞属后续攻击阶段。故选 B。</div>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s3">考点：黑客入侵的基本过程</a>
+</div></details>
+
+<details class="q" id="q17"><summary>
+  <span class="qno">第17题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">SQL Server数据库默认的端口号是</div>
+  <div class="opts"><span>A. 21</span><span>B. 1433</span><span>C. 1521</span><span>D. 3306</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>数据库/服务默认端口：<b>SQL Server—1433</b>；MySQL—3306；Oracle—1521；FTP—21。故选 B。</div>
+  <a class="tag" href="../知识点/数据库安全/数据库安全与备份.html#s4">考点：数据库服务器的安全漏洞</a>
+</div></details>
+
+<details class="q" id="q18"><summary>
+  <span class="qno">第18题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">RSA的安全性主要基于的数学知识是</div>
+  <div class="opts"><span>A. 因子分解</span><span>B. 格密码</span><span>C. 离散对数</span><span>D. 子群判定</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：A</div>
+  <div class="sol"><span class="lab">解析：</span>RSA 的安全性建立在大整数<b>素因子分解</b>的困难性上（已知公钥 (e,n) 难分解出 p、q 从而求出 d）。离散对数是 ElGamal/DSA 的难题基础，格密码、子群判定属其他体制。故选 A。</div>
+  <a class="tag" href="../知识点/密码技术/对称与公钥密码体制.html#s5">考点：非对称密码体系与 RSA</a>
+</div></details>
+
+<details class="q" id="q19"><summary>
+  <span class="qno">第19题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">Windows平台对事件的审核达到的安全级别为</div>
+  <div class="opts"><span>A. C1</span><span>B. C2</span><span>C. C3</span><span>D. C4</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>按 TCSEC（橙皮书）分级，Windows 类工作站操作系统通过<b>用户账户与事件审核（审计）机制</b>大致达到 <b>C2（受控访问保护）</b>级——在自主访问控制基础上增加了资源隔离与审计记录。故选 B。</div>
+  <a class="tag" href="../知识点/访问控制/访问控制与防火墙.html#s1">考点：访问控制概念与安全评估级别</a>
+</div></details>
+
+<details class="q" id="q20"><summary>
+  <span class="qno">第20题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">IEEE 802.11b的工作频段为</div>
+  <div class="opts"><span>A. 800MHz</span><span>B. 2.4GHz</span><span>C. 5GHz</span><span>D. 6GHz</span></div>
+</summary>
+<div class="body">
+  <div class="answer">答案：B</div>
+  <div class="sol"><span class="lab">解析：</span>Wi-Fi 标准频段：<b>802.11b/g 工作在 2.4GHz</b>，802.11a 工作在 5GHz。802.11b 最高 11Mbps、用 2.4GHz ISM 频段。故选 B。</div>
+  <a class="tag" href="../知识点/无线网络/无线网络安全机制.html#s4">考点：常见无线网络安全加密技术</a>
+</div></details>
+
+<h2 class="section">二、名词解释（5 小题，共 15 分）</h2>
+
+<details class="q" id="q21"><summary>
+  <span class="qno">第21题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">数字签名</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>数字签名是<b>附加在数据单元上的一些数据，或是对数据单元所做的密码变换</b>，这种数据或变换允许数据单元的接收者用以确认数据单元的来源和数据单元的完整性，并保护数据、防止被人（例如接收者）进行伪造（不可否认）。</div>
+  <a class="tag" href="../知识点/数字签名/数字签名与PKI验证.html#s1">考点：数字签名的概念与性质</a>
+</div></details>
+
+<details class="q" id="q22"><summary>
+  <span class="qno">第22题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">逻辑炸弹</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>逻辑炸弹是<b>故意嵌入到计算机程序（软件）中的一段恶意代码</b>，平时潜伏不起作用，只有当<b>预先设定的触发条件</b>（特定时间、特定事件、某次运行次数等）被满足时，才激活并执行破坏、删除、篡改等恶意操作。</div>
+  <a class="tag" href="../知识点/病毒防范/计算机病毒与恶意代码.html#s3">考点：恶意代码——逻辑炸弹</a>
+</div></details>
+
+<details class="q" id="q23"><summary>
+  <span class="qno">第23题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">对称密码体系</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>对称密码体系（又称<b>私钥密码体制、传统密码体制</b>）指<b>加密密钥与解密密钥相同</b>（或由其中之一可轻易推出另一者），加解密使用同一秘密密钥的一类密码体制。其安全性依赖密钥的保密，典型算法有 DES、AES、IDEA 等。</div>
+  <a class="tag" href="../知识点/密码技术/对称与公钥密码体制.html#s2">考点：对称与非对称密码体制</a>
+</div></details>
+
+<details class="q" id="q24"><summary>
+  <span class="qno">第24题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">数字证书</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>数字证书是由<b>权威机构（CA，证书认证中心）</b>签发、用<b>CA 的私钥数字签名</b>的一份电子文件，用以<b>绑定公钥与其持有者身份</b>。它证明公开密钥确实属于证书中所命名的主体，是 PKI 中验证身份、建立信任的基础凭据（一般含版本号、主体、公钥、颁发者、有效期、序列号、签名算法等）。</div>
+  <a class="tag" href="../知识点/数字签名/数字签名与PKI验证.html#s5">考点：数字证书与 PKI</a>
+</div></details>
+
+<details class="q" id="q25"><summary>
+  <span class="qno">第25题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">包过滤型防火墙</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>包过滤型防火墙工作在<b>网络层（与传输层）</b>，依据预先设定的<b>访问控制规则</b>，逐个检查通过数据报文的<b>源/目的 IP 地址、源/目的端口、协议类型</b>等头部信息，符合规则则放行、否则丢弃。它不检查应用层内容、不维护连接状态，实现简单、透明度高、速度快，但难以防范地址欺骗与应用层攻击。</div>
+  <a class="tag" href="../知识点/访问控制/访问控制与防火墙.html#s5">考点：防火墙的定义与分类</a>
+</div></details>
+
+<h2 class="section">三、简答题（6 小题，共 30 分）</h2>
+
+<details class="q" id="q26"><summary>
+  <span class="qno">第26题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述E-mail的安全漏洞的种类。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点（教材原列六条）：</span>
+    <ol>
+      <li>窃取 Email；</li>
+      <li>伪造指令攻击；</li>
+      <li>Email 轰炸；</li>
+      <li>Email 欺骗；</li>
+      <li>虚构某人名义发出 Email；</li>
+      <li>电子邮件病毒。</li>
+    </ol>
+  </div>
+  <a class="tag" href="../知识点/概论/网络空间信息安全概论.html#s3">考点：电子邮件的安全漏洞</a>
+</div></details>
+
+<details class="q" id="q27"><summary>
+  <span class="qno">第27题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述蠕虫的分类。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>蠕虫一般按<b>传播媒介/依托平台</b>分类：①<b>电子邮件蠕虫</b>（借邮件附件/地址簿群发，如 Melissa、I-Worm 系列）；②<b>网络（IPC/系统漏洞）蠕虫</b>（扫描并利用系统服务漏洞自动传播，如冲击波、震荡波、"永恒之蓝"类）；③<b>P2P 蠕虫</b>（借点对点共享软件传播）；④<b>即时消息（IM）蠕虫</b>；⑤<b>移动设备/IRC 蠕虫</b>等。<br>
+  ⚠️ <b>存疑标注：</b>本课程知识点页未单列"蠕虫分类"的教材原文条目，以上为依通用分类整理，答案按规则推定，答题时以指定教材口径为准。</div>
+  <a class="tag" href="../知识点/病毒防范/计算机病毒与恶意代码.html#s2">考点：蠕虫与恶意代码分类</a>
+</div></details>
+
+<details class="q" id="q28"><summary>
+  <span class="qno">第28题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述密码技术的定义及使用密码技术的目的。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点：</span>
+    <b>定义：</b>密码技术是通过对信息进行<b>编码变换（加密）与破解/还原（解密）</b>，并配合密钥管理，以保障信息在存储与传输中安全的专门技术，是信息安全的核心技术。<br>
+    <b>目的（安全密码体制应达到的四个功能/目标）：</b>
+    <ol>
+      <li><b>秘密性（保密性）</b>——信息不泄露给未授权者；</li>
+      <li><b>鉴别性（身份认证）</b>——确认通信双方的真实身份；</li>
+      <li><b>完整性</b>——数据未被非法篡改、插入或删除；</li>
+      <li><b>不可否认性（抗抵赖）</b>——发送/接收方事后不能否认其行为。</li>
+    </ol>
+  </div>
+  <a class="tag" href="../知识点/密码技术/对称与公钥密码体制.html#s2">考点：安全密码体制的功能</a>
+</div></details>
+
+<details class="q" id="q29"><summary>
+  <span class="qno">第29题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述网络安全协议按照其完成的功能的分类。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点（按功能分五类）：</span>
+    <ol>
+      <li><b>密钥建立（交换）协议</b>——安全地协商/分发会话密钥；</li>
+      <li><b>认证协议</b>——验证实体身份；</li>
+      <li><b>认证和密钥交换协议</b>——同时完成身份认证与密钥协商；</li>
+      <li><b>电子商务协议</b>——保障交易公平、不可否认（如 SET）；</li>
+      <li><b>安全通信协议</b>——为数据传输提供机密性/完整性保护（如 IPSec、SSL/TLS、SSH）。</li>
+    </ol>
+  </div>
+  <a class="tag" href="../知识点/安全协议/IPSec与SSL-TLS.html#s1">考点：网络安全协议的功能分类</a>
+</div></details>
+
+<details class="q" id="q30"><summary>
+  <span class="qno">第30题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述无线网络的分类。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点（按覆盖范围/类型分六类）：</span>
+    <ol>
+      <li><b>无线广域网 WWAN</b>——运营商蜂窝网络（如 4G/5G）；</li>
+      <li><b>无线城域网 WMAN</b>——城域范围（如 WiMAX/802.16）；</li>
+      <li><b>无线局域网 WLAN</b>——园区/楼宇（如 802.11 Wi-Fi）；</li>
+      <li><b>无线个人区域网 WPAN</b>——个人短程（如 蓝牙/802.15.1）；</li>
+      <li><b>低速无线个人区域网 LR-WPAN</b>——低功耗低速（如 ZigBee/802.15.4）；</li>
+      <li><b>无线 LAN-to-LAN 网桥</b>——局域网之间的无线互联。</li>
+    </ol>
+  </div>
+  <a class="tag" href="../知识点/无线网络/无线网络安全机制.html#s1">考点：无线网络的概念与分类</a>
+</div></details>
+
+<details class="q" id="q31"><summary>
+  <span class="qno">第31题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">简述入侵检测机制的分类,并对各种类型简要描述。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">要点（三类检测机制）：</span>
+    <ol>
+      <li><b>攻击特征检测（误用检测/模式匹配）</b>——把捕获的数据与已知攻击特征库比对，命中即报警。准确率高、误报少，但只能发现已知攻击、无法检测新型攻击。</li>
+      <li><b>协议译码（协议分析）</b>——对网络流量按协议逐层解析还原，检查是否违反协议规范或存在非法报文，用以发现利用协议漏洞的攻击。</li>
+      <li><b>异常检测</b>——先建立系统/用户正常行为的统计模型（基线），当观测行为明显偏离正常模型即判为异常报警。可发现未知攻击，但误报率高、依赖训练数据。</li>
+    </ol>
+  </div>
+  <a class="tag" href="../知识点/入侵防御/入侵防御系统.html#s4">考点：入侵检测机制的分类</a>
+</div></details>
+
+<h2 class="section">四、案例分析题（1 小题，共 15 分）</h2>
+
+<details class="q" id="q32"><summary>
+  <span class="qno">第32题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">某公司为了提升企业形象,专门建立了一个宣传企业的网站,并聘请了专门的维护工程师进行日常管理维护,为了提升安全,请问:(1)在服务端怎样防范黑客的攻击及数据篡改?(5分)(2)在网站维护终端怎样防范黑客的攻击及数据篡改?(5分)(3)在服务端怎样防范病毒和木马?(2分)(4)在网站维护终端怎样防范病毒和木马?(3分)</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="subq"><b class="qh">(1) 服务端防范黑客攻击及数据篡改（要点）：</b>
+    <ol>
+      <li>及时<b>打补丁、关闭不必要服务与端口</b>，删除默认账号与示例页面，最小化安装；</li>
+      <li>部署<b>防火墙/WAF</b>，对输入做<b>白名单校验与参数化查询</b>防 SQL 注入、输出转义防 XSS；</li>
+      <li>启用<b>身份认证与会话管理</b>、按最小权限授权、管理后台限 IP 访问；</li>
+      <li>全站 <b>HTTPS（SSL/TLS）</b>加密传输；</li>
+      <li>部署<b>网页防篡改系统</b>、开启<b>日志审计</b>与入侵检测；</li>
+      <li>定期<b>数据与页面备份</b>并演练恢复。</li>
+    </ol>
+  </div>
+  <div class="subq"><b class="qh">(2) 网站维护终端防范黑客攻击及数据篡改（要点）：</b>
+    <ol>
+      <li>终端<b>系统补丁与病毒库及时更新</b>，只开放必要软件与服务；</li>
+      <li>设置<b>强口令与多因素认证</b>、账户锁定策略，不用管理员账号上网；</li>
+      <li>通过<b>加密通道（SSH/VPN/堡垒机）</b>远程维护，禁用明文 Telnet/FTP；</li>
+      <li>终端装<b>个人防火墙与实时监控</b>，不随意接入不可信网络；</li>
+      <li><b>最小权限</b>使用、及时更新维护工具，敏感操作<b>留痕审计</b>；</li>
+      <li>不打开来历不明邮件/链接，防社会工程学与钓鱼。</li>
+    </ol>
+  </div>
+  <div class="subq"><b class="qh">(3) 服务端防范病毒和木马（要点）：</b>
+    <ol>
+      <li>服务器上安装<b>反病毒/反恶意软件并开启实时监控</b>、定期全盘查杀、及时升级病毒库；</li>
+      <li>上传/共享文件<b>先杀毒后处理</b>，关闭不必要端口与服务、限制脚本执行，及时打补丁堵住可被蠕虫/木马利用的漏洞。</li>
+    </ol>
+  </div>
+  <div class="subq"><b class="qh">(4) 网站维护终端防范病毒和木马（要点）：</b>
+    <ol>
+      <li>安装并实时更新<b>防病毒与木马查杀工具</b>，开启实时监控；</li>
+      <li>不随意下载、运行来历不明软件与邮件附件，<b>禁止自动播放</b>；</li>
+      <li>及时<b>修补系统/浏览器漏洞、关闭可疑端口</b>，少用共享文件夹；</li>
+      <li>U 盘等移动介质<b>先查毒再用</b>；</li>
+      <li>定期<b>备份</b>并做系统完整性检查。</li>
+    </ol>
+  </div>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s5">考点：服务器端安全防范</a>
+  <a class="tag" href="../知识点/黑客入侵/远程控制与黑客入侵.html#s6">考点：网站维护终端防范措施</a>
+</div></details>
+
+<h2 class="section">五、应用计算题（1 小题，共 20 分）</h2>
+
+<details class="q" id="q33"><summary>
+  <span class="qno">第33题</span><span class="toggle">点击展开答案</span>
+  <div class="stem">某公司服务器系统使用RSA算法保障安全,假设已知公钥(n,e)=(77,13),p=7,计算q和私钥。</div>
+</summary>
+<div class="body">
+  <div class="answer ref">参考答案</div>
+  <div class="sol"><span class="lab">解题过程：</span>
+    <pre class="calc">已知 n = 77, e = 13, p = 7。
+① 求 q：      n = p × q  →  q = n / p = 77 / 7 = 11
+② 求 φ(n)：   φ(n) = (p−1)(q−1) = (7−1)(11−1) = 6 × 10 = 60
+③ 求私钥 d：  d 满足  e·d ≡ 1 (mod φ(n))，即 13·d ≡ 1 (mod 60)
+              试算：13 × 37 = 481 = 8 × 60 + 1  →  d = 37
+④ 结论：      私钥 (d, n) = (37, 77)；公钥 (e, n) = (13, 77)</pre>
+    <b>答：</b>q = 11，欧拉函数 φ(n) = 60，私钥指数 d = 37，故<b>私钥为 (d, n) = (37, 77)</b>。
+  </div>
+  <a class="tag" href="../知识点/密码技术/对称与公钥密码体制.html#s5">考点：RSA 计算（密钥生成）</a>
+</div></details>
+
+<h2 class="section" id="anskey">🔑 答案速查表</h2>
+<table class="anskey">
+  <tr><th>题号</th><th>1–5</th><th>6–10</th><th>11–15</th><th>16–20</th></tr>
+  <tr>
+    <td>单选</td>
+    <td><b>A</b> <b>C</b> <b>D</b> <b>B</b> <b>D</b></td>
+    <td><b>D</b> <b>B</b> <b>C</b> <b>D</b> <b>D</b></td>
+    <td><b>D</b> <b>A</b> <b>B</b> <b>B</b> <b>C</b></td>
+    <td><b>B</b> <b>B</b> <b>A</b> <b>B</b> <b>B</b></td>
+  </tr>
+  <tr><th>题型</th><th colspan="4">要点速记</th></tr>
+  <tr><td>名解</td><td colspan="4">21 附加数据/密码变换 · 22 嵌入程序触发才破坏 · 23 加解密密钥相同 · 24 CA 签发绑定公钥与身份 · 25 网络层按规则过滤报文</td></tr>
+  <tr><td>简答</td><td colspan="4">26 Email 六漏洞 · 27 蠕虫按平台分五类(存疑) · 28 定义+秘密/鉴别/完整/不可否认 · 29 协议功能五类 · 30 无线网六类 · 31 检测机制三类</td></tr>
+  <tr><td>案例</td><td colspan="4">32 服务端/维护终端 各防黑客·防病毒木马（黑客入侵页 s5、s6 清单）</td></tr>
+  <tr><td>应用</td><td colspan="4">33 q=11, φ(n)=60, d=37, 私钥(37,77)</td></tr>
+</table>
+<div class="tip">⚠️ 本卷官方未公布标准答案，以上参考答案依据 03344《考试大纲》与指定教材《网络空间信息安全》（苏永红、蒋天发主编，电子工业出版社 2022 第 2 版）逐题推定复核；第 14、27 题知识点页未直接命中原文，已按通行/通用口径标注"存疑/推定"，请以教材为准。</div>
+
+<footer>
+  <p>本卷共 33 题 · 满分 100 分 · 整理自考生回忆/小程序逐题截图 · 题干逐字转录、答案逐题核验。</p>
+  <p>🛡️ 自考本科·计算机科学与技术 — 信息与网络安全管理（03344）学习笔记。</p>
+</footer>
+
+</div>
+<script>
+(function(){
+  var h=location.hash;
+  if(h&&h.length>2){var el=document.getElementById(h.slice(1));if(el&&el.tagName==='DETAILS'){el.open=true;el.scrollIntoView({behavior:'smooth',block:'start'});}}
+})();
+</script>
+<script src="../../assets/dock.js?v=20261030d" defer></script>
+</body>
+</html>
