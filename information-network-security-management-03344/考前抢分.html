@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>信息与网络安全管理 03344 · 考前抢分一页纸（目标 60+）</title>
+<meta name="description" content="基于 2026.1 广东真题卷逐题考点分布与考纲章节分析的信息与网络安全管理考前抢分页：RSA 应用计算 20 分必背推导模板、案例分析服务端/维护终端清单、名词解释与简答关键词、端口号送分表、选择题送分与陷阱、考场时间分配与及格算式，专为 60+ 冲刺设计。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="stylesheet" href="../assets/theme.css?v=20261030d">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#0d9488; --brand-soft:#ccfbf1; --deep:#115e59;
+    --ok:#059669; --ok-soft:#ecfdf5; --warn:#d97706; --warn-soft:#fffbeb;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 16px 70px}
+  header.hero{background:linear-gradient(135deg,#0d9488,#4f46e5)}
+  .toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--deep);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;font-weight:600}
+  .btn:hover{background:var(--brand);color:#fff}
+  h2.sec{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px 18px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--brand-soft);color:var(--deep);font-weight:700}
+  td.c,th.c{text-align:center}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}
+  .tag.hot{background:var(--brand);color:#fff}
+  .tag.mid{background:var(--warn-soft);color:var(--warn)}
+  .tag.score{background:var(--ok-soft);color:var(--ok)}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .ok b{color:var(--ok)}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;background:#fff}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--deep)}
+  .card h3 .n{display:inline-block;background:var(--brand);color:#fff;border-radius:7px;min-width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;margin-right:8px;padding:0 6px}
+  .tpl{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:10px 13px;font-size:14px;margin:8px 0}
+  .tpl b{color:var(--deep)}
+  code,.mono{font-family:"SFMono-Regular",Consolas,monospace;background:#eef2ff;color:#4338ca;border-radius:4px;padding:1px 6px;font-size:.9em}
+  pre.code{font-family:"SFMono-Regular",Consolas,"Courier New",monospace;background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 15px;font-size:13px;line-height:1.7;overflow-x:auto;margin:10px 0;white-space:pre}
+  ul.tips{padding-left:20px;font-size:14px}
+  ul.tips li{margin:6px 0}
+  ol.pts{margin:4px 0 0;padding-left:22px;font-size:14px}
+  ol.pts li{margin:4px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:620px){.grid2{grid-template-columns:1fr}th,td{padding:7px 8px;font-size:13px}}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.gotos,footer .fl{display:none}
+    header.hero{border-radius:0}
+    .card,.note,.ok,table,pre.code{box-shadow:none;break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🔥 信息与网络安全管理 03344 · 考前抢分一页纸</h1>
+  <p>基于 <b>2026.1 广东真题卷逐题考点分布</b> ＋ 考纲章节分析 · 唯一目标：<b>及格 60+</b> · 教材：苏永红、蒋天发主编《网络空间信息安全》电子工业社 2022 第 2 版</p>
+  <span class="pill">RSA 20 + 简答 30 + 名解 15 + 案例 15 = 80 分可背</span><span class="pill">RSA 计算是最大送分题</span><span class="pill">单选 20 分概念为主</span><span class="pill">闭卷 150 分钟 · 33 题</span>
+  <div class="gotos">
+    <a href="../index.html">🏠 首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="真题/index.html">📝 历年真题</a>
+    <a href="考纲.html">📋 考纲</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存 PDF</button>
+  <button class="btn" onclick="location.href='广东2026年1月自考03344《信息与网络安全管理》真题/真题详解.html'">📝 打开整套真题自测</button>
+</div>
+
+<div class="ok"><b>一句话策略：</b>这门卷<b>主观题占 80 分且几乎全可背</b>，及格极其友好。<b>RSA 应用计算 20 分是全场最大、最稳的送分题</b>——只有固定四步（求 q→求 φ(n)→解 e·d≡1→写私钥），本页第三节模板练熟＝满分收入。再背熟<b>简答 6 题（30）＋名解 5 条（15）＋案例题服务端/终端两套清单（15）</b>＝ <b>80 分保底</b>；选择题 20 分靠端口号表和概念辨析拿一半以上，总分轻松 <b>70+</b>。⚠️ 唯一雷区：RSA 别把 φ(n) 算成 n、别忘写"e·d≡1 (mod φ(n))"这步推导。</div>
+
+<h2 class="sec">一、分数结构与及格路线</h2>
+<div class="sub">总分 100、33 题、及格 60。按"性价比"从高到低投入时间（性价比 = 分值 ÷ 需要花的功夫）。</div>
+<div class="tscroll"><table>
+  <tr><th>题型</th><th class="c">题量×分</th><th class="c">合计</th><th>抢分定位</th></tr>
+  <tr><td>应用计算（RSA）33</td><td class="c">1×20</td><td class="c"><span class="tag hot">20 分</span></td><td>⭐⭐⭐ <b>全场最值</b>：四步固定推导，练熟即满分，务必拿满</td></tr>
+  <tr><td>简答题 26–31</td><td class="c">6×5</td><td class="c"><span class="tag hot">30 分</span></td><td>⭐⭐⭐ 教材条目分条默写，目标 22+</td></tr>
+  <tr><td>案例分析 32</td><td class="c">1×15</td><td class="c"><span class="tag hot">15 分</span></td><td>⭐⭐⭐ 服务端/维护终端 × 防黑客/防病毒木马四格清单，目标 10+</td></tr>
+  <tr><td>名词解释 21–25</td><td class="c">5×3</td><td class="c">15 分</td><td>⭐⭐ 每条 1~2 句关键词，目标 12+</td></tr>
+  <tr><td>单项选择题 1–20</td><td class="c">20×1</td><td class="c">20 分</td><td>⭐⭐ 端口/概念辨析，每题才 1 分别恋战，目标 12+</td></tr>
+</table></div>
+<div class="note">🎯 <b>及格算式</b>：RSA 20 ＋ 简答 22 ＝ 42，名解 12 ＋ 案例 10 ＝ 22 → 主观已 <b>64</b>；选择再对 8 个（8 分）＝ <b>72</b>。✅ 本门目前流传 <b>2026.1 一套广东卷</b>，结构为"单选 20×1 ＋ 名解 5×3 ＋ 简答 6×5 ＋ 案例分析 15 ＋ 应用计算(RSA) 20"；后续考期可能微调，以当期卷面为准。</div>
+
+<h2 class="sec">二、📚 考纲章节的火力分布（2026.1 卷逐题归位）</h2>
+<div class="sub">全卷按知识点归位——<b>密码技术（含 RSA）、黑客入侵、访问控制与防火墙、无线网络、病毒防范、安全协议</b>是出题主力。</div>
+<div class="tscroll"><table>
+  <tr><th>章 / 模块</th><th>本卷出处</th><th class="c">约分值</th><th>速记卡</th></tr>
+  <tr><td>密码技术</td><td>选择 8/9/18 · 名解 23 · 简答 28 · <b>计算 33（RSA）</b></td><td class="c">32</td><td><a href="知识点/密码技术/对称与公钥密码体制.html">对称与公钥密码体制</a></td></tr>
+  <tr><td>黑客入侵 / 远程控制</td><td>选择 4/5/6/7/16 · <b>案例 32</b></td><td class="c">20</td><td><a href="知识点/黑客入侵/远程控制与黑客入侵.html">远程控制与黑客入侵</a></td></tr>
+  <tr><td>访问控制与防火墙</td><td>选择 15/19 · 名解 25</td><td class="c">7</td><td><a href="知识点/访问控制/访问控制与防火墙.html">访问控制与防火墙</a></td></tr>
+  <tr><td>无线网络</td><td>选择 13/14/20 · 简答 30</td><td class="c">9</td><td><a href="知识点/无线网络/无线网络安全机制.html">无线网络安全机制</a></td></tr>
+  <tr><td>病毒防范 / 恶意代码</td><td>选择 2/3 · 名解 22 · 简答 27</td><td class="c">11</td><td><a href="知识点/病毒防范/计算机病毒与恶意代码.html">计算机病毒与恶意代码</a></td></tr>
+  <tr><td>数字签名 / PKI</td><td>选择 10 · 名解 21/24</td><td class="c">9</td><td><a href="知识点/数字签名/数字签名与PKI验证.html">数字签名与PKI验证</a></td></tr>
+  <tr><td>安全协议</td><td>选择 11/12 · 简答 29</td><td class="c">9</td><td><a href="知识点/安全协议/IPSec与SSL-TLS.html">IPSec与SSL-TLS</a></td></tr>
+  <tr><td>概论</td><td>选择 1 · 简答 26</td><td class="c">7</td><td><a href="知识点/概论/网络空间信息安全概论.html">网络空间信息安全概论</a></td></tr>
+  <tr><td>数据库安全</td><td>选择 17（端口）</td><td class="c">1</td><td><a href="知识点/数据库安全/数据库安全与备份.html">数据库安全与备份</a></td></tr>
+  <tr><td>入侵防御</td><td>简答 31（检测机制三类）</td><td class="c">5</td><td><a href="知识点/入侵防御/入侵防御系统.html">入侵防御系统</a></td></tr>
+</table></div>
+<div class="note">✂️ <b>密码技术是绝对重心</b>（≈32 分，含 RSA 大题）：把"信源/信宿、端到端=脱线加密、对称=加解密密钥相同、RSA 基于因子分解、四目标秘密/鉴别/完整/不可否认"＋RSA 计算练透，半壁江山就稳了。</div>
+
+<h2 class="sec">三、 RSA 应用计算（20 分必拿）——四步推导模板</h2>
+<div class="sub">题型固定：给公钥 (n,e) 和一个素数 p，求 q、φ(n)、私钥 d。照下面四步写，过程分＋结果分全收。</div>
+<div class="card"><h3><span class="n">33</span>本卷：公钥 (n,e)=(77,13)，p=7，求 q 与私钥</h3>
+<pre class="code">① 求 q：      n = p × q  →  q = n / p = 77 / 7 = <b>11</b>
+② 求 φ(n)：   φ(n) = (p−1)(q−1) = (7−1)(11−1) = 6 × 10 = <b>60</b>
+③ 求私钥 d：  <b>e·d ≡ 1 (mod φ(n))</b>   即 13·d ≡ 1 (mod 60)
+              试算 13 × 37 = 481 = 8×60 + 1   →  <b>d = 37</b>
+④ 结论：      私钥 (d, n) = <b>(37, 77)</b>；公钥 (e, n) = (13, 77)</pre>
+<div class="tpl"><b>四步口诀：q=n÷p → φ=(p−1)(q−1) → 解 ed≡1 mod φ → 写 (d,n)。</b>换数字照套：先除出 q，再算欧拉函数，再找"乘 e 除 φ 余 1"的那个 d（本卷 37），最后成对写私钥。⚠️ φ(n) 是 (p−1)(q−1) 不是 n；d 步骤要写同余式才拿过程分。</div>
+<a href="知识点/密码技术/对称与公钥密码体制.html#s5">▶ 去密码技术页看 RSA 推导</a></div>
+
+<h2 class="sec">四、 案例分析（15 分）——服务端 / 维护终端 四格清单</h2>
+<div class="sub">本卷 32 题：企业网站，分"服务端"与"网站维护终端"两侧，各答"防黑客篡改"与"防病毒木马"。按四格分点写，采分点密集。</div>
+<div class="grid2">
+  <div class="card"><h3><span class="n">(1)</span>服务端 · 防黑客与篡改</h3>
+    <div class="tpl">及时<b>打补丁、关多余服务与端口</b>、删默认账号；部署<b>防火墙/WAF</b>，输入<b>白名单校验＋参数化查询</b>防 SQL 注入、输出转义防 XSS；<b>身份认证＋最小权限</b>、后台限 IP；全站 <b>HTTPS</b>；<b>网页防篡改系统</b>＋日志审计/入侵检测；定期<b>备份</b>。</div></div>
+  <div class="card"><h3><span class="n">(2)</span>维护终端 · 防黑客与篡改</h3>
+    <div class="tpl">终端<b>补丁与病毒库更新</b>、只开必要服务；<b>强口令＋多因素</b>、账户锁定、不用管理员账号上网；经 <b>SSH/VPN/堡垒机</b>加密通道维护，禁用明文 Telnet/FTP；装<b>个人防火墙</b>、不乱接不可信网络；<b>最小权限</b>、敏感操作留痕；不点开来历邮件/链接防钓鱼。</div></div>
+  <div class="card"><h3><span class="n">(3)</span>服务端 · 防病毒木马</h3>
+    <div class="tpl">装<b>反病毒/反恶意软件＋实时监控</b>、定期全盘查杀、及时升级病毒库；上传/共享文件<b>先杀毒后处理</b>；关多余端口服务、限制脚本执行、打补丁堵住可被蠕虫/木马利用的漏洞。</div></div>
+  <div class="card"><h3><span class="n">(4)</span>维护终端 · 防病毒木马</h3>
+    <div class="tpl">装并实时更新<b>防病毒与木马查杀</b>＋实时监控；不随意下载运行来历软件/附件、<b>禁止自动播放</b>；及时补系统/浏览器漏洞、关可疑端口；U 盘介质<b>先查毒再用</b>；定期备份＋完整性检查。</div></div>
+</div>
+<a href="知识点/黑客入侵/远程控制与黑客入侵.html#s5">▶ 服务器端防范</a> <a href="知识点/黑客入侵/远程控制与黑客入侵.html#s6">▶ 维护终端防范</a>
+
+<h2 class="sec">五、🔴 名解 5 条 ＋ 简答 6 题（45 分）关键词</h2>
+<div class="grid2">
+  <div class="card"><h3>名解 21–25</h3><div class="tpl"><b>21 数字签名</b>：附加在数据单元上的数据/密码变换，供接收者确认<b>来源与完整性</b>、防伪造（不可否认）。<br><b>22 逻辑炸弹</b>：故意嵌入程序的恶意代码，平时潜伏、<b>满足触发条件</b>才激活破坏。<br><b>23 对称密码体系</b>：<b>加解密密钥相同</b>（私钥/传统体制），如 DES/AES/IDEA。<br><b>24 数字证书</b>：<b>CA 签发</b>、绑定<b>公钥与持有者身份</b>的电子文件，PKI 信任基础。<br><b>25 包过滤防火墙</b>：工作在<b>网络层</b>，按规则逐包查 <b>IP/端口/协议</b>头放行或丢弃，不维护状态。</div></div>
+  <div class="card"><h3>简答 26 · E-mail 安全漏洞（六条）</h3><div class="tpl">①窃取 Email ②伪造指令攻击 ③Email 轰炸 ④Email 欺骗 ⑤虚构某人名义发 Email ⑥电子邮件病毒。</div></div>
+  <div class="card"><h3>简答 27 · 蠕虫分类（按平台）</h3><div class="tpl">①电子邮件蠕虫 ②网络/系统漏洞蠕虫（冲击波、永恒之蓝类）③P2P 蠕虫 ④即时消息 IM 蠕虫 ⑤移动/IRC 蠕虫。<br><span style="color:var(--warn)">⚠️ 本卷按通用口径推定，答题以教材为准。</span></div></div>
+  <div class="card"><h3>简答 28 · 密码技术定义＋四目的</h3><div class="tpl">定义：通过<b>编码变换(加密)与还原(解密)</b>＋密钥管理保障信息安全，是信息安全核心。目的：<b>秘密性、鉴别性(认证)、完整性、不可否认性</b>。</div></div>
+  <div class="card"><h3>简答 29 · 网络安全协议按功能分五类</h3><div class="tpl">①密钥建立(交换) ②认证协议 ③认证和密钥交换 ④电子商务协议(SET) ⑤安全通信协议(IPSec/SSL-TLS/SSH)。</div></div>
+  <div class="card"><h3>简答 30 · 无线网络分类（六类）</h3><div class="tpl">①无线广域网 WWAN(4G/5G) ②无线城域网 WMAN(WiMAX) ③无线局域网 WLAN(Wi-Fi) ④无线个人区域网 WPAN(蓝牙) ⑤低速 LR-WPAN(ZigBee) ⑥无线 LAN-to-LAN 网桥。</div></div>
+  <div class="card"><h3>简答 31 · 入侵检测机制三类</h3><div class="tpl">①<b>攻击特征检测(误用/模式匹配)</b>：比对已知攻击库，准但只识已知；②<b>协议译码(协议分析)</b>：逐层解析查违规报文；③<b>异常检测</b>：建正常行为基线，偏离即报，可识未知但误报高。</div></div>
+</div>
+
+<h2 class="sec">六、 选择题 20 分：端口号送分表 ＋ 概念陷阱</h2>
+<div class="grid2">
+  <div class="card"><h3>🔌 端口 / 标准号 必背表</h3><div class="tpl"><b>HTTP—80</b>（5）· FTP—21 · Telnet—23 · SMTP—25 · HTTPS—443 · <b>SQL Server—1433</b>（17）· MySQL—3306 · Oracle—1521 · DNS—53。<br>无线：<b>ZigBee—802.15.4</b>（13）· 蓝牙—802.15.1 · WiMAX—802.16 · 以太网—802.3 · <b>802.11b 频段 2.4GHz</b>（20）· 802.11a—5GHz。</div></div>
+  <div class="card"><h3>🎁 概念送分 + ⚡ 陷阱</h3><div class="tpl">载体＝<b>通信信息系统</b>（1）· 触发条件破坏＝<b>逻辑炸弹</b>（2）· U 盘病毒＝<b>autorun.inf</b>（3）· Win7 远控＝<b>远程桌面</b>（4）· 控制消息协议＝<b>ICMP</b>（6）· 恶意代码攻击＝<b>欺骗术</b>（7）· 发送者＝<b>信源</b>（8）· 网络层以上/脱线加密＝<b>端到端</b>（9）· DSA 密钥 <b>1024 位</b>（10）· 网络验证协议＝<b>Kerberos</b>（11）· ESP 头＝SPI＋<b>序列号</b>（12）· 口令认证防入侵＝<b>第二级</b>（14，⚠️知识点页未单列，按 WLAN 通行四级推定）· 看历史关联＝<b>状态检测防火墙</b>（15）· 探测在线＝<b>PING</b>（16）· RSA 基于<b>因子分解</b>（18）· Windows 审核达 <b>C2</b>（19）。</div></div>
+</div>
+<div class="note">📌 <b>本卷无官方答案</b>，依考纲与教材逐题推定复核（第 14、27 题知识点页未直接命中原文，已标注"存疑/推定"）。完整逐题详解见 <a href="广东2026年1月自考03344《信息与网络安全管理》真题/真题详解.html">2026.1 真题详解</a>，底部有答案速查表。</div>
+
+<h2 class="sec">七、🎯 考场策略与时间分配（150 分钟）</h2>
+<ul class="tips">
+  <li><b>先做 RSA（20'）</b>：这是最稳的 20 分，一上来头脑清醒先把四步推导写满，绝不放最后赶时间做。</li>
+  <li><b>答题顺序</b>：RSA（20'）→ 简答（40'，分条默写）→ 案例（25'，四格清单）→ 名解（20'）→ 选择（25'，20 题别超 25 分钟）→ 检查（20'）。</li>
+  <li><b>案例题分四格作答</b>：按"服务端/维护终端 × 防黑客/防病毒木马"四小问分别标 (1)(2)(3)(4) 列点，别混成一坨，阅卷按小问给分。</li>
+  <li><b>简答多写教材编号条目</b>：E-mail 六漏洞、协议五类、无线六类、检测三机制——条目全＝分全，用 ①②③ 标注。</li>
+  <li><b>选择题空格必涂满</b>：端口号、协议名靠直觉＋背表，第一感觉作答，1 分/题不恋战。</li>
+  <li><b>目标管理</b>：RSA 20 + 简答 22 + 案例 10 + 名解 12 + 选择 12 ≈ <b>76</b>，60 线外容错充足。</li>
+</ul>
+
+<footer>
+  <div class="fl">
+    <a href="../index.html">🏠 返回首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="广东2026年1月自考03344《信息与网络安全管理》真题/真题详解.html">📝 2026.1 详解</a>
+    <a href="考纲.html">📋 考纲</a>
+  </div>
+  <div>统计基于 <b>2026.1 广东真题卷</b>逐题考点归位 · RSA 推导与主观关键词对照真题详解复核 · 打印或 ⌘/Ctrl+P 存 PDF 带走</div>
+</footer>
+
+</div>
+<script src="../assets/dock.js?v=20261030d" defer></script>
+</body>
+</html>

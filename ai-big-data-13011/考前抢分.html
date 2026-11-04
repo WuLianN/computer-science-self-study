@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>人工智能与大数据 13011 · 考前抢分一页纸（目标 60+）</title>
+<meta name="description" content="基于 2026.1 广东真题卷逐题考点分布与考纲章节分析的大数据与AI考前抢分页：名词解释/简答关键词清单、综合分析两大模板（Hadoop 选型、决策树）、选择题送分与陷阱、4V 正确口径、考场时间分配与及格算式，专为 60+ 冲刺设计。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="stylesheet" href="../assets/theme.css?v=20261030d">
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#fff; --ink:#1f2430; --muted:#6b7280;
+    --brand:#be185d; --brand-soft:#fce7f3; --deep:#9d174d;
+    --ok:#059669; --ok-soft:#ecfdf5; --warn:#d97706; --warn-soft:#fffbeb;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+  .wrap{max-width:960px;margin:0 auto;padding:22px 16px 70px}
+  header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
+  .toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .btn{border:1px solid var(--brand);background:var(--brand-soft);color:var(--deep);border-radius:8px;padding:6px 14px;cursor:pointer;font-size:14px;font-weight:600}
+  .btn:hover{background:var(--brand);color:#fff}
+  h2.sec{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);padding-left:12px}
+  .sub{color:var(--muted);font-size:13.5px;margin:0 0 14px 18px}
+  table{width:100%;border-collapse:collapse;font-size:14px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:var(--brand-soft);color:var(--deep);font-weight:700}
+  td.c,th.c{text-align:center}
+  .tag{display:inline-block;border-radius:6px;padding:1px 8px;font-size:12px;font-weight:700}
+  .tag.hot{background:var(--brand);color:#fff}
+  .tag.mid{background:var(--warn-soft);color:var(--warn)}
+  .tag.score{background:var(--ok-soft);color:var(--ok)}
+  .note{background:var(--warn-soft);border:1px solid #fde68a;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .note b{color:var(--warn)}
+  .ok{background:var(--ok-soft);border:1px solid #a7f3d0;border-radius:10px;padding:12px 16px;margin:14px 0;font-size:14px}
+  .ok b{color:var(--ok)}
+  .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;background:#fff}
+  .card h3{margin:0 0 8px;font-size:16px;color:var(--deep)}
+  .card h3 .n{display:inline-block;background:var(--brand);color:#fff;border-radius:7px;width:24px;height:24px;text-align:center;line-height:24px;font-size:13px;margin-right:8px}
+  .tpl{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:8px;padding:10px 13px;font-size:14px;margin:8px 0}
+  .tpl b{color:var(--deep)}
+  code,.mono{font-family:"SFMono-Regular",Consolas,monospace;background:#eef2ff;color:#4338ca;border-radius:4px;padding:1px 6px;font-size:.9em}
+  ul.tips{padding-left:20px;font-size:14px}
+  ul.tips li{margin:6px 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:620px){.grid2{grid-template-columns:1fr}th,td{padding:7px 8px;font-size:13px}}
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px;padding-top:18px;border-top:1px solid var(--line)}
+  footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+  footer .fl a{color:var(--brand);text-decoration:none;padding:4px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12.5px}
+  footer .fl a:hover{border-color:var(--brand);background:var(--brand-soft)}
+  @media print{
+    body{background:#fff}
+    .toolbar,.gotos,footer .fl{display:none}
+    header.hero{border-radius:0}
+    .card,.note,.ok,table{box-shadow:none;break-inside:avoid}
+    a{color:inherit;text-decoration:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🔥 人工智能与大数据 13011 · 考前抢分一页纸</h1>
+  <p>基于 <b>2026.1 广东真题卷逐题考点分布</b> ＋ 考纲章节分析 · 唯一目标：<b>及格 60+</b> · 教材：郏东耀主编《大数据与人工智能》清华社 2022（书名与课程名顺序相反）</p>
+  <span class="pill">名解 20 + 简答 20 + 综合 20 = 60 分可背</span><span class="pill">单选 40 分多为送分辨析</span><span class="pill">几乎无计算，纯记忆型</span><span class="pill">闭卷 150 分钟 · 32 题</span>
+  <div class="gotos">
+    <a href="../index.html">🏠 首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="真题/index.html">📝 历年真题</a>
+    <a href="考纲.html">📋 考纲</a>
+  </div>
+</header>
+
+<div class="toolbar">
+  <button class="btn" onclick="window.print()">🖨️ 打印 / 存 PDF</button>
+  <button class="btn" onclick="location.href='广东2026年1月自考13011《人工智能与大数据》真题/真题详解.html'">📝 打开整套真题自测</button>
+</div>
+
+<div class="ok"><b>一句话策略：</b>这是<b>纯记忆型</b>卷子、没有编程和复杂计算，<b>背就能拿分</b>。主观题三块＝<b>名解 20 ＋ 简答 20 ＋ 综合分析 20 ＝ 60 分</b>全可背（第三、四节关键词直接抄）；选择题 40 分里一大半是概念辨析（本页第五节送分清单）。把名解 5 条＋简答 5 条＋综合 2 题模板背熟就奔 <b>60+</b>，选择再对一半（20 分）＝ <b>80+</b>。⚠️ 唯一硬口径：大数据 <b>4V = 大量 Volume、多样 Variety、真实 Veracity、高速 Velocity（不含 Value）</b>，别写错。</div>
+
+<h2 class="sec">一、分数结构与及格路线</h2>
+<div class="sub">总分 100、32 题、及格 60。按"性价比"从高到低投入时间。</div>
+<div class="tscroll"><table>
+  <tr><th>题型</th><th class="c">题量×分</th><th class="c">合计</th><th>抢分定位</th></tr>
+  <tr><td>名词解释 21–25</td><td class="c">5×4</td><td class="c"><span class="tag hot">20 分</span></td><td>⭐⭐⭐ <b>最好背</b>：每条 2~3 个关键词即满分，目标 16+</td></tr>
+  <tr><td>简答 26–30</td><td class="c">5×4</td><td class="c"><span class="tag hot">20 分</span></td><td>⭐⭐⭐ 分条作答、多写条目，目标 15+</td></tr>
+  <tr><td>综合分析 31–32</td><td class="c">2题</td><td class="c"><span class="tag hot">20 分</span></td><td>⭐⭐⭐ 场景题套模板（Hadoop 选型 / 决策树），按点给分，目标 14+</td></tr>
+  <tr><td>单项选择题 1–20</td><td class="c">20×2</td><td class="c">40 分</td><td>⭐⭐ 概念辨析为主，背过即得分，目标 22+</td></tr>
+</table></div>
+<div class="note">🎯 <b>及格算式</b>：名解 16 ＋ 简答 15 ＋ 综合 14 ＝ 45，选择对 8~10 个（16~20 分）就 <b>61~65</b>；主观题关键词背全奔满分 → <b>75+</b>。⚠️ 本门目前流传 <b>2026.1 一套广东卷</b>，结构为"单选 20×2 ＋ 名解 5×4 ＋ 简答 5×4 ＋ 综合分析 2 题"；后续考期可能微调，以当期卷面为准。</div>
+
+<h2 class="sec">二、📚 考纲章节的火力分布（2026.1 卷逐题归位）</h2>
+<div class="sub">全卷按知识点归位——<b>HDFS / MapReduce-Spark / 机器学习 / 特征提取 / 自然语言 / 大数据概论</b>是出题主力。</div>
+<div class="tscroll"><table>
+  <tr><th>章 / 模块</th><th>本卷出处</th><th class="c">约分值</th><th>速记卡</th></tr>
+  <tr><td>大数据概论</td><td>选择 1 · 名解 21（4V 之"杂"）</td><td class="c">10</td><td><a href="知识点/大数据概论/大数据的来源采集与基本概念.html">大数据的来源采集与基本概念</a></td></tr>
+  <tr><td>HDFS</td><td>选择 14/15/16/19/20 · 名解 22（擦除码）</td><td class="c">14</td><td><a href="知识点/HDFS/分布式文件系统HDFS.html">分布式文件系统HDFS</a></td></tr>
+  <tr><td>MapReduce 与 Spark</td><td>选择 2/3/4 · 简答 26（Spark 优势）</td><td class="c">10</td><td><a href="知识点/计算框架/MapReduce与Spark.html">MapReduce与Spark</a></td></tr>
+  <tr><td>Hadoop 架构与生态</td><td><b>综合 31</b>（选型＋生态组件）</td><td class="c">15</td><td><a href="知识点/Hadoop架构/Hadoop处理架构与生态组件.html">Hadoop处理架构与生态组件</a></td></tr>
+  <tr><td>NoSQL 与云数据库</td><td>选择 7 · 名解 23（BASE）</td><td class="c">6</td><td><a href="知识点/分布式与云数据库/NoSQL与云数据库.html">NoSQL与云数据库</a></td></tr>
+  <tr><td>机器学习与深度学习</td><td>选择 17 · 名解 24 · <b>综合 32</b>（决策树）</td><td class="c">17</td><td><a href="知识点/机器学习/机器学习与深度学习.html">机器学习与深度学习</a></td></tr>
+  <tr><td>特征提取与图像特征</td><td>选择 11/12/13 · 简答 27（颜色特征）</td><td class="c">11</td><td><a href="知识点/特征提取/特征提取与图像特征.html">特征提取与图像特征</a></td></tr>
+  <tr><td>自然语言理解</td><td>名解 25 · 简答 29/30</td><td class="c">12</td><td><a href="知识点/自然语言理解/自然语言理解.html">自然语言理解</a></td></tr>
+  <tr><td>目标检测</td><td>简答 28（应用场景）</td><td class="c">4</td><td><a href="知识点/目标检测/AI方法在目标检测中的应用.html">AI方法在目标检测中的应用</a></td></tr>
+  <tr><td>人工智能概念</td><td>选择 8/9/10</td><td class="c">6</td><td><a href="知识点/人工智能概念/人工智能的基本概念.html">人工智能的基本概念</a></td></tr>
+  <tr><td>云计算融合 / 应用展望</td><td>选择 5/6/18</td><td class="c">6</td><td><a href="知识点/云计算融合/云计算大数据与人工智能.html">云计算大数据与人工智能</a></td></tr>
+</table></div>
+<div class="note">✂️ <b>HDFS 是选择题重镇</b>（5 道选择＋1 名解≈14 分），把"块=副本单元、Secondary NameNode 定期合并、主从结构、分而治之=分段、异构存储=热度"这 5 句背熟几乎全对。</div>
+
+<h2 class="sec">三、🔴 名词解释 5 条（20 分）——每条记 2~3 个关键词</h2>
+<div class="grid2">
+  <div class="card"><h3><span class="n">21</span>大数据 4V 之"杂"</h3>
+    <div class="tpl"><b>4V=Volume 大量、Variety 多样、Veracity 真实、Velocity 高速</b>。"杂"＝<b>多样性 Variety</b>：数据类型与来源繁多，除结构化外还有大量<b>半结构化和非结构化</b>（文本/日志/音视频/位置），需不同存储与处理。</div></div>
+  <div class="card"><h3><span class="n">22</span>擦除码技术</h3>
+    <div class="tpl"><b>纠删码 Erasure Coding</b>：数据冗余容错编码——切成 <b>k 个数据块＋编码生成 m 个校验块</b>分布存，任意≤m 块丢失可恢复。相比 3 副本<b>存储开销更低</b>达到同等容错（HDFS-EC）。</div></div>
+  <div class="card"><h3><span class="n">23</span>BASE 原则</h3>
+    <div class="tpl">NoSQL/分布式对 ACID 强一致的反向取舍：<b>B</b>asically Available 基本可用、<b>S</b>oft state 软状态、<b>E</b>ventually consistent 最终一致。牺牲即时强一致换高可用可扩展，<b>最终达到一致</b>。</div></div>
+  <div class="card"><h3><span class="n">24</span>狭义机器学习</h3>
+    <div class="tpl">计算机<b>不做显式编程</b>，通过算法<b>从数据（经验）中自动学规律、改善性能</b>。对应 Mitchell：对任务 T、度量 P，性能随经验 E 自动提高。</div></div>
+  <div class="card"><h3><span class="n">25</span>自然语言理解</h3>
+    <div class="tpl">AI 与语言学交叉，研究<b>让计算机读懂人类自然语言的语义</b>（词法/句法/语义分析），正确解释意义并应答。是 <b>NLP 的核心组成</b>。</div></div>
+</div>
+
+<h2 class="sec">四、🟠 简答 5 条 ＋ 综合 2 题模板（40 分）</h2>
+<div class="sub">简答分条、多写不扣分；综合分析是"给场景套要点"，模板背熟＝直接默写。</div>
+<div class="grid2">
+  <div class="card"><h3><span class="n">26</span>Spark 相比 MapReduce 优势</h3>
+    <div class="tpl">①<b>内存计算</b>（中间结果不落盘，快 10~100 倍）；②<b>DAG 执行引擎</b>优化调度；③<b>通用统一</b>（批/流/SQL/MLlib/GraphX）；④<b>API 丰富</b>（Scala/Java/Python/R，RDD/DataFrame）；⑤<b>血缘 lineage 容错</b>，可跑在 HDFS/YARN 上。</div></div>
+  <div class="card"><h3><span class="n">27</span>颜色特征提取与匹配</h3>
+    <div class="tpl">提取：<b>颜色直方图</b>（各 bin 频率）、<b>颜色矩</b>（均值/方差/三阶矩）、<b>颜色相关图 / 颜色聚合向量 CAV</b>。匹配：<b>直方图相交、巴氏距离、卡方、相关、EMD</b>；常在 HSV 空间做。</div></div>
+  <div class="card"><h3><span class="n">28</span>目标检测应用场景</h3>
+    <div class="tpl">同时做"是什么（分类）＋在哪（定位）"：①<b>安防监控</b>（行人/人脸）；②<b>自动驾驶</b>（车辆/标志/车道线）；③<b>医学影像</b>（病灶）；④<b>工业质检</b>；⑤<b>零售</b>；⑥遥感无人机/AR。</div></div>
+  <div class="card"><h3><span class="n">29</span>语音识别关键问题</h3>
+    <div class="tpl">①<b>端点检测与切分</b>；②<b>特征提取</b>（MFCC）；③<b>声学建模＋语言建模匹配</b>（HMM/端到端）；④<b>说话人/口音/噪声信道</b>差异与鲁棒性；⑤<b>大词汇量、连读、同音歧义</b>消解；⑥实时性。</div></div>
+  <div class="card"><h3><span class="n">30</span>自然语言基本特征</h3>
+    <div class="tpl">①<b>任意性</b>；②<b>线条性</b>（按时间逐个排列）；③<b>结构性/组合层次</b>（音素→词→句，生成性）；④<b>社会约定俗成</b>；⑤<b>模糊/歧义/多义</b>；⑥<b>开放性</b>（词汇增长）。</div></div>
+  <div class="card"><h3><span class="n">31</span>综合·Hadoop 选型（模板）</h3>
+    <div class="tpl"><b>(1) 合理，理由任 3 点：</b>存储不足→HDFS 分块横向扩容；效率低→MapReduce/YARN 并行批处理；离线分析→Hive 类 SQL 统计；成本→廉价服务器弹性扩；多类型→schema-on-read。<b>(2) 生态组件任 2：</b>Hive 数仓离线统计、HBase 实时随机读写、Spark 内存迭代、ZooKeeper 协调、Flume/Kafka 日志采集、Sqoop 数据导入导出。</div></div>
+  <div class="card"><h3><span class="n">32</span>综合·决策树（模板）</h3>
+    <div class="tpl"><b>(1) 两类问题：</b>分类＝离散类别、回归＝连续数值。售价→连续→<b>回归</b>；是否续订→两类→<b>分类</b>。<b>(2) 节点：</b>根节点=含全部样本首次分裂；决策(内部)节点=对某特征取值测试；叶子节点=终端给最终结果。<b>剪枝</b>=去掉过于细分、对精度帮助不大的分支，<b>核心作用＝抑制过拟合、提升泛化</b>。</div></div>
+</div>
+
+<h2 class="sec">五、🟡 选择题 40 分：送分点与陷阱</h2>
+<div class="grid2">
+  <div class="card"><h3>🎁 背了就能拿</h3><div class="tpl">处理流程＝采集→导入预处理→统计与分析→挖掘（1）· Map＝对每元素<b>同一操作</b>（2）· TaskTracker↔JobTracker＝<b>心跳</b>（3）· split 数决定 <b>Map Task</b> 数（4）· NoSQL 优势＝<b>海量高并发读写</b>（7）· 重"理解"＝<b>科学的人工智能</b>（8）· 以智慧机理为目标＝<b>人工智能</b>（10）· 4-邻域＝<b>上下左右</b>（13）· HDFS 块＝<b>副本单元</b>（14）· Secondary NameNode＝<b>定期合并映像与日志</b>（15）· HDFS＝<b>主从结构</b>（16）· 无监督＝<b>聚类降维</b>（17）· 云让客户专注<b>快速创新</b>（18）· 异构存储因<b>热度差异</b>（19）· 分而治之＝<b>大文件分段存储</b>（20）。</div></div>
+  <div class="card"><h3>⚡ 陷阱 / 争议题预防针</h3><div class="tpl">① <b>"本质提高"＝业务模式质变</b>（选"数据驱动新商业模式"，非快/大/省，5）；② 医疗影像价值＝<b>海量图像训练识别模型</b>（6）；③ 自动驾驶"<b>某些情况人必须接管</b>"＝<b>3 级</b>（9，别选 4/5）；④ <b>标准化不改变空间维数</b>（11，题面轻微争议，按教材取 A）；⑤ 古典统计＝<b>用全部训练数据算经验估计值</b>（12）。</div></div>
+</div>
+<div class="note">📌 <b>本卷无官方答案</b>，选择题答案依考纲与教材逐题推定复核（第 11 题已标注争议）。完整逐题详解见 <a href="广东2026年1月自考13011《人工智能与大数据》真题/真题详解.html">2026.1 真题详解</a>，底部有答案速查表。</div>
+
+<h2 class="sec">六、🎯 考场策略与时间分配（150 分钟）</h2>
+<ul class="tips">
+  <li><b>答题顺序</b>：单选（35'，先快过一遍拿稳的）→ 名解（20'，关键词默写）→ 简答（30'，分条列点）→ 综合分析（45'，套模板写满）→ 检查（20'）。</li>
+  <li><b>主观题绝不留白</b>：名解/简答按点给分，<b>多写几条不扣分</b>，把相关关键词都列上；综合分析照模板把理由、组件、节点定义逐条写全。</li>
+  <li><b>4V 口径别写错</b>：Volume/Variety/<b>Veracity</b>/Velocity，<b>不含 Value</b>——这是本卷名解 21 的直接考点。</li>
+  <li><b>分条＋标序号</b>：简答用 ①②③ 分点，阅卷按点给分，成段堆砌易漏采分点。</li>
+  <li><b>决策树"售价/续订"判断</b>：抓"输出连续还是离散"——连续＝回归、离散类别＝分类。</li>
+  <li><b>目标管理</b>：名解 16 + 简答 15 + 综合 14 + 选择 20 ≈ <b>65</b>，背得越全越往上走，及格无压力。</li>
+</ul>
+
+<footer>
+  <div class="fl">
+    <a href="../index.html">🏠 返回首页</a>
+    <a href="知识点/index.html">📚 知识点导航</a>
+    <a href="广东2026年1月自考13011《人工智能与大数据》真题/真题详解.html">📝 2026.1 详解</a>
+    <a href="考纲.html">📋 考纲</a>
+  </div>
+  <div>统计基于 <b>2026.1 广东真题卷</b>逐题考点归位 · 名解/简答/综合关键词对照真题详解复核 · 打印或 ⌘/Ctrl+P 存 PDF 带走</div>
+</footer>
+
+</div>
+<script src="../assets/dock.js?v=20261030d" defer></script>
+</body>
+</html>
