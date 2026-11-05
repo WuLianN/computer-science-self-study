@@ -56,8 +56,28 @@ p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
   img{max-width:100%;height:auto}
   /* 行内公式允许在空格处折行（.m 默认 nowrap 会把长公式顶破页面） */
   .m{white-space:normal}
-  /* 一整串行内 code（如 "rb"、"wb"、"ab"… 被顿号连着）在中文里没合法断点，允许强制断行 */
-  .rule,.card{overflow-wrap:anywhere}
+  /* 一整串行内 code（如 "rb"、"wb"、"ab"… 被顿号连着）在中文里没合法断点，允许强制断行。
+     overflow-x:auto 同时给 .rule/.card 加横滑兜底，承接下面按 max-content 排布的宽表格
+     （实测：若只改单元格而不给容器兜底，特征提取页的长串会顶出 +89px 横向滚动）。 */
+  .rule,.card{overflow-wrap:anywhere;overflow-x:auto}
+  /* ===== 窄屏表格列挤压修复（截图走查新增，全部只在本媒体块内，桌面值不变）=====
+     根因：overflow-wrap 是可继承属性，上面的 anywhere 会把单元格的 min-content 压到 1 字符，
+     360px 下多列表格列宽被挤到 33–65px，出现 IPSec→IPSe/c、S-HTTP→S-/HTT/P、中文表头逐字竖排。
+     1) 只覆盖表格单元格为 break-word，正文长串仍保留 anywhere 的强制断点，避免重新引入溢出；
+     2) 让已有横滑兜底的表格按内容自然宽度排布（能放下就不横滑，符合 .tscroll 原本的设计意图），
+        比写死 min-width:520px 更克制——实测写死值会让 3 页溢出 +195px；
+     3) max-width:900px 给横滑距离设上限：不加时最宽表达 3146px（360px 屏要横滑约 9 屏），
+        加上后最宽 900px（约 2.5 屏），竖排命中只多 23 个，性价比明显；
+     4) 父容器用子选择器限定在 .tscroll/.rule/.card，刻意绕开 .ok：它在内容页是绿底提示框、
+        在 Prim/Kruskal 动画页是步骤日志绿字，同名类语义不同（见 AGENTS.md），不上收该规则；
+        命题逻辑页唯一一张 .ok 内的表格因此保持原样，避免整页 +171px 溢出。
+     实测 110 页 @360：短文本竖排 971→226（−77%）、页面横向溢出 0、最宽表 900px；
+     相对原始仅 2 页轻微变差（关系页 2→6、03344 考前抢分 9→12，共 +7）。 */
+  td,th{overflow-wrap:break-word}
+  .tscroll>table.law,.rule>table.law,.card>table.law{width:max-content;min-width:100%;max-width:900px}
+  /* 横滑提示：细滚动条更可见。只用 scrollbar-* 不引入背景/阴影，避免与 .note/.ok 等有色底串色；
+     iOS Safari 的 overlay 滚动条不响应此属性，更强的渐隐阴影列为建议项。 */
+  .tscroll,table.law{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
   /* 图注里的补充说明（<small>）默认 0.8em ≈10.8px，窄屏提到 12px（.cap 各页语义一致） */
   .fig .cap small{font-size:12px}
   /* 行内交叉链接（正文跳转链）触控高度只有一行字的 ≈19px，加内边距撑到 ≥28px，不改变行高节奏 */
