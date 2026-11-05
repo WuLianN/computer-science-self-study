@@ -34,6 +34,10 @@ a.inline:hover{text-decoration:underline}
 .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
 .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
 .m sub{font-size:12px}  /* 移动端复测：11px 下标在小屏贴线难认，上提到 12px */
+/* 块级 .m：少数页把整条公式放进 <p class="m">/div.m/li.m。行内 .m 的 nowrap 是刻意的
+   （短公式不折行），但 >640px 没有媒体查询兜底，长公式会把整页顶出横向滚动
+   （实测 768px +344px / 1200px +62px）。只命中块级标签，行内 <span class="m"> 桌面排版不变。 */
+p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
 .law{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0}
 .law th{background:var(--brand-soft);color:var(--brand)}
 .law th,.law td{border:1px solid var(--line);padding:6px 9px;text-align:left}
@@ -57,15 +61,34 @@ a.inline:hover{text-decoration:underline}
   /* 图注里的补充说明（<small>）默认 0.8em ≈10.8px，窄屏提到 12px（.cap 各页语义一致） */
   .fig .cap small{font-size:12px}
   /* 行内交叉链接（正文跳转链）触控高度只有一行字的 ≈19px，加内边距撑到 ≥28px，不改变行高节奏 */
-  a.inline{padding:4px 6px;border-radius:6px;margin:0 -6px}
-  /* hero 头部：手机上原本能吃掉小半屏——26/28px 大内边距 + 标题/描述继承了 body 的 1.85 行高（23px×1.85≈43px/行，长描述换 4 行≈118px）+ 多枚 pill 与导航链换行堆叠，整块常达 ~420px。窄屏整体压扁，让正文卡片尽早进入首屏。（.gotos 用 !important 只为覆盖 5 个给导航链写了行内 padding 的图论/真题详解页；仅改尺寸不改配色，无串色风险） */
+  a.inline{padding:5px 6px;border-radius:6px;margin:0 -6px}
+  /* hero 头部：手机上原本能吃掉小半屏——26/28px 大内边距 + 标题/描述继承了 body 的 1.85 行高（23px×1.85≈43px/行，长描述换 4 行≈118px）+ 多枚 pill 与导航链换行堆叠，整块常达 ~420px。窄屏整体压扁，让正文卡片尽早进入首屏。（.gotos 用 !important 只为覆盖 4 个给导航链写了行内 padding 的图论页；仅改尺寸不改配色，无串色风险） */
   .wrap{padding-top:14px}
+  /* 右下角 .dock 竖排两枚 44px 圆钮 + 10px 间距 + 16px 底距 = 114px；原本 .wrap 底部只有 80px，
+     滚到页尾时正文/页脚会被 ↑/🏠 压住（实测 104 页）。body> 提高特异性，压过 6 个考前抢分页
+     自写的 .wrap{padding:22px 16px 70px}；额外叠加安全区 inset，刘海屏横屏同样不遮挡。 */
+  body>.wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
   header.hero{padding:15px 16px;margin-bottom:12px;border-radius:14px}
   header.hero h1{font-size:18px;line-height:1.35;margin-bottom:4px}
-  header.hero p{font-size:13px;line-height:1.6}
-  .pill{font-size:12px;padding:1px 9px;margin-top:6px;margin-right:6px}
-  .gotos{margin-top:4px!important;gap:8px}
+  header.hero p{font-size:13px;line-height:1.5}
+  .pill{font-size:12px;padding:1px 9px;margin-top:6px;margin-right:6px;line-height:1.4}
+  .gotos{margin-top:4px!important;gap:6px}
   .gotos a{padding:4px 10px!important;font-size:12.5px!important;line-height:1.5!important}
+  /* ===== 窄屏触控目标 ≥28px（移动端走查新增，全部只在本媒体块内，桌面值不变）=====
+     语义已全局 grep 确认一致：a.qref = 真题题号 chip（43 页）；a.tag 只出现在 10 套真题详解的
+     考点链（考前抢分/公式速查/技术前沿的 .tag 是 span 标签，故锁死 a.tag 不误伤）；button 为
+     工具栏/动画步骤钮。裸行内 <a> 用 :where() 零特异性容器包住，页内已有的 footer .fl a / .jump a
+     等带 padding 的规则特异性更高，自动保留原样。 */
+  a.qref{padding:4px 8px}
+  a.tag{padding:5px 8px}
+  button{min-height:28px}
+  :where(.note,.card,.rule,.tip,p,footer,td) a:not([class]),
+  :where(.wrap)>a:not([class]){padding:6px 6px;margin:0 -6px;border-radius:6px}
+  /* 考前抢分页 <details class="ans"> 的折叠头无内边距，实测 22px；details.q / .tree 的
+     summary 自带 14px 内边距，min-height 不会改变它们 */
+  summary{min-height:28px}
+  /* 默认 sub/sup 为 0.83em（实测 10.5–11.7px），窄屏统一提到 12px，与既有 .m sub 同值 */
+  sub,sup{font-size:12px}
 }
 
 /* 真题详解选择题选项 .opts：10 套真题详解页语义一致（summary 内 A–D 选项行），整体上收。
@@ -84,7 +107,7 @@ details.q:not([open])>summary .toggle::after{content:" ▾"}
   /* 窄屏只留箭头图标：文字 font-size:0 隐藏（文本仍在 DOM，无障碍名称不丢），::after 单独设字号；
      圆钮化缩小占位，不再挤掉题干首行空间；关闭态箭头靠同块内书写顺序覆盖，
      展开态与基础规则同特异性且基础在前媒体块在后本可覆盖，但为防页内残留规则干扰保留 !important。 */
-  .toggle{font-size:0;padding:3px 0;line-height:1;display:inline-flex;align-items:center;justify-content:center;width:30px;height:26px}
+  .toggle{font-size:0;padding:3px 0;line-height:1;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px}
   details.q>summary .toggle::after{font-size:15px;content:" ▾"}
   details.q[open]>summary .toggle::after{content:" ▴"!important}
 }
