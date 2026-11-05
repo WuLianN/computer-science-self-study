@@ -104,11 +104,22 @@ p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
      自写的 .wrap{padding:22px 16px 70px}；额外叠加安全区 inset，刘海屏横屏同样不遮挡。 */
   body>.wrap{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
   header.hero{padding:15px 16px;margin-bottom:12px;border-radius:14px}
-  header.hero h1{font-size:18px;line-height:1.35;margin-bottom:4px}
-  header.hero p{font-size:13px;line-height:1.5}
-  .pill{font-size:12px;padding:1px 9px;margin-top:6px;margin-right:6px;line-height:1.4}
-  .gotos{margin-top:4px!important;gap:6px}
-  .gotos a{padding:4px 10px!important;font-size:12.5px!important;line-height:1.5!important}
+  header.hero h1{font-size:18px;line-height:1.35;margin-bottom:3px}
+  header.hero p{font-size:13px;line-height:1.5;margin:2px 0}
+  .pill{font-size:12px;padding:1px 7px;margin-top:5px;margin-right:4px;line-height:1.4}
+  .gotos{margin-top:4px!important;gap:4px}
+  .gotos a{padding:4px 7px!important;font-size:12.5px!important;line-height:1.5!important}
+  /* ===== 窄屏首屏节奏收紧（截图走查新增，纯尺寸，不删/不隐藏任何文字）=====
+     基线 @360×780：hero 均高 301.8px（占屏 38.7%，50 页 >40%）、目录卡均高 262px、
+     48 页首屏看不到任何正文块。只调间距与行高，不改内容语义、不降目录条目字号（仍 14px）：
+     hero 292.4px、目录 214.7px、首屏无正文 30 页；实测触控 <28px 为 0、横向溢出 0。
+     .toc 全站无页内定义（单一真源在此）；.links a 仅 10 套真题详解页有且定义完全一致，
+     但页内 <style> 在 theme 之后，故用 .wrap .links a 的 (0,2,1) 压过页内 .links a 的 (0,1,1)，
+     不逐页改 HTML。折叠长描述/精简 pill 属内容取舍，列为建议项，本步不执行。 */
+  .toc{padding:10px 12px;margin:10px 0}
+  .toc .toc-h{font-size:14px;margin-bottom:3px}
+  .toc a{font-size:14px;padding:5px 0;line-height:1.45}
+  .wrap .links a{padding:4px 8px;font-size:12.5px;margin-right:5px}
   /* ===== 窄屏触控目标 ≥28px（移动端走查新增，全部只在本媒体块内，桌面值不变）=====
      语义已全局 grep 确认一致：a.qref = 真题题号 chip（43 页）；a.tag 只出现在 10 套真题详解的
      考点链（考前抢分/公式速查/技术前沿的 .tag 是 span 标签，故锁死 a.tag 不误伤）；button 为
