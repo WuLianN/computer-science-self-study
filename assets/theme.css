@@ -54,6 +54,21 @@ p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
   .fig{overflow-x:auto}
   svg[viewBox]{max-width:100%;height:auto}
   img{max-width:100%;height:auto}
+  /* ===== 窄屏 SVG 图内文字可读性（截图走查新增，仅本媒体块内，桌面值不变）=====
+     根因：max-width:100% 把 svg[viewBox] 压到容器宽（360px 下约 268px），而 viewBox 700–880
+     的图缩放系数只有 0.30–0.38，图内 font-size=11–12 等效仅 3–4px，截图目视已糊成色块。
+     全站 113 张含文字 SVG 中 36 张 <8px，集中在 viewBox 620–880；祖先链上都有横滑兜底
+     （多数直接父是 .fig，个别如数据库概论的 E-R 图父是 .er 但上层有兜底），因此给一个最小
+     渲染宽度、超宽交给容器横滑即可，不用改任何 SVG 内容。
+     用 viewBox 属性前缀精确命中：190 张 viewBox<600 的小图无一张以 "0 0 6/7/8/9" 开头，零误伤
+     （viewBox<700 且以 6 开头的只有 620/648/680 共 4 张，本就在待修复之列）。
+     760px 是权衡值：等效字号最小 3→7.3px、<8px 的图 36→2、<10px 的图 37→3，
+     最宽 SVG 760px（约 2.8 屏横滑）；取 820px 只再少 1 张却让横滑更长。
+     .wrap svg[attr] 把特异性提到 (0,2,1)，压过 13009 真题详解页内的 .fig svg{min-width:560px}
+     （同为 (0,1,1) 且在 theme 之后，否则那张 880 宽的图仍只有 7.3px）；同时不限定直接父，
+     避免漏掉 .er 等容器里的宽图。实测 110 页 @360：页面横向溢出 0、未裁切越界 0，
+     SVG 总高 +29%、页面总高仅 +0.6%。 */
+  .wrap svg[viewBox^="0 0 6"],.wrap svg[viewBox^="0 0 7"],.wrap svg[viewBox^="0 0 8"],.wrap svg[viewBox^="0 0 9"]{min-width:760px}
   /* 行内公式允许在空格处折行（.m 默认 nowrap 会把长公式顶破页面） */
   .m{white-space:normal}
   /* 一整串行内 code（如 "rb"、"wb"、"ab"… 被顿号连着）在中文里没合法断点，允许强制断行。
@@ -77,7 +92,7 @@ p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
   .tscroll>table.law,.rule>table.law,.card>table.law{width:max-content;min-width:100%;max-width:900px}
   /* 横滑提示：细滚动条更可见。只用 scrollbar-* 不引入背景/阴影，避免与 .note/.ok 等有色底串色；
      iOS Safari 的 overlay 滚动条不响应此属性，更强的渐隐阴影列为建议项。 */
-  .tscroll,table.law{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  .tscroll,.fig,table.law{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
   /* 图注里的补充说明（<small>）默认 0.8em ≈10.8px，窄屏提到 12px（.cap 各页语义一致） */
   .fig .cap small{font-size:12px}
   /* 行内交叉链接（正文跳转链）触控高度只有一行字的 ≈19px，加内边距撑到 ≥28px，不改变行高节奏 */
