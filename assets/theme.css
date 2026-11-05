@@ -17,6 +17,8 @@ h2.section{margin:30px 0 12px;font-size:20px;border-left:5px solid var(--brand);
    需要浅底的容器加 .plain 修饰符——只覆盖配色，尺寸/布局/hover 行为不变，hero 内的 .gotos 不受影响。 */
 .gotos.plain a{background:var(--brand-soft);color:var(--brand);border-color:var(--brand-soft)}
 .gotos.plain a:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* hero 首屏折叠开关：由 dock.js 运行时注入，桌面隐藏；窄屏显示规则见 @media 块内 */
+.hero-toggle{display:none}
 a.inline{color:var(--brand);font-weight:700;text-decoration:none}
 a.inline:hover{text-decoration:underline}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0;font-size:14.5px}
@@ -115,7 +117,7 @@ p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
      hero 292.4px、目录 214.7px、首屏无正文 30 页；实测触控 <28px 为 0、横向溢出 0。
      .toc 全站无页内定义（单一真源在此）；.links a 仅 10 套真题详解页有且定义完全一致，
      但页内 <style> 在 theme 之后，故用 .wrap .links a 的 (0,2,1) 压过页内 .links a 的 (0,1,1)，
-     不逐页改 HTML。折叠长描述/精简 pill 属内容取舍，列为建议项，本步不执行。 */
+     不逐页改 HTML。折叠长描述/精简 pill 的内容取舍见本块下方的 @media screen 折叠规则。 */
   .toc{padding:10px 12px;margin:10px 0}
   .toc .toc-h{font-size:14px;margin-bottom:3px}
   .toc a{font-size:14px;padding:5px 0;line-height:1.45}
@@ -136,6 +138,26 @@ p.m,div.m,li.m{white-space:normal;overflow-wrap:anywhere}
   /* 默认 sub/sup 为 0.83em（实测 10.5–11.7px），窄屏统一提到 12px，与既有 .m sub 同值 */
   sub,sup{font-size:12px}
 }
+
+/* ===== 窄屏 hero 内容折叠（内容取舍，零信息丢失，全部可展开）=====
+   与上面的纯尺寸收紧分开、单独限定 screen：打印 / 另存 PDF 时不折叠、不隐藏，
+   保证导出的复习资料内容完整（首页也提示了 ⌘/Ctrl + P 打印）。
+   由 dock.js 末尾的 IIFE 在运行时给 hero 打 .hero-compact / .hero-expanded：
+   描述 clamp 到 2 行、第 4 枚起的 .pill 与第 5 条起的导航链收纳到「展开全文 +N」。
+   阈值来自 360px 全站统计：89/105 页描述≥3 行、pill 2–6 枚、导航链最多 6 条。
+   被收纳内容仍在 DOM 中，点一次即展开；桌面不命中，内容与按钮都不受影响。
+   .hero-extra 用 !important 压过页内 .links a 的 display:inline-block 及个别页给导航链
+   写的样式，避免隐藏失效；开关按钮 min-height 28px 守住触控目标。 */
+@media screen and (max-width:640px){
+  header.hero.hero-compact>p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  header.hero.hero-compact .hero-extra{display:none!important}
+  header.hero .hero-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:28px;
+    padding:4px 10px;border:1px solid rgba(255,255,255,.45);border-radius:8px;
+    background:rgba(255,255,255,.16);color:#fff;font-size:12.5px;line-height:1.5;cursor:pointer}
+  header.hero .hero-toggle:active{opacity:.6}
+}
+/* 打印/另存 PDF 不印出悬浮按钮（根 index.html 自包含页另有内联同款规则） */
+@media print{.dock{display:none!important}}
 
 /* 真题详解选择题选项 .opts：10 套真题详解页语义一致（summary 内 A–D 选项行），整体上收。
    桌面 46px 缩进与题干标题对齐；窄屏题干会换行独占一行，46px 就变成左侧空白条，统一归零。 */

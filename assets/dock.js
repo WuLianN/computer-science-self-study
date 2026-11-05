@@ -4,7 +4,11 @@
  * 即可，无需再手写 .totop 或页尾"回到顶部"链接。
  * 原理：读自身 <script> 的 src（回退到 theme.css 的 link）算出仓库根相对前缀，
  * 因此任意目录深度、file:// 双击打开、GitHub Pages 都能拼出正确的首页链接。
- * 显示：仅窄屏(≤640px)出现，与旧 .totop 一致；样式全在 theme.css 的 .dock。 */
+ * 显示：仅窄屏(≤640px)出现，与旧 .totop 一致；样式全在 theme.css 的 .dock
+ * （根 index.html 是自包含页，按约定自带内联 .dock 样式；prefix 为空时省略 🏠 只留 ↑）。
+ *
+ * 本文件同时承载第二个互不依赖的窄屏增强：hero 首屏折叠（见文件末尾 IIFE）。
+ * 两者都幂等，视觉一律由 CSS 媒体查询决定，桌面零影响。 */
 (function () {
   if (window.__dockInjected || document.querySelector('.dock')) { window.__dockInjected = true; return; }
 
@@ -62,4 +66,72 @@
   window.addEventListener('resize', syncTop, { passive: true });
   syncTop();
   window.__dockInjected = true;
+})();
+
+/* ===== hero 首屏折叠（内容取舍：折叠长描述 + 精简 pill/导航链）=====
+ * 只在外链 theme.css 的 105 个页面生效；根 index.html 无 header.hero，自动跳过。
+ * 零信息丢失：被收纳的内容全在 DOM 里，点一次「展开全文」即可看到。
+ * 阈值来自 360px 全站统计：89/105 页描述≥3 行、pill 2–6 枚、导航链最多 6 条。
+ * 只在窄屏初始化、用实测行数判定描述是否超 2 行（不按文本长度猜，避免短页误插按钮）；
+ * 插完按钮再测一次 hero 高度，净收益 <4px 就整组撤销，保证没有页面因折叠反而变高。
+ * 跨 640px 用 matchMedia 重新初始化：桌面完全不加 class、不插按钮，内容原样展示。
+ * 逻辑并入本文件而非新建脚本，避免给 105 页再加一行 <script>；两个 IIFE 互不依赖。 */
+(function () {
+  if (window.__heroFoldInjected) return;
+  window.__heroFoldInjected = true;
+  var hero = document.querySelector('header.hero');
+  if (!hero) return;
+  var mq = window.matchMedia('(max-width:640px)');
+  var btn = null;
+
+  function reset() {
+    if (btn) { btn.remove(); btn = null; }
+    hero.classList.remove('hero-compact', 'hero-expanded');
+    [].forEach.call(hero.querySelectorAll('.hero-extra'), function (el) { el.classList.remove('hero-extra'); });
+  }
+
+  function init() {
+    reset();
+    if (!mq.matches) return;
+
+    var descs = [].slice.call(hero.querySelectorAll(':scope > p'));
+    var pills = [].slice.call(hero.querySelectorAll('.pill'));
+    var links = [].slice.call(hero.querySelectorAll('.gotos a, .links a'));
+    var longDesc = descs.some(function (p) {
+      var lh = parseFloat(getComputedStyle(p).lineHeight) || 19.5;
+      return p.getBoundingClientRect().height > lh * 2.2;
+    });
+    var extras = pills.slice(3).concat(links.slice(4));
+    if (!longDesc && !extras.length) return;
+
+    var before = hero.getBoundingClientRect().height;
+    extras.forEach(function (el) { el.classList.add('hero-extra'); });
+
+    var n = extras.length;
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'hero-toggle';
+    btn.setAttribute('aria-label', '展开 hero 全文与更多标签导航，共 ' + n + ' 项');
+    function sync() {
+      var open = hero.classList.contains('hero-expanded');
+      btn.textContent = open ? '收起 ▴' : '展开全文' + (n ? ' +' + n : '') + ' ▾';
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    var host = hero.querySelector('.gotos, .links') || hero;
+    host.appendChild(btn);
+    hero.classList.add('hero-compact');
+    sync();
+
+    if (hero.getBoundingClientRect().height >= before - 4) { reset(); return; }
+
+    btn.addEventListener('click', function () {
+      var open = hero.classList.toggle('hero-expanded');
+      hero.classList.toggle('hero-compact', !open);
+      sync();
+    });
+  }
+
+  init();
+  if (mq.addEventListener) mq.addEventListener('change', init);
+  else if (mq.addListener) mq.addListener(init);
 })();

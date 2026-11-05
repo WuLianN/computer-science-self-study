@@ -64,7 +64,18 @@
       a:active,.entry:active,.chip:active{opacity:.6;transition:opacity .12s}
       @media (hover:none){.entry:hover,.chip:hover,footer .fl a:hover{transform:none}}
   footer .copy{margin-top:12px;font-size:.76rem;color:var(--muted);opacity:.85}
+  /* ===== 右下角停靠胶囊（根首页是自包含页，按约定自带内联 .dock 样式，对齐 assets/theme.css）=====
+     复用全站 dock.js：它检测到 rootPrefix 为空（当前即仓库根）会省略 🏠，只注入 ↑ 回到顶部，
+     正好适配 4560px 长的首页；滚过阈值才淡入。桌面隐藏，仅窄屏显示。 */
+  .dock{position:fixed;right:calc(12px + env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;display:none;flex-direction:column;align-items:center;gap:10px}
+  .dock a{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:20px;line-height:1;box-shadow:0 4px 14px rgba(0,0,0,.18);transition:opacity .25s ease,transform .25s ease}
+  .dock a.top{background:var(--primary);color:#fff;opacity:0;transform:translateY(8px) scale(.6);pointer-events:none}
+  .dock.show-top a.top{opacity:1;transform:none;pointer-events:auto}
+  .dock.show-top a.top:active{transform:scale(.9)}
   @media (max-width:640px){
+    .dock{display:flex}
+    /* 底部留白避免 ↑ 圆钮压住页脚（与 theme.css 的 body>.wrap 同一口径） */
+    body{padding-bottom:calc(120px + env(safe-area-inset-bottom))}
     .hero{padding:16px 0 10px}
     .hero-card{padding:20px 16px 18px;border-radius:16px}
     .hero h1{font-size:1.35rem;margin-bottom:4px}
@@ -96,6 +107,8 @@
     html{scroll-behavior:auto}
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   }
+  /* 打印/另存 PDF 不印出悬浮按钮 */
+  @media print{.dock{display:none!important}}
 </style>
 </head>
 <body>
@@ -120,7 +133,7 @@
   <div class="fl">
     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false">↑ 回到顶部</a>
   </div>
-  <div class="copy">Last updated · 2026-10 &nbsp;</div>
+  <div class="copy">Last updated · 2026-11 &nbsp;</div>
 </footer>
 
 <script>
@@ -391,5 +404,7 @@ subjects.forEach(s => {
   app.appendChild(sec);
 });
 </script>
+<!-- 右下角停靠胶囊：仅窄屏显示，样式自带（本页不外链 theme.css） -->
+<script src="assets/dock.js?v=20261105g" defer></script>
 </body>
 </html>
