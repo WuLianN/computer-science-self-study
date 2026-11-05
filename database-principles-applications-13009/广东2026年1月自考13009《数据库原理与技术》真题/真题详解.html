@@ -6,7 +6,7 @@
 <title>2026年1月广东省考 13009《数据库原理与技术》真题详解</title>
 <meta name="description" content="2026年1月广东省高等教育自学考试 13009《数据库原理与技术》真题逐题详解：单选15题+简答6题+综合设计4题（共25题），题干常显、答案折叠，可当卷子自测。含参考答案速查表与考点链回知识点速记卡。">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗄️</text></svg>">
-<link rel="stylesheet" href="../../assets/theme.css?v=20261030d">
+<link rel="stylesheet" href="../../assets/theme.css?v=20261105b">
 <style>
 header.hero{background:linear-gradient(135deg,#0284c7,#7c3aed)}  /* 13009 主题：蓝→紫，与知识点导航页一致 */
 .links{margin-top:12px}
@@ -20,10 +20,6 @@ details.q>summary::-webkit-details-marker{display:none}
 details.q>summary:hover{background:#fafbff}
 .qno{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:8px;font-size:13px;font-weight:700;padding:2px 10px;margin-right:8px;vertical-align:middle}
 .stem{display:inline;font-weight:600;vertical-align:middle}
-.toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
-details.q[open]>summary .toggle::after{content:" ▴"}
-details.q:not([open])>summary .toggle::after{content:" ▾"}
-.opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
 .opts span{font-size:15px;color:#374151;word-break:break-all}
 /* 综合题长题干分块排版：.stem 保持 inline 不改动其余 24 题；块内容与题号徽章左对齐，不再额外缩进 */
 .qstem{clear:both;margin:10px 0 2px;font-size:14.5px;line-height:1.75}
@@ -202,7 +198,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 <details class="q" id="q11"><summary>
   <span class="qno">第11题</span><span class="toggle">点击展开答案</span>
   <div class="stem">在关系表:学校(编号,校名,分数线)中,编号是主键,要查询所有分数线不是最高的学校的编号,不正确的MySQL查询语句是</div>
-  <div class="opts" style="flex-direction:column;gap:6px;padding-left:46px"><span>A. SELECT编号FROM学校WHERE分数线&lt;(SELECT MAX(分数线)FROM 学校);</span><span>B. SELECT S2.编号FROM学校S1,学校S2 WHERE S1.分数线&lt;S2.分数线;</span><span>C. SELECT编号FROM学校S1 WHERE EXISTS (SELECT*FROM学校S2 WHERE (S1.分数线&lt;S2.分数线));</span><span>D. SELECT编号FROM学校WHERE分数线&lt;SOME(SELECT分数线FROM学校);</span></div>
+  <div class="opts" style="flex-direction:column;gap:6px"><span>A. SELECT编号FROM学校WHERE分数线&lt;(SELECT MAX(分数线)FROM 学校);</span><span>B. SELECT S2.编号FROM学校S1,学校S2 WHERE S1.分数线&lt;S2.分数线;</span><span>C. SELECT编号FROM学校S1 WHERE EXISTS (SELECT*FROM学校S2 WHERE (S1.分数线&lt;S2.分数线));</span><span>D. SELECT编号FROM学校WHERE分数线&lt;SOME(SELECT分数线FROM学校);</span></div>
 </summary>
 <div class="body">
   <div class="answer">答案：B</div>
@@ -501,6 +497,6 @@ GROUP BY 课程编号;</pre>要点：<code>CREATE VIEW 视图名 AS 子查询</c
   window.addEventListener('hashchange', openTarget);
 })();
 </script>
-<script src="../../assets/dock.js?v=20261030d" defer></script>
+<script src="../../assets/dock.js?v=20261105b" defer></script>
 </body>
 </html>

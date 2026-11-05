@@ -68,6 +68,27 @@ a.inline:hover{text-decoration:underline}
   .gotos a{padding:4px 10px!important;font-size:12.5px!important;line-height:1.5!important}
 }
 
+/* 真题详解选择题选项 .opts：10 套真题详解页语义一致（summary 内 A–D 选项行），整体上收。
+   桌面 46px 缩进与题干标题对齐；窄屏题干会换行独占一行，46px 就变成左侧空白条，统一归零。 */
+.opts{margin:10px 0 2px;display:flex;flex-wrap:wrap;gap:8px 18px;padding-left:46px}
+@media (max-width:640px){
+  .opts{padding-left:0px}
+}
+
+/* 真题详解题卡折叠钮 .toggle：10 套真题详解页语义一致（summary 右上角「点击展开答案 ▾/▴」），整体上收。
+   选择器锁死 details.q>summary，只命中题卡，不影响其他页同名类。 */
+.toggle{float:right;color:var(--brand);font-size:13px;font-weight:600;user-select:none;background:var(--brand-soft);border-radius:999px;padding:2px 12px}
+details.q[open]>summary .toggle::after{content:" ▴"}
+details.q:not([open])>summary .toggle::after{content:" ▾"}
+@media (max-width:640px){
+  /* 窄屏只留箭头图标：文字 font-size:0 隐藏（文本仍在 DOM，无障碍名称不丢），::after 单独设字号；
+     圆钮化缩小占位，不再挤掉题干首行空间；关闭态箭头靠同块内书写顺序覆盖，
+     展开态与基础规则同特异性且基础在前媒体块在后本可覆盖，但为防页内残留规则干扰保留 !important。 */
+  .toggle{font-size:0;padding:3px 0;line-height:1;display:inline-flex;align-items:center;justify-content:center;width:30px;height:26px}
+  details.q>summary .toggle::after{font-size:15px;content:" ▾"}
+  details.q[open]>summary .toggle::after{content:" ▴"!important}
+}
+
 /* ===== 移动端触控体验：点按反馈 + 取消触屏粘滞 hover + 浮动回顶 =====
    触屏没有 hover：原有 .gotos/:hover 等悬停态点完会"粘"在上面（白底/左移不消失）。
    这里用 @media(hover:none) 撤销悬停态，改由 :active 给即时点按反馈；桌面 hover 行为不变。 */
