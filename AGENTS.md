@@ -57,7 +57,7 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 ### 2.3 表格与 SVG 的既定兜底（别重复造轮子）
 
 - **多列表格**包一层 `.tscroll`（或放 `.rule`/`.card` 内）；theme 已给 `table.law{width:max-content;min-width:100%;max-width:900px}` + 横滑，360px 下短文本竖排 971→226。单元格 `td,th{overflow-wrap:break-word}` 是刻意的：正文长串仍保留 `overflow-wrap:anywhere`，**不要全局把 `anywhere` 改成 `break-word`**，否则长公式重新顶出横向溢出。父容器子选择器限定 `.tscroll/.rule/.card` 是故意绕开 `.ok`。
-- **宽 SVG（`viewBox` 以 `0 0 6`/`7`/`8`/`9` 开头，宽约 600–999）**由 `.wrap svg[viewBox^="0 0 6"]`（另有 `7`/`8`/`9` 前缀共 4 条）统一设 `min-width:760px` 还原比例、超宽交给祖先横滑；等效字号 = 图内 `font-size × 渲染宽 / viewBox 宽`（最小 3→7.3px）。**不要改图内 `font-size` 或删这条 `min-width`**；新增宽图无需额外处理，但祖先要有横滑兜底（`.fig` 等）。viewBox 380 的小图不在此列。
+- **宽 SVG（`viewBox` 以 `0 0 6`/`7`/`8`/`9` 开头）按档设最小渲染宽度**，超宽交给最近的 `.fig` 图容器横滑；等效字号 = 图内 `font-size × 渲染宽 / viewBox 宽`。**`0 0 6` 档（620–680，4 张）= 520px**：一刀切 760px 会把这几张放大到 1.1–1.23 倍、图内字 17–20.8px 比正文 14.5px 还大；**`0 0 7/8/9` 档（700–999，33 张）= 760px**：原本等效仅 3–4px。**不要改图内 `font-size`，也不要删或合并这两档**；改前用五视口复扫 37 张宽图的 `minEff ≥8px`、`maxEff ≤16px`。viewBox 380 的小图不在此列。
 - **宽 SVG 必须放在专用图容器内**（`.fig`，theme 在窄屏给它 `overflow-x:auto`），别直接塞进 `.rule`/`.card` 等内容盒：内容盒虽也有 `overflow-x:auto`、不会撑破页面，但会让**同容器里的表格与正文一起横滑**、文字被裁得错乱（13009 数据库概论的 `.er` E-R 图踩过，现已改为 SVG 外包一层 `.fig`）。全站 37 张宽图应 37/37 直接父为 `.fig`。
 - 图注补充说明 `<small>` 窄屏统一 12px（`.fig .cap small`）。
 
@@ -99,6 +99,6 @@ foreach($f in Get-ChildItem -LiteralPath $root -Filter '*.html' -Recurse -File){
   - **五视口** 360 / 400 / 640 / 768 / 1200 × 全站 110 页：`document.documentElement.scrollWidth - clientWidth` 为 0、404 为 0；窄屏可点元素高度 ≥28px（桌面鼠标环境不适用此阈值）。
   - **桌面零回归**：768/1200 下注入 `git show HEAD:assets/theme.css` 前后比对关键选择器计算样式与 hero/目录高度，应完全一致。
   - **折叠/精简类改动**：验证折叠 → 展开 → 收起可逆、零信息丢失、每页净收益为正；用 `page.emulateMedia({media:'print'})` 确认打印不折叠、不印 `.dock`。
-  - **表格/SVG 回归哨兵**：最宽 `table.law` ≤900px；400/640/768/1200 下等效字号 <8px 的 SVG 为 0；每张宽 SVG 的**直接父**应是 `.fig`（或自带 `overflow-x:auto` 的图容器），扫祖先链确认兜底者不是 `.rule`/`.card` 内容盒。
+  - **表格/SVG 回归哨兵**：最宽 `table.law` ≤900px；400/640/768/1200 下等效字号 <8px 的 SVG 为 0、@360 下 >16px 的宽图为 0（防「糊」也防「过大」）；每张宽 SVG 的**直接父**应是 `.fig`（或自带 `overflow-x:auto` 的图容器），扫祖先链确认兜底者不是 `.rule`/`.card` 内容盒。
   - **提交前**：HTML diff 只含版本号、`git diff --check` 0、全站无 BOM、`read_lints` 无新增错误。
 - ⚠️ **根 `index.html` 页脚的 `Last updated · YYYY-MM-DD` 是手工维护的静态文本**：AI 不会自动推断或刷新它，容易停在旧日期误导读者。只要改动了根 `index.html`（首页内容、`subjects` 数组、内联样式/脚本都算），就把日期显式同步成**当天日期、精确到日**（不要只写年月）；纯改科目页或 `assets/` 而没碰首页时可不改。
