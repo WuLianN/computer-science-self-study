@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 位运算逐位演示｜&amp; | ^ ~ &lt;&lt; &gt;&gt;</title>
+<meta name="description" content="计算机高级程序设计 08074 第 2 章配套演示：八位二进制 SVG 格子对齐逐位算，可调 A/B、切换六种位运算符、设置移位位数、逐位播放，附口诀表与易错点。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261105h">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#0891b2)}
+  .ops,.ctrl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+  button.op,button.ex,button.btn{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:8px;padding:5px 12px;cursor:pointer;font-size:13.5px;font-family:inherit;transition:.15s}
+  button.op:hover,button.ex:hover{border-color:var(--brand);color:var(--brand)}
+  button.op.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:700}
+  button.btn{border-color:var(--brand);background:var(--brand-soft);color:var(--brand)}
+  button.btn:hover{background:var(--brand);color:#fff}
+  .lab{font-size:13px;color:var(--muted);font-weight:700}
+  .inp{width:76px;min-height:30px;border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:14px;font-family:inherit;color:var(--ink);background:#fff}
+  select.inp{width:auto}
+  .inp:disabled{background:#f1f5f9;color:#94a3b8}
+  .fig{margin:10px 0 2px}
+  svg#bits{display:block;width:100%;height:auto;background:#fff;border-radius:10px}
+  svg text{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}
+  svg .wgt{font-size:12px;fill:var(--muted);font-weight:700}
+  svg .pow{font-size:11px;fill:#94a3b8}
+  svg .axis{font-size:12px;fill:var(--muted);font-weight:700}
+  svg .rlab{font-size:17px;font-weight:700;fill:var(--ink)}
+  svg .rsub{font-size:13px;fill:var(--muted)}
+  svg .cell{fill:#f8fafc;stroke:#cbd5e1;stroke-width:1.5}
+  svg .cell.one{fill:#eef2ff;stroke:#a5b4fc}
+  svg .bit{font-size:26px;font-weight:700;fill:#94a3b8}
+  svg .bit.one{fill:var(--brand)}
+  svg .cell.cur{fill:#fffbeb;stroke:#d97706;stroke-width:3.5}
+  svg .bit.cur{fill:#b45309}
+  svg .sep{stroke:var(--line);stroke-width:2}
+  svg .mv{fill:none;stroke:#d97706;stroke-width:2.5;stroke-dasharray:6 4}
+  .cap{font-size:12.5px;color:var(--muted);margin:2px 0 8px}
+  .out{background:var(--brand-soft);border-radius:10px;padding:10px 14px;margin:8px 0;font-size:15px;display:flex;gap:10px;flex-wrap:wrap;align-items:baseline}
+  .out .big{font-size:23px;font-weight:700;color:var(--brand)}
+  .out .why{flex-basis:100%;font-size:13px;color:var(--muted)}
+  .status{flex-basis:100%;font-size:13.5px;color:var(--ink);font-weight:700;min-height:22px}
+  #mn tr.on{background:#eef2ff}
+  #mn tr.on td{color:var(--brand);font-weight:700}
+  @media (max-width:640px){
+    svg .wgt{font-size:13px}
+    svg .pow{font-size:12px}
+    svg .rlab{font-size:18px}
+  }
+  @media print{.ctrl,.ops{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>位运算 · 逐位演示</h1>
+  <p>8 个格子对齐，一位一位算。改数字、换运算符、点单步，看完不用背。</p>
+  <span class="pill">第 2 章配套</span><span class="pill">考纲：领会</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="数据类型与内置函数.html">← 第 2 章速记卡</a>
+  </div>
+</header>
+
+<div class="card">
+  <div class="ops" id="ops">
+    <button class="op" data-op="&amp;">&amp; 与</button>
+    <button class="op" data-op="|">| 或</button>
+    <button class="op" data-op="^">^ 异或</button>
+    <button class="op" data-op="~">~ 取反</button>
+    <button class="op" data-op="&lt;&lt;">&lt;&lt; 左移</button>
+    <button class="op" data-op="&gt;&gt;">&gt;&gt; 右移</button>
+  </div>
+
+  <div class="ctrl">
+    <label class="lab" for="ia">A</label><input class="inp" id="ia" type="number" min="0" max="255" value="12">
+    <label class="lab" for="ib">B</label><input class="inp" id="ib" type="number" min="0" max="255" value="10">
+    <span id="shiftWrap" hidden><label class="lab" for="sel">移位</label>
+      <select class="inp" id="sel">
+        <option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+      </select></span>
+    <span class="lab">（0–255，8 位窗口）</span>
+  </div>
+
+  <div class="ctrl" id="examples"></div>
+
+  <div class="fig">
+    <svg id="bits" viewBox="0 0 660 280" role="img" aria-label="八位二进制逐位运算演示图"></svg>
+  </div>
+  <div class="cap">列顶是位权 128…1；蓝=1、灰=0、橙=当前位，橙箭头=位移方向。每格只看正上方那一列，位运算不进位。窄屏可横滑看图。</div>
+
+  <div class="out">
+    <span id="o-expr">12 &amp; 10</span><span>=</span><span class="big" id="o-dec">8</span>
+    <code id="o-bin8">00001000</code>
+    <span class="why" id="o-why"></span>
+  </div>
+
+  <div class="ctrl">
+    <button class="btn" data-act="play">▶ 逐位播放</button>
+    <button class="btn" data-act="next">单步</button>
+    <button class="btn" data-act="reset">重置</button>
+    <span class="status" id="status">点 ▶ 或「单步」，从最右边 2⁰ 那一位开始看。</span>
+  </div>
+</div>
+
+<h2 class="section">口诀（切运算符会高亮）</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law" id="mn">
+    <tr><th>符号</th><th>记这句</th><th>例子 / 用途</th></tr>
+    <tr data-op="&amp;"><td class="nm">&amp;</td><td><b>全 1 才 1</b>（有 0 出 0）</td><td><code>12 &amp; 10 = 8</code>；<code>a &amp; 1</code> 判奇偶</td></tr>
+    <tr data-op="|"><td class="nm">|</td><td><b>有 1 出 1</b>（全 0 才 0）</td><td><code>12 | 10 = 14</code>；<code>a | (1&lt;&lt;k)</code> 置位</td></tr>
+    <tr data-op="^"><td class="nm">^</td><td><b>不同出 1</b></td><td><code>12 ^ 10 = 6</code>；<code>a^a=0</code></td></tr>
+    <tr data-op="~"><td class="nm">~</td><td>0↔1 全翻转，<b>~x = −x−1</b></td><td><code>~5 = -6</code></td></tr>
+    <tr data-op="&lt;&lt;"><td class="nm">&lt;&lt;</td><td><b>左移 k 位 = ×2ᵏ</b>，右补 0</td><td><code>5 &lt;&lt; 2 = 20</code></td></tr>
+    <tr data-op="&gt;&gt;"><td class="nm">&gt;&gt;</td><td><b>右移 k 位 = //2ᵏ</b>，低位丢弃</td><td><code>20 &gt;&gt; 2 = 5</code></td></tr>
+  </table></div>
+</div>
+
+<h2 class="section">最容易错的 3 点</h2>
+<div class="note">
+  ① <b><code>^</code> 不是乘方</b>，乘方是 <code>**</code>：<code>2^3 = 1</code>，<code>2**3 = 8</code>。<br>
+  ② <b><code>~5 = -6</code></b>，不是 250：Python 的 int 不限位数，<code>~x = -(x+1)</code>；图里的 <code>11111010 = 250</code> 只是低 8 位窗口 = <code>255−5</code>。<br>
+  ③ <b>移位优先级低于加减</b>：<code>1 &lt;&lt; 2 + 1 = 1 &lt;&lt; 3 = 8</code>，不是 5。顺序：算术 → <code>&lt;&lt; &gt;&gt;</code> → <code>&amp;</code> → <code>^</code> → <code>|</code> → 比较。<br>
+  另：<code>&amp; | ~</code> 是按位运算，<code>and or not</code> 是逻辑运算，别混。
+</div>
+
+<div class="gotos plain" style="margin-top:16px">
+  <a href="数据类型与内置函数.html#s3">← 回第 2 章运算符表</a>
+</div>
+
+<footer>08074 · 第 2 章配套演示 · 结果均按 Python 3 语义计算</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const NS="http://www.w3.org/2000/svg";
+  const $=id=>document.getElementById(id);
+  const svg=$("bits");
+  const N=8, X0=130, STEP=63, CW=58, CH=48;
+  const SUP=["⁰","¹","²","³","⁴","⁵","⁶","⁷"];
+  const Y3={a:50,b:116,r:196}, Y2={a:56,r:176};
+  const DUAL=["&","|","^"], SHIFT=["<<",">>"];
+
+  function el(tag,attrs,txt){
+    const e=document.createElementNS(NS,tag);
+    for(const k in attrs) e.setAttribute(k,attrs[k]);
+    if(txt!==undefined) e.textContent=txt;
+    return e;
+  }
+  function cx(i){return X0+(N-1-i)*STEP;}
+  function bit(v,i){return (v>>i)&1;}
+  function num(id){const v=parseInt($(id).value,10);return isNaN(v)?0:Math.max(0,Math.min(255,v));}
+  function kVal(){return +$("sel").value;}
+  function calc(a,b,o,k){
+    switch(o){
+      case "&":return a&b;
+      case "|":return a|b;
+      case "^":return a^b;
+      case "~":return ~a;
+      case "<<":return a<<k;
+      case ">>":return a>>k;
+    }
+    return 0;
+  }
+  function exprText(a,b,o,k){
+    if(o==="~") return "~"+a;
+    return DUAL.indexOf(o)>=0 ? a+" "+o+" "+b : a+" "+o+" "+k;
+  }
+  function ones(v){const out=[];for(let i=0;i<N;i++)if(bit(v,i))out.push(1<<i);return out.length?out.join("、"):"无";}
+  function whyText(a,b,o,k,r,r8){
+    switch(o){
+      case "&":return "全 1 才 1：两边同为 1 的位权 "+ones(a&b)+" → "+r;
+      case "|":return "有 1 出 1：留下的位权 "+ones(a|b)+" → "+r;
+      case "^":return "不同出 1：留下的位权 "+ones(a^b)+" → "+r;
+      case "~":return "~"+a+" = -("+a+"+1) = "+r+"；图中 "+r8.toString(2).padStart(8,"0")+" = "+r8+" 只是低 8 位（255−"+a+"）";
+      case "<<":return "左移 "+k+" 位 = ×"+(1<<k)+" → "+a+" × "+(1<<k)+" = "+r+"，右侧补 0";
+      case ">>":return "右移 "+k+" 位 = //"+(1<<k)+" → "+a+" // "+(1<<k)+" = "+r+"，低位丢弃";
+    }
+    return "";
+  }
+
+  /* ---------- SVG 骨架 ---------- */
+  const defs=el("defs",{});
+  const mk=el("marker",{id:"arw",viewBox:"0 0 10 10",refX:"9",refY:"5",markerWidth:"6",markerHeight:"6",orient:"auto"});
+  mk.appendChild(el("path",{d:"M 0 0 L 10 5 L 0 10 z",fill:"#d97706"}));
+  defs.appendChild(mk); svg.appendChild(defs);
+
+  const head=el("g",{});
+  head.appendChild(el("text",{x:4,y:22,class:"axis"},"位权"));
+  head.appendChild(el("text",{x:4,y:40,class:"axis"},"2⁷ … 2⁰"));
+  for(let i=N-1;i>=0;i--){
+    head.appendChild(el("text",{x:cx(i)+CW/2,y:22,class:"wgt","text-anchor":"middle"},String(1<<i)));
+    head.appendChild(el("text",{x:cx(i)+CW/2,y:40,class:"pow","text-anchor":"middle"},"2"+SUP[i]));
+  }
+  svg.appendChild(head);
+
+  const rows={};
+  function makeRow(key,label){
+    const g=el("g",{class:"row"});
+    const sub=el("text",{x:4,y:42,class:"rsub"},"");
+    g.appendChild(el("text",{x:4,y:22,class:"rlab"},label)); g.appendChild(sub);
+    const cells={};
+    for(let i=0;i<N;i++){
+      const r=el("rect",{x:cx(i),y:0,width:CW,height:CH,rx:9,class:"cell"});
+      const t=el("text",{x:cx(i)+CW/2,y:33,class:"bit","text-anchor":"middle"},"0");
+      g.appendChild(r); g.appendChild(t);
+      cells[i]={rect:r,txt:t};
+    }
+    svg.appendChild(g);
+    rows[key]={g:g,sub:sub,cells:cells,y:Y3[key]};
+  }
+  makeRow("a","A"); makeRow("b","B"); makeRow("r","结果");
+  const sep=el("line",{x1:X0-6,y1:184,x2:X0+8*STEP-STEP+CW+6,y2:184,class:"sep"});
+  svg.appendChild(sep);
+  const arrows=el("g",{}); svg.appendChild(arrows);
+
+  /* ---------- 状态与渲染 ---------- */
+  let op="&", steps=[], idx=-1, timer=null;
+  const reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function subFor(r8){
+    const r=calc(num("ia"),num("ib"),op,kVal());
+    return (op==="~" || (SHIFT.indexOf(op)>=0 && r>255)) ? "低8位 "+r8 : "= "+r8;
+  }
+  function paintRow(key,v,sub){
+    const row=rows[key];
+    row.sub.textContent=sub===undefined?"= "+v:sub;
+    for(let i=0;i<N;i++){
+      const c=row.cells[i], one=bit(v,i)===1;
+      c.rect.setAttribute("class","cell"+(one?" one":""));
+      c.txt.setAttribute("class","bit"+(one?" one":""));
+      c.txt.textContent=one?"1":"0";
+    }
+  }
+  function layout(){
+    const dual=DUAL.indexOf(op)>=0;
+    const ya=dual?Y3.a:Y2.a, yr=dual?Y3.r:Y2.r;
+    rows.a.y=ya; rows.r.y=yr;
+    rows.a.g.setAttribute("transform","translate(0,"+ya+")");
+    rows.r.g.setAttribute("transform","translate(0,"+yr+")");
+    rows.b.g.setAttribute("transform","translate(0,"+Y3.b+")");
+    rows.b.g.style.display=dual?"":"none";
+    sep.style.display=dual?"":"none";
+    $("ib").disabled=!dual;
+    $("shiftWrap").hidden=SHIFT.indexOf(op)<0;
+  }
+  function buildSteps(a,b,o,k,r8){
+    const out=[];
+    for(let i=0;i<N;i++){
+      const A=bit(a,i), B=bit(b,i), R=bit(r8,i);
+      let text="", to=null;
+      if(DUAL.indexOf(o)>=0) text="位权 "+(1<<i)+"："+A+" "+o+" "+B+" = "+R;
+      else if(o==="~") text="位权 "+(1<<i)+"："+A+" → "+R;
+      else if(o==="<<"){
+        to=i+k;
+        text=to<N ? "第 "+i+" 位 "+A+" 左移 "+k+" 位 → 结果第 "+to+" 位"
+                   : "第 "+i+" 位左移出 8 位窗口（Python 仍保留）";
+      }else{
+        to=i-k;
+        text=to>=0 ? "第 "+i+" 位 "+A+" 右移 "+k+" 位 → 结果第 "+to+" 位"
+                   : "第 "+i+" 位被移出、丢弃";
+      }
+      out.push({i:i,from:i,to:to,text:text});
+    }
+    return out;
+  }
+  function clearArrows(){while(arrows.firstChild)arrows.removeChild(arrows.firstChild);}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  function render(){
+    stop(); clearArrows();
+    const a=num("ia"), b=num("ib"), k=kVal(), r=calc(a,b,op,k), r8=r&255;
+    layout();
+    paintRow("a",a); paintRow("b",b); paintRow("r",r8,subFor(r8));
+    $("o-expr").textContent=exprText(a,b,op,k);
+    $("o-dec").textContent=r;
+    $("o-bin8").textContent=r8.toString(2).padStart(8,"0");
+    $("o-why").textContent=whyText(a,b,op,k,r,r8);
+    document.querySelectorAll("#ops .op").forEach(x=>x.classList.toggle("on",x.dataset.op===op));
+    document.querySelectorAll("#mn tr[data-op]").forEach(x=>x.classList.toggle("on",x.dataset.op===op));
+    steps=buildSteps(a,b,op,k,r8); idx=-1;
+    $("status").textContent="点 ▶ 或「单步」，从最右边 2⁰ 那一位开始看。";
+  }
+
+  /* ---------- 逐位播放 ---------- */
+  function drawArrow(from,to){
+    const y1=rows.a.y+CH+4, y2=rows.r.y-8;
+    const x1=cx(from)+CW/2, x2=cx(to)+CW/2;
+    const d="M "+x1+" "+y1+" C "+x1+" "+(y1+26)+", "+x2+" "+(y2-26)+", "+x2+" "+y2;
+    arrows.appendChild(el("path",{d:d,class:"mv","marker-end":"url(#arw)"}));
+  }
+  function markCur(i,to){
+    let dest=i;
+    if(SHIFT.indexOf(op)>=0) dest=(to!==null && to>=0 && to<N)?to:null;
+    function hi(c){
+      c.rect.setAttribute("class",c.rect.getAttribute("class")+" cur");
+      c.txt.setAttribute("class",c.txt.getAttribute("class")+" cur");
+    }
+    hi(rows.a.cells[i]); hi(rows.b.cells[i]);
+    if(dest!==null) hi(rows.r.cells[dest]);
+  }
+  function renderStep(n){
+    const a=num("ia"), b=num("ib"), r8=calc(a,b,op,kVal())&255;
+    paintRow("a",a); paintRow("b",b); paintRow("r",r8,subFor(r8));
+    clearArrows();
+    const s=steps[n];
+    markCur(s.i,s.to);
+    if(SHIFT.indexOf(op)>=0 && s.to!==null && s.to>=0 && s.to<N) drawArrow(s.from,s.to);
+    $("status").textContent="第 "+(n+1)+"/8 步 · "+s.text;
+  }
+  function next(){if(idx>=steps.length-1)return;idx++;renderStep(idx);}
+  function play(){
+    stop(); idx=-1;
+    if(reduce){idx=steps.length-1;renderStep(idx);return;}
+    next();
+    timer=setInterval(function(){
+      if(idx>=steps.length-1){stop();return;}
+      next();
+    },700);
+  }
+
+  /* ---------- 控件 ---------- */
+  const EXAMPLES=[
+    {t:"12 & 10",a:12,b:10,op:"&"},
+    {t:"12 | 10",a:12,b:10,op:"|"},
+    {t:"12 ^ 10",a:12,b:10,op:"^"},
+    {t:"~5",a:5,b:0,op:"~"},
+    {t:"5 << 2",a:5,b:0,op:"<<",k:2},
+    {t:"20 >> 2",a:20,b:0,op:">>",k:2}
+  ];
+  EXAMPLES.forEach(function(ex){
+    const btn=document.createElement("button");
+    btn.className="ex"; btn.type="button"; btn.textContent=ex.t;
+    btn.addEventListener("click",function(){
+      op=ex.op; if(ex.k)$("sel").value=ex.k;
+      $("ia").value=ex.a; $("ib").value=ex.b; render();
+    });
+    $("examples").appendChild(btn);
+  });
+  document.querySelectorAll("#ops .op").forEach(function(btn){
+    btn.type="button";
+    btn.addEventListener("click",function(){op=btn.dataset.op;render();});
+  });
+  ["ia","ib"].forEach(function(id){$(id).addEventListener("input",render);});
+  $("sel").addEventListener("change",render);
+  document.querySelector('[data-act="play"]').addEventListener("click",play);
+  document.querySelector('[data-act="next"]').addEventListener("click",function(){stop();next();});
+  document.querySelector('[data-act="reset"]').addEventListener("click",render);
+  render();
+})();
+</script>
+<script src="../../../assets/dock.js?v=20261105h" defer></script>
+</body>
+</html>
