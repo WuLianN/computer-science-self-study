@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08074 · 流程图与 N-S 图示例｜同一例题的两种画法（SVG）</title>
+<meta name="description" content="计算机高级程序设计 08074 第 3 章配套图示：四种流程图符号图例，并以「求 1~100 偶数和」为例，分别画出传统流程图与 N-S 盒图（嵌套盒子、无流程线），附 Python 代码与真题呼应。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📐</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261105h">
+<style>
+  header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}
+  a.qref{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:1px 8px;font-size:12.5px;font-weight:700;white-space:nowrap;text-decoration:none}
+  a.qref:hover{text-decoration:underline}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0}
+  .fig svg{display:block;width:100%;height:auto;margin:0 auto}
+  .fig .cap{font-size:13px;color:var(--muted);margin-top:6px;text-align:left}
+  svg text{font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;font-size:13px;fill:#1f2430}
+  svg .sym{font-size:13px;font-weight:700;text-anchor:middle}
+  svg .cap-t{font-size:13px;fill:#6b7280;text-anchor:middle}
+  svg .start{fill:#ecfdf5;stroke:#059669;stroke-width:1.8}
+  svg .io{fill:#fce7f3;stroke:#be185d;stroke-width:1.8}
+  svg .proc{fill:#eef2ff;stroke:#4f46e5;stroke-width:1.8}
+  svg .dec{fill:#fef3c7;stroke:#d97706;stroke-width:1.8}
+  svg .flow{fill:none;stroke:#64748b;stroke-width:1.8}
+  svg .yn{font-size:12px;font-weight:700;fill:#059669}
+  svg .yn.no{fill:#be123c}
+  svg .dot{fill:#64748b}
+  svg .box{fill:#fff;stroke:#cbd5e1;stroke-width:1.5}
+  svg .box-t{font-size:14px;font-weight:700;text-anchor:middle}
+  svg .tag{font-size:12.5px;font-weight:700}
+  svg .loop{fill:#fffbeb;stroke:#d97706;stroke-width:1.8}
+  svg .loopbar{fill:#fef3c7;stroke:#fcd34d}
+  svg .sel{fill:#eef2ff;stroke:#4f46e5;stroke-width:1.6}
+  svg .selbar{fill:#e0e7ff;stroke:#c7d2fe}
+  svg .yes{fill:#ecfdf5;stroke:#059669}
+  svg .no{fill:#f8fafc;stroke:#cbd5e1}
+  pre.py{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px 16px;overflow-x:auto;font-family:Consolas,"Cascadia Mono",Monaco,monospace;font-size:13.5px;line-height:1.7;margin:10px 0}
+  pre.py .cm{color:#94a3b8}
+  pre.py .kw{color:#7dd3fc}
+  pre.py .st{color:#86efac}
+  @media (max-width:640px){
+    svg .cap-t{font-size:13.5px}
+    svg .yn{font-size:12.5px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>流程图 / N-S 图 · 静态对照示例</h1>
+  <p>同一道「求 1~100 偶数和」，分别画成传统流程图和 N-S 盒图。先看符号，再看两种画法差在哪。</p>
+  <span class="pill">第 3 章配套</span><span class="pill">考纲：识记</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="程序控制结构.html">← 第 3 章速记卡</a>
+  </div>
+</header>
+
+<h2 class="section">一、四个符号（看形状认作用）</h2>
+<div class="fig">
+  <svg viewBox="0 0 600 96" role="img" aria-label="流程图四种基本符号：椭圆起止、平行四边形输入输出、矩形处理、菱形判断">
+    <ellipse class="start" cx="75" cy="36" rx="56" ry="19"/>
+    <text class="sym" x="75" y="41">开始 / 结束</text>
+    <text class="cap-t" x="75" y="78">起止 · 椭圆</text>
+
+    <polygon class="io" points="181,16 281,16 267,56 167,56"/>
+    <text class="sym" x="224" y="41">输入 / 输出</text>
+    <text class="cap-t" x="224" y="78">I/O · 平行四边形</text>
+
+    <rect class="proc" x="317" y="16" width="116" height="40" rx="5"/>
+    <text class="sym" x="375" y="41">处理 / 赋值</text>
+    <text class="cap-t" x="375" y="78">处理 · 矩形</text>
+
+    <polygon class="dec" points="525,10 587,36 525,62 463,36"/>
+    <text class="sym" x="525" y="41">判断</text>
+    <text class="cap-t" x="525" y="78">判断 · 菱形 ⭐</text>
+  </svg>
+  <div class="cap">⭐ 菱形 = 判断（带「是 / 否」两个出口），<a class="qref" href="../../广东2026年4月自考08074《计算机高级程序设计》真题/真题详解.html#q19">2026.4 · 选择第 19 题</a> 考的就是这个。窄屏可横滑看图。</div>
+</div>
+
+<h2 class="section">二、同一例题，两种画法</h2>
+<div class="rule">
+  <b>例题：求 1~100 中所有偶数之和</b>（顺序 + 循环 + 分支三种结构都有，最适合拿来对照）。
+  <pre class="py">s = 0
+<span class="kw">for</span> i <span class="kw">in</span> <span class="st">range</span>(1, 101):
+    <span class="kw">if</span> i % 2 == 0:
+        s += i
+<span class="kw">print</span>(s)   <span class="cm"># 2550</span></pre>
+  <div class="th">图中把 <code>for</code> 展开成等价的 <code>while</code>（<code>i &lt;= 100</code> 判断 + 每次 <code>i += 1</code>），两图才对得上；<code>for</code> 都能改写成 <code>while</code>。</div>
+</div>
+
+<div class="fig">
+  <svg viewBox="0 0 600 510" role="img" aria-label="传统流程图：开始→初始化→i<=100 判断→i%2==0 判断→累加或跳过→i 自增回边→输出 s→结束">
+    <defs><marker id="f-arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker></defs>
+
+    <ellipse class="start" cx="250" cy="28" rx="54" ry="18"/>
+    <text class="sym" x="250" y="33">开始</text>
+    <path class="flow" d="M 250 46 L 250 60" marker-end="url(#f-arw)"/>
+
+    <rect class="proc" x="170" y="60" width="160" height="38" rx="5"/>
+    <text class="sym" x="250" y="84">s = 0 ,  i = 1</text>
+    <path class="flow" d="M 250 98 L 250 107" marker-end="url(#f-arw)"/>
+
+    <polygon class="dec" points="250,108 332,142 250,176 168,142"/>
+    <text class="sym" x="250" y="147">i &lt;= 100 ?</text>
+    <text class="yn" x="264" y="194">是</text>
+    <text class="yn no" x="344" y="134">否</text>
+    <path class="flow" d="M 250 176 L 250 205" marker-end="url(#f-arw)"/>
+
+    <polygon class="dec" points="250,206 336,240 250,274 164,240"/>
+    <text class="sym" x="250" y="245">i % 2 == 0 ?</text>
+    <text class="yn" x="264" y="292">是</text>
+    <text class="yn no" x="348" y="232">否</text>
+    <path class="flow" d="M 250 274 L 250 299" marker-end="url(#f-arw)"/>
+
+    <rect class="proc" x="180" y="300" width="140" height="38" rx="5"/>
+    <text class="sym" x="250" y="324">s = s + i</text>
+    <path class="flow" d="M 250 338 L 250 352"/>
+
+    <path class="flow" d="M 336 240 L 410 240 L 410 352 L 250 352"/>
+    <circle class="dot" cx="250" cy="352" r="3.5"/>
+    <path class="flow" d="M 250 352 L 250 359" marker-end="url(#f-arw)"/>
+
+    <rect class="proc" x="180" y="360" width="140" height="38" rx="5"/>
+    <text class="sym" x="250" y="384">i = i + 1</text>
+    <path class="flow" d="M 250 398 L 250 414 L 76 414 L 76 142 L 166 142" marker-end="url(#f-arw)"/>
+
+    <path class="flow" d="M 332 142 L 472 142 L 472 392" marker-end="url(#f-arw)"/>
+    <polygon class="io" points="410,394 550,394 534,434 394,434"/>
+    <text class="sym" x="472" y="419">输出 s</text>
+    <path class="flow" d="M 472 434 L 472 454" marker-end="url(#f-arw)"/>
+
+    <ellipse class="start" cx="472" cy="474" rx="52" ry="18"/>
+    <text class="sym" x="472" y="479">结束</text>
+  </svg>
+  <div class="cap"><b>传统流程图</b>：靠带箭头的流程线串起各框；左下那条长回边就是循环。形状按颜色区分：绿=起止、蓝=处理、黄=判断、粉=输出。</div>
+</div>
+
+<div class="fig">
+  <svg viewBox="0 0 600 440" role="img" aria-label="N-S 盒图：外框内自上而下为初始化、当型循环盒（内含条件分栏与 i 自增）、输出，全程无流程线">
+    <rect x="40" y="18" width="520" height="396" rx="8" fill="#fff" stroke="#4f46e5" stroke-width="2"/>
+
+    <rect class="box" x="40" y="18" width="520" height="46"/>
+    <text class="box-t" x="300" y="47">s = 0 ,  i = 1</text>
+
+    <rect class="loop" x="40" y="64" width="520" height="290" rx="3"/>
+    <rect x="40" y="64" width="7" height="290" fill="#d97706"/>
+    <rect class="loopbar" x="47" y="64" width="513" height="38"/>
+    <text class="tag" x="70" y="89" fill="#92400e">当型循环  while i &lt;= 100</text>
+
+    <rect class="box" x="70" y="112" width="466" height="226"/>
+    <rect class="sel" x="70" y="112" width="466" height="160" rx="3"/>
+    <rect x="70" y="112" width="6" height="160" fill="#4f46e5"/>
+    <rect class="selbar" x="76" y="112" width="460" height="36"/>
+    <text class="tag" x="96" y="136" fill="#3730a3">选择  i % 2 == 0 ?</text>
+    <line x1="76" y1="148" x2="536" y2="148" stroke="#c7d2fe"/>
+    <line x1="309" y1="148" x2="309" y2="272" stroke="#a5b4fc"/>
+    <text class="tag" x="192" y="172" text-anchor="middle" fill="#059669">T 真</text>
+    <text class="tag" x="422" y="172" text-anchor="middle" fill="#be123c">F 假</text>
+    <rect class="yes" x="96" y="186" width="192" height="64" rx="6"/>
+    <text class="box-t" x="192" y="225">s = s + i</text>
+    <rect class="no" x="332" y="186" width="184" height="64" rx="6"/>
+    <text class="box-t" x="424" y="225" fill="#6b7280">（不处理）</text>
+
+    <rect class="box" x="96" y="286" width="440" height="40" rx="6"/>
+    <text class="box-t" x="316" y="312">i = i + 1</text>
+
+    <rect x="40" y="354" width="520" height="60" rx="3" fill="#fce7f3" stroke="#be185d" stroke-width="1.6"/>
+    <text class="box-t" x="300" y="390">输出 s （2550）</text>
+  </svg>
+  <div class="cap"><b>N-S 图（盒图）</b>：整张图<b>没有一根箭头</b>。顺序 = 上下叠盒，选择 = 盒内 T / F 左右分栏，循环 = 外层盒套住循环体；结构只能一层层嵌进去，画不出随意跳转。</div>
+</div>
+
+<h2 class="section">三、一句话对照</h2>
+<div class="note">
+  ① <b>流程图</b>自由但容易画出非结构化流程：任意两框之间都能连箭头、能往回跳。<br>
+  ② <b>N-S 图</b>把算法关进一个大矩形，只允许上下堆叠 / 左右分栏 / 层层嵌套，<b>天然强制只用顺序、选择、循环三种结构</b>。<br>
+  ③ 两图画的是同一个算法，对照着看最省事：把流程图里那条「返回判断」的回边，换成 N-S 图里那个黄色的循环盒即可。
+</div>
+
+<div class="gotos plain" style="margin-top:16px">
+  <a href="程序控制结构.html#s1">← 回第 3 章 · 控制结构概述</a>
+</div>
+
+<footer>08074 · 第 3 章配套图示 · 静态 SVG，无动画 · 例题结果 2550 已按 Python 3 核对</footer>
+</div>
+
+<script src="../../../assets/dock.js?v=20261105h" defer></script>
+</body>
+</html>
