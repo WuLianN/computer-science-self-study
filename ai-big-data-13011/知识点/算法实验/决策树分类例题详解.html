@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13011 · 决策树分类例题详解｜熵 · 条件熵 · 信息增益（教材图 15.22）</title>
+<meta name="description" content="逐手算讲解教材图 15.22 例题：30 名学生中 15 人闲暇打板球，给定性别、班级、身高三个变量，比较按性别与按班级划分的信息增益，选出决策树根节点。含对数速查、身高连续属性处理、易错点与答题模板。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌳</text></svg>">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261105h">
+<style>
+  header.hero{background:linear-gradient(135deg,#4f46e5,#0e7490)}
+  .fig{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px;margin:12px 0}
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{text-align:center;font-size:13px;color:var(--muted);margin-top:6px}
+  .calc{background:#f8fafc;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin:10px 0;font-variant-numeric:tabular-nums}
+  .calc p{margin:5px 0}
+  .calc table{border-collapse:collapse;font-size:13.5px;margin:6px 0;width:100%}
+  .calc th,.calc td{border:1px solid var(--line);padding:4px 8px;text-align:center}
+  .calc th{background:var(--brand-soft);color:var(--brand)}
+  .step{display:inline-block;background:var(--brand);color:#fff;border-radius:999px;padding:0 10px;font-size:13px;font-weight:700;margin-right:6px}
+  .win{background:#ecfdf5;border-left:4px solid #059669;border-radius:8px;padding:10px 14px;margin:10px 0}
+  .tree{font-family:ui-monospace,Consolas,"Courier New",monospace;font-size:13.5px;line-height:1.9;background:#faf5ff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;overflow-x:auto;white-space:pre;color:#3b0764}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>决策树分类例题详解 · 信息增益 🌳</h1>
+  <p>教材<b>图 15.22</b> 那道「<b>30 名学生打板球</b>」的题：性别、班级、身高三个变量，到底该拿谁当根节点？这道题把<b>熵 → 条件熵 → 信息增益</b>三件套完整走一遍。算完你会发现——班级看着能分，其实几乎没用。</p>
+  <span class="pill">考纲第 13 章 / 教材 15.3 节</span><span class="pill">综合应用·计算题</span><span class="pill">难度 ★★★</span><span class="pill">手算约 8 分钟</span>
+  <div class="gotos">
+    <a href="../../../index.html">🏠 首页</a>
+    <a href="../index.html">📚 知识点导航</a>
+    <a href="机器学习算法实验.html#s11">← 第 13 章 完整速记卡</a>
+    <a href="../../考纲.html#chapters">📋 本章考纲</a>
+  </div>
+</header>
+
+<div class="toc">
+  <div class="toc-h">本页目录</div>
+  <a href="#s1">一、题目在问什么</a>
+  <a href="#s2">二、三个公式与对数速查表</a>
+  <a href="#s3">三、第 1 步：父节点熵 H(D)</a>
+  <a href="#s4">四、第 2 步：按性别划分</a>
+  <a href="#s5">五、第 3 步：按班级划分</a>
+  <a href="#s6">六、身高怎么处理？（连续属性）</a>
+  <a href="#s7">七、比出胜负：画出决策树</a>
+  <a href="#s8">八、易错点、答题模板与自测</a>
+</div>
+
+<h2 class="section" id="s1">一、题目在问什么</h2>
+<div class="rule">
+  <div class="th"><b>题意：</b>样本共 <b>30 名学生</b>，记录了三个变量——<b>性别</b>（女 / 男）、<b>班级</b>（IX / X）、<b>身高</b>（1.5 ~ 1.8 米）。其中 <b>15 人在闲暇时间打板球（Cricket）</b>，另 15 人不打。要建立决策树模型预测谁会打板球，问：<b>应该按哪个属性先划分？</b></div>
+  <div class="tscroll"><table class="law">
+    <tr><th>划分方式</th><th>分支</th><th>打球</th><th>不打球</th><th>合计</th><th>打球占比</th></tr>
+    <tr><td class="nm" rowspan="2">性别</td><td>女 Female</td><td>2</td><td>8</td><td>10</td><td>20%</td></tr>
+    <tr><td>男 Male</td><td>13</td><td>7</td><td>20</td><td>65%</td></tr>
+    <tr><td class="nm" rowspan="2">班级</td><td>IX 类</td><td>6</td><td>8</td><td>14</td><td>43%</td></tr>
+    <tr><td>X 类</td><td>9</td><td>7</td><td>16</td><td>56%</td></tr>
+  </table></div>
+  <div class="calc">
+    <b>先核对数据（防止抄错数）：</b>
+    <p>性别口径：女 2+8=10，男 13+7=20，共 <b>30</b>；打球 2+13=<b>15</b>，不打球 8+7=<b>15</b>。</p>
+    <p>班级口径：IX 6+8=14，X 9+7=16，共 <b>30</b>；打球 6+9=<b>15</b>，不打球 8+7=<b>15</b>。✔ 两种口径对得上同一个总体。</p>
+  </div>
+  <div class="note">🎯 <b>解题目标只有一个：</b>分别算「按性别划分」和「按班级划分」的<b>信息增益 Gain</b>，谁大就选谁作根节点。身高是连续值，另作说明（见第六节）。</div>
+</div>
+
+<h2 class="section" id="s2">二、三个公式与对数速查表</h2>
+<div class="rule">
+  <div class="th"><b>① 熵（不纯度）：</b><span class="m">H(D) = −Σ p<sub>i</sub> log₂ p<sub>i</sub></span>。约定 <span class="m">0·log₂0 = 0</span>。熵<b>越大越不纯</b>；二分类中 <b>50/50 时熵最大 = 1</b>，全属一类时 <b>熵 = 0（纯）</b>。</div>
+  <div class="th"><b>② 条件熵（划分后的加权不纯度）：</b><span class="m">H(D|A) = Σ<sub>v</sub> (|D<sub>v</sub>| / |D|) · H(D<sub>v</sub>)</span>。<b>权重是各分支的样本数占比</b>，不是分支个数的简单平均——这是本题第一个易错点。</div>
+  <div class="th"><b>③ 信息增益（不纯度下降了多少）：</b><span class="m">Gain(D, A) = H(D) − H(D|A)</span>。增益<b>越大</b>，说明这个属性把"混在一起"的样本分得越开，ID3 算法就选它作当前节点。</div>
+  <div class="calc">
+    <b>常用 <span class="m">−p·log₂p</span> 速查（保留三位，教材取两位）：</b>
+    <table>
+      <tr><th>p</th><th>0.5</th><th>0.2</th><th>0.8</th><th>0.65</th><th>0.35</th><th>6/14</th><th>8/14</th><th>9/16</th><th>7/16</th></tr>
+      <tr><td>−p·log₂p</td><td>0.500</td><td>0.464</td><td>0.258</td><td>0.404</td><td>0.530</td><td>0.524</td><td>0.461</td><td>0.467</td><td>0.522</td></tr>
+    </table>
+    <p>例：<span class="m">−0.2·log₂0.2 = −0.2×(−2.322) = 0.464</span>。注意是 <b>log 以 2 为底</b>，用计算器的 ln / lg 会全盘错。</p>
+  </div>
+</div>
+
+<h2 class="section" id="s3">三、第 1 步：父节点熵 H(D)</h2>
+<div class="rule">
+  <div class="calc">
+    <p><span class="step">1</span><b>父节点（未划分）：</b>打球 15 人、不打球 15 人，<span class="m">p₁ = p₂ = 15/30 = 0.5</span>。</p>
+    <p><span class="m">H(D) = −(15/30)·log₂(15/30) − (15/30)·log₂(15/30)</span></p>
+    <p><span class="m">　　 = −0.5×(−1) − 0.5×(−1) = <b>1</b></span></p>
+  </div>
+  <div class="note">💡 <b>教材那句"这里的 1 表明它是一个不纯节点"怎么理解：</b>因为 H=1 正好是二分类熵的<b>最大值</b>，说明父节点里两类各占一半、最"混乱"——所以才有划分的必要。后面每个划分都要看能把这 1 降下来多少。</div>
+</div>
+
+<h2 class="section" id="s4">四、第 2 步：按性别划分</h2>
+<div class="rule">
+  <div class="calc">
+    <p><span class="step">2</span><b>先算两个子节点的熵：</b></p>
+    <p><b>女性节点（10 人：2 打 / 8 不打）</b><br>
+       <span class="m">H(女) = −(2/10)·log₂(2/10) − (8/10)·log₂(8/10)</span><br>
+       　　　 = 0.2×2.322 + 0.8×0.322 = 0.464 + 0.258 = <b>0.72</b></p>
+    <p><b>男性节点（20 人：13 打 / 7 不打）</b><br>
+       <span class="m">H(男) = −(13/20)·log₂(13/20) − (7/20)·log₂(7/20)</span><br>
+       　　　 = 0.65×0.621 + 0.35×1.515 = 0.404 + 0.530 = <b>0.93</b></p>
+    <p><b>再按样本数加权，得条件熵：</b><br>
+       <span class="m">H(D|性别) = (10/30)×0.72 + (20/30)×0.93 = 0.24 + 0.62 = <b>0.86</b></span></p>
+    <p><b>信息增益：</b> <span class="m">Gain(D, 性别) = 1 − 0.86 = <b>0.14</b></span></p>
+  </div>
+  <div class="th"><b>直观读法：</b>划分后女性组只有 <b>20%</b> 打球、男性组有 <b>65%</b> 打球，两组的比例明显拉开——不确定性从 1 降到了 0.86，<b>降了 0.14</b>。男性分支 65% 已经明显偏向"打球"，可以拿它做判断了。</div>
+</div>
+
+<h2 class="section" id="s5">五、第 3 步：按班级划分</h2>
+<div class="rule">
+  <div class="calc">
+    <p><span class="step">3</span><b>同样先算两个子节点的熵：</b></p>
+    <p><b>IX 类节点（14 人：6 打 / 8 不打）</b><br>
+       <span class="m">H(IX) = −(6/14)·log₂(6/14) − (8/14)·log₂(8/14)</span><br>
+       　　　 = 0.524 + 0.461 = <b>0.99</b></p>
+    <p><b>X 类节点（16 人：9 打 / 7 不打）</b><br>
+       <span class="m">H(X) = −(9/16)·log₂(9/16) − (7/16)·log₂(7/16)</span><br>
+       　　　 = 0.467 + 0.522 = <b>0.99</b></p>
+    <p><b>加权条件熵：</b><br>
+       <span class="m">H(D|班级) = (14/30)×0.99 + (16/30)×0.99 = <b>0.99</b></span></p>
+    <p><b>信息增益：</b> <span class="m">Gain(D, 班级) = 1 − 0.99 = <b>0.01</b></span></p>
+  </div>
+  <div class="note">⚠️ <b>为什么班级几乎没用：</b>IX 组 43% 打球、X 组 56% 打球，<b>两个分支都还是"差不多一半打一半不打"</b>，跟父节点的 50/50 几乎一样。划分完熵基本没降，所以增益只有 0.01——不是"班级完全无关"，而是<b>这一次划分几乎没减少不确定性</b>。</div>
+</div>
+
+<h2 class="section" id="s6">六、身高怎么处理？（连续属性）</h2>
+<div class="rule">
+  <div class="th"><b>身高 1.5 ~ 1.8 米是连续值</b>，每个学生取值都不同，无法像性别 / 班级那样"每个取值算一个熵"。ID3 原始做法要求属性是离散的，所以必须先<b>离散化</b>：例如按 <b>&lt;1.6 / 1.6~1.7 / ≥1.7</b> 分段，或选一个阈值做二分（如"≥1.7 米"与"&lt;1.7 米"），再统计每段的打球人数，才能套用同样公式。</div>
+  <div class="th">本题<b>没有给出按身高分段后的人数分布</b>，所以身高这一步无法计算；教材的结论是在<b>可比较的两个离散属性</b>中"按性别划分的信息增益最高"。考试若给身高分段表，就照前面同样的三步算增益、再一起比大小。</div>
+  <div class="note">📌 <b>延伸（了解）：</b>连续属性的标准处理是<b>扫描所有可能阈值</b>，逐个算增益取最大（C4.5 / CART 的做法）；决策树因此容易<b>过拟合</b>，需要剪枝。本章只要求离散属性的手算。</div>
+</div>
+
+<h2 class="section" id="s7">七、比出胜负：画出决策树</h2>
+<div class="rule">
+  <div class="win"><b>结论：</b><span class="m">Gain(D, 性别) = 0.14 &gt; Gain(D, 班级) = 0.01</span>，所以根节点选<b>「性别」</b>；这就是教材图 15.22 的结果。</div>
+  <div class="fig">
+    <svg viewBox="0 0 400 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="按性别与按班级两种划分的数据分布对比，性别的信息增益更高">
+      <rect x="110" y="24" width="180" height="68" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+      <text x="200" y="49" text-anchor="middle" font-size="15" font-weight="700" fill="#312e81">根节点 · 30 名学生</text>
+      <text x="200" y="68" text-anchor="middle" font-size="12.5" fill="#374151">15 人打球 · 15 人不打球</text>
+      <rect x="130" y="78" width="140" height="7" rx="3.5" fill="#e5e7eb"/>
+      <rect x="130" y="78" width="70" height="7" rx="3.5" fill="#4f46e5"/>
+      <path d="M200 92 V104 M113 104 H307 M113 104 V112 M307 104 V112" stroke="#9ca3af" fill="none" stroke-width="1.5"/>
+      <path d="M113 138 H12 V290 M12 190 H28 M12 290 H28" stroke="#9ca3af" fill="none" stroke-width="1.5"/>
+      <path d="M307 138 H206 V290 M206 190 H222 M206 290 H222" stroke="#9ca3af" fill="none" stroke-width="1.5"/>
+      <rect x="40" y="112" width="146" height="26" rx="13" fill="#eef2ff" stroke="#c7d2fe"/>
+      <text x="113" y="130" text-anchor="middle" font-size="13.5" font-weight="700" fill="#3730a3">按性别划分</text>
+      <rect x="234" y="112" width="146" height="26" rx="13" fill="#eef2ff" stroke="#c7d2fe"/>
+      <text x="307" y="130" text-anchor="middle" font-size="13.5" font-weight="700" fill="#3730a3">按班级划分</text>
+      <rect x="28" y="150" width="170" height="80" rx="9" fill="#fff" stroke="#c7d2fe" stroke-width="1.5"/>
+      <text x="113" y="173" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">女 · 10 人</text>
+      <text x="113" y="191" text-anchor="middle" font-size="12.5" fill="#374151">打球 2 人 · 20%</text>
+      <text x="113" y="208" text-anchor="middle" font-size="12" fill="#6b7280">多数类：不打球</text>
+      <rect x="40" y="216" width="146" height="6" rx="3" fill="#e5e7eb"/>
+      <rect x="40" y="216" width="29" height="6" rx="3" fill="#4f46e5"/>
+      <rect x="28" y="250" width="170" height="80" rx="9" fill="#fff" stroke="#c7d2fe" stroke-width="1.5"/>
+      <text x="113" y="273" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">男 · 20 人</text>
+      <text x="113" y="291" text-anchor="middle" font-size="12.5" fill="#374151">打球 13 人 · 65%</text>
+      <text x="113" y="308" text-anchor="middle" font-size="12" fill="#6b7280">多数类：打球</text>
+      <rect x="40" y="316" width="146" height="6" rx="3" fill="#e5e7eb"/>
+      <rect x="40" y="316" width="95" height="6" rx="3" fill="#4f46e5"/>
+      <rect x="222" y="150" width="170" height="80" rx="9" fill="#fff" stroke="#c7d2fe" stroke-width="1.5"/>
+      <text x="307" y="173" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">IX 班 · 14 人</text>
+      <text x="307" y="191" text-anchor="middle" font-size="12.5" fill="#374151">打球 6 人 · 43%</text>
+      <text x="307" y="208" text-anchor="middle" font-size="12" fill="#6b7280">多数类：不打球</text>
+      <rect x="234" y="216" width="146" height="6" rx="3" fill="#e5e7eb"/>
+      <rect x="234" y="216" width="63" height="6" rx="3" fill="#4f46e5"/>
+      <rect x="222" y="250" width="170" height="80" rx="9" fill="#fff" stroke="#c7d2fe" stroke-width="1.5"/>
+      <text x="307" y="273" text-anchor="middle" font-size="14" font-weight="700" fill="#1f2430">X 班 · 16 人</text>
+      <text x="307" y="291" text-anchor="middle" font-size="12.5" fill="#374151">打球 9 人 · 56%</text>
+      <text x="307" y="308" text-anchor="middle" font-size="12" fill="#6b7280">多数类：打球</text>
+      <rect x="234" y="316" width="146" height="6" rx="3" fill="#e5e7eb"/>
+      <rect x="234" y="316" width="82" height="6" rx="3" fill="#4f46e5"/>
+      <rect x="14" y="348" width="372" height="62" rx="10" fill="#ecfdf5" stroke="#a7f3d0" stroke-width="1.5"/>
+      <text x="200" y="373" text-anchor="middle" font-size="15" font-weight="700" fill="#065f46">Gain(性别) = 0.14  &gt;  Gain(班级) = 0.01</text>
+      <text x="200" y="395" text-anchor="middle" font-size="13" fill="#047857">⇒ 根节点选「性别」；子节点仍不纯，可继续划分</text>
+    </svg>
+    <div class="cap">图 15.22 数据分布示意（紫色＝打球，灰色＝不打球；条形长度＝打球占比）</div>
+  </div>
+  <div class="tree">根节点：性别（Gain = 0.14）
+├─ 女（10 人，2 人打球 20%）→ 判为「不打球」（多数类）
+└─ 男（20 人，13 人打球 65%）→ 判为「打球」（多数类）</div>
+  <div class="note">⚠️ <b>严谨一点的说法：</b>两个子节点熵分别是 0.72 和 0.93，<b>仍然不纯</b>，理论上要拿剩余属性继续递归划分。但本题剩下的离散属性只有班级（Gain 仅 0.01），身高又未给分段分布，所以教材示意到这一层为止。若考卷追问"为何停止"，答"<b>剩余属性无法再显著降低不纯度</b>"即可。</div>
+</div>
+
+<h2 class="section" id="s8">八、易错点、答题模板与自测</h2>
+<div class="rule">
+  <div class="tscroll"><table class="law">
+    <tr><th>易错点</th><th>正确做法</th></tr>
+    <tr><td class="nm">把 0.86 当答案</td><td>0.86 是<b>条件熵 H(D|性别)</b>，题目问的"信息增益"是 <b>1−0.86 = 0.14</b>，看清问的是哪个量</td></tr>
+    <tr><td class="nm">条件熵取平均</td><td>权重是<b>分支样本数占比</b> 10/30、20/30，不是 (0.72+0.93)/2；本题恰好接近才不易察觉</td></tr>
+    <tr><td class="nm">用 ln 或 lg</td><td>熵的定义固定 <b>log₂</b>；教材常给 log₂ 值，背熟 0.5→−1、0.2→−2.322 等常用值</td></tr>
+    <tr><td class="nm">熵大＝纯</td><td>反过来：<b>熵越大越不纯</b>；纯节点 H=0，二分类最不纯 H=1</td></tr>
+    <tr><td class="nm">"增益 0.01"写成"无关"</td><td>只能说<b>该属性本次划分几乎无贡献</b>，不等于两变量独立</td></tr>
+    <tr><td class="nm">直接拿身高算熵</td><td>连续属性必须<b>先离散化 / 选阈值</b>；没给分段数据就说明无法计算</td></tr>
+  </table></div>
+  <div class="calc">
+    <b>✏️ 考试答题模板（照这个顺序写，分步给分）：</b>
+    <p>① <span class="m">H(D) = −(15/30)log₂(15/30)×2 = 1</span>（父节点最不纯）</p>
+    <p>② <span class="m">H(女)=0.72，H(男)=0.93；H(D|性别)=(10/30)×0.72+(20/30)×0.93=0.86；Gain=0.14</span></p>
+    <p>③ <span class="m">H(IX)=0.99，H(X)=0.99；H(D|班级)=0.99；Gain=0.01</span></p>
+    <p>④ <b>0.14 &gt; 0.01 ⇒ 根节点选性别</b>；女→不打球、男→打球（按多数类判）；身高需离散化后再比较。</p>
+  </div>
+  <details class="q" open>
+    <summary><b>自测一题：</b>若女性 10 人中改为 5 人打球、5 人不打球，H(女) 与性别总增益如何变化？</summary>
+    <div class="calc">
+      <p>女性变成 50/50 ⇒ <b>H(女)=1</b>（比原来的 0.72 更不纯）。男性不变仍为 0.93。</p>
+      <p><span class="m">H(D|性别) = (10/30)×1 + (20/30)×0.93 = 0.333 + 0.622 = 0.95</span>，<b>Gain = 1 − 0.95 = 0.05</b>。</p>
+      <p>相比原来的 0.14，<b>增益大幅下降</b>——因为女组不再能用性别区分是否打球了。但 0.05 仍大于班级的 0.01，根节点依然选性别。</p>
+    </div>
+  </details>
+  <div class="note">🔗 <b>配套练习：</b>本章另一个综合例题是考纲官方"水果分类"（颜色 / 形状 / 大小），见<a href="机器学习算法实验.html#s11">第 13 章速记卡·第十一节</a>。两题套路完全相同：<b>总熵 → 逐属性增益 → 取最大 → 不纯子集递归 → 画图写规则</b>。</div>
+</div>
+
+<div class="gotos plain">
+  <a href="机器学习算法实验.html#s11">← 返回第 13 章 机器学习算法实验</a>
+  <a href="../index.html">📚 返回知识点导航</a>
+</div>
+
+<footer>依据《大数据与人工智能》教材第 15 章 15.3 节图 15.22 例题整理；对数取两位小数，与教材口径一致。考纲第 13 章对应教材第 15 章 15.1—15.3 节（15.4 不考）。</footer>
+
+</div>
+
+<script src="../../../assets/dock.js?v=20261105h" defer></script>
+</body>
+</html>
