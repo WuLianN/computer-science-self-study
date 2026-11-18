@@ -56,6 +56,40 @@
   .entry .txt .t{font-size:1.08rem;font-weight:700;color:var(--primary-deep);margin-bottom:4px}
   .entry .txt .d{font-size:.9rem;color:var(--text);line-height:1.55}
   .entry .txt .m{font-size:.78rem;color:var(--muted);margin-top:6px}
+  /* ===== 科目显示设置：齿轮入口 + 弹窗 ===== */
+  .settings-btn{position:absolute;z-index:2;top:20px;right:20px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.34);border-radius:11px;background:rgba(255,255,255,.14);color:#fff;cursor:pointer;backdrop-filter:blur(6px);transition:.16s}
+  .settings-btn:hover{background:rgba(255,255,255,.26);border-color:rgba(255,255,255,.6)}
+  .settings-btn:active{transform:scale(.94)}
+  .settings-btn svg{width:19px;height:19px}
+  .modal-mask{position:fixed;inset:0;z-index:100;background:rgba(17,24,39,.5);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+  .modal-mask.open{display:flex}
+  .modal{width:100%;max-width:440px;max-height:min(80vh,640px);overflow:auto;background:var(--card);border-radius:18px;padding:22px;box-shadow:0 24px 60px -16px rgba(15,23,42,.35)}
+  .modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .modal-head h3{font-size:1.15rem;color:var(--text)}
+  .modal-head p{margin:6px 0 0;font-size:.82rem;color:var(--muted);line-height:1.6}
+  .modal-close{width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--muted);cursor:pointer;transition:.15s}
+  .modal-close:hover{border-color:var(--primary);color:var(--primary-deep);background:var(--primary-soft)}
+  .modal-close svg{width:16px;height:16px}
+  .modal-list{display:grid;gap:8px;margin:16px 0}
+  .subj-toggle{display:flex;align-items:center;gap:12px;width:100%;min-height:54px;padding:10px 14px;border:1px solid var(--border);border-radius:12px;background:linear-gradient(135deg,#fff,#fafbff);color:var(--text);cursor:pointer;text-align:left;transition:.16s}
+  .subj-toggle:hover{border-color:var(--primary);background:var(--primary-soft)}
+  .subj-toggle .code-mini{flex-shrink:0;font-size:.76rem;font-weight:700;color:var(--primary-deep);background:var(--primary-soft);border-radius:7px;padding:3px 8px}
+  .subj-toggle .nm{flex:1;min-width:0;font-size:.94rem;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .subj-toggle .xicon{flex-shrink:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:9px;background:var(--primary-soft);color:var(--primary-deep);transition:.16s}
+  .subj-toggle .xicon svg{width:16px;height:16px}
+  .subj-toggle.off{opacity:.62;background:#f7f7fa}
+  .subj-toggle.off .nm{text-decoration:line-through;color:var(--muted)}
+  .subj-toggle.off .xicon{background:#e5e7eb;color:#6b7280}
+  .modal-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:14px}
+  .modal-foot .state{font-size:.8rem;color:var(--muted)}
+  .reset-btn{border:1px solid var(--border);border-radius:9px;background:#fff;color:var(--primary-deep);padding:7px 14px;font-size:.84rem;font-weight:600;cursor:pointer;transition:.15s}
+  .reset-btn:hover{border-color:var(--primary);background:var(--primary-soft)}
+  @media (max-width:640px){
+    .settings-btn{top:14px;right:14px;width:36px;height:36px}
+    .modal{border-radius:15px;padding:18px 16px;max-height:86vh}
+    .subj-toggle{min-height:52px}
+  }
+  @media print{.settings-btn,.modal-mask{display:none!important}}
   footer{max-width:960px;margin:36px auto 0;text-align:center;color:var(--muted);font-size:.85rem;line-height:1.9}
   footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   footer .fl a{color:var(--primary-deep);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:.82rem;transition:.15s}
@@ -115,6 +149,9 @@
 
 <section class="hero">
   <div class="hero-card">
+    <button class="settings-btn" id="settingsBtn" type="button" aria-label="科目显示设置" title="科目显示设置" aria-haspopup="dialog" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
     <h1>🎓 自考 CS 学习笔记</h1>
     <p class="tagline">计算机科学与技术专业 · 知识点详解 + 历年真题 + 图示动画</p>
     <div class="stats" id="subj-nav"></div>
@@ -132,6 +169,23 @@
   <div class="copy">Last updated · 2026-11-05 &nbsp;</div>
 </footer>
 
+<!-- 科目显示设置弹窗：每个科目一个按钮，右侧 × 隐藏 / ＋ 显示 -->
+<div class="modal-mask" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+  <div class="modal">
+    <div class="modal-head">
+      <div><h3 id="settingsTitle">科目显示设置</h3><p>点科目右侧图标切换显示 / 隐藏，设置保存在本机浏览器。隐藏不影响资料文件，随时可恢复。</p></div>
+      <button class="modal-close" id="settingsClose" type="button" aria-label="关闭设置">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-list" id="settingsList"></div>
+    <div class="modal-foot">
+      <span class="state" id="settingsState"></span>
+      <button class="reset-btn" id="settingsReset" type="button">恢复默认</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    首页只展示“学科 → 大入口”这一层；具体知识点/真题列表交给中间导航页。
@@ -141,6 +195,7 @@ const subjects = [
   {
     code: "02324",
     name: "离散数学",
+    hideByDefault: true,
     icon: "📐",
     brief: "14 页知识点 · 3 套真题",
     desc: "全国自考本科《离散数学》· 知识点详解与历年真题",
@@ -171,6 +226,7 @@ const subjects = [
   {
     code: "13013",
     name: "高级语言程序设计",
+    hideByDefault: true,
     icon: "🖥️",
     brief: "16 页知识点 · 2 套真题",
     desc: "全国自考本科《高级语言程序设计》（C 语言）· 16 页知识点 + 两套真题逐题详解 + 考前抢分一页纸",
@@ -361,44 +417,131 @@ const subjects = [
 ];
 
 const app = document.getElementById("app");
-
-/* 顶部科目快捷入口由 subjects 自动生成：以后新增科目只需改这个数组，不用动 HTML */
 const nav = document.getElementById("subj-nav");
-nav.innerHTML = subjects.map(s =>
-  `<a class="chip" href="#sub-${s.code}"><b>${s.icon || "📘"} ${s.name}</b><span>${s.code} · ${s.brief || "整理中"}</span></a>`
-).join("");
-document.getElementById("stats-sum").textContent =
-  `共 ${subjects.length} 个科目 · 72 页知识点 · 8 套真题详解 · 4 份考纲整理 · 100+ SVG 图示`;
+const statsSum = document.getElementById("stats-sum");
 
-subjects.forEach(s => {
-  const sec = document.createElement("section");
-  sec.className = "subject";
-  sec.id = "sub-" + s.code;
+/* ===== 显示状态：默认取 subjects 的 hideByDefault，访客切换存 localStorage =====
+   需要默认收起的科目在数组里打 hideByDefault:true；用户在设置框里的选择覆盖默认值、仅存本机。 */
+const STORE_KEY = "cs-subjects-visibility";
+let prefs = {};
+try { prefs = JSON.parse(localStorage.getItem(STORE_KEY) || "{}") || {}; } catch (e) { prefs = {}; }
 
-  const head = document.createElement("div");
-  head.className = "subject-head";
-  head.innerHTML = `<span class="code">${s.code}</span><h2>${s.name}</h2>`;
-  sec.appendChild(head);
+/* 某科目是否显示：prefs 里有用户选择就用它（false=隐藏），否则回落到默认 !hideByDefault */
+function isShown(s) {
+  return Object.prototype.hasOwnProperty.call(prefs, s.code) ? !!prefs[s.code] : !s.hideByDefault;
+}
+function visibleSubjects() { return subjects.filter(isShown); }
+function savePrefs() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(prefs)); } catch (e) {}
+}
 
-  if (s.desc) {
+/* 主渲染：顶部 chip、统计、科目卡片都基于「当前可见科目」，一处切换三处同步 */
+function render() {
+  const list = visibleSubjects();
+  const hiddenCount = subjects.length - list.length;
+  nav.innerHTML = list.map(s =>
+    `<a class="chip" href="#sub-${s.code}"><b>${s.icon || "📘"} ${s.name}</b><span>${s.code} · ${s.brief || "整理中"}</span></a>`
+  ).join("");
+  statsSum.textContent =
+    `共 ${list.length} 个科目 · 72 页知识点 · 8 套真题详解 · 4 份考纲整理 · 100+ SVG 图示`
+    + (hiddenCount ? ` · 已隐藏 ${hiddenCount} 门（点右上角 ⚙ 管理）` : "");
+
+  app.innerHTML = "";
+  list.forEach(s => {
+    const sec = document.createElement("section");
+    sec.className = "subject";
+    sec.id = "sub-" + s.code;
+
+    const head = document.createElement("div");
+    head.className = "subject-head";
+    head.innerHTML = `<span class="code">${s.code}</span><h2>${s.name}</h2>`;
+    sec.appendChild(head);
+
+    if (s.desc) {
+      const d = document.createElement("div");
+      d.className = "desc";
+      d.textContent = s.desc;
+      sec.appendChild(d);
+    }
+
+    const grid = document.createElement("div");
+    grid.className = "entries";
+    (s.entries || []).forEach(e => {
+      const a = document.createElement("a");
+      a.className = "entry";
+      a.href = e.url;
+      a.innerHTML = `<div class="icon">${e.icon || "📄"}</div><div class="txt"><div class="t">${e.title}</div><div class="d">${e.desc || ""}</div>${e.meta ? `<div class="m">${e.meta}</div>` : ""}</div>`;
+      grid.appendChild(a);
+    });
+    sec.appendChild(grid);
+    app.appendChild(sec);
+  });
+  if (!list.length) {
+    const empty = document.createElement("div");
+    empty.className = "subject";
     const d = document.createElement("div");
     d.className = "desc";
-    d.textContent = s.desc;
-    sec.appendChild(d);
+    d.style.margin = "0";
+    d.textContent = "所有科目都已隐藏，点右上角 ⚙ 设置即可恢复显示。";
+    empty.appendChild(d);
+    app.appendChild(empty);
   }
+}
 
-  const grid = document.createElement("div");
-  grid.className = "entries";
-  (s.entries || []).forEach(e => {
-    const a = document.createElement("a");
-    a.className = "entry";
-    a.href = e.url;
-    a.innerHTML = `<div class="icon">${e.icon || "📄"}</div><div class="txt"><div class="t">${e.title}</div><div class="d">${e.desc || ""}</div>${e.meta ? `<div class="m">${e.meta}</div>` : ""}</div>`;
-    grid.appendChild(a);
-  });
-  sec.appendChild(grid);
-  app.appendChild(sec);
+/* ===== 设置弹窗 ===== */
+const X_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>';
+const PLUS_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+const modal = document.getElementById("settingsModal");
+const listBox = document.getElementById("settingsList");
+const stateBox = document.getElementById("settingsState");
+const gear = document.getElementById("settingsBtn");
+
+function renderSettings() {
+  listBox.innerHTML = subjects.map(s => {
+    const on = isShown(s);
+    return `<button class="subj-toggle${on ? "" : " off"}" type="button" data-code="${s.code}" aria-pressed="${on}" aria-label="${on ? "隐藏" : "显示"} ${s.name}">`
+      + `<span class="code-mini">${s.code}</span><span class="nm">${s.name}</span>`
+      + `<span class="xicon">${on ? X_ICON : PLUS_ICON}</span></button>`;
+  }).join("");
+  stateBox.textContent = `当前显示 ${visibleSubjects().length} / ${subjects.length} 门`;
+}
+function openModal() {
+  renderSettings();
+  modal.hidden = false;
+  modal.classList.add("open");
+  gear.setAttribute("aria-expanded", "true");
+  document.getElementById("settingsClose").focus();
+}
+function closeModal() {
+  modal.classList.remove("open");
+  modal.hidden = true;
+  gear.setAttribute("aria-expanded", "false");
+  gear.focus();
+}
+
+gear.addEventListener("click", () => modal.hidden ? openModal() : closeModal());
+document.getElementById("settingsClose").addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeModal(); });
+
+listBox.addEventListener("click", e => {
+  const btn = e.target.closest(".subj-toggle");
+  if (!btn) return;
+  const code = btn.dataset.code;
+  const s = subjects.find(x => x.code === code);
+  prefs[code] = !isShown(s);
+  savePrefs();
+  render();
+  renderSettings();
 });
+document.getElementById("settingsReset").addEventListener("click", () => {
+  prefs = {};
+  try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+  render();
+  renderSettings();
+});
+
+render();
 </script>
 <!-- 右下角停靠胶囊：仅窄屏显示，样式自带（本页不外链 theme.css） -->
 <script src="assets/dock.js?v=20261105h" defer></script>
