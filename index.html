@@ -442,8 +442,7 @@ function render() {
   nav.innerHTML = list.map(s =>
     `<a class="chip" href="#sub-${s.code}"><b>${s.icon || "📘"} ${s.name}</b><span>${s.code} · ${s.brief || "整理中"}</span></a>`
   ).join("");
-  statsSum.textContent =
-    `共 ${list.length} 个科目 · 72 页知识点 · 8 套真题详解 · 4 份考纲整理 · 100+ SVG 图示`
+  statsSum.textContent = `共 ${subjects.length} 个科目`
     + (hiddenCount ? ` · 已隐藏 ${hiddenCount} 门（点右上角 ⚙ 管理）` : "");
 
   app.innerHTML = "";
