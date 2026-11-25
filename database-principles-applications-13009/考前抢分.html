@@ -127,10 +127,10 @@
     <div class="tpl"><b>骨架：</b>三要素 = <b>运算符、运算对象、运算结果</b>。操作分两类：① <b>传统集合运算</b>——并、交、差、笛卡儿积；② <b>专门关系运算</b>——选择、投影、连接、除。</div>
     <a href="知识点/关系模型/关系数据库系统模型.html#s5">▶ 去关系模型页背</a></div>
   <div class="card"><h3><span class="n">18</span>定义外键应遵守的规则</h3>
-    <div class="tpl"><b>骨架（任答 5 点）：</b>①被参照表须已建或正在建；②被参照表须定义主键或唯一约束；③REFERENCES 后列名须是对方主键/唯一列；④主键不能空、外键可空；⑤外键与主键<b>列数相同</b>；⑥外键与主键<b>数据类型相同</b>。</div>
+    <div class="tpl"><b>参考要点：</b>①被参照表须已建或正在建；②被参照表须定义主键或唯一约束；③REFERENCES 后列名须是对方主键/唯一列；④主键不能空、外键可空；⑤外键与主键<b>列数相同</b>；⑥外键与主键<b>数据类型相同</b>。</div>
     <a href="知识点/数据完整性/完整性约束.html#s3">▶ 去完整性页背</a></div>
   <div class="card"><h3><span class="n">19</span>索引的概念与作用</h3>
-    <div class="tpl"><b>骨架：</b>概念 = 按一列/多列排序、建立指向记录位置的<b>指针</b>。作用（任答 3 点）：①<b>提高查询速度</b>；②保证列值<b>唯一性</b>；③查询优化靠索引；④提高 <b>ORDER BY / GROUP BY</b> 执行速度。</div>
+    <div class="tpl"><b>骨架：</b>概念 = 按一列/多列排序、建立指向记录位置的<b>指针</b>。作用：①<b>提高查询速度</b>；②<b>唯一索引/主键索引</b>保证键值唯一；③为查询优化提供访问路径；④提高 <b>ORDER BY / GROUP BY</b> 执行速度。</div>
     <a href="知识点/视图索引/视图和索引.html#s4">▶ 去视图索引页背</a></div>
   <div class="card"><h3><span class="n">20</span>GRANT 授权（题写型）</h3>
     <div class="tpl"><b>骨架：</b><code>GRANT SELECT, DELETE ON salesDB.`order` TO 'song'@'localhost' WITH GRANT OPTION;</code> 关键：<b>库名.表名</b>定位对象级权限、<code>WITH GRANT OPTION</code> 允许再授权（漏写得一半分）、order 是保留字要反引号。</div>
@@ -146,7 +146,7 @@
     <div class="tpl"><b>投影 Π 会去重</b>：<code>Π<sub>C</sub>(R)</code> 取 C 列并去掉重复元组。<br><b>自然连接 ⋈</b>：按公共属性等值匹配、公共列只保留一次。<br>本卷 (2) <code>σ<sub>B=2</sub>(R⋈S)</code>：先 <code>σ<sub>B=2</sub>(R)={(p,2,c)}</code>，其 C=c 与 S 中 C=c 的 (c,y)(c,z) 连接 → <b>{(p,2,c,y),(p,2,c,z)}</b>。<br>口诀：括号里先算、结果写成元组集合、标清属性列。</div>
     <a href="知识点/关系模型/关系数据库系统模型.html#s7">▶ 自然连接</a> <a href="知识点/关系模型/关系数据库系统模型.html#s6">▶ 八种运算</a></div>
   <div class="card"><h3><span class="n">25</span>规范化：求闭包 + 判 3NF</h3>
-    <div class="tpl"><b>求 (AB)⁺ 三步：</b>初值 AB → 反复用 F 中依赖把右端并入，直到不再增长。本卷 A→CD、B→E、AB→G 依次并入得 <b>ABCDEG=U</b>，故 AB 是唯一候选码。<br><b>判 3NF：</b>看有无<b>非主属性对码的传递依赖</b>。B→E 中 B 非超码、E 非主属性 ⇒ AB→B→E 传递依赖 ⇒ <b>不属 3NF</b>。<br>结论 2 分、原因 3 分，务必写出"哪个依赖、违反哪条"。</div>
+    <div class="tpl"><b>求 (AB)⁺ 三步：</b>初值 AB → 反复用 F 中依赖把右端并入，直到不再增长。本卷 A→CD、B→E、AB→G 依次并入得 <b>ABCDEG=U</b>，故 AB 是唯一候选码。<br><b>判 3NF：</b>B→E 中 B 非超码、E 非主属性，违反 3NF 的形式定义。又因 B 是候选码 AB 的真子集，E 对 AB 是<b>部分依赖</b>，已经违反 2NF，故更不属 3NF；不能把 AB→B→E 误称为传递依赖。</div>
     <a href="知识点/规范化/关系数据库设计理论.html#s5">▶ 属性闭包</a> <a href="知识点/规范化/关系数据库设计理论.html#s3">▶ 五级范式</a></div>
 </div>
 <div class="card"><h3><span class="n">22</span>E-R 图 → 3NF 关系模式 → CREATE TABLE</h3>
@@ -160,7 +160,7 @@
 <pre class="code"><b>SELECT 课程编号, AVG(成绩) AS 平均成绩</b>
 FROM 选修表
 <b>GROUP BY 课程编号</b>
-<b>HAVING AVG(成绩) &gt;= 60;</b>   <span style="color:#94a3b8">← 聚合条件只能放 HAVING，不能放 WHERE</span></pre>
+<b>HAVING AVG(成绩) &gt;= 60;</b>   <span style="color:#94a3b8">← 筛选本层聚合后的组，用 HAVING</span></pre>
 <div class="tpl">三句口诀：<b>先 WHERE 过滤行 → GROUP BY 分组 → HAVING 过滤组</b>；SELECT 里可放 AVG/MAX/COUNT 等聚合函数。</div></div>
 
 <div class="card"><h3><span class="n">2</span>多表连接 JOIN（Q24-2 选修"数据结构"的学生）</h3>
@@ -197,7 +197,7 @@ GROUP BY 课程编号;</pre>
 <h2 class="sec" id="choices">六、选择题易混概念</h2>
 <div class="sub">下面按考点归纳 2026.1 卷的概念辨析与易错点。</div>
 <div class="grid2">
-  <div class="card"><h3>🎁 背了就能拿</h3><div class="tpl">数据不保存不共享＝<b>人工管理阶段</b>（1）· 最外层/子模式/用户模式＝<b>外模式</b>（2）· 主码<b>至少一个属性</b>（3）· 关系操作语言＝关系代数+集合运算+关系演算，<b>不含 SQL</b>（4）· 主码非空＝<b>实体完整性</b>（5）· 值>0 用 <b>CHECK</b>（6）· 修改数据库＝<b>ALTER DATABASE</b>（7）· 删数据＝<b>DELETE</b>（8）· LIMIT 1,3＝<b>第2~4条</b>（偏移从0计，10）· 视图是<b>虚表只存定义</b>（12）· UNIQUE 建<b>唯一性索引</b>（13）· 存库级权限＝<b>db 表</b>（14）· 限制主属性对码依赖＝<b>BCNF</b>（15）。</div></div>
+  <div class="card"><h3>🎁 背了就能拿</h3><div class="tpl">数据不保存不共享＝<b>人工管理阶段</b>（1）· 最外层/子模式/用户模式＝<b>外模式</b>（2）· 主码<b>至少一个属性</b>（3）· 关系操作语言＝<b>关系代数＋关系演算＋SQL</b>（4 选 D；集合运算属于关系代数）· 主码非空＝<b>实体完整性</b>（5）· 值>0 用 <b>CHECK</b>（6）· 修改数据库＝<b>ALTER DATABASE</b>（7）· 删数据＝<b>DELETE</b>（8）· LIMIT 1,3＝<b>第2~4条</b>（偏移从0计，10）· 视图是<b>虚表只存定义</b>（12）· UNIQUE 建<b>唯一性索引</b>（13）· 存库级权限＝<b>db 表</b>（14）· 限制主属性对码依赖＝<b>BCNF</b>（15）。</div></div>
   <div class="card"><h3>⚡ 陷阱 / 争议题预防针</h3><div class="tpl">① <b>LIKE '%民'</b>＝以"民"结尾，"全民/民民民"能查出、"民子"查不出——本卷第 9 题截图存疑、流传答案取 <b>A</b>，考场按"% 结尾"直觉选，别较真；② 第 11 题"查找不是最高"选<b>写法错的那句</b>（自身连接 SELECT 只出现 S2、方向反）＝<b>B</b>；③ 删除<b>表本身</b>用 DROP TABLE、删<b>数据</b>用 DELETE，别混；④ 主键≠外码完整性（无此标准名）。</div></div>
 </div>
 <div class="note">📌 <b>本卷无官方答案</b>，选择题答案依考纲与教材逐题推定复核（第 9 题已标注争议）。完整逐题详解见 <a href="广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html">2026.1 真题详解</a>，底部有答案速查表。</div>
@@ -206,9 +206,9 @@ GROUP BY 课程编号;</pre>
 <ul class="tips">
   <li><b>参考时间</b>：简答（35 分钟）→ 综合与设计（70 分钟）→ 选择（30 分钟）→ 检查（15 分钟），按实际卷面调整。</li>
   <li><b>综合与设计</b>：SQL 写清语句结构和连接条件；关系代数与规范化写出中间推导，再给结论。</li>
-  <li><b>HAVING vs WHERE</b> 是 SQL 第一大扣分点：凡"聚合函数的条件"（平均≥60、最高分）一律进 <code>HAVING</code>。</li>
+  <li><b>HAVING vs WHERE</b> 是 SQL 第一大扣分点：筛选本层分组统计结果（如平均≥60）用 <code>HAVING</code>；按行与聚合子查询结果比较，仍可用 <code>WHERE</code>。</li>
   <li><b>varchar 值加引号、UPDATE/DELETE 带 WHERE</b>：学号 '202345' 是字符串要加引号，漏 WHERE 直接判错。</li>
-  <li><b>规范化题写清"哪个依赖、违反哪条"</b>：求闭包逐步并入、判 3NF 点明传递依赖，别只写结论。</li>
+  <li><b>规范化题写清"哪个依赖、违反哪条"</b>：求闭包逐步并入、判范式区分部分依赖与传递依赖，别只写结论。</li>
 </ul>
 
 <footer>

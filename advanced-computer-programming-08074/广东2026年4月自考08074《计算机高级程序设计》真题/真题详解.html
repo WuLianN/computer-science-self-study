@@ -201,7 +201,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer">答案：B</div>
-  <div class="sol"><span class="lab">解析：</span><code class="c">map(int, ['21','10'])</code> 把 <code class="c">int</code> 逐个作用到列表元素上，得到两个整数 21、10，再<b>解包</b>赋给 a、b，故 <code class="c">a-b = 21-10 = 11</code>。两个易错点：① 若误写成 <code class="c">a,b=map(int,'21','10')</code>（没有列表包裹）则解包时报 TypeError——字符串被逐字符拆开，且第二串不足时补 None，<code class="c">int(None)</code> 报错；② 若只写 <code class="c">a=map(int,['21','10'])</code>，a 拿到的是 map 对象而非整数，需 <code class="c">list()</code> 或解包才能取值。</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">map(int, ['21','10'])</code> 把 <code class="c">int</code> 逐个作用到列表元素上，得到两个整数 21、10，再<b>解包</b>赋给 a、b，故 <code class="c">a-b = 21-10 = 11</code>。两个易错点：① 若误写成 <code class="c">a,b=map(int,'21','10')</code>（没有列表包裹）则解包时报 TypeError——两个可迭代对象会同时给 <code class="c">int</code> 传参，首次调用变成 <code class="c">int('2','1')</code>，第二个参数（进制）是字符串而报 TypeError；多序列 map 在最短序列耗尽时停止，不会补 None；② 若只写 <code class="c">a=map(int,['21','10'])</code>，a 拿到的是 map 对象而非整数，需 <code class="c">list()</code> 或解包才能取值。</div>
   <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s5">考点：map() 与类型转换</a>
 </div></details>
 
@@ -317,7 +317,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
   <div class="answer">参考答案</div>
   <div class="sol"><span class="lab">含义：</span>结合性规定<b>同一优先级</b>的运算符连在一起时，自左向右还是自右向左结合计算。<br>
   ① <b>左结合（自左向右）</b>：绝大多数运算符。例：<code class="c">100-30-20</code> 按 <code class="c">(100-30)-20</code> 计算得 50；<code class="c">8/4/2</code> 按 <code class="c">(8/4)/2</code> 得 1.0。<br>
-  ② <b>右结合（自右向左）</b>：典型是幂运算 <code class="c">**</code>。例：<code class="c">2**3**2</code> 按 <code class="c">2**(3**2)</code> = 2⁹ = 512（若左结合则是 8²=64）。赋值运算符也右结合：<code class="c">a = b = 3</code> 使 a、b 都等于 3。<br>
+  ② <b>右结合（自右向左）</b>：典型是幂运算 <code class="c">**</code>。例：<code class="c">2**3**2</code> 按 <code class="c">2**(3**2)</code> = 2⁹ = 512（若左结合则是 8²=64）。<code class="c">a = b = 3</code> 是链式赋值语句：右侧求值一次，再依次绑定到各目标；不要把它当作幂运算结合性的例子。<br>
   ③ <b>比较运算符连续书写</b>是 Python 特有形式：<code class="c">13 &lt; 15 &gt; 0</code> 等价于 <code class="c">13&lt;15 and 15&gt;0</code>，两边同时成立结果才为 True。</div>
   <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s4">考点：运算符优先级与结合性</a>
 </div></details>
@@ -328,12 +328,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer">参考答案</div>
-  <div class="sol"><span class="lab">定义保留字：</span>函数用 <code class="c">def</code> 定义，函数名后<b>圆括号内是参数列表</b>，行末冒号，缩进块为函数体；返回用 <code class="c">return</code>；lambda 定义匿名函数。<br>
-  <span class="lab">三种参数形式：</span><br>
-  ① <b>普通（位置）参数</b>：<code class="c">def f(a, b):</code>——直接写参数名，调用时必须按位置一一对应传值；<br>
-  ② <b>默认参数</b>：<code class="c">def f(a, b=10):</code>——定义时写成"<b>参数=默认值</b>"，调用时可省略该参数（默认参数须排在普通参数之后）；<br>
-  ③ <b>可变长度参数</b>：<code class="c">def f(*args, **kwargs):</code>——带<b>一个星号</b>收集多余的位置参数成<b>元组</b>，带<b>两个星号</b>收集多余的关键字参数成<b>字典</b>。<br>
-  <span class="lab">与函数体的区别：</span>参数形式（写在圆括号内）决定函数<b>接收什么样的输入</b>；函数体（def 下的缩进语句块）描述<b>对输入做怎样的处理</b>及用 return 输出结果。参数只是局部变量名，函数体才是执行逻辑。</div>
+  <div class="sol"><span class="lab">定义函数的保留字：</span><b>def 与 lambda</b>。<br>① <code class="c">def f(a, b=0):</code>：参数列表放在函数名后的圆括号内；函数体为缩进语句块，可含多条语句，并可用 <code class="c">return</code> 返回结果。<br>② <code class="c">lambda a, b=0: a+b</code>：参数直接写在 lambda 与冒号之间，不用参数列表圆括号；函数体只能是一个表达式，其值自动成为返回值，不写 return。<br>两者都可使用普通、默认及可变长参数；这些是参数形式，不是本题两种定义方式的主要区别。<code class="c">return</code> 是返回语句，不是另一种定义函数的保留字。</div>
   <a class="tag" href="../知识点/函数/函数定义与调用.html#s1">考点：def · 参数形式</a><a class="tag" href="../知识点/函数/函数定义与调用.html#s3">考点：参数传递</a>
 </div></details>
 
@@ -442,17 +437,20 @@ print("将前{}个元素移到后面后的列表为：{}".format(n, lst))</pre>
 </summary>
 <div class="body">
   <div class="answer">参考答案</div>
-  <pre class="code">def count_lower(s):
+  <pre class="code">from pathlib import Path
+base_dir = Path(__file__).resolve().parent
+
+def count_lower(s):
     cnt = 0
     for ch in s:
-        if 'a' &lt;= ch &lt;= 'z':      # 也可写 ch.islower()
+        if 'a' &lt;= ch &lt;= 'z':      # 仅统计 ASCII 小写字母 a~z
             cnt += 1
     return cnt
 
-with open('data.txt', 'r') as f:
+with open(base_dir / 'data.txt', 'r', encoding='utf-8') as f:
     for line in f:                # 文件对象可直接按行迭代
         print("小写字母个数：{}".format(count_lower(line)))</pre>
-  <div class="sol"><span class="lab">套路：</span>四个得分点：① <b>统计逻辑必须封装成函数</b>（题目明确要求"每行的统计使用函数实现"）；② <code class="c">open('data.txt','r')</code> 只写文件名即默认与源码同目录；③ 用 <code class="c">for line in f</code> 按行读取（readlines() 亦可）；④ 判断小写：<code class="c">'a'&lt;=ch&lt;='z'</code> 或 <code class="c">ch.islower()</code>。用 with 语句能自动关文件，是加分习惯。</div>
+  <div class="sol"><span class="lab">套路：</span>四个得分点：① <b>统计逻辑必须封装成函数</b>（题目明确要求"每行的统计使用函数实现"）；② <code class="c">open('data.txt','r')</code> 相对路径按<b>当前工作目录</b>解析；参考代码用 <code class="c">Path(__file__).resolve().parent</code> 定位源码目录；③ 用 <code class="c">for line in f</code> 按行读取（readlines() 亦可）；④ 判断小写：<code class="c">'a'&lt;=ch&lt;='z'</code>（<code class="c">ch.islower()</code> 还识别非 ASCII 小写字符，不能在本题中无条件替换）。用 with 语句能自动关文件，是加分习惯。</div>
   <a class="tag" href="../知识点/文件/文件与数据维度.html#s3">考点：按行读文件</a><a class="tag" href="../知识点/函数/函数定义与调用.html#s1">考点：函数封装</a>
 </div></details>
 
@@ -500,7 +498,7 @@ d.display_dog()</pre>
   <tr><th>题号</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
   <tr><td><b>答案</b></td><td><b>B</b></td><td><b>A</b></td><td><b>B</b></td><td><b>C</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td><td><b>C</b></td><td><b>A</b></td></tr>
   <tr><th>题号</th><th colspan="10">21~31 主观题关键词</th></tr>
-  <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 翻译执行·解释/编译两方式 · 22 左结合(加减乘除)/右结合(**、连赋值)/连续比较 · 23 def·return·lambda；普通/默认/可变长(*元组**字典)参数 vs 函数体 · 24 封装·继承·多态 · 25 5×4=20 个·各维度长度之积 · 26 拆位求 4 次幂→1634;8208;9474 · 27 出口 n==1·体 n+sub(n-1)→15 · 28 find() 循环·从 i+1 续查→[0,3,8] · 29 lst[n:]+lst[:n]·format 输出 · 30 函数统计·'a'&lt;=ch&lt;='z'·for line in f · 31 __init__·class Cat(Animal)·super()</td></tr>
+  <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 翻译执行·解释/编译两方式 · 22 左结合(加减乘除)/右结合(**)/链式比较；连赋值为右侧求值一次 · 23 def 与 lambda；def 参数带括号、函数体为语句块，lambda 参数不带括号、函数体为单表达式且自动返回 · 24 封装·继承·多态 · 25 5×4=20 个·各维度长度之积 · 26 拆位求 4 次幂→1634;8208;9474 · 27 出口 n==1·体 n+sub(n-1)→15 · 28 find() 循环·从 i+1 续查→[0,3,8] · 29 lst[n:]+lst[:n]·format 输出 · 30 函数统计·'a'&lt;=ch&lt;='z'·for line in f · 31 __init__·class Cat(Animal)·super()</td></tr>
 </table>
 
 <div class="note">

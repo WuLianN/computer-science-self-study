@@ -73,7 +73,7 @@
     <tr><td class="nm"><b>TaskTracker（MRv1 从节点）</b></td><td>Slave</td><td><b>执行 Map/Reduce 任务</b>、管理本节点 CPU/内存槽位、定期向 JobTracker 发<b>心跳</b>并汇报<b>任务进度与状态</b>；启动 <b>TaskRunner</b> 子进程运行任务</td></tr>
     <tr><td class="nm"><b>Task 任务</b></td><td>执行单元</td><td>分 <b>MapTask</b> 与 <b>ReduceTask</b> 两类，一个 InputSplit 对应一个 MapTask</td></tr>
     <tr><td class="nm"><b>Job 配置文件</b></td><td>描述</td><td>指定输入/输出路径、map/reduce 类、分区函数、排序与组合、规约（Combiner）、Reduce 任务数等</td></tr>
-    <tr><td class="nm"><b>HDFS</b></td><td>存储</td><td>存放<b>输入数据、中间结果（本地磁盘）、最终输出（HDFS）</b></td></tr>
+    <tr><td class="nm"><b>HDFS</b></td><td>存储</td><td>存放<b>输入数据和最终输出</b>；MapReduce 的 Map 中间输出通常在本地磁盘，不属于 HDFS 存储</td></tr>
     <tr><td class="nm"><b>Map / Reduce 函数</b></td><td>用户代码</td><td>用户自定义的映射与归约逻辑</td></tr>
   </table></div>
   <div class="th"><b>MRv2（On YARN）的对应变化（常考对比）：</b>JobTracker 的职责被<b>拆开</b>——<b>ResourceManager（全局资源管理与调度）</b>＋ 每个作业一个 <b>ApplicationMaster / MRAppMaster（该作业的任务调度、监控与失败处理）</b>；TaskTracker → <b>NodeManager（单节点资源管理，按 Container 分配）</b>；资源单位抽象为 <b>Container</b>。好处：<b>资源管理与计算框架解耦、支持多框架共享集群、JobTracker 压力被分摊、可扩展性大幅提升（可支持上千节点）</b>。</div>
@@ -148,7 +148,7 @@
   <div class="th"><b>是什么：</b>Spark 是 UC Berkeley AMPLab 开源的<b>基于内存计算的、快速通用的分布式大数据处理引擎</b>（MapReduce 的改进/替代者），提供 <b>Java/Scala/Python/R</b> API，自带<b>一体化</b>组件：<b>Spark SQL</b>（结构化查询）、<b>MLlib</b>（机器学习）、<b>GraphX</b>（图计算）、<b>Structured Streaming</b>（流计算）。</div>
   <div class="th"><b>Spark 的优势（简答·六条）：</b></div>
   <ol class="steps">
-    <li><b>运行速度快（内存计算）</b>：中间结果<b>放内存</b>而非落盘，迭代计算比 Hadoop MapReduce 快 <b>10～100 倍</b>。</li>
+    <li><b>运行速度快（内存计算）</b>：可将复用数据<b>缓存于内存</b>，减少迭代时反复读写磁盘；shuffle、内存不足时的溢写以及磁盘持久化仍会落盘。具体提速取决于任务与资源，不能保证固定倍数。</li>
     <li><b>使用 Java/Scala/Python/R 多语言 API</b>，并提供<b>交互式 Shell</b>，开发效率高。</li>
     <li><b>通用性/一体化</b>：同一引擎支持 SQL、机器学习、图计算、流处理，减少系统割裂。</li>
     <li><b>运行模式灵活</b>：可<b>独立（Standalone）</b>运行，也可跑在 <b>YARN、Mesos、K8s</b> 上，可读取 <b>HDFS、HBase、Hive、MySQL、S3</b> 等多种数据源。</li>
@@ -167,7 +167,7 @@
     <tr><td class="nm"><b>Job / Stage / Task</b></td><td>一个 <b>action 触发一个 Job</b>；Job 按 RDD 依赖（<b>宽依赖/Shuffle 为界</b>）拆成多个 <b>Stage</b>；Stage 内按分区并行拆成多个 <b>Task</b>（最小执行单元）</td></tr>
   </table></div>
   <div class="th"><b>Spark vs MapReduce（对比简答）：</b>①<b>中间结果</b>：MR 落盘 vs Spark 尽量驻留<b>内存</b>；②<b>计算模型</b>：MR 只有 Map/Reduce 两步、复杂任务需<b>串联多个作业</b> vs Spark 提供 <b>DAG 多算子</b>一次表达；③<b>迭代/交互/流式</b>：MR 弱 vs Spark 强；④<b>容错</b>：MR 靠<b>重跑任务/副本</b> vs Spark 靠 <b>RDD 血缘重算</b>；⑤<b>语言与生态</b>：MR 主要 Java vs Spark 多语言 + SQL/ML/Graph/Streaming 一体；⑥<b>磁盘 I/O 与延迟</b>：MR 高 vs Spark 低。<b>但 Spark 内存开销大、对内存不足的大规模 shuffle 场景不一定优于 MR，且 MR 更成熟稳定、容错粒度更粗但更稳。</b></div>
-  <div class="note">⚠️ 易错：Spark 快<b>不是因为"用了更多的机器"</b>，而是<b>避免中间结果落盘 + DAG 优化执行</b>；宽依赖（shuffle 依赖）才切 Stage，窄依赖（map 端融合）在同一 Stage 内流水线执行。</div>
+  <div class="note">⚠️ 易错：Spark 快<b>不是因为"用了更多的机器"</b>，而是<b>减少重复磁盘 I/O + DAG 优化执行</b>（并非所有中间结果都不落盘）；宽依赖（shuffle 依赖）才切 Stage，窄依赖（map 端融合）在同一 Stage 内流水线执行。</div>
 </div>
 
 <h2 class="section" id="s7">七、本章速记小结</h2>

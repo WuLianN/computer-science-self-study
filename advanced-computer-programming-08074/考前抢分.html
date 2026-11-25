@@ -112,10 +112,10 @@
   <tr><th class="c">题号</th><th>2026.4 卷</th><th>2026.1 卷</th><th>共同套路</th></tr>
   <tr><td class="c"><span class="tag hot">26</span></td><td>四叶玫瑰数（自幂数）</td><td>200 以内被 9 整除的最大数</td><td>for 枚举＋条件＋一行输出</td></tr>
   <tr><td class="c"><span class="tag hot">27</span></td><td>递归 sub(n) 求 1＋…＋n</td><td>累乘求 0!＋1!＋…＋n!</td><td>累加器 / 递归两要素</td></tr>
-  <tr><td class="c"><span class="tag hot">28</span></td><td>find 查子串所有位置</td><td>日期数字换中文（isdigit）</td><td>遍历字符串·逐字符处理</td></tr>
+  <tr><td class="c"><span class="tag hot">28</span></td><td>find 查子串所有位置</td><td>日期数字换中文（十进制字符映射）</td><td>遍历字符串·逐字符处理</td></tr>
   <tr><td class="c"><span class="tag hot">29</span></td><td>列表前 n 个移到最后</td><td>整数的倒序数 [::-1]</td><td>切片（[n:]+[:n] / [::-1]）</td></tr>
   <tr><td class="c"><span class="tag score">30</span></td><td>按行读文件·统计<b>小写</b></td><td>按行读文件·统计<b>大写</b></td><td><b>几乎同题</b>：with＋for line＋函数封装</td></tr>
-  <tr><td class="c"><span class="tag score">31</span></td><td>Animal/Cat/Dog 三层继承</td><td>Book/Novel/Textbook 三层继承</td><td><b>完全同构</b>：__init__＋class 子类(父类)＋super()</td></tr>
+  <tr><td class="c"><span class="tag score">31</span></td><td>Animal 为基类，Cat/Dog 为同级子类</td><td>Book 为基类，Novel/Textbook 为同级子类</td><td><b>完全同构</b>：__init__＋class 子类(父类)＋super()</td></tr>
 </table></div>
 <div class="sub" style="margin-bottom:2px"><b>两套卷的简答题考点对照：</b></div>
 <div class="tscroll"><table>
@@ -150,10 +150,10 @@
     <div class="tpl"><b>骨架：</b>硬件只认机器语言 → 高级语言须<b>翻译</b>。① <b>解释</b>：逐句翻译立即执行、不留结果，交互好效率低（Python/JS）；② <b>编译</b>：整体一次译成目标程序，效率高流程固定（C/C++）。加分句：Python 实为混合——先编译成字节码再逐条解释。</div>
     <a href="知识点/概述/Python概述.html#s2">▶ 去第 1 章页背</a></div>
   <div class="card"><h3><span class="n">22</span>运算符结合性（举例）</h3>
-    <div class="tpl"><b>骨架：</b>同优先级连着写时先算哪边。① <b>左结合</b>：绝大多数，<code>100-30-20=(100-30)-20</code>；② <b>右结合</b>：幂 <code>**</code>（<code>2**3**2=2**9=512</code>）、连续赋值 <code>a=b=3</code>；③ <b>连续比较</b> Python 特有：<code>13&lt;15&gt;0 ⇔ 13&lt;15 and 15&gt;0</code>。</div>
+    <div class="tpl"><b>骨架：</b>同优先级连着写时先算哪边。① <b>左结合</b>：绝大多数，<code>100-30-20=(100-30)-20</code>；② <b>右结合</b>：幂 <code>**</code>（<code>2**3**2=2**9=512</code>）；③ <b>连续比较</b> Python 特有：<code>13&lt;15&gt;0 ⇔ 13&lt;15 and 15&gt;0</code>。</div>
     <a href="知识点/数据类型/数据类型与内置函数.html#s4">▶ 去第 2 章页背</a></div>
-  <div class="card"><h3><span class="n">23</span>函数保留字与参数形式</h3>
-    <div class="tpl"><b>骨架：</b><code>def</code> 定义、<code>return</code> 返回、<code>lambda</code> 匿名。参数三形式：① 普通（位置）参数按序传；② 默认参数 <code>b=10</code>（须排在普通参数后，调用可省略）；③ 可变长 <code>*args</code> 收位置参数成<b>元组</b>、<code>**kwargs</code> 收关键字参数成<b>字典</b>。参数=接收什么输入，函数体=对输入做什么处理。</div>
+  <div class="card"><h3><span class="n">23</span>def 与 lambda 的区别</h3>
+    <div class="tpl"><b>def：</b><code>def f(a,b):</code>，参数在圆括号内，函数体为缩进语句块，可写多条语句并用 return 返回。<br><b>lambda：</b><code>lambda a,b: a+b</code>，参数直接写在冒号前，函数体只有一个表达式，自动返回其值。两者都可有默认或可变长参数。</div>
     <a href="知识点/函数/函数定义与调用.html#s1">▶ 去第 5 章页背</a></div>
   <div class="card"><h3><span class="n">24</span>面向对象三特性</h3>
     <div class="tpl"><b>骨架：</b>① <b>封装</b>——数据与方法包进类、隐藏实现，私有成员<b>双下划线开头</b>；② <b>继承</b>——子类 <code>class Cat(Animal):</code> 复用父类并可重写；③ <b>多态</b>——同名方法不同对象表现不同行为。</div>
@@ -162,7 +162,7 @@
     <div class="tpl"><b>骨架：</b><code>np.ones(shape)</code> 生成指定形状<b>全 1</b> 数组；(5,4)=5 行 4 列 → 个数 = <b>各维度长度之积</b> = 5×4 = <b>20</b>（<code>arr.size</code> 可验证）。</div>
     <a href="知识点/科学计算/科学计算与可视化.html#s2">▶ 去第 9 章页背</a></div>
   <div class="card"><h3>🧭 同章换问法预防针</h3>
-    <div class="tpl">简答从这 9 章轮换，本卷没考的下一期最可能考：<b>面向过程 vs 面向对象的区别</b>、<b>列表/元组/集合/字典四者对比</b>（可变性与重复性）、<b>split/join 的作用</b>、<b>with 打开文件的好处</b>、<b>全局变量与 global</b>。都在速记卡的黄色框里，顺手多背 5 个不亏。</div></div>
+    <div class="tpl">可结合考纲补充复习：<b>面向过程 vs 面向对象的区别</b>、<b>列表/元组/集合/字典四者对比</b>（可变性与重复性）、<b>split/join 的作用</b>、<b>with 打开文件的好处</b>、<b>全局变量与 global</b>。以上是复习补充，不代表下次考试预测。</div></div>
 </div>
 
 <h2 class="sec" id="code-templates">五、六个代码模板</h2>
@@ -205,14 +205,17 @@ print("将前{}个元素移到后面后的列表为：{}".format(n, lst))   # �
 <div class="tpl">切片口诀：<code>[n:]</code> 从下标 n 到末尾、<code>[:n]</code> 前 n 个。倒序 <code>[::-1]</code> 同理常考。</div></div>
 
 <div class="card"><h3><span class="n">5</span>按行读文件 + 函数封装（本卷 30 题 · 文件综合题骨架）</h3>
-<pre class="code">def count_lower(s):                 # 题目要求"统计用函数实现"→ 必须封装！
+<pre class="code">from pathlib import Path
+base_dir = Path(__file__).resolve().parent
+
+def count_lower(s):                 # 题目要求"统计用函数实现"→ 必须封装！
     cnt = 0
     for ch in s:
-        if 'a' <= ch <= 'z':        # 或 ch.islower()
+        if 'a' <= ch <= 'z':        # 仅统计 ASCII 小写字母 a~z
             cnt += 1
     return cnt
 
-<b>with open('data.txt', 'r') as f:    # with 自动关文件（加分习惯）
+<b>with open(base_dir / 'data.txt', 'r', encoding='utf-8') as f:    # with 自动关文件（加分习惯）
     for line in f:                  # 文件对象直接按行迭代
         print("小写字母个数：{}".format(count_lower(line)))</b></pre></div>
 

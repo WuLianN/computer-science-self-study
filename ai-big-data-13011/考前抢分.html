@@ -125,7 +125,7 @@
   <div class="card"><h3><span class="n">22</span>擦除码技术</h3>
     <div class="tpl"><b>纠删码 Erasure Coding</b>：数据冗余容错编码——切成 <b>k 个数据块＋编码生成 m 个校验块</b>分布存，任意≤m 块丢失可恢复。相比 3 副本<b>存储开销更低</b>达到同等容错（HDFS-EC）。</div></div>
   <div class="card"><h3><span class="n">23</span>BASE 原则</h3>
-    <div class="tpl">NoSQL/分布式对 ACID 强一致的反向取舍：<b>B</b>asically Available 基本可用、<b>S</b>oft state 软状态、<b>E</b>ventually consistent 最终一致。牺牲即时强一致换高可用可扩展，<b>最终达到一致</b>。</div></div>
+    <div class="tpl">偏重可用性与最终一致性的分布式设计思路：<b>B</b>asically Available 基本可用、<b>S</b>oft state 软状态、<b>E</b>ventually consistent 最终一致。允许暂时不一致，在无新更新且传播完成后<b>最终一致</b>；ACID 的 C 指约束一致性，不能与 CAP 的 C 混为一谈。</div></div>
   <div class="card"><h3><span class="n">24</span>狭义机器学习</h3>
     <div class="tpl">计算机<b>不做显式编程</b>，通过算法<b>从数据（经验）中自动学规律、改善性能</b>。对应 Mitchell：对任务 T、度量 P，性能随经验 E 自动提高。</div></div>
   <div class="card"><h3><span class="n">25</span>自然语言理解</h3>
@@ -136,7 +136,7 @@
 <div class="sub">简答分条写出概念与依据；综合分析结合题目场景选择要点。</div>
 <div class="grid2">
   <div class="card"><h3><span class="n">26</span>Spark 相比 MapReduce 优势</h3>
-    <div class="tpl">①<b>内存计算</b>（中间结果不落盘，快 10~100 倍）；②<b>DAG 执行引擎</b>优化调度；③<b>通用统一</b>（批/流/SQL/MLlib/GraphX）；④<b>API 丰富</b>（Scala/Java/Python/R，RDD/DataFrame）；⑤<b>血缘 lineage 容错</b>，可跑在 HDFS/YARN 上。</div></div>
+    <div class="tpl">①<b>内存计算</b>（缓存复用数据、减少磁盘 I/O；shuffle/溢写仍可能落盘，速度依任务而定）；②<b>DAG 执行引擎</b>优化调度；③<b>通用统一</b>（批/流/SQL/MLlib/GraphX）；④<b>API 丰富</b>（Scala/Java/Python/R，RDD/DataFrame）；⑤<b>血缘 lineage 容错</b>，可跑在 HDFS/YARN 上。</div></div>
   <div class="card"><h3><span class="n">27</span>颜色特征提取与匹配</h3>
     <div class="tpl">提取：<b>颜色直方图</b>（各 bin 频率）、<b>颜色矩</b>（均值/方差/三阶矩）、<b>颜色相关图 / 颜色聚合向量 CAV</b>。匹配：<b>直方图相交、巴氏距离、卡方、相关、EMD</b>；常在 HSV 空间做。</div></div>
   <div class="card"><h3><span class="n">28</span>目标检测应用场景</h3>

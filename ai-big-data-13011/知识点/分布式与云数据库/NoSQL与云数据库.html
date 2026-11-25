@@ -52,16 +52,16 @@
 <div class="rule">
   <div class="kd"><span class="lvl a">识记</span> 数据库的概念。</div>
   <div class="th"><b>数据库（Database, DB）：</b>是<b>长期存储在计算机内的、有组织的、可共享的、统一管理的数据集合</b>。四个限定词一个都不能漏：<b>长期存储、有组织（按数据模型组织）、共享（多用户多应用共用）、统一管理（由 DBMS 控制）</b>。</div>
-  <div class="th"><b>相关概念：</b><b>DBMS（数据库管理系统）</b>——位于用户与操作系统之间的<b>数据管理软件</b>，负责定义、建立、操纵、维护与控制数据（MySQL、Oracle）；<b>DBS（数据库系统）</b>= 数据库 + DBMS + 应用 + 数据库管理员（DBA）+ 硬件；<b>关系数据库</b>——以<b>关系（二维表）</b>模型组织数据，用 <b>SQL</b> 操作，遵守<b>ACID</b>（原子性、一致性、隔离性、持久性）与三范式。</div>
+  <div class="th"><b>相关概念：</b><b>DBMS（数据库管理系统）</b>——位于用户与操作系统之间的<b>数据管理软件</b>，负责定义、建立、操纵、维护与控制数据（MySQL、Oracle）；<b>DBS（数据库系统）</b>= 数据库 + DBMS + 应用 + 数据库管理员（DBA）+ 硬件；<b>关系数据库</b>——以<b>关系（二维表）</b>模型组织数据，常用 <b>SQL</b> 操作，通常支持<b>ACID 事务</b>（原子性、一致性、隔离性、持久性）；三范式是设计目标之一，并非关系数据库自动强制满足。</div>
   <div class="note">🔗 与 13009 的衔接：三级模式两级映像、完整性约束等在《数据库原理与应用》里已学过；本章只需<b>把关系数据库当作"被挑战的对象"</b>来对比记忆。</div>
 </div>
 
 <h2 class="section" id="s2">二、NoSQL 的由来与体系架构层次（识记）⭐</h2>
 <div class="rule">
   <div class="kd"><span class="lvl a">识记</span> NoSQL 的体系架构层次。</div>
-  <div class="th"><b>名称：</b>NoSQL = <b>"Not Only SQL"（不仅仅是 SQL）</b>，指<b>非关系型的、分布式的、一般不保证强一致性的</b>数据库系统，也常直接理解为"非关系型数据库"。</div>
-  <div class="th"><b>为什么需要 NoSQL（应对关系数据库的四类瓶颈）：</b>①<b>海量数据</b>（TB/PB 级）单机存不下、垂直扩容成本指数上升；②<b>高并发读写</b>（如秒上万次的电商/社交访问）受本地磁盘与锁竞争限制；③<b>数据类型多样</b>（半/非结构化、字段动态变化）难以用固定表结构表达；④<b>需要在线水平扩展与高可用</b>，而传统主从复制与 ACID 强一致成为扩展瓶颈。</div>
-  <div class="th"><b>NoSQL 的一般特点：</b>①<b>可扩展</b>（去共享、水平扩展、支持动态模式）；②<b>支持多种数据类型</b>（键值、文档、列族、图形）；③<b>支持分布式计算与存储</b>，靠<b>框架</b>而非单机；④<b>高可用性</b>（提供 BASE 而非 ACID，最终一致）；⑤<b>数据模型简单</b>（无复杂表关系、通常不支持或不强调 Join、无完整事务）；⑥<b>性能高</b>（键值直接寻址、内存/缓存友好）。</div>
+  <div class="th"><b>名称：</b>NoSQL = <b>"Not Only SQL"（不仅仅是 SQL）</b>，指<b>采用非关系数据模型</b>的一类数据库系统，很多产品支持分布式部署；一致性与事务能力须按具体产品、操作和配置判断，也常直接理解为"非关系型数据库"。</div>
+  <div class="th"><b>为什么需要 NoSQL（应对关系数据库的四类瓶颈）：</b>①<b>海量数据</b>（TB/PB 级）单机存不下、垂直扩容成本指数上升；②<b>高并发读写</b>（如秒上万次的电商/社交访问）受本地磁盘与锁竞争限制；③<b>数据类型多样</b>（半/非结构化、字段动态变化）难以用固定表结构表达；④<b>需要在线水平扩展与高可用</b>，而跨节点协调、事务与复制会带来额外成本（不能据此说 ACID 本身等同于副本强一致）。</div>
+  <div class="th"><b>NoSQL 的一般特点：</b>①<b>可扩展</b>（去共享、水平扩展、支持动态模式）；②<b>支持多种数据类型</b>（键值、文档、列族、图形）；③<b>支持分布式计算与存储</b>，靠<b>框架</b>而非单机；④<b>高可用性</b>（常通过副本及适当一致性取舍实现，部分产品也支持 ACID 事务）；⑤<b>数据模型简单</b>（通常不强调关系表连接；是否支持连接和多文档事务依产品而异）；⑥<b>性能高</b>（键值直接寻址、内存/缓存友好）。</div>
   <div class="th"><b>体系架构层次（自下而上四层，识记框架）：</b></div>
   <div class="tscroll"><table class="law">
     <tr><th>层次</th><th>解决什么</th><th>典型机制</th></tr>
@@ -93,7 +93,7 @@
     <tr><th>比较维度</th><th>关系数据库（MySQL/Oracle）</th><th>NoSQL（HBase/MongoDB/Redis）</th></tr>
     <tr><td class="nm">数据模型</td><td><b>二维表</b>，行列表结构固定</td><td><b>键值 / 列族 / 文档 / 图形</b>，模型多样</td></tr>
     <tr><td class="nm">模式 Schema</td><td><b>强模式</b>（写时模式，先定义列与约束）</td><td><b>弱模式 / 无模式</b>（读时模式，可动态增列）</td></tr>
-    <tr><td class="nm">一致性 / 事务</td><td><b>ACID 强一致</b>，支持多行事务</td><td><b>BASE 最终一致</b>，多为单行/单文档原子（弱事务）</td></tr>
+    <tr><td class="nm">一致性 / 事务</td><td>通常支持 <b>ACID 事务</b>，隔离级别和副本一致性另行配置</td><td>可采用 <b>BASE</b>；也有支持强一致读和多文档 ACID 事务的产品</td></tr>
     <tr><td class="nm">扩展方式</td><td><b>垂直扩展</b>（换更强单机），分库分表复杂</td><td><b>水平扩展</b>（加节点、自动分片）</td></tr>
     <tr><td class="nm">查询语言</td><td><b>SQL</b>，支持复杂 Join、聚合、子查询</td><td>各自 <b>API/类 SQL</b>，<b>不支持或弱支持 Join</b></td></tr>
     <tr><td class="nm">性能侧重</td><td>复杂事务与关联查询、中小规模</td><td><b>海量数据的高并发读写与扫描</b></td></tr>
@@ -106,15 +106,15 @@
 <h2 class="section" id="s5">五、CAP 定理与 BASE 理论（领会）</h2>
 <div class="rule">
   <div class="kd"><span class="lvl b">领会</span> NoSQL 的理论基础（与关系数据库的区别）。</div>
-  <div class="th"><b>CAP 定理：</b>一个分布式系统最多只能同时满足以下<b>三项中的两项</b>——<b>C 一致性（Consistency）</b>：所有节点同一时刻看到的数据相同；<b>A 可用性（Availability）</b>：每个请求都能得到（非错误）响应；<b>P 分区容错性（Partition tolerance）</b>：网络分区发生时系统仍能继续运行。由于分布式环境中<b>网络分区不可避免，P 必选</b>，所以实际是在 <b>CP 与 AP</b> 之间取舍。</div>
+  <div class="th"><b>CAP 定理：</b><b>C（一致性）</b>指线性一致性，即读写效果如同在单一副本上按实时顺序发生；<b>A（可用性）</b>要求到达非故障节点的每个请求最终得到响应；<b>P（分区容错）</b>表示需要应对节点间消息丢失或网络分区。<b>发生分区且系统必须容忍它时，不能同时保证 C 与 A</b>，须对相关操作作取舍。不能理解成任何时候都机械地“三选二”。</div>
   <div class="tscroll"><table class="law">
     <tr><th>取舍</th><th>含义</th><th>代表系统</th></tr>
     <tr><td class="nm"><b>CP</b>（弃可用性）</td><td>分区时<b>宁可拒绝服务</b>也要保证数据一致</td><td><b>ZooKeeper</b>、<b>HBase</b>、MongoDB（默认写关注）、关系型分布式数据库</td></tr>
     <tr><td class="nm"><b>AP</b>（弃强一致）</td><td>分区时<b>仍可读写</b>，事后收敛到一致（最终一致）</td><td><b>Cassandra</b>、Dynamo、Eureka、多数键值缓存</td></tr>
     <tr><td class="nm">AC（不分区）</td><td>单机/强同步环境，实际分布式中<b>不可取</b></td><td>传统单机关系数据库（严格说不是分布式场景）</td></tr>
   </table></div>
-  <div class="th"><b>BASE 理论（对 ACID 的放松，NoSQL 的设计哲学）：</b><b>BA</b>sically <b>A</b>vailable（<b>基本可用</b>：整体性能可下降但保证核心功能，如降级、限流、超时返回）；<b>S</b>oft <b>s</b>tate（<b>软状态</b>：允许中间状态存在，状态间同步可有延迟）；<b>E</b>ventually consistent（<b>最终一致</b>：经过一段时间后数据达到一致，不要求即时一致）。</div>
-  <div class="note">🔑 记忆：<b>ACID 是"事务级强一致"，BASE 是"柔性可用 + 最终一致"</b>；BASE 不是放弃一致性，而是<b>用可用性换取可扩展性与性能</b>，把一致性推迟到"最终"。</div>
+  <div class="th"><b>BASE 理论（偏重可用性与最终一致性的设计思路）：</b><b>BA</b>sically <b>A</b>vailable（<b>基本可用</b>：整体性能可下降但保证核心功能，如降级、限流、超时返回）；<b>S</b>oft <b>s</b>tate（<b>软状态</b>：允许中间状态存在，状态间同步可有延迟）；<b>E</b>ventually consistent（<b>最终一致</b>：经过一段时间后数据达到一致，不要求即时一致）。</div>
+  <div class="note">🔑 <b>不要混淆两种 C：</b>ACID 的一致性指事务保持数据库约束；CAP 的一致性指副本读写的线性一致性。BASE 强调基本可用、软状态与最终一致，不是“所有 NoSQL 都无事务”。最终一致通常以没有新更新、通信恢复并完成传播为前提。</div>
 </div>
 
 <h2 class="section" id="s6">六、云数据库的概念与特点（识记）⭐</h2>
@@ -125,7 +125,7 @@
   <div class="th"><b>主流云数据库产品（识记，能配对厂商）：</b></div>
   <div class="tscroll"><table class="law">
     <tr><th>厂商</th><th>产品</th><th>要点</th></tr>
-    <tr><td class="nm">Amazon</td><td><b>RDS</b>、<b>DynamoDB</b>、Aurora、Redshift、SimpleDB/S3</td><td>RDS 托管关系库；DynamoDB 是<b>键值/文档型 NoSQL</b>（CAP 中 AP 代表）</td></tr>
+    <tr><td class="nm">Amazon</td><td><b>RDS</b>、<b>DynamoDB</b>、Aurora、Redshift、SimpleDB/S3</td><td>RDS 托管关系库；DynamoDB 是<b>键值/文档型 NoSQL</b>（提供不同一致性读选项，不能脱离操作与配置简单贴 AP 标签）</td></tr>
     <tr><td class="nm">Microsoft</td><td><b>SQL Azure / Azure SQL Database</b></td><td>属<b>关系型</b>云数据库，支持 <b>T-SQL</b> 管理创建与操作，可在本地开发后部署上云；支持大量典型数据类型；<b>支持云中局部事务但不支持分布式事务</b></td></tr>
     <tr><td class="nm">Google</td><td><b>Bigtable</b>、Cloud SQL、Spanner、BigQuery</td><td>Bigtable 是<b>列族</b>分布式存储，HBase 的原型</td></tr>
     <tr><td class="nm">阿里 / 腾讯 / 华为</td><td>UMP（早期）、<b>RDS / PolarDB / OceanBase</b>；TDSQL/CDB；GaussDB</td><td>本章 UMP 即阿里核心系统数据库团队设计的<b>低成本高性能 MySQL 云数据库方案</b></td></tr>
@@ -184,7 +184,7 @@
     <li><b>NoSQL = Not Only SQL</b>，为<b>海量 + 高并发 + 多类型 + 水平扩展</b>而生；架构四层：<b>存储 → 分片 → 模型 → 一致性/接口</b>。</li>
     <li><b>四类</b>：键值（Redis）、列族（HBase/Cassandra）、文档（MongoDB）、图形（Neo4j）——"最快 / 最能扛量 / 最灵活 / 最懂关系"。</li>
     <li><b>与关系库</b>：模型、模式、ACID vs BASE、垂直 vs 水平、SQL vs API、范式 vs 反范式；<b>关系是互补混用、相互借鉴、底层复用</b>。</li>
-    <li><b>CAP</b> 三选二（P 必选 → CP / AP）；<b>BASE</b> = 基本可用 + 软状态 + 最终一致。</li>
+    <li><b>CAP</b>：容忍网络分区时，相关操作须在 C 与 A 间取舍；<b>BASE</b> = 基本可用 + 软状态 + 最终一致。</li>
     <li><b>云数据库</b> = 部署并虚拟化在云中的数据库，八特点（弹性、高可用、多租户、低成本、易用、高性能、免维护、安全）；<b>无专属数据模型</b>。</li>
     <li><b>UMP</b>：七角色（Controller / Proxy / Agent / Web 控制台 / 日志分析 / 信息统计 / 愚公）+ 四组件（Mnesia / LVS / RabbitMQ / ZooKeeper）+ 七功能（容灾 / 读写分离 / 分库分表 / 资源管理 / 调度 / 隔离 / 数据安全）+ 四原则。</li>
   </ol>

@@ -124,8 +124,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
   <div class="opts"><span>A. 关系代数语言、集合运算语言和关系演算语言</span><span>B. 关系代数语言、集合运算语言和结构化查询语言</span><span>C. 结构化查询语言、集合运算语言和关系演算语言</span><span>D. 关系代数语言、关系演算语言和结构化查询语言</span></div>
 </summary>
 <div class="body">
-  <div class="answer">答案：A</div>
-  <div class="sol"><span class="lab">解析：</span>按教材分类，关系模型上的关系操作语言包括三类：<b>关系代数语言、集合运算语言、关系演算语言</b>（前两者基于运算，后者基于谓词演算）。<b>SQL（结构化查询语言）是语言的实际实现标准</b>，不属于这一形式化分类，含"结构化查询语言"的 B/C/D 均排除。故选 A。</div>
+  <div class="answer">答案：D</div>
+  <div class="sol"><span class="lab">解析：</span>关系操作语言可分为<b>关系代数语言、关系演算语言和兼具两者特点的结构化查询语言 SQL</b>，故选 <b>D</b>。集合运算（并、差、交、笛卡儿积）是关系代数的组成部分，不应另列为与关系代数并列的一类语言。</div>
   <a class="tag" href="../知识点/关系模型/关系数据库系统模型.html#s4">考点：关系操作及其特点</a>
 </div></details>
 
@@ -278,7 +278,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
-  <div class="sol"><span class="lab">要点（评分参考：写出任意 5 点即可，每 1 点 1 分）：</span>①被参照表必须已经使用 CREATE TABLE 语句创建，或必须是当前正在创建的表。<br>②必须为被参照表定义主键或唯一性约束。<br>③必须在被参照表的表名后面指定列名或列名的组合，该列名或列名的组合必须是被参照表的主键或唯一性约束。<br>④主键不能包含空值，但允许外键中出现空值。<br>⑤外键对应列的数目必须和主键对应列的数目相同。<br>⑥外键对应列的数据类型必须和主键对应列的数据类型相同。</div>
+  <div class="sol"><span class="lab">参考要点（未附官方评分细则）：</span>①被参照表必须已经使用 CREATE TABLE 语句创建，或必须是当前正在创建的表。<br>②必须为被参照表定义主键或唯一性约束。<br>③必须在被参照表的表名后面指定列名或列名的组合，该列名或列名的组合必须是被参照表的主键或唯一性约束。<br>④主键不能包含空值，但允许外键中出现空值。<br>⑤外键对应列的数目必须和主键对应列的数目相同。<br>⑥外键对应列的数据类型必须和主键对应列的数据类型相同。</div>
   <a class="tag" href="../知识点/数据完整性/完整性约束.html#s3">考点：参照完整性外键六条规则</a>
 </div></details>
 
@@ -288,7 +288,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
-  <div class="sol"><span class="lab">要点（评分参考：写出任意 3 点即可，每 1 点 1 分）：</span>①<b>概念</b>：索引是按照数据表中一列或多列进行索引排序，并为其建立指向数据表记录所在位置的指针。<br>②<b>作用</b>：提高查询速度；保证列值的唯一性；查询优化依靠索引起作用；提高 ORDER BY 和 GROUP BY 的执行速度。</div>
+  <div class="sol"><span class="lab">参考要点（未附官方评分细则）：</span>①<b>概念</b>：索引是按照数据表中一列或多列进行索引排序，并为其建立指向数据表记录所在位置的指针。<br>②<b>作用</b>：提高适合索引的查询速度；<b>唯一索引或主键索引</b>可保证键值唯一（普通索引不能）；为优化器提供访问路径；在合适条件下加速 ORDER BY、GROUP BY 和表间连接。</div>
   <a class="tag" href="../知识点/视图索引/视图和索引.html#s4">考点：索引的概念与分类</a>
 </div></details>
 
@@ -458,7 +458,7 @@ GROUP BY 课程编号;</pre>要点：<code>CREATE VIEW 视图名 AS 子查询</c
 <div class="body">
   <div class="answer ref">参考答案</div>
   <div class="sol"><span class="lab">(1) 求 (AB)+：</span>X⁺ 求闭包三步：初值 X⁺=AB；用 A→CD 得 ABCD；用 B→E 得 ABCDE；用 AB→G 得 <b>ABCDEG = U</b>。<br>∴ <b>(AB)⁺<sub>F</sub> = ABCDEG</b>。（AB 能推出全部属性，且其任何真子集 A⁺=ACD、B⁺=BE 都≠U，故 <b>AB 是唯一候选码</b>，A、B 均为主属性，C、D、E、G 为非主属性。）</div>
-  <div class="sol"><span class="lab">(2) 不属于 3NF。理由：</span>3NF 要求<b>每一个非平凡函数依赖 X→Y，要么 X 必含码，要么 Y 属于某个候选码（主属性）</b>。考察依赖 <b>B→E</b>：B⁺=BE≠U，B 不是超码（B 单独只是候选码 AB 的一部分）；而右端属性 E 是非主属性、不属于任何候选码。即存在<b>非主属性 E 对候选码 AB 的传递依赖</b>（AB→B→E，且 B↛AB），违反 3NF。∴ R 不属于第三范式。（评分参考：结论 2 分，原因 3 分。）</div>
+  <div class="sol"><span class="lab">(2) 不属于 3NF。理由：</span>3NF 要求：<b>对 F⁺ 中每一个非平凡函数依赖 X→a（右端为单个属性），X 是超码，或 a 是主属性</b>。考察依赖 <b>B→E</b>：B⁺=BE≠U，B 不是超码（B 单独只是候选码 AB 的一部分）；而右端属性 E 是非主属性、不属于任何候选码。这里 B 是 AB 的真子集，因此 E 对 AB 是<b>部分函数依赖</b>；A→CD 同样造成部分依赖。故 R 已<b>不满足 2NF，更不满足 3NF</b>。AB→B 是平凡依赖，不能把 AB→B→E 当成本题的传递依赖依据。</div>
   <a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s5">考点：Armstrong 公理与属性集闭包</a><a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s3">考点：范式判定 3NF</a><a class="tag" href="../知识点/规范化/关系数据库设计理论.html#s2">考点：完全/部分/传递依赖</a>
 </div></details>
 
@@ -467,9 +467,9 @@ GROUP BY 课程编号;</pre>要点：<code>CREATE VIEW 视图名 AS 子查询</c
 <div class="anskey-scroll">
 <table class="anskey">
   <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th></tr>
-  <tr><td><b>答案</b></td><td><b>A</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>B</b></td><td><b>A</b>⚠️</td><td><b>C</b></td><td><b>B</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td></tr>
+  <tr><td><b>答案</b></td><td><b>A</b></td><td><b>B</b></td><td><b>B</b></td><td><b>D</b></td><td><b>A</b></td><td><b>A</b></td><td><b>A</b></td><td><b>B</b></td><td><b>A</b>⚠️</td><td><b>C</b></td><td><b>B</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td></tr>
   <tr><th>题号</th><th colspan="15">16~25 主观题关键词</th></tr>
-  <tr><td><b>答案</b></td><td colspan="15" class="ks" style="text-align:left;font-size:13px">16 概念·逻辑·物理三层抽象 · 17 运算符/对象/结果＋集合运算(并交差笛卡儿积)+专门运算(选择投影连接除) · 18 外键六规则(任答5点) · 19 索引=排序+指针；提速/保唯一/优化/ORDER·GROUP · 20 GRANT SELECT,DELETE ON salesDB.order TO 'song'@'localhost' WITH GRANT OPTION · 21 调查收集数据；自顶向下逐层分解；DFD+DD · 22 车间1:n产品m:n电商→四关系+主外码+CREATE TABLE · 23 (1){a,c,d} (2){(p,2,c,y),(p,2,c,z)} · 24 GROUP BY+HAVING≥60／三表JOIN／UPDATE SET／CREATE VIEW MAX · 25 (AB)⁺=ABCDEG，AB唯一候选码；B→E 使非主属性E传递依赖于码→非3NF</td></tr>
+  <tr><td><b>答案</b></td><td colspan="15" class="ks" style="text-align:left;font-size:13px">16 概念·逻辑·物理三层抽象 · 17 运算符/对象/结果＋集合运算(并交差笛卡儿积)+专门运算(选择投影连接除) · 18 外键六规则(任答5点) · 19 索引=排序+指针；提速/唯一索引保唯一/优化/ORDER·GROUP · 20 GRANT SELECT,DELETE ON salesDB.order TO 'song'@'localhost' WITH GRANT OPTION · 21 调查收集数据；自顶向下逐层分解；DFD+DD · 22 车间1:n产品m:n电商→四关系+主外码+CREATE TABLE · 23 (1){a,c,d} (2){(p,2,c,y),(p,2,c,z)} · 24 GROUP BY+HAVING≥60／三表JOIN／UPDATE SET／CREATE VIEW MAX · 25 (AB)⁺=ABCDEG，AB唯一候选码；B→E 使 E 部分依赖于 AB→非2NF，故非3NF</td></tr>
 </table>
 </div>
 

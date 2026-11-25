@@ -118,7 +118,7 @@
   <div class="calc">
     <b>【例 1 · 凯撒密码 k=3】</b> 明文 <span class="r">COMPUTER</span> → 逐字母 +3（超过 Z 则回绕）<br>
     C→F&nbsp;&nbsp;O→R&nbsp;&nbsp;M→P&nbsp;&nbsp;P→S&nbsp;&nbsp;U→X&nbsp;&nbsp;T→W&nbsp;&nbsp;E→H&nbsp;&nbsp;R→U<br>
-    密文 = <span class="r">FRPSXZHU</span>　（验证：解密各字母 −3 还原 COMPUTER ✔）
+    密文 = <span class="r">FRPSXWHU</span>　（验证：解密各字母 −3 还原 COMPUTER ✔）
   </div>
   <div class="calc">
     <b>【例 2 · Vigenère，密钥 KEY】</b>　K=10、E=4、Y=24，密钥循环 <span class="r">K E Y K E</span><br>
@@ -189,7 +189,7 @@
 <h2 class="section" id="s5">五、非对称密码体系与 RSA 计算 ⭐⭐⭐ 必考</h2>
 <div class="rule">
   <div class="kd"><span class="lvl c">简单应用</span> 理解 <b>RSA 密钥生成原理</b>，能根据给定设置<b>计算公钥和私钥</b>。</div>
-  <b>非对称（公钥）密码体系</b>：每个用户有一对密钥——<b>公钥 PU 公开</b>、<b>私钥 PR 保密</b>，二者<b>互不相同且由一个不可推出另一个</b>。用公钥加密的数据只有对应私钥能解，反过来用私钥签名可用公钥验证。<b>安全性依赖数学难题：RSA = 大整数分解难题</b>（其他还有离散对数、椭圆曲线、背包问题）。
+  <b>非对称（公钥）密码体系</b>：每个用户有一对密钥——<b>公钥 PU 公开</b>、<b>私钥 PR 保密</b>，二者<b>互不相同；从公钥在计算上难以推得私钥，而私钥通常可以导出对应公钥</b>。用公钥加密的数据只有对应私钥能解，反过来用私钥签名可用公钥验证。<b>安全性依赖数学难题：RSA = 大整数分解难题</b>（其他还有离散对数、椭圆曲线、背包问题）。
   <div class="th"><b>RSA 密钥生成五步（把这张表背下来，计算题就是套公式）：</b></div>
   <div class="tscroll"><table class="law">
     <tr><th>步骤</th><th>做法</th><th>公式</th></tr>
@@ -249,7 +249,7 @@
     <li><b>两个概念</b>：明文 P／密文 C；<b>加密＝P→C，解密＝C→P（逆运算）</b>；安全性<b>只依赖密钥</b>（Kerckhoffs 原则）。</li>
     <li><b>两大体系</b>：<b>对称</b>（单密钥／私钥，快但分发难，DES·AES）与<b>非对称</b>（双密钥／公钥，慢但易分发、能签名，RSA）。</li>
     <li><b>四项功能</b>：秘密性、鉴别性、完整性、不可否认性。</li>
-    <li><b>古典密码两法</b>：<b>替代</b>（凯撒单表、Vigenère 多表）与<b>置换</b>（改顺序不改字符）；例：COMPUTER 凯撒 +3 = <b>FRPSXZHU</b>，置换密钥 (3,1,4,2) = <b>MCPOEURT</b>。</li>
+    <li><b>古典密码两法</b>：<b>替代</b>（凯撒单表、Vigenère 多表）与<b>置换</b>（改顺序不改字符）；例：COMPUTER 凯撒 +3 = <b>FRPSXWHU</b>，置换密钥 (3,1,4,2) = <b>MCPOEURT</b>。</li>
     <li><b>DES 五个数</b>：64 位分组、56 位有效密钥、16 轮、48 位子密钥、Feistel；AES 是取代它的<b>高级加密标准</b>（128 位分组）。</li>
     <li><b>RSA 三步套公式</b>：n=pq → φ=(p−1)(q−1) → 解 ed≡1 (mod φ)；<b>p=13, q=31, e=7 ⇒ n=403, φ=360, d=103，公钥(7,403)、私钥(103,403)</b>。</li>
     <li><b>密钥管理八步</b>：生—非—发—验—更—存—效—公。</li>

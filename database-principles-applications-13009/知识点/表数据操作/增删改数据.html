@@ -157,7 +157,7 @@
   <span class="kw">FOREIGN KEY</span>(sno) <span class="kw">REFERENCES</span> student(sno)
       <span class="kw">ON DELETE CASCADE ON UPDATE CASCADE</span>   <span class="cm">-- 学生删除时其选课记录一并删除</span>
 );</pre>
-  <div class="note">🔑 记牢：<b>默认动作是 RESTRICT（拒绝）</b>，不是级联。想让删父行时子行跟着变，必须显式写 <code>CASCADE</code> 或 <code>SET NULL</code>。而且这些动作<b>只有 InnoDB 引擎支持</b>。</div>
+  <div class="note">🔑 记牢：<b>默认动作是 RESTRICT（拒绝）</b>，不是级联。想让删父行时子行跟着变，必须显式写 <code>CASCADE</code> 或 <code>SET NULL</code>。实操须使用支持外键的引擎（本页采用 InnoDB；NDB 也支持外键）。</div>
 </div>
 
 <h2 class="section" id="s6">六、本章速记小结</h2>

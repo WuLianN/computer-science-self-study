@@ -56,6 +56,7 @@
 <h2 class="section" id="s1">一、文件概念与处理流程</h2>
 <div class="rule">
   <div class="kd"><span class="lvl a">识记</span> 文件类型、基本处理流程。</div>
+  <div class="note"><b>路径与编码：</b>相对路径相对于当前工作目录，而非自动相对于源码目录。题目要求读取源码旁的文件时，可用 <code>Path(__file__).resolve().parent / "data.txt"</code> 定位（先 <code>from pathlib import Path</code>）；示例文本按 UTF-8 保存并指定 encoding。</div>
   <b>三步流程：</b><code>打开（open） → 读写（read/write） → 关闭（close）</code>。<br>
   <b>文件分类：</b>按数据形式分 <b>文本文件</b>（字符，如 .txt/.csv，读写用字符串）和 <b>二进制文件</b>（字节，如图片、.dat，模式带 b）。文本文件是本章重点。
 </div>
@@ -86,7 +87,7 @@ f.close()
 <span class="cm"># 最推荐：with 自动关闭 + for 逐行遍历</span>
 <span class="kw">with</span> <span class="st">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
     <span class="kw">for</span> line <span class="kw">in</span> f:
-        <span class="kw">print</span>(line.strip())   <span class="cm"># strip 去掉行末换行</span></pre>
+        <span class="kw">print</span>(line.strip())   <span class="cm"># strip 去掉两端空白；仅去行末换行可用 rstrip("\r\n")</span></pre>
   <div class="th">区分：<code>read()</code>→整串；<code>readline()</code>→一行；<code>readlines()</code>→行的列表。</div>
 </div>
 
@@ -97,7 +98,7 @@ f.close()
     f.write(<span class="st">"第一行\n"</span>)       <span class="cm"># write 不会自动换行，需自己加 \n</span>
     f.writelines([<span class="st">"a\n"</span>, <span class="st">"b\n"</span>])</pre>
   <b>with</b> 的好处：代码块结束<b>自动 close</b>，即使中途异常也保证关闭，推荐替代手写 close。<br>
-  <b>文件定位</b>：<code>tell()</code> 当前指针位置、<code>seek(n)</code> 移到第 n 字节、<code>flush()</code> 刷新缓冲。
+  <b>文件定位</b>：<code>tell()</code> 当前指针位置、二进制模式下 <code>seek(n)</code> 定位到第 n 字节；文本模式应使用 <code>tell()</code> 返回的位置或允许的零偏移定位、<code>flush()</code> 刷新缓冲。
 </div>
 
 <h2 class="section" id="s5">五、数据维度：一维 / 二维 / 高维</h2>
@@ -115,7 +116,7 @@ f.close()
 <div class="rule">
   <div class="kd"><span class="lvl b">领会</span> CSV 文件格式、JSON 格式。</div>
   <ul>
-    <li><b>CSV</b>（逗号分隔值）：纯文本表格，每行一条记录、字段用逗号分隔，是<b>二维数据</b>典型载体。用 <code>csv</code> 模块或直接 split(",") 处理。</li>
+    <li><b>CSV</b>（逗号分隔值）：纯文本表格，每行一条记录、字段用逗号分隔，是<b>二维数据</b>典型载体。用 <code>csv</code> 模块处理；直接 split(",") 无法正确处理带引号的逗号或嵌入换行。</li>
     <li><b>JSON</b>（键值/层次结构文本）：用 <code>{}</code> 对象、<code>[]</code> 数组表达<b>高维/层级数据</b>；Python 用 <code>json</code> 模块转换：<code>json.dumps(dict)</code> 转字符串、<code>json.loads(s)</code> 转回对象、<code>dump/load</code> 对文件操作。</li>
   </ul>
   <pre class="py"><span class="kw">import</span> json

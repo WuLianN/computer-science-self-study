@@ -72,7 +72,7 @@
     <tr><td class="nm"><code>FROM</code></td><td>指定查询的表（可多表、可子查询）</td><td>表可加<b>别名</b>；多表用逗号或 JOIN</td></tr>
     <tr><td class="nm"><code>WHERE</code></td><td><b>行</b>条件（针对基本表/视图）</td><td><b>不能出现聚合函数</b>，因为分组前每行还无从统计</td></tr>
     <tr><td class="nm"><code>GROUP BY</code></td><td>按<b>一列或多列</b>取值分成组</td><td>SELECT 里的非聚合列<b>必须全部出现在 GROUP BY 中</b></td></tr>
-    <tr><td class="nm"><code>HAVING</code></td><td><b>组</b>条件（筛选分组）</td><td>必须跟在 GROUP BY 之后，<b>可以使用聚合函数</b></td></tr>
+    <tr><td class="nm"><code>HAVING</code></td><td><b>组</b>条件（筛选分组）</td><td>有 GROUP BY 时写在其后；<b>可以使用聚合函数</b>；无 GROUP BY 时把结果整体视为一组</td></tr>
     <tr><td class="nm"><code>SELECT</code></td><td><b>列</b>（投影）与计算、去重</td><td>可写常量、表达式、聚合函数、别名</td></tr>
     <tr><td class="nm"><code>ORDER BY</code></td><td>按列升序 ASC（默认）/ 降序 DESC 排序</td><td>可多列、可用别名、可用聚合结果</td></tr>
     <tr><td class="nm"><code>LIMIT</code></td><td>限制返回的行数（MySQL 特有）</td><td><code>LIMIT 偏移量, 行数</code>，偏移从 0 开始</td></tr>
@@ -151,8 +151,8 @@
 <span class="kw">SELECT</span> sno, <span class="kw">COUNT</span>(*) <span class="kw">AS</span> 门数, <span class="kw">MAX</span>(grade)
   <span class="kw">FROM</span> sc <span class="kw">WHERE</span> grade <span class="kw">IS NOT NULL</span>
   <span class="kw">GROUP BY</span> sno <span class="kw">HAVING</span> <span class="kw">COUNT</span>(*) &gt;= 3;</pre>
-  <div class="note">⚠️ 三大铁律：①<b>WHERE 里不许有聚合函数</b>（要筛组用 HAVING）；②<b>SELECT 中的非聚合列必须出现在 GROUP BY 里</b>（MySQL 8 默认 ONLY_FULL_GROUP_BY 会直接报错）；③执行顺序是 <b>WHERE 先于 GROUP BY，GROUP BY 先于 HAVING</b>——所以 WHERE 不能用 SELECT 里刚定义的别名，而 <b>ORDER BY / HAVING 里可以引用聚合</b>。</div>
-  <div class="note">🔑 <b>HAVING vs WHERE 简答模板：</b>WHERE 在<b>分组前</b>按行过滤，作用于基本表/视图的列，不能含聚合函数；HAVING 在<b>分组后</b>按组过滤，必须与 GROUP BY 一起出现，可以使用聚集函数。</div>
+  <div class="note">⚠️ 三大铁律：①<b>WHERE 不能直接使用本查询层的聚合函数</b>（可与含聚合的标量子查询比较；筛组用 HAVING）；②<b>SELECT 中的非聚合列通常应在 GROUP BY 中</b>（MySQL ONLY_FULL_GROUP_BY 也允许函数依赖等可证明唯一的情况）；③执行顺序是 <b>WHERE 先于 GROUP BY，GROUP BY 先于 HAVING</b>——所以 WHERE 不能用 SELECT 里刚定义的别名，而 <b>ORDER BY / HAVING 里可以引用聚合</b>。</div>
+  <div class="note">🔑 <b>HAVING vs WHERE 简答模板：</b>WHERE 在<b>分组前</b>按行过滤，作用于基本表/视图的列，不能直接使用本查询层聚合函数；HAVING 在<b>分组后</b>按组过滤，可以使用聚集函数；无 GROUP BY 时，也可把全部结果作为一组进行筛选。</div>
 </div>
 
 <h2 class="section" id="s6">六、排序与限制行数</h2>
@@ -203,7 +203,7 @@
 <span class="kw">SELECT</span> <span class="kw">DISTINCT</span> a.sno, a.sname
   <span class="kw">FROM</span> student a <span class="kw">JOIN</span> student b <span class="kw">ON</span> a.sage = b.sage
   <span class="kw">WHERE</span> b.sdept = <span class="st">'01班'</span> <span class="kw">AND</span> a.sno &lt;&gt; b.sno;</pre>
-  <div class="note">📝 <b>简答模板（INNER JOIN + ON 与 FROM + WHERE 的异同）：</b>对<b>内连接</b>而言两者<b>结果相同</b>；差别在于——①语义上 ON 是"连接条件"、WHERE 是"筛选条件"，把连接条件写进 WHERE 会让多义混合、可读性差；②<b>外连接时二者不同</b>：条件写在 <code>ON</code> 里作用于<b>连接阶段</b>（不匹配的行仍保留并补 NULL），写在 <code>WHERE</code> 里作用于<b>连接之后</b>（会把补 NULL 的行筛掉，外连接退化成内连接）；③用 <code>CROSS JOIN</code> 或不带条件时，WHERE 写法会产生笛卡尔积中间结果，效率低。</div>
+  <div class="note">📝 <b>简答模板（INNER JOIN + ON 与 FROM + WHERE 的异同）：</b>对<b>内连接</b>而言两者<b>结果相同</b>；差别在于——①语义上 ON 是"连接条件"、WHERE 是"筛选条件"，把连接条件写进 WHERE 会让多义混合、可读性差；②<b>外连接时二者不同</b>：条件写在 <code>ON</code> 里作用于<b>连接阶段</b>（不匹配的行仍保留并补 NULL），写在 <code>WHERE</code> 里作用于<b>连接之后</b>（若条件要求右表列为非空/满足普通比较，会筛掉补 NULL 行；如 IS NULL 等条件则不一定）；③同等内连接条件下，优化器通常可选择相同执行计划，不能仅凭 ON 或 WHERE 的写法断言谁更快。</div>
   <div class="note">🔑 <b>内连接 vs 外连接：</b>内连接只保留两表中<b>满足连接条件</b>的元组；外连接<b>也以连接条件为基础</b>，但还把<b>不匹配的元组保留下来</b>，缺失的一侧填 NULL。左外保左表全部、右外保右表全部、全外两边都保。</div>
 </div>
 
@@ -254,7 +254,7 @@
 <span class="kw">SELECT</span> sno <span class="kw">FROM</span> sc <span class="kw">WHERE</span> cno = <span class="st">'C01'</span>
 <span class="kw">UNION ALL</span>                              <span class="cm">-- 保留重复行、不去重，效率更高</span>
 <span class="kw">SELECT</span> sno <span class="kw">FROM</span> sc <span class="kw">WHERE</span> cno = <span class="st">'C02'</span>;</pre>
-  <div class="th"><b>UNION 必须遵循的规则：</b>①各 SELECT 的<b>列数相同</b>；②对应列<b>数据类型相容</b>（可转换）；③结果集的<b>列名取自第一个 SELECT</b>；④默认<b>自动去重</b>（等价 UNION DISTINCT），要保留重复用 <code>UNION ALL</code>；⑤<b>ORDER BY / LIMIT 只能写在最后一个 SELECT 之后</b>，作用于合并后的整体结果，且 ORDER BY 里只能用第一个 SELECT 的列名/别名/列号；⑥多个 UNION 从左到右结合，需要改变顺序用括号。</div>
+  <div class="th"><b>UNION 必须遵循的规则：</b>①各 SELECT 的<b>列数相同</b>；②对应列<b>数据类型相容</b>（可转换）；③结果集的<b>列名取自第一个 SELECT</b>；④默认<b>自动去重</b>（等价 UNION DISTINCT），要保留重复用 <code>UNION ALL</code>；⑤<b>对合并结果的 ORDER BY / LIMIT 写在整个 UNION 之后</b>（单个 SELECT 的局部排序/截取须用括号限定），作用于合并后的整体结果，且 ORDER BY 里只能用第一个 SELECT 的列名/别名/列号；⑥多个 UNION 从左到右结合，需要改变顺序用括号。</div>
   <div class="note">🔑 用途辨析：UNION 是<b>纵向（按行）合并</b>两个结构相同的结果集；JOIN 是<b>横向（按列）拼接</b>两个表。题干说"把 A 和 B 的名单合在一起"→ UNION；"既要 A 的列又要 B 的列"→ JOIN。</div>
 </div>
 
@@ -286,9 +286,9 @@
   <b>投影：</b><code>DISTINCT</code> 放列清单前、作用于整行；<code>AS</code> 改列标题；表达式可算列值。<br>
   <b>选择：</b>BETWEEN 是<b>闭</b>区间；空值只能 <code>IS NULL</code>；LIKE 用 % 和 _，REGEXP 用正则且<b>子串匹配</b>即真。<br>
   <b>分组：</b>WHERE 不能放聚合、HAVING 专管组；非聚合列必须进 GROUP BY；<code>COUNT(列)</code> 忽略 NULL、<code>COUNT(*)</code> 不忽略。<br>
-  <b>连接：</b>内连只留匹配；外连保留不匹配补 NULL（左保左、右保右，MySQL 无全外）；自连接同表起两别名；<b>外连接的条件要写在 ON，写在 WHERE 会退化成内连接</b>。<br>
+  <b>连接：</b>内连只留匹配；外连保留不匹配补 NULL（左保左、右保右，MySQL 无全外）；自连接同表起两别名；<b>ON 决定连接匹配，WHERE 筛选连接结果</b>；WHERE 若排除补 NULL 行，才会失去保留未匹配行的效果。<br>
   <b>子查询：</b>多值配 IN、单值配比较运算符、判存在用 EXISTS（返回真假、常写 SELECT *）；<code>&gt; ALL</code>＝比最大值、<code>&gt; ANY</code>＝比最小值。<br>
-  <b>联合：</b>列数相同、类型相容、列名取第一个、默认去重（ALL 不去重）、ORDER BY/LIMIT 只在最后写一次。<br>
+  <b>联合：</b>列数相同、类型相容、列名取第一个、默认去重（ALL 不去重）、整体 ORDER BY/LIMIT 在 UNION 末尾；局部子查询须加括号。<br>
   <b>Top-N：</b><code>ORDER BY 列 DESC LIMIT n</code>；MySQL 里"取每组前几名"要用相关子查询或窗口函数（<code>ROW_NUMBER()</code>，了解）。
 </div>
 

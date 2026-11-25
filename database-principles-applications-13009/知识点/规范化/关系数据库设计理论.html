@@ -84,12 +84,12 @@
     <tr><th>名称</th><th>定义（关键条件）</th><th>例子（码为 <span class="m">(Sno,Cno)</span>）</th></tr>
     <tr><td class="nm"><b>完全函数依赖</b><br><span class="m">X →<sup>f</sup> Y</span></td><td><span class="m">X → Y</span>，且 X 的<b>任何一个真子集</b> X′ 都<b>不能</b>决定 Y（X 中一个属性都不能少）</td><td><span class="m">(Sno, Cno) →<sup>f</sup> Grade</span>：只有同时知道学号和课程号才能确定成绩</td></tr>
     <tr><td class="nm"><b>部分函数依赖</b><br><span class="m">X →<sup>p</sup> Y</span></td><td><span class="m">X → Y</span>，但 Y 依赖于 X 的<b>某一部分</b>（存在真子集 X′ 使 X′→Y 成立）</td><td><span class="m">(Sno, Cno) →<sup>p</sup> Sname</span>：单靠 Sno 就能定姓名 → <b>2NF 要消灭它</b></td></tr>
-    <tr><td class="nm"><b>传递函数依赖</b><br><span class="m">X →<sup>t</sup> Y</span></td><td><span class="m">X → Y</span> 是通过 <span class="m">X → Z</span>、<span class="m">Z → Y</span> 传过去的，且 <span class="m">Z ↛ X</span>（Z 不能决定 X，即 Z 不是候选码）</td><td><span class="m">Sno → Dept</span>、<span class="m">Dept → Dloc</span> ⇒ <span class="m">Sno →<sup>t</sup> Dloc</span> → <b>3NF 要消灭它</b></td></tr>
+    <tr><td class="nm"><b>传递函数依赖</b><br><span class="m">X →<sup>t</sup> Y</span></td><td><span class="m">X → Y</span> 是通过 <span class="m">X → Z</span>、<span class="m">Z → Y</span> 传过去的，且 <span class="m">Z ⊄ X</span>、<span class="m">Z ↛ X</span>（X→Z 非平凡，Z 也不能反推 X）</td><td><span class="m">Sno → Dept</span>、<span class="m">Dept → Dloc</span> ⇒ <span class="m">Sno →<sup>t</sup> Dloc</span> → <b>3NF 要消灭它</b></td></tr>
     <tr><td class="nm">平凡 / 非平凡函数依赖</td><td>若 <span class="m">Y ⊆ X</span> 则称 <span class="m">X → Y</span> 为<b>平凡的</b>（恒成立、无研究价值）；否则为<b>非平凡的</b>。讨论的都是<b>非平凡</b>依赖</td><td><span class="m">(Sno,Cno) → Sno</span> 是平凡的</td></tr>
     <tr><td class="nm"><b>多值依赖</b> <span class="m">X →→ Y</span></td><td>对 X 的每个值，有一组<b>相互独立</b>的 Y 值与之对应，且这组值只由 X 决定、与剩余属性 Z 无关（Y 与 Z 彼此独立）</td><td>教师 Tno 教多门课 Cno、多用本教材 Bookno：Cno 与 Bookno 互不影响 ⇒ <span class="m">Tno →→ Cno</span></td></tr>
   </table></div>
   <div class="note">🔑 <b>函数依赖 vs 多值依赖</b>：FD 要求"唯一确定"（一对一/多对一的映射感觉），MVD 是"确定一组且这组与其余属性无关"（一对多、且两边独立）。MVD 是 FD 的推广：<span class="m">X → Y</span> 成立时必有 <span class="m">X →→ Y</span> 成立，反之不真。</div>
-  <div class="note">⚠️ 传递依赖的坑：若 <span class="m">X → Z</span> 且 <span class="m">Z → Y</span>，但 <span class="m">Z → X</span> 也成立（Z 与 X 互为候选码），则 <span class="m">X → Y</span> 是<b>直接</b>依赖而非传递依赖。定义里那句"<span class="m">Z ↛ X</span>"就是为排除这种情况。</div>
+  <div class="note">⚠️ <b>部分依赖不等于传递依赖：</b>若 B 是候选码 AB 的真子集且 B→E，则 E 对 AB 是部分依赖；AB→B 为平凡依赖，不能据此称 AB→B→E 为传递依赖。传递依赖要有非平凡的中间决定因素，如 Sno→Dept→Dloc，且 Dept 不能反推 Sno。</div>
 </div>
 
 <h2 class="section" id="s3">三、码与五级范式 1NF → 4NF ⭐⭐</h2>
@@ -109,8 +109,8 @@
     <tr><td class="nm"><b>1NF</b></td><td>关系 R 的每个分量都是<b>不可再分的数据项</b>（原子性）——所有关系模式默认都满足 1NF</td><td><b>非原子值</b>（重复组、多值列）</td><td><b>列不分</b></td></tr>
     <tr><td class="nm"><b>2NF</b></td><td>R ∈ 1NF，且<b>每一个非主属性</b>都<b>完全函数依赖</b>于候选码</td><td>非主属性对码的<b>部分依赖</b></td><td><b>不留半截依赖</b></td></tr>
     <tr><td class="nm"><b>3NF</b></td><td>R ∈ 2NF，且每一个非主属性都<b>不传递函数依赖</b>于候选码</td><td>非主属性对码的<b>传递依赖</b></td><td><b>非主属性不靠"中间人"</b></td></tr>
-    <tr><td class="nm"><b>BCNF</b></td><td>R ∈ 1NF，且<b>每一个</b>函数依赖 <span class="m">X → Y</span>（Y ↄ X）的<b>决定因素 X 必含有候选码</b>（X 是超码）</td><td><b>主属性对码的部分/传递依赖</b>、决定因素不含码的依赖</td><td><b>每个决定因素都是码</b></td></tr>
-    <tr><td class="nm"><b>4NF</b></td><td>R ∈ 1NF，若存在非平凡函数依赖 <span class="m">X → Y</span>，则 X 必含候选码；即允许<b>非平凡多值依赖</b>存在但决定因素必须含码</td><td>非主属性对码的<b>多值依赖</b></td><td><b>连多值依赖也不许</b></td></tr>
+    <tr><td class="nm"><b>BCNF</b></td><td>R ∈ 1NF，且<b>每一个</b>函数依赖 <span class="m">X → Y</span>（Y ⊄ X）的<b>决定因素 X 必含有候选码</b>（X 是超码）</td><td><b>主属性对码的部分/传递依赖</b>、决定因素不含码的依赖</td><td><b>非平凡 FD 的决定因素是超码</b></td></tr>
+    <tr><td class="nm"><b>4NF</b></td><td>R ∈ 1NF，对每个<b>非平凡多值依赖</b> <span class="m">X ↠ Y</span>（Y ⊄ X 且 X∪Y ≠ U），X 都是超码</td><td><b>决定因素不是超码</b>的非平凡多值依赖</td><td><b>非平凡 MVD 的决定因素是超码</b></td></tr>
   </table></div>
   <div class="fig">
     <svg viewBox="0 0 720 220" role="img" aria-label="范式之间的包含关系：4NF 最严，被 3NF、2NF、1NF 依次包含">
@@ -150,7 +150,7 @@
       <li>（若还要升 <b>BCNF</b>）对每一个决定因素<b>不含码</b>的依赖 <span class="m">X → Y</span>，都以 X 为主码拆出新表，并在原表保留 X。</li>
     </ol>
   </div>
-  <div class="note">🔑 <b>拆表的机械口诀</b>：看到 <span class="m">A → B</span> 且 <b>A 不是候选码</b> → 就拆成"AB 一张表（A 作主码）"＋"原表去掉 B"。反复做，直到每个决定因素都是码 ⇒ BCNF；只做非主属性的部分/传递依赖 ⇒ 3NF 就够。</div>
+  <div class="note">🔑 <b>BCNF 分解判据：</b>找到非平凡依赖 X→Y 且 <b>X 不是超码</b>，可分解为 R₁=X∪Y 与 R₂=R−(Y−X)，再对各子模式检查。此分解无损，但<b>未必保持全部函数依赖</b>。不能把“不是候选码”当成“不是超码”，也不要把 BCNF 分解当作通用的 3NF 综合算法。</div>
 </div>
 
 <h2 class="section" id="s5">五、Armstrong 公理与属性集闭包 ⭐</h2>
@@ -223,7 +223,7 @@
   <div class="th"><b>五条一句话：</b>
     <ol style="margin:4px 0 0 1.4em;padding:0">
       <li><b>依赖是尺子</b>：完全/部分/传递 FD 看<b>非主属性与码</b>的关系，MVD 看<b>独立的一组值</b>。</li>
-      <li><b>范式是等级</b>：1NF 列不分 → 2NF 去部分 → 3NF 去传递 → BCNF 决定因素必含码 → 4NF 去多值依赖。</li>
+      <li><b>范式是等级</b>：1NF 列不分 → 2NF 去部分 → 3NF 去传递 → BCNF 决定因素必含码 → 4NF 消除决定因素非超码的非平凡多值依赖。</li>
       <li><b>规范化＝分解</b>：见 <span class="m">A→B</span> 且 A 不是码，就把 A＋B 拆一张表，A 作主码。</li>
       <li><b>求码靠闭包</b>：L/N 类必入选，R 类必出局，剩下补 LR 类逐个验 <span class="m">X<sup>+</sup> = U</span>。</li>
       <li><b>Armstrong 三公理</b>：自反、增广、传递（合并/分解/伪传递是<b>推论</b>，不是公理）。</li>
@@ -248,7 +248,7 @@
 <div class="rule"><div style="font-weight:700;color:var(--brand);margin:2px 0 6px">▸ 2026.1 卷 · 本章呼应 2 题</div><div class="tscroll"><table class="law qtab">
   <tr><th>题号</th><th>题型·答案/分值</th><th>考点一句话</th></tr>
   <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q15">第 15 题</a></td><td>单选 · 答案 D · 2分</td><td><b>BCNF</b> 限制主属性对码的依赖关系</td></tr>
-  <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q25">第 25 题</a></td><td>综合 · 8分</td><td>求 (AB)⁺=ABCDEG 定候选码；<b>B→E</b> 传递依赖判非 3NF</td></tr>
+  <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q25">第 25 题</a></td><td>综合 · 8分</td><td>求 (AB)⁺=ABCDEG 定候选码；<b>B→E</b> 使 E 部分依赖于 AB，非 2NF，故非 3NF</td></tr>
 </table></div>
 <div class="note">🔑 题号可点击跳到详解页对应题（题干常显、答案折叠）；锚点即本章正文对应小节。</div></div>
 <footer>

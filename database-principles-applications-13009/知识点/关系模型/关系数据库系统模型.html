@@ -96,7 +96,7 @@
   <div class="kd"><span class="lvl b">领会</span> 关系的完整性规则。</div>
   <div class="tscroll"><table class="law">
     <tr><th>完整性</th><th>规则内容</th><th>MySQL 中由谁保证</th></tr>
-    <tr><td class="nm"><b>实体完整性</b></td><td>若属性组 <span class="m">K</span> 是基本关系的主码，则 <span class="m">K</span> 中的属性值<b>不能为空且不能重复</b>（主码任一属性都不得取 NULL）</td><td><code>PRIMARY KEY</code> / <code>UNIQUE</code></td></tr>
+    <tr><td class="nm"><b>实体完整性</b></td><td>若属性组 <span class="m">K</span> 是基本关系的主码，则 <span class="m">K</span> 的<b>组合值不能重复</b>，且其中任一属性都不得取 NULL；复合主码中单列值可以重复</td><td><code>PRIMARY KEY</code>（或唯一约束配合各列 <code>NOT NULL</code>）</td></tr>
     <tr><td class="nm"><b>参照完整性</b></td><td>若 <span class="m">F</span> 是参照关系的外码且与关系 S 的主码 <span class="m">X</span> 相容，则外码取值<b>或者为空值</b>（无对应参照）、<b>或者必须是 S 中某元组的主码值</b></td><td><code>FOREIGN KEY</code> + <code>ON DELETE/UPDATE</code> 动作</td></tr>
     <tr><td class="nm"><b>用户定义的完整性</b></td><td>针对<b>具体应用</b>的数据须满足的语义约束（年龄 0~150、性别只能"男/女"、成绩非空）</td><td><code>CHECK</code> / <code>NOT NULL</code> / 默认值 / 数据类型</td></tr>
   </table></div>
@@ -189,7 +189,7 @@
 <div class="rule"><div style="font-weight:700;color:var(--brand);margin:2px 0 6px">▸ 2026.1 卷 · 本章呼应 5 题</div><div class="tscroll"><table class="law qtab">
   <tr><th>题号</th><th>题型·答案/分值</th><th>考点一句话</th></tr>
   <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q3">第 3 题</a></td><td>单选 · 答案 B · 2分</td><td>主码<b>至少由一个属性组成</b>（可单属性可属性组）</td></tr>
-  <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q4">第 4 题</a></td><td>单选 · 答案 A · 2分</td><td>关系操作语言三类：<b>关系代数/集合运算/关系演算</b></td></tr>
+  <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q4">第 4 题</a></td><td>单选 · 答案 D · 2分</td><td>关系操作语言：<b>关系代数 / 关系演算 / SQL</b>；集合运算属于关系代数</td></tr>
   <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q5">第 5 题</a></td><td>单选 · 答案 A · 2分</td><td>实体完整性：<b>主码属性不能取空值</b></td></tr>
   <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q17">第 17 题</a></td><td>简答 · 三要素+两类运算</td><td>关系代数三要素；集合运算＋专门运算（选择投影连接除）</td></tr>
   <tr><td class="q"><a class="qref" href="../../广东2026年1月自考13009《数据库原理与技术》真题/真题详解.html#q23">第 23 题</a></td><td>设计 · 8分</td><td>关系代数计算：Π∪Π 与 σ<sub>B=2</sub>(R⋈S)，<b>须写中间过程</b></td></tr>

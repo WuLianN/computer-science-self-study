@@ -256,7 +256,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer">答案：C</div>
-  <div class="sol"><span class="lab">解析：</span>云计算把硬件采购、基础架构、软件安装配置等交给云服务商，客户因此可<b>专注于自身业务与快速创新</b>。A/B/D 正是被云"接管"的部分。故选 C。</div>
+  <div class="sol"><span class="lab">解析：</span>云计算可减少客户自行采购和运维基础设施的负担，使其更能<b>专注于业务与快速创新，选 C</b>。但责任边界依 IaaS/PaaS/SaaS 而不同，例如 IaaS 客户通常仍需安装配置操作系统及应用，不能概括成云服务商接管全部软件配置。</div>
   <a class="tag" href="../知识点/云计算融合/云计算大数据与人工智能.html">考点：云计算价值</a>
 </div></details>
 
@@ -310,7 +310,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
-  <div class="sol"><span class="lab">要点：</span>BASE 是对关系数据库 ACID 强一致的反向取舍，是 NoSQL/分布式系统的设计原则，含义为：<b>Basically Available（基本可用）</b>、<b>Soft state（软状态，允许中间状态存在）</b>、<b>Eventually consistent（最终一致性）</b>。即牺牲即时强一致，换取高可用与可扩展，允许数据在一段时间内不一致，但<b>最终会达到一致状态</b>。</div>
+  <div class="sol"><span class="lab">要点：</span>BASE 是偏重可用性、允许暂时不一致的分布式系统设计思路（不是所有 NoSQL 的统一保证，也不等于否定 ACID 事务），含义为：<b>Basically Available（基本可用）</b>、<b>Soft state（软状态，允许中间状态存在）</b>、<b>Eventually consistent（最终一致性）</b>。即牺牲即时强一致，换取高可用与可扩展，允许数据在一段时间内不一致，在没有新更新、通信恢复且完成传播后，副本<b>最终趋于一致</b>。注意 ACID 的 C 是约束一致性，不能直接等同于 CAP 的副本线性一致性。</div>
   <a class="tag" href="../知识点/分布式与云数据库/NoSQL与云数据库.html">考点：BASE 原则</a>
 </div></details>
 
@@ -342,7 +342,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
-  <div class="sol"><span class="lab">要点（分条）：</span>①<b>基于内存计算</b>：中间结果驻留内存、不落盘，迭代与交互式计算比 MapReduce 快 10~100 倍；②<b>DAG 执行引擎</b>：以有向无环图优化调度，避免 MapReduce 多轮"落盘—再读"的开销；③<b>通用统一</b>：一套引擎同时支持批处理、流处理、SQL、机器学习（MLlib）、图计算（GraphX）；④<b>API 丰富、开发简洁</b>：支持 Scala/Java/Python/R，提供 RDD/DataFrame 等高阶算子，无需手写 Map/Reduce；⑤<b>容错高效</b>：靠 RDD 血缘（lineage）重算恢复，不必频繁写副本；并可运行在 HDFS/YARN 之上兼容生态。</div>
+  <div class="sol"><span class="lab">要点（分条）：</span>①<b>基于内存计算</b>：可缓存需要复用的数据，减少迭代与交互式计算中的重复磁盘 I/O；shuffle、溢写或磁盘持久化仍会落盘，提速幅度依任务和资源而定；②<b>DAG 执行引擎</b>：以有向无环图优化调度，避免 MapReduce 多轮"落盘—再读"的开销；③<b>通用统一</b>：一套引擎同时支持批处理、流处理、SQL、机器学习（MLlib）、图计算（GraphX）；④<b>API 丰富、开发简洁</b>：支持 Scala/Java/Python/R，提供 RDD/DataFrame 等高阶算子，无需手写 Map/Reduce；⑤<b>容错高效</b>：靠 RDD 血缘（lineage）重算恢复，不必频繁写副本；并可运行在 HDFS/YARN 之上兼容生态。</div>
   <a class="tag" href="../知识点/计算框架/MapReduce与Spark.html">考点：Spark 优势</a>
 </div></details>
 
@@ -352,7 +352,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer ref">参考答案</div>
-  <div class="sol"><span class="lab">要点：</span>颜色特征全局、对旋转/平移/缩放不敏感，常用：<br>①<b>颜色直方图</b>：统计各颜色（bin）出现频率，反映整体颜色分布；②<b>颜色矩</b>：用每个颜色通道的均值、方差、三阶矩刻画分布；③<b>颜色聚合向量（CAV）</b>：表达颜色间的空间相关与聚合信息。<br><b>匹配（相似度量）方法</b>：直方图相交、巴氏距离（Bhattacharyya）、卡方距离、相关，以及经验式距离 <b>EMD</b>；提取前常在 HSV 等更符合感知的颜色空间进行。</div>
+  <div class="sol"><span class="lab">要点：</span>颜色特征全局、对旋转/平移/缩放不敏感，常用：<br>①<b>颜色直方图</b>：统计各颜色（bin）出现频率，反映整体颜色分布；②<b>颜色矩</b>：用每个颜色通道的均值、方差、三阶矩刻画分布；③<b>颜色聚合向量（CAV）</b>：表达颜色间的空间相关与聚合信息。<br><b>匹配（相似度量）方法</b>：直方图相交、巴氏距离（Bhattacharyya）、卡方距离、相关，以及<b>推土机距离 EMD（Earth Mover’s Distance）</b>；提取前常在 HSV 等更符合感知的颜色空间进行。</div>
   <a class="tag" href="../知识点/特征提取/特征提取与图像特征.html#s8">考点：颜色特征提取与匹配</a>
 </div></details>
 
@@ -407,7 +407,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 <div class="body">
   <div class="answer ref">参考答案</div>
   <div class="sol"><span class="lab">(1) 两类问题：</span>①<b>分类（Classification）</b>：目标变量是<b>离散的类别</b>，预测样本属于哪个类别；②<b>回归（Regression）</b>：目标变量是<b>连续的数值</b>，预测一个具体取值。<br>判断：<b>"预测单户住宅售价"</b>输出是连续金额 → <b>回归问题</b>；<b>"判断客户是否续订租赁订阅"</b>输出是"续订/不续订"两类 → <b>分类问题</b>。</div>
-  <div class="sol"><span class="lab">(2) 节点定义与剪枝：</span>①<b>根节点</b>：树最顶层的节点，包含全部训练样本，是第一次做特征分裂判断的起点（没有入边/父分支）；②<b>决策节点（内部节点）</b>：对应某个<b>特征（属性）的取值测试</b>，按不同取值把样本划分到各子分支；③<b>叶子节点</b>：树的终端节点，不再继续分裂，给出<b>最终预测结果</b>（分类的类别 或 回归的数值）。<br><b>剪枝（Pruning）</b>：在树生成后<b>去掉过于细分、对提升整体分类/预测精度作用不大的分支（子树）</b>，用其上层节点或叶替代（分预剪枝与后剪枝）。<b>核心作用</b>：抑制<b>过拟合</b>、降低模型复杂度、提高对未见数据的<b>泛化能力</b>，同时使树更小、预测更快、更易解释。</div>
+  <div class="sol"><span class="lab">(2) 节点定义与剪枝：</span>①<b>根节点</b>：树最顶层的节点，包含全部训练样本，是第一次做特征分裂判断的起点（没有入边/父分支）；②<b>决策节点（内部节点）</b>：对应某个<b>特征（属性）的取值测试</b>，按不同取值把样本划分到各子分支；③<b>叶子节点</b>：树的终端节点，不再继续分裂，给出<b>最终预测结果</b>（分类的类别 或 回归的数值）。<br><b>剪枝（Pruning）</b>：<b>预剪枝</b>在生长过程中按条件提前停止分裂；<b>后剪枝</b>在树生成后删减不利于泛化的分支（子树），以叶节点替代。<b>核心作用</b>：抑制<b>过拟合</b>、降低模型复杂度、提高对未见数据的<b>泛化能力</b>，同时使树更小、预测更快、更易解释。</div>
   <a class="tag" href="../知识点/机器学习/机器学习与深度学习.html">考点：决策树分类与回归</a><a class="tag" href="../知识点/算法实验/机器学习算法实验.html">考点：决策树实验与剪枝</a>
 </div></details>
 

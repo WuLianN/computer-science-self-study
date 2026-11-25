@@ -33,7 +33,7 @@
 
 <header class="hero">
   <h1>第 7 章 · 数据完整性 ⭐ 约束语句必考</h1>
-  <p>把第 2 章的三条完整性规则<b>翻译成 SQL 约束</b>：实体→<code>PRIMARY KEY/UNIQUE</code>，参照→<code>FOREIGN KEY</code>，用户定义→<code>CHECK/NOT NULL</code>。考试要求<b>建表时写</b>和<b>用 ALTER TABLE 追加/删除</b>两种都能写。建议 6 学时。</p>
+  <p>把第 2 章的三条完整性规则<b>翻译成 SQL 约束</b>：实体→<code>PRIMARY KEY</code>（单独 UNIQUE 不保证非空），参照→<code>FOREIGN KEY</code>，用户定义→<code>CHECK/NOT NULL</code>。考试要求<b>建表时写</b>和<b>用 ALTER TABLE 追加/删除</b>两种都能写。建议 6 学时。</p>
   <span class="pill">建议 6 学时</span><span class="pill">📖 翻书查考纲页映射表</span><span class="pill">重点：四类约束的创建与删除</span><span class="pill">难点：外键规则与级联动作</span>
   <div class="gotos">
     <a href="../../../index.html">🏠 首页</a>
@@ -63,17 +63,17 @@
   <div class="th"><b>约束机制的优点（简答）：</b>完整性规则以<b>数据库对象（约束）的形式定义并存储在数据字典中</b>，由 DBMS 自动检查并强制执行，因此①<b>无须在应用程序中重复编写检查代码</b>，简化程序；②<b>集中定义、修改方便</b>（改约束即可，不必改所有程序）；③<b>检查效率高、更可靠</b>，避免人为绕过；④规则与数据一起存储、随表存在，<b>不会失效</b>。</div>
   <div class="tscroll"><table class="law">
     <tr><th>MySQL 完整性类型</th><th>对应约束</th><th>约束的含义（保证什么）</th></tr>
-    <tr><td class="nm">实体完整性</td><td><code>PRIMARY KEY</code>、<code>UNIQUE</code></td><td>每一行都能被<b>唯一标识</b>：主码非空且不重复</td></tr>
+    <tr><td class="nm">实体完整性</td><td><code>PRIMARY KEY</code>；唯一约束需配合 <code>NOT NULL</code></td><td>每一行都能被<b>唯一标识</b>：主码非空且不重复</td></tr>
     <tr><td class="nm">参照完整性</td><td><code>FOREIGN KEY</code></td><td>表间关系有效：外码值要么为空，要么在被参照表中<b>确实存在</b></td></tr>
     <tr><td class="nm">用户定义的完整性</td><td><code>CHECK</code>、<code>NOT NULL</code>、<code>DEFAULT</code>、数据类型与长度</td><td>满足<b>具体应用的语义</b>要求（取值范围、非空、枚举值）</td></tr>
   </table></div>
-  <div class="note">⚠️ MySQL 特有的坑：<b>CHECK 约束在 8.0.16 之前会被解析但直接忽略</b>（不生效）；MyISAM 引擎<b>不支持外键</b>——只有 <b>InnoDB</b> 才真正实施这些约束。答题按"支持"的标准 SQL 语义写，但实操时记着版本与引擎。</div>
+  <div class="note">⚠️ MySQL 特有的坑：<b>CHECK 约束在 8.0.16 之前会被解析但直接忽略</b>（不生效）；MyISAM 引擎<b>不支持外键</b>；本页用 <b>InnoDB</b> 演示外键，NDB 引擎也支持外键，不能概括成“只有 InnoDB 支持”。答题按"支持"的标准 SQL 语义写，但实操时记着版本与引擎。</div>
 </div>
 
 <h2 class="section" id="s2">二、实体完整性：主键约束与唯一性约束 ⭐</h2>
 <div class="rule">
   <div class="kd"><span class="lvl b">领会</span> 主键约束、唯一性约束的含义及区别；<span class="lvl d">综合应用</span> 在设计中正确使用语句实现实体完整性。</div>
-  <b>实体完整性规则：</b>若属性 <span class="m">A</span> 是基本关系的主属性（属于某个<b>候选码</b>），则 <span class="m">A</span> 不能为空——即主码的<b>取值唯一且非空</b>，保证每个元组可区分。
+  <b>实体完整性规则：</b>选定的<b>主码各分量不得为空</b>，主码组合值必须唯一，保证每个元组可区分。不要混淆“主属性”（属于任一候选码）与“主码列”；SQL 中单独声明 UNIQUE 仍可能允许 NULL。
   <div class="tscroll"><table class="law">
     <tr><th>对比项</th><th><code>PRIMARY KEY</code>（主键约束）</th><th><code>UNIQUE</code>（唯一性约束）</th></tr>
     <tr><td class="nm">取值唯一</td><td>✅</td><td>✅</td></tr>
@@ -81,7 +81,7 @@
     <tr><td class="nm">一张表能有几个</td><td><b>只能 1 个</b></td><td>可以<b>多个</b></td></tr>
     <tr><td class="nm">作用</td><td>唯一<b>标识实体</b>（行的身份证）</td><td>保证某列值<b>不重复</b>（如手机号、邮箱）</td></tr>
     <tr><td class="nm">物理实现</td><td>InnoDB 中是<b>聚簇索引</b>，表数据按它组织</td><td>非聚簇的唯一索引</td></tr>
-    <tr><td class="nm">能否被外键参照</td><td>通常被参照（标准 SQL 要求主码）</td><td>MySQL <b>也允许</b>被外键参照</td></tr>
+    <tr><td class="nm">能否被外键参照</td><td>可被参照（标准 SQL 也允许唯一约束列）</td><td>MySQL <b>也允许</b>被外键参照</td></tr>
   </table></div>
   <pre class="sql"><span class="cm">-- 建表时定义</span>
 <span class="kw">CREATE TABLE</span> student (
@@ -107,7 +107,7 @@
 <h2 class="section" id="s3">三、参照完整性：外键的六条规则 ⭐</h2>
 <div class="rule">
   <div class="kd"><span class="lvl a">识记</span> 定义外键时必须遵守的规则；<span class="lvl b">领会</span> 参照完整性规则与外键约束的含义。</div>
-  <b>参照完整性规则：</b>若属性（组）<span class="m">F</span> 是基本关系 R 的外码，它与基本关系 S 的主码 <span class="m">K</span> 相对应，则 R 中每个元组在 <span class="m">F</span> 上的值必须<b>或者取 NULL（F 中每个属性都取空值）、或者等于 S 中某个元组的主码值</b>。
+  <b>参照完整性规则：</b>若属性（组）<span class="m">F</span> 是基本关系 R 的外码，它与基本关系 S 的主码 <span class="m">K</span> 相对应，则 R 中每个元组在 <span class="m">F</span> 上的值必须<b>非空时等于 S 中某个元组的对应键值</b>。MySQL 对可空复合外键采用类似 MATCH SIMPLE 的语义：任一分量为 NULL 时不要求匹配父表；若业务要求必须存在对应行，应将外键各列设为 NOT NULL。
   <div class="fig">
     <svg viewBox="0 0 720 180" role="img" aria-label="参照完整性：sc.sno 必须引用 student.sno 中已有的值">
       <rect x="24" y="26" width="230" height="130" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
@@ -133,11 +133,11 @@
   <div class="th"><b>定义外键必须遵守的规则（识记，多选/简答）：</b>
     <ol style="margin:4px 0 0 1.4em;padding:0">
       <li>外键所在的参照表与<b>被参照表必须是存在的表</b>：先建被参照（父）表，再建参照（子）表；<b>删除时顺序相反</b>（先删子表）。</li>
-      <li>外键列与被参照列<b>的数据类型必须相容</b>（可以转换）。</li>
+      <li>外键列与被参照列<b>的数据类型必须匹配</b>：对应列数与次序一致；MySQL 整数列的存储大小和符号属性须一致（不是指显示宽度），字符列的字符集与排序规则须一致（字符串长度可不同），不能只看能否转换。</li>
       <li><b>被参照的列必须是主键或唯一键</b>（保证能被唯一定位）。</li>
       <li>外键列名<b>可以与被参照列名不同</b>，但含义（域）要一致。</li>
       <li>外键列的<b>取值必须为空或等于被参照表中某行主键值</b>。</li>
-      <li>只有 <b>InnoDB</b> 引擎支持外键；外键列会自动创建索引，被参照列也必须有索引。</li>
+      <li>本页按 <b>InnoDB</b> 演示（NDB 也支持外键）；外键列与被参照列须有符合要求的索引，子表缺少时 InnoDB 可自动创建。</li>
     </ol>
   </div>
 </div>
@@ -160,7 +160,8 @@
 
 <span class="cm">-- ③ 删除外键约束（必须写约束名，MySQL 中不能只写列名）</span>
 <span class="kw">ALTER TABLE</span> sc <span class="kw">DROP FOREIGN KEY</span> fk_sc_stu;
-<span class="kw">ALTER TABLE</span> sc <span class="kw">DROP KEY</span> fk_sc_stu;               <span class="cm">-- 等价写法（同时删掉它建的索引）</span>
+<span class="cm">-- DROP FOREIGN KEY 不等于 DROP INDEX，也不会自动删除支持外键的索引。</span>
+<span class="cm">-- 如需另删索引，先 SHOW INDEX FROM sc 核对实际索引名及其他约束是否仍需它。</span>
 
 <span class="cm">-- ④ "修改"外键：MySQL 没有 ALTER ... MODIFY FOREIGN KEY，须先删后加</span>
 <span class="kw">ALTER TABLE</span> sc <span class="kw">DROP FOREIGN KEY</span> fk_sc_stu;
@@ -225,7 +226,7 @@
 <div class="note">
   <b>三条规则 → 四类约束：</b>实体→<code>PRIMARY KEY / UNIQUE</code>；参照→<code>FOREIGN KEY</code>；用户定义→<code>CHECK / NOT NULL / DEFAULT</code>。<br>
   <b>主键 vs 唯一：</b>主键<b>非空、只能一个、标识行</b>；唯一<b>可有 NULL、可以多个</b>。<br>
-  <b>外键六条规则：</b>父表先建子表后建（删相反）、类型相容、被参照列必须主键或唯一、列名可不同、取值须为空或存在于父表、只有 InnoDB 支持。<br>
+  <b>外键六条规则：</b>父表先建子表后建（自引用例外）、对应列数与类型匹配、被参照键通常取主键或唯一键、列名可不同、取值遵守参照完整性，并使用支持外键的引擎及所需索引。<br>
   <b>级联动作：</b><code>CASCADE</code> 连锁 / <code>SET NULL</code> 置空 / <code>RESTRICT·NO ACTION</code>（<b>默认</b>）拒绝。<br>
   <b>删约束的名字差异：</b>主键不写名（<code>DROP PRIMARY KEY</code>）、唯一约束<b>按索引名</b>删、外键与检查约束<b>按约束名</b>删。<br>
   <b>修改外键＝先 DROP 再 ADD</b>；MySQL 8.0.16 之前 CHECK 不生效，MyISAM 不认外键。

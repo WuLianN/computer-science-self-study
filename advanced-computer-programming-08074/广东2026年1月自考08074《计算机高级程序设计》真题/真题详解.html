@@ -113,7 +113,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer">答案：A</div>
-  <div class="sol"><span class="lab">解析：</span><code class="c">math.floor(x)</code> 是<b>向下取整（地板除）</b>，取不超过 x 的最大整数：<code class="c">math.floor(12.7189) = 12</code>。与之相对 <code class="c">math.ceil()</code> 向上取整才得 13。实跑验证结果为整数 12。故选 A。</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">math.floor(x)</code> 是<b>向下取整（floor）</b>，取不超过 x 的最大整数：<code class="c">math.floor(12.7189) = 12</code>。与之相对 <code class="c">math.ceil()</code> 向上取整才得 13。实跑验证结果为整数 12。故选 A。</div>
   <a class="tag" href="../知识点/概述/Python概述.html#s5">考点：math 模块 floor()</a>
 </div></details>
 
@@ -213,7 +213,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 </summary>
 <div class="body">
   <div class="answer">答案：B</div>
-  <div class="sol"><span class="lab">解析：</span><code class="c">//</code> 是<b>整除（地板除）</b>运算符，结果为商的整数部分，即"整数商"。<code class="c">/</code> 是真除法（结果恒为 float）、<code class="c">%</code> 取余数、<code class="c">**</code> 是幂。故选 B。</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">//</code> 是<b>整除（地板除）</b>运算符，结果是商向负无穷取整，如 <code class="c">-7//2=-4</code>，不是向零截断。<code class="c">/</code> 是真除法（两个整数相除也得到 float）、<code class="c">%</code> 取余数、<code class="c">**</code> 是幂。故选 B。</div>
   <a class="tag" href="../知识点/数据类型/数据类型与内置函数.html#s3">考点：整除运算符 //</a>
 </div></details>
 
@@ -326,12 +326,12 @@ print(k)</pre>
 </summary>
 <div class="body">
   <div class="answer">参考答案</div>
-  <div class="sol"><span class="lab">含义：</span><b>全局变量</b>在函数<b>外部</b>（模块顶层）定义，作用域覆盖整个模块，函数内一般可读取；<b>局部变量</b>在函数<b>内部</b>定义，只在所属函数内有效，函数执行结束即被销毁。<br>
+  <div class="sol"><span class="lab">含义：</span><b>全局变量</b>在函数<b>外部</b>（模块顶层）定义，作用域覆盖整个模块，函数内一般可读取；<b>局部变量</b>在函数<b>内部</b>定义，只在所属函数内有效，局部名字通常随调用结束失去作用域；仍被其他对象引用的数据不一定销毁。<br>
   <span class="lab">主要区别：</span><br>
   ① <b>作用域不同</b>：全局变量全局可见，局部变量仅函数内可见；<br>
   ② <b>生命周期不同</b>：全局变量随程序/模块存在，局部变量随一次函数调用产生与消亡；<br>
   ③ <b>同名遮蔽</b>：函数内若定义与全局同名的局部变量，则局部优先、遮蔽全局；<br>
-  ④ 要在函数<b>内部修改</b>全局变量，必须先用 <code class="c">global</code> 声明，否则会被当作新建局部变量。</div>
+  ④ 在函数内<b>重新绑定模块级变量名</b>（如 <code class="c">x=...</code>）须先声明 <code class="c">global x</code>；仅修改全局列表或字典的内容（如 <code class="c">items.append(1)</code>）不需要 global。</div>
   <a class="tag" href="../知识点/函数/函数定义与调用.html#s4">考点：变量作用域 global/局部</a>
 </div></details>
 
@@ -403,13 +403,13 @@ print(s)</pre>
 cn = "零一二三四五六七八九"
 result = ""
 for ch in s:
-    if ch.isdigit():            # 是数字字符
+    if ch.isdecimal():          # 可由 int 转换的十进制数字字符
         result += cn[int(ch)]   # 映射为对应中文数字
     else:
         result += ch            # 非数字原样保留
 print(result)</pre>
   <div class="sol"><span class="lab">运行示例：</span>输入 <code class="c">2025年5月2日</code> → 输出 <code class="c">二零二五年五月二日</code>（实跑验证）。<br>
-  <span class="lab">套路：</span>核心是<b>建一张"数字→中文"映射表</b>（字符串 <code class="c">cn</code> 按下标 0~9 存中文数字），逐字符遍历：<code class="c">ch.isdigit()</code> 判断是否数字，是则用 <code class="c">cn[int(ch)]</code> 替换，否则原样拼接。也可用字典 <code class="c">{'0':'零',...}</code> 或 <code class="c">str.translate</code>，但逐字符 + isdigit 版最直观、最好背。</div>
+  <span class="lab">套路：</span>核心是<b>建一张"数字→中文"映射表</b>（字符串 <code class="c">cn</code> 按下标 0~9 存中文数字），逐字符遍历：<code class="c">ch.isdecimal()</code> 判断十进制数字字符，是则用 <code class="c">cn[int(ch)]</code> 替换，否则原样拼接。也可用字典 <code class="c">{'0':'零',...}</code> 或 <code class="c">str.translate</code>，注意 <code class="c">isdigit()</code> 还会识别 ² 等不能直接交给 int 的字符，不能无条件替代这里的 isdecimal。</div>
   <a class="tag" href="../知识点/字符串/字符串处理.html#s3">考点：逐字符遍历与映射替换</a>
 </div></details>
 
@@ -420,12 +420,13 @@ print(result)</pre>
 <div class="body">
   <div class="answer">参考答案</div>
   <pre class="code">def reverse_num(n):
-    return int(str(n)[::-1])    # 转字符串→切片倒序→转回整数
+    sign = -1 if n < 0 else 1
+    return sign * int(str(abs(n))[::-1])  # 约定保留负号，只倒序数字部分
 
 print(reverse_num(123))</pre>
   <div class="sol"><span class="lab">运行结果：</span><code class="c">321</code>（实跑验证）。<br>
-  <span class="lab">套路：</span>最简版是<b>切片三步</b>：<code class="c">str(n)</code> 转字符串 → <code class="c">[::-1]</code> 步长 -1 整体倒序 → <code class="c">int(...)</code> 转回整数（自动去掉前导 0，如 120→"021"→21）。若考"纯算术拆位"，用循环版：<br>
-  <code class="c">r = 0</code>；当 n&gt;0 时反复 <code class="c">r = r*10 + n%10; n //= 10</code>，最终 r 即倒序数。两种都对，切片版最简洁。</div>
+  <span class="lab">套路：</span>对非负整数可用<b>切片三步</b>：<code class="c">str(n)</code> 转字符串 → <code class="c">[::-1]</code> 步长 -1 整体倒序 → <code class="c">int(...)</code> 转回整数（自动去掉前导 0，如 120→"021"→21）。若考"纯算术拆位"，用循环版：<br>
+  <code class="c">r = 0</code>；当 n&gt;0 时反复 <code class="c">r = r*10 + n%10; n //= 10</code>，最终 r 即非负整数的倒序数。本参考函数约定负数保留符号，如 −120→−21；纯算术版也应先取绝对值，最后恢复符号。</div>
   <a class="tag" href="../知识点/函数/函数定义与调用.html#s1">考点：自定义函数与 return</a><a class="tag" href="../知识点/字符串/字符串处理.html#s3">考点：切片 [::-1] 倒序</a>
 </div></details>
 
@@ -435,20 +436,23 @@ print(reverse_num(123))</pre>
 </summary>
 <div class="body">
   <div class="answer">参考答案</div>
-  <pre class="code">def count_upper(s):
+  <pre class="code">from pathlib import Path
+base_dir = Path(__file__).resolve().parent
+
+def count_upper(s):
     cnt = 0
     for ch in s:
-        if 'A' &lt;= ch &lt;= 'Z':     # 也可写 ch.isupper()
+        if 'A' &lt;= ch &lt;= 'Z':     # 只统计 ASCII 大写英文字母
             cnt += 1
     return cnt
 
-with open('data.txt', 'r') as fin, open('result.txt', 'w') as fout:
+with open(base_dir / 'data.txt', 'r', encoding='utf-8') as fin, open(base_dir / 'result.txt', 'w', encoding='utf-8') as fout:
     idx = 1
     for line in fin:             # 文件对象可直接按行迭代
         fout.write("{}:{}\n".format(idx, count_upper(line)))
         idx += 1</pre>
   <div class="sol"><span class="lab">运行示例：</span>若 data.txt 三行为 <code class="c">Hello World</code> / <code class="c">abCDeF gHI</code> / <code class="c">no upper here</code>，则 result.txt 写入 <code class="c">1:2</code>、<code class="c">2:5</code>、<code class="c">3:0</code>（实跑验证）。<br>
-  <span class="lab">套路：</span>四个得分点：① <b>统计逻辑封装成函数</b>（题目硬性要求"使用函数实现"）；② <code class="c">open('data.txt','r')</code> 只写文件名即默认与源码同目录；③ <code class="c">for line in fin</code> 按行读、<code class="c">fout.write(...)</code> 按"行号:个数"格式写，行号用计数器 idx 递增；④ 判断大写 <code class="c">'A'&lt;=ch&lt;='Z'</code> 或 <code class="c">ch.isupper()</code>。用 <code class="c">with</code> 自动关文件是加分习惯。</div>
+  <span class="lab">套路：</span>四个得分点：① <b>统计逻辑封装成函数</b>（题目硬性要求"使用函数实现"）；② <code class="c">open('data.txt','r')</code> 相对路径按<b>当前工作目录</b>解析；参考代码用 <code class="c">Path(__file__).resolve().parent</code> 定位源码目录；③ <code class="c">for line in fin</code> 按行读、<code class="c">fout.write(...)</code> 按"行号:个数"格式写，行号用计数器 idx 递增；④ 判断大写 <code class="c">'A'&lt;=ch&lt;='Z'</code> ；<code class="c">ch.isupper()</code> 还会识别其他 Unicode 大写字母，不能视为完全等价。用 <code class="c">with</code> 自动关文件是加分习惯。</div>
   <a class="tag" href="../知识点/文件/文件与数据维度.html#s3">考点：按行读文件</a><a class="tag" href="../知识点/文件/文件与数据维度.html#s4">考点：写文件与 with</a>
 </div></details>
 
@@ -494,7 +498,7 @@ Textbook("Python语言程序设计基础教程", "傅清平", "高中三年级")
   <tr><th>题号</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
   <tr><td><b>答案</b></td><td><b>D</b></td><td><b>C</b></td><td><b>D</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>D</b></td><td><b>C</b></td><td><b>C</b></td><td><b>B</b></td></tr>
   <tr><th>题号</th><th colspan="10">21~31 主观题关键词</th></tr>
-  <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 整型/浮点型/布尔型/复数型四类 · 22 实参＝调用时传的具体数据；常量/变量/表达式/函数返回值等形式 · 23 全局＝函数外·整个模块可见 vs 局部＝函数内·调用结束销毁·改全局需 global · 24 self·指向调用实例·自动绑定 · 25 结果 10·size 决定元素个数 · 26 倒序 range(200,0,-1)+break→198 · 27 累乘 fact 递推·0!=1→n=3 得 10 · 28 建"零一二…"映射表·isdigit 逐字符替换 · 29 int(str(n)[::-1])→321 · 30 函数统计·'A'&lt;=ch&lt;='Z'·for line in fin·write 行号:个数 · 31 __init__·class Novel(Book)·super()</td></tr>
+  <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 整型/浮点型/布尔型/复数型四类 · 22 实参＝调用时传的具体数据；常量/变量/表达式/函数返回值等形式 · 23 全局＝函数外·整个模块可见 vs 局部＝函数内·调用结束通常失去作用域·重绑定全局名需 global · 24 self·指向调用实例·自动绑定 · 25 结果 10·size 决定元素个数 · 26 倒序 range(200,0,-1)+break→198 · 27 累乘 fact 递推·0!=1→n=3 得 10 · 28 建"零一二…"映射表·isdecimal 逐字符替换 · 29 对 abs(n) 倒序并恢复符号；123→321 · 30 函数统计·'A'&lt;=ch&lt;='Z'·for line in fin·write 行号:个数 · 31 __init__·class Novel(Book)·super()</td></tr>
 </table>
 
 <div class="note">
