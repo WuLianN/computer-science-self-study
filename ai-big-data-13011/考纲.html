@@ -47,9 +47,9 @@ header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
     <b>指定教材：</b><code>《大数据与人工智能》</code> 郏东耀 主编，<b>清华大学出版社、北京交通大学出版社，2022 年第 1 版</b>。
   </div>
   <div class="note">
-    🚫 <b>整章不考：仅教材第 13、14 两章</b>；另跳 6 个小节：4.6、4.8、5.5、5.6、8.3、15.4（逐章见下表）。<br>
-    🔑 <b>教材章号 ≠ 考纲章号</b>，且考纲正文引用的是<b>教材节号</b>。三个易混点：<br>
-    　① <b>考纲第 13 章「机器学习算法实验」仍要考</b>（用教材 13.1～13.3 节内容，与「教材第 13 章不考」是两回事，以节内容为准）；<br>
+    🚫 <b>原纲排除条款列有教材第 13、14 章</b>；另列 6 个小节：4.6、4.8、5.5、5.6、8.3、15.4（逐章见下表）。<br>
+    🔑 <b>教材范围与考纲章节分开核对</b>。三个易混点：<br>
+    　① <b>保留考纲第 13 章列明的算法内容</b>；教材章号的疑点集中见<a class="inline" href="#chapter-numbering-note">原纲编号说明</a>；<br>
     　② Spark 考核标注<b>教材 4.7 节</b>（不是考纲内容清单里的 4.6！4.6 不考）；<br>
     　③ 云数据库考核标注<b>教材 5.7 节</b>（5.5、5.6 不考）、图像特征考核标注<b>教材 8.4 节</b>（8.3 不考）。
   </div>
@@ -59,7 +59,7 @@ header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
     <tr><td>第 2 章</td><td>✅ 整章考</td><td>第 10 章</td><td>✅ 整章考</td></tr>
     <tr><td>第 3 章</td><td>✅ 整章考</td><td>第 11 章</td><td>✅ 整章考</td></tr>
     <tr><td>第 4 章</td><td>✂️ 跳 4.6、4.8</td><td>第 12 章</td><td>✅ 整章考</td></tr>
-    <tr><td>第 5 章</td><td>✂️ 跳 5.5、5.6</td><td>第 13 章</td><td>❌ 整章不考</td></tr>
+    <tr><td>第 5 章</td><td>✂️ 跳 5.5、5.6</td><td>第 13 章</td><td>原纲列为不考（<a class="inline" href="#chapter-numbering-note">编号说明</a>）</td></tr>
     <tr><td>第 6 章</td><td>✅ 整章考</td><td>第 14 章</td><td>❌ 整章不考</td></tr>
     <tr><td>第 7 章</td><td>✅ 整章考</td><td>第 15 章</td><td>✂️ 跳 15.4</td></tr>
     <tr><td>第 8 章</td><td>✂️ 跳 8.3</td><td></td><td></td></tr>
@@ -219,11 +219,11 @@ header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
 
 <div class="card"><h3>第 13 章 大数据背景下机器学习算法实验（建议 6 学时）⭐⭐ 决策树大题必备</h3>
   <b>课程内容</b>：13.1 距离的度量方法 ｜ 13.2 聚类、回归、分类 ｜ 13.3 决策树<br>
-  ⚠️ 此处为<b>考纲</b>第 13 章，考核内容<b>正常考</b>；被排除的是<b>教材</b>的第 13、14 整章——教材与考纲章号在此错位，务必以节号核对（考核要求标注的教材 13.1～13.3 节仍需学习）。
+  <div class="note" id="chapter-numbering-note"><b>原纲教材编号说明：</b>本章考核要求分别标注“教材13.1节”“教材13.2节”“教材13.3节”，而排除条款又将教材第十三章列为不考，两处编号不一致。<b>教材章页对应待核</b>。本页保留原纲所引节号，按明确列出的距离、聚类、回归、分类和决策树内容组织复习；不自行将“教材 15.1～15.3”认定为官方更正。可对照 <a class="inline" href="（13011）《人工智能与大数据》考试大纲.docx">原始考纲 DOCX</a>。</div>
   <div class="th"><b>考核知识点与要求</b></div>
-  <div class="kd">（一）距离度量（教材 13.1）：<span class="lvl c">简单应用</span>各种距离度量的计算。</div>
-  <div class="kd">（二）聚类、回归、分类（教材 13.2）：<span class="lvl a">识记</span>常用聚类算法、最常用回归、分类合理判断两个常用指标及概念；<span class="lvl b">领会</span>线性回归原理；<span class="lvl c">简单应用</span>K-均值聚类算法原理。</div>
-  <div class="kd">（三）决策树（教材 13.3）：<span class="lvl b">领会</span>决策树基本思想、信息增益和熵；<span class="lvl d">综合应用</span>基于信息增益的决策树生成。</div>
+  <div class="kd">（一）距离度量（原纲标注“教材 13.1”）：<span class="lvl c">简单应用</span>各种距离度量的计算。</div>
+  <div class="kd">（二）聚类、回归、分类（原纲标注“教材 13.2”）：<span class="lvl a">识记</span>常用聚类算法、最常用回归、分类合理判断两个常用指标及概念；<span class="lvl b">领会</span>线性回归原理；<span class="lvl c">简单应用</span>K-均值聚类算法原理。</div>
+  <div class="kd">（三）决策树（原纲标注“教材 13.3”）：<span class="lvl b">领会</span>决策树基本思想、信息增益和熵；<span class="lvl d">综合应用</span>基于信息增益的决策树生成。</div>
   <div class="th"><b>重点</b>：聚类、回归和分类基础算法。<b>难点</b>：熵的理解和应用。</div>
 </div>
 
@@ -231,7 +231,7 @@ header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
 <h2 class="section" id="impl">Ⅳ · 大纲说明与考核实施要求</h2>
 <div class="rule">
   <div class="th"><b>大纲与教材的关系</b></div>
-  大纲是学习和考核的依据；教材内容比大纲有扩展与发挥。大纲里的考核知识点教材里一般都有；教材里有的内容，大纲不一定体现。（<b>复习以大纲考核知识点标注的教材节号为准</b>，务必先核对页首排除清单。）
+  大纲是学习和考核的依据；教材内容比大纲有扩展与发挥。大纲里的考核知识点教材里一般都有；教材里有的内容，大纲不一定体现。（<b>按考纲列明的知识点与能力要求组织复习</b>，教材编号疑点见<a class="inline" href="#chapter-numbering-note">原纲编号说明</a>。）
   <div class="th"><b>自学方法建议（4 条）</b></div>
   <ol style="margin:0 0 0 1.4em;padding:0">
     <li>学教材前先通读本大纲，熟知基本要求。</li>
@@ -271,7 +271,7 @@ header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
   <div class="th">二、名词解释题</div>1. 机器学习
   <div class="th">三、简答题</div>1. 美国认知心理学家 G.M.Olson 提出的语言理解的标志是什么？
   <div class="th">四、综合分析题</div>
-  以下表数据作为训练数据，构造一棵决策树用于判断水果的类别并画出来（对应教材 13.3 节·信息增益）：
+  以下表数据作为训练数据，构造一棵决策树用于判断水果的类别并画出来（对应考纲 13.3·信息增益）：
   <div class="tscroll"><table class="law">
     <tr><th>编号</th><th>颜色</th><th>形状</th><th>大小</th><th>类别</th></tr>
     <tr><td>1</td><td>红</td><td>球</td><td>一般</td><td>苹果</td></tr>
@@ -282,7 +282,7 @@ header.hero{background:linear-gradient(135deg,#be185d,#7c3aed)}
   </table></div>
 </div>
 
-<div class="note">📌 本页面根据广东省考纲原文（docx，2026 年 10 月收集）整理，考纲可能修订，以官方最新为准；购书请认准 <b>《大数据与人工智能》郏东耀主编 · 清华大学出版社/北京交通大学出版社 · 2022 年第 1 版</b>；教材第 4 章 4.6/4.8、第 5 章 5.5/5.6、第 8 章 8.3、第 13/14 整章、第 15 章 15.4 <b>不纳入考核</b>。</div>
+<div class="note">📌 本页面根据广东省考纲原文（docx，2026 年 10 月收集）整理，考纲可能修订，以官方最新为准；购书请认准 <b>《大数据与人工智能》郏东耀主编 · 清华大学出版社/北京交通大学出版社 · 2022 年第 1 版</b>；原纲排除条款见页首，教材编号疑点见<a class="inline" href="#chapter-numbering-note">原纲编号说明</a>。</div>
 
 </div>
 
