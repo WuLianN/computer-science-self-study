@@ -178,9 +178,11 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
   <div class="opts"><span>A. 标准化</span><span>B. 空间嵌入</span><span>C. 非线性扩展</span><span>D. 特征离散化</span></div>
 </summary>
 <div class="body">
-  <div class="answer">答案：A</div>
-  <div class="sol"><span class="lab">解析：</span><b>标准化（z-score/归一化）</b>只对每个特征做数值缩放，特征个数（空间维数）不变。空间嵌入会重映射到低/高维、非线性扩展（核/多项式）会升维、特征离散化常伴随独热展开使维数变化。故选 A。<br><span style="color:var(--muted);font-size:13px">注：若仅按"特征列数是否变化"理解，离散化本身也不增列，本题存在轻微争议；按教材"标准化不改变维数"的典型表述，取 A。</span></div>
-  <a class="tag" href="../知识点/特征提取/特征提取与图像特征.html">考点：特征变换与维数</a>
+  <div class="answer">参考答案：A（D 的含义需结合教材定义）</div>
+  <div class="sol"><span class="lab">解析：</span><b>标准化</b>对各特征做数值平移、缩放，特征列数不变，故保留 <b>A</b> 为参考答案。<br>
+  <b>离散化与编码要分开：</b>单纯分箱，例如把“年龄”变成“年龄段”，仍可保留为一列；分箱后若进一步做<b>独热编码</b>，则可能展开成多列。<br>
+  因此，不能笼统地说“特征离散化一定改变维数”。<b>D 是否应排除，需核对教材对该术语的具体定义</b>，不将单纯分箱与独热编码混为一步。</div>
+  <a class="tag" href="../知识点/特征提取/特征提取与图像特征.html#s2">考点：标准化、离散化与编码</a>
 </div></details>
 
 <details class="q" id="q12"><summary>
@@ -417,13 +419,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
   <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
   <tr><td><b>答案</b></td><td><b>B</b></td><td><b>C</b></td><td><b>B</b></td><td><b>D</b></td><td><b>A</b></td><td><b>D</b></td><td><b>A</b></td><td><b>D</b></td><td><b>C</b></td><td><b>B</b></td></tr>
   <tr><th>题号</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
-  <tr><td><b>答案</b></td><td><b>A</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>B</b></td><td><b>C</b></td><td><b>C</b></td><td><b>B</b></td></tr>
+  <tr><td><b>答案</b></td><td><b>A</b>⚠️</td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>B</b></td><td><b>A</b></td><td><b>B</b></td><td><b>C</b></td><td><b>C</b></td><td><b>B</b></td></tr>
   <tr><th>题号</th><th colspan="10">21~32 主观题关键词</th></tr>
   <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 4V之多样Variety·类型来源繁多·半/非结构化 · 22 纠删码·k数据块+m校验块·低开销容错 · 23 基本可用·软状态·最终一致 · 24 机器从数据(经验)自动学规律改善性能·Mitchell T/E/P · 25 让计算机读懂语义·词法句法语义·NLP核心 · 26 内存计算·DAG·通用统一·API丰富·血缘容错 · 27 颜色直方图·颜色矩·相关图/CAV·相交/巴氏/EMD · 28 分类+定位·安防/自动驾驶/医疗/质检/零售 · 29 端点检测·特征提取·声学+语言模型·说话人噪声信道·大词汇歧义 · 30 任意·线性·结构层次·社会约定·模糊歧义·开放 · 31 合理(HDFS扩容/并行/生态) + Hive/HBase/Spark/ZK/Kafka/Sqoop · 32 分类(离散)vs回归(连续)·售价=回归·续订=分类·根/决策/叶节点·剪枝防过拟合</td></tr>
 </table>
 
 <div class="note">
-  ✍️ <b>答案可信度说明</b>：本卷为逐题整理收录，<b>无官方标准答案</b>。选择题 1~20 依据当期《考试大纲》与指定教材《大数据与人工智能》（郏东耀主编）内容逐题推定，第 11 题存在轻微争议（题内已标注）；<b>第 9 题按教材分级口径取 C（4 级）</b>，与现行 SAE J3016 / GB/T 40429—2021 的 L3 说法不同（题内已说明），考试时以教材为准；名词解释/简答/综合分析的参考答案给出的是<b>得分关键词与要点</b>，考试按点给分，意思到位、关键词齐全即可得分。
+  ✍️ <b>答案可信度说明</b>：本卷为逐题整理收录，<b>无官方标准答案</b>。选择题 1~20 依据当期《考试大纲》与指定教材《大数据与人工智能》（郏东耀主编）内容逐题推定，第 11 题保留 A 为参考，并补充单纯分箱与独热编码的区别，D 的具体定义待核教材；<b>第 9 题按教材分级口径取 C（4 级）</b>，与现行 SAE J3016 / GB/T 40429—2021 的 L3 说法不同（题内已说明），考试时以教材为准；名词解释/简答/综合分析的参考答案给出的是<b>得分关键词与要点</b>，考试按点给分，意思到位、关键词齐全即可得分。
 </div>
 
 <footer>2026年1月广东省高等教育自学考试 · 人工智能与大数据（13011）真题详解 · 教材：郏东耀主编《大数据与人工智能》清华大学出版社 2022 第 1 版 · 仅供学习交流参考</footer>
