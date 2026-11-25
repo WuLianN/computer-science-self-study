@@ -50,7 +50,7 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
 
 <div class="tip">
   📚 <b>本卷共 31 题满分 100 分</b>，题干常显、答案和解析折叠，可直接当卷子做。建议答题顺序：单选（20分，全是送分概念题）→ 简答（30分，背概念即可拿分）→ 简单设计（32分，水仙花数/递归/查找/列表移动都是经典套路）→ 综合设计（文件+面向对象两大高频压轴）。<b>完整答案速查表在页面最下方</b>。<br>
-  ⚠️ 本卷原卷为网络流传图片版，<b>官方未发布标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，第 14 题存在命题瑕疵（详见题内说明），供学习参考。
+  ⚠️ 本卷原卷为网络流传图片版，<b>本仓库未附官方标准答案</b>；下列答案全部按 Python 3 规则逐题实跑/复核推定，第 14 题存在命题瑕疵（详见题内说明），供学习参考。
 </div>
 
 <div class="toolbar">
@@ -211,15 +211,13 @@ footer{text-align:center;color:var(--muted);font-size:13px;margin-top:40px}
   <div class="opts"><span>A. print('a={0} b={1} c={2}'.format(3,4,5))</span><span>B. print('a=b=c={0}{1}{2}'.format(3,4,5))</span><span>C. print('a={0} b={1} c={2}'.format(3,4,5))</span><span>D. print('a={1} b={2} c={3}'.format(3,4,5))</span></div>
 </summary>
 <div class="body">
-  <div class="answer">答案：C（命题有双重瑕疵，见解析）</div>
-  <div class="sol"><span class="lab">解析：</span>考查 <code class="c">print()</code> 多参数输出与 <code class="c">str.format()</code> 占位符。先把各句<b>实跑结果</b>列出对比：<br>
-  题干 <code class="c">print('a=',3,'b=',4,'c=',5)</code> → <code class="c">a= 3 b= 4 c= 5</code><br>
-  A <code class="c">print('a={0} b={1} c={2}'.format(3,4,5))</code> → <code class="c">a=3 b=4 c=5</code><br>
-  B <code class="c">print('a=b=c={0}{1}{2}'.format(3,4,5))</code> → <code class="c">a=b=c=345</code><br>
-  C <code class="c">print('a={0} b={1} c={2}'.format(3,4,5))</code> → <code class="c">a=3 b=4 c=5</code><br>
-  D <code class="c">print('a={1} b={2} c={3}'.format(3,4,5))</code> → 报 <b>IndexError</b>（只有 3 个参数，占位符 <code class="c">{3}</code> 下标越界）<br>
-  ⚠️ <b>两处命题瑕疵：</b>① <b>A 与 C 选项完全相同</b>（真卷如此），本身即失误；② 题干中 print 用 sep（默认空格）隔开每个参数，<code class="c">'a='</code> 与 <code class="c">3</code> 之间也有空格，真实输出是 <code class="c">a= 3 b= 4 c= 5</code>（<b>= 后带空格</b>）；而 A/C 的 format 模板 <code class="c">a={0}</code> 中 = 与占位符相连，输出 <code class="c">a=3 b=4 c=5</code>（= 后无空格）——严格看<b>四个选项都对不上</b>。出题人误以为 <code class="c">print('a=',3,...)</code> 输出 <code class="c">a=3 b=4 c=5</code>，据此把答案设为 <b>C</b>。<br>
-  📌 结论：考试按出题意图选 <b>C</b>；自己写代码若要真正复现 <code class="c">a= 3 b= 4 c= 5</code>，应用 <code class="c">'a= {0} b= {1} c= {2}'.format(3,4,5)</code>（= 后补空格）或直接沿用题干的 <code class="c">print('a=',3,...)</code>。</div>
+  <div class="answer">按现有题面无完全正确选项，评分答案待核。</div>
+  <div class="sol"><span class="lab">解析：</span><code class="c">print()</code> 默认用空格分隔各参数。各句运行结果为：<br>
+  <b>题干：</b><code class="c">a= 3 b= 4 c= 5</code><br>
+  <b>A、C：</b><code class="c">a=3 b=4 c=5</code>（两选项重复，且等号后没有空格）<br>
+  <b>B：</b><code class="c">a=b=c=345</code><br>
+  <b>D：</b>报 <code class="c">IndexError</code>，因为 <code class="c">{3}</code> 超出三个参数的下标范围。<br>
+  因此，四项均不能完全匹配题干输出；<b>保留原题，不强行指定 C</b>。若用 format 复现题干，应写 <code class="c">'a= {0} b= {1} c= {2}'.format(3,4,5)</code>。</div>
   <a class="tag" href="../知识点/字符串/字符串处理.html#s5">考点：format() 格式化输出</a>
 </div></details>
 
@@ -496,13 +494,13 @@ d.display_dog()</pre>
   <tr><th>题号</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th></tr>
   <tr><td><b>答案</b></td><td><b>B</b></td><td><b>D</b></td><td><b>B</b></td><td><b>C</b></td><td><b>B</b></td><td><b>C</b></td><td><b>D</b></td><td><b>C</b></td><td><b>A</b></td><td><b>A</b></td></tr>
   <tr><th>题号</th><th>11</th><th>12</th><th>13</th><th>14</th><th>15</th><th>16</th><th>17</th><th>18</th><th>19</th><th>20</th></tr>
-  <tr><td><b>答案</b></td><td><b>B</b></td><td><b>A</b></td><td><b>B</b></td><td><b>C</b></td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td><td><b>C</b></td><td><b>A</b></td></tr>
+  <tr><td><b>答案</b></td><td><b>B</b></td><td><b>A</b></td><td><b>B</b></td><td>无完全正确项⚠</td><td><b>D</b></td><td><b>A</b></td><td><b>B</b></td><td><b>D</b></td><td><b>C</b></td><td><b>A</b></td></tr>
   <tr><th>题号</th><th colspan="10">21~31 主观题关键词</th></tr>
   <tr><td><b>答案</b></td><td colspan="10" style="text-align:left;font-size:13px">21 翻译执行·解释/编译两方式 · 22 左结合(加减乘除)/右结合(**)/链式比较；连赋值为右侧求值一次 · 23 def 与 lambda；def 参数带括号、函数体为语句块，lambda 参数不带括号、函数体为单表达式且自动返回 · 24 封装·继承·多态 · 25 5×4=20 个·各维度长度之积 · 26 拆位求 4 次幂→1634;8208;9474 · 27 出口 n==1·体 n+sub(n-1)→15 · 28 find() 循环·从 i+1 续查→[0,3,8] · 29 lst[n:]+lst[:n]·format 输出 · 30 函数统计·'a'&lt;=ch&lt;='z'·for line in f · 31 __init__·class Cat(Animal)·super()</td></tr>
 </table>
 
 <div class="note">
-  ✍️ <b>答案可信度说明</b>：本卷为网络流传图片版，<b>无官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 abs(3+4j)=5.0、0 and 9=0、连续比较等易错点）；<b>第 14 题存在命题瑕疵</b>：题干 <code>print('a=',3,'b=',4,'c=',5)</code> 真实输出为 <code>a= 3 b= 4 c= 5</code>（= 后带空格），四个 format 选项均对不上，且 A、C 选项重复；出题人按“= 后无空格”的误解设答案为 C（题内已逐选项列出实跑输出）。设计题 26~31 的参考代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
+  ✍️ <b>答案可信度说明</b>：本卷为网络流传图片版，<b>本仓库未附官方标准答案</b>。选择题 1~20 全部按 Python 3 规则实跑/复核（含 abs(3+4j)=5.0、0 and 9=0、连续比较等易错点）；<b>第 14 题按现有题面无完全正确选项</b>：题干输出的等号后有空格，A/C 没有且选项重复，B 输出不同，D 下标越界；评分答案待核，不指定 C。设计题 26~31 的参考代码均经 Python 3 实跑验证，考试按步骤给分，思路正确、关键点齐全即可得分。
 </div>
 
 <footer>2026年4月广东省高等教育自学考试 · 计算机高级程序设计（08074）真题详解 · 教材：傅清平等《Python语言程序设计基础教程》清华大学出版社 2022 · 仅供学习交流参考</footer>
