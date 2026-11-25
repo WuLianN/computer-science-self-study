@@ -39,6 +39,12 @@ a.inline:hover{text-decoration:underline}
 .toc a{display:block;color:var(--ink);text-decoration:none;padding:5px 0;border-bottom:1px dashed var(--line);font-size:14px}
 .toc a:last-child{border-bottom:none}
 .toc a:hover{color:var(--brand);padding-left:6px;transition:.15s}
+/* 抢分页的目录默认收起；继续阅读只在本页已有书签时显示。 */
+.reading-toc>.toc-h{cursor:pointer;margin-bottom:0}
+.reading-toc[open]>.toc-h{margin-bottom:6px}
+.reading-resume{margin:12px 0;font-size:14px}
+.reading-resume>a{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--brand-soft);color:var(--brand);text-decoration:none;line-height:1.6;overflow-wrap:anywhere}
+@media print{.reading-toc,.reading-resume{display:none!important}}
 .m{font-family:"Cambria Math",Cambria,Georgia,serif;background:#f3f4f6;border-radius:6px;padding:0 6px;white-space:nowrap}
 .m sub{font-size:12px}  /* 移动端复测：11px 下标在小屏贴线难认，上提到 12px */
 /* 块级 .m：少数页把整条公式放进 <p class="m">/div.m/li.m。行内 .m 的 nowrap 是刻意的

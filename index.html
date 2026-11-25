@@ -38,6 +38,15 @@
   .hero .stats .chip span{font-size:.78rem;opacity:.82}
   .hero .stats .chip:hover{background:#fff;color:var(--primary-deep);border-color:#fff;transform:translateY(-2px)}
   .stats-sum{margin:10px 0 0;font-size:.78rem;opacity:.85}
+  .reading-home{max-width:960px;margin:12px auto 0}
+  .reading-home[hidden]{display:none}
+  .reading-home h2{font-size:1rem;margin-bottom:8px}
+  .reading-home-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .reading-home-link{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--primary-deep);text-decoration:none;overflow-wrap:anywhere}
+  .reading-home-link b{font-size:.88rem}
+  .reading-home-link span,.reading-home p{font-size:.8rem;color:var(--muted)}
+  .reading-home p{margin-top:6px}
+  .reading-home-link:hover{border-color:var(--primary);background:var(--primary-soft)}
   .tip{max-width:960px;margin:18px auto 0;background:#fff;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:12px;padding:14px 20px;font-size:.9rem;color:var(--muted);box-shadow:var(--shadow)}
   .tip b{color:var(--text)}
   .tip code{background:var(--primary-soft);color:var(--primary-deep);border-radius:5px;padding:1px 7px;font-size:.85em;font-family:"SFMono-Regular",Consolas,monospace}
@@ -86,10 +95,11 @@
   .reset-btn:hover{border-color:var(--primary);background:var(--primary-soft)}
   @media (max-width:640px){
     .settings-btn{top:14px;right:14px;width:36px;height:36px}
+    .reading-home-list{grid-template-columns:1fr}
     .modal{border-radius:15px;padding:18px 16px;max-height:86vh}
     .subj-toggle{min-height:52px}
   }
-  @media print{.settings-btn,.modal-mask{display:none!important}}
+  @media print{.settings-btn,.modal-mask,.reading-home{display:none!important}}
   footer{max-width:960px;margin:36px auto 0;text-align:center;color:var(--muted);font-size:.85rem;line-height:1.9}
   footer .fl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
   footer .fl a{color:var(--primary-deep);text-decoration:none;padding:5px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:.82rem;transition:.15s}
@@ -159,6 +169,11 @@
   </div>
 </section>
 
+<section class="reading-home" data-reading-home hidden aria-labelledby="reading-title">
+  <h2 id="reading-title">继续阅读</h2>
+  <div class="reading-home-list"></div>
+  <p>每门课保留最近读到的小节，仅保存在本机浏览器。</p>
+</section>
 <main id="app"></main>
 
 <footer>
@@ -485,6 +500,7 @@ function render() {
     empty.appendChild(d);
     app.appendChild(empty);
   }
+  document.dispatchEvent(new Event('reading:render'));
 }
 
 /* ===== 设置弹窗 ===== */
@@ -543,6 +559,7 @@ document.getElementById("settingsReset").addEventListener("click", () => {
 render();
 </script>
 <!-- 右下角停靠胶囊：仅窄屏显示，样式自带（本页不外链 theme.css） -->
-<script src="assets/dock.js?v=20261125a" defer></script>
+<script src="assets/dock.js?v=20261125b" defer></script>
+<script src="assets/reading.js?v=20261125b" defer></script>
 </body>
 </html>
