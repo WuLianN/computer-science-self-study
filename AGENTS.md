@@ -1,6 +1,12 @@
 # AGENTS.md — 给 AI 助手的项目约定
 
-本仓库是「自考本科·计算机科学与技术」的**纯静态学习笔记站**（HTML/CSS/SVG），GitHub Pages 托管，**无框架、无构建步骤、无包管理器**。修改/新增页面时请遵守以下约定，保持一致性与可维护性。
+本仓库是「自考本科·计算机科学与技术」的**纯静态学习笔记站**（HTML/CSS/SVG/JavaScript），GitHub Pages 托管，**无框架、无构建步骤、无包管理器**。修改/新增页面时请遵守以下约定，保持一致性与可维护性。
+
+## 0. AI 快速定位
+
+- 先用根 `README.md` 看仓库总览和课程入口；进入某门课程后，若有该目录自己的 `README.md`，先读它了解教材、来源和易错点。课程内实际导航以对应的 `知识点/index.html`、`真题/index.html` 或课程根 `index.html` 为准。
+- 修改单页时从目标课程和关联页面开始查；用 `rg --files` / `rg -n` 定位引用与同名样式。只有改全站共享行为时才扩大到全站扫描，不必把所有页面都读入上下文。
+- 共享样式和导航的入口是 `assets/theme.css`、`assets/dock.js`、`assets/reading.js`；改它们前先看本文件第 2 节及其版本联动、自检要求。
 
 ---
 
@@ -13,6 +19,15 @@
   - `全国YYYY年M月自考CODE《名称》真题/` —— 放该考期真题：原卷图片 `1.png 2.png 3.png`、`试卷.html`、`真题详解.html`（+ 个别题目配图）。
   - `真题/index.html` —— 历年真题导航。
 - 根目录 `index.html` 用内置 `subjects` 数组渲染科目卡片；**新增科目 = 向该数组追加一项**，并同步根 `README.md` 的仓库结构树。`README.md` 的「✅ 考试科目进度」是考试通过状态、由用户维护，不要因新增目录就勾选。
+- 课程目录下的 `README.md` 是该课程的补充说明，记录教材、考纲来源、收录边界和易错点；根目录的 `四门资料核对记录.md` 是一次性核对记录，不是全站页面数量或当前进度的唯一来源。
+
+### 1.1 新增课程的最小流程
+
+1. 创建 `英文名-五位课程代码/`，按课程类型加入 `知识点/`、`真题/` 或实践课的 `index.html`、`题型示例.html`、`示例代码/`、`版本/YYYY-MM-DD/`。
+2. 在根 `index.html` 的 `subjects` 数组加入课程卡片和可访问入口；课程根入口优先指向该课程的导航页。
+3. 同步根 `README.md` 的结构树；有稳定教材/考纲说明时，在课程目录补一个 `README.md`。
+4. 普通内容页按第 2 节引入 `theme.css` 与 `dock.js`；自包含的根首页和试卷页继续遵守例外规则。
+5. 检查课程内链接、`viewport-fit=cover`、缓存版本和窄屏横向溢出，再提交。不要因为新增目录改动「考试科目进度」，除非用户明确要求。
 
 ## 2. 样式系统（最重要）——复用 `assets/theme.css`
 
@@ -41,7 +56,7 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 全站浮动导航已收敛为**单一组件**：右下角**竖排**两枚独立圆钮（🏠返回首页 + ↑回到顶部），**仅窄屏(≤640px)显示、桌面隐藏**。🏠 常驻角落；↑ 默认透明隐藏、滚过阈值才淡入浮现于 🏠 上方（由 dock.js 监听 scroll 切换 `nav.dock` 的 `.show-top` 类实现自动显隐）。**根 `index.html` 前缀为空时脚本自动省略 🏠、只建 ↑**（首页不需要「返回首页」）。
 - **启用方式**：`</body>` 前放一行 `<script src="{相对前缀}assets/dock.js?v=版本号" defer></script>` 即可（样式在 theme.css 的 `.dock`）。**不要再手写** `<a class="totop">` 或页尾"回到顶部"链接。
 - **首页链接自适应深度**：`dock.js` 读自身 `<script>` 的 `src`（回退到 theme.css 的 `link`）算出仓库根相对前缀，因此任意目录层级、`file://` 双击、GitHub Pages 都能拼出正确的 `index.html`，**无需按页手写 `../`**。
-- **单一真源**：想改导航动作/样式/加按钮，只改 `assets/dock.js` + theme.css 的 `.dock`，**不动那 105 个外链页**。`dock.js` 的前两个 IIFE 分别负责导航和 **hero 首屏折叠**（窄屏描述 clamp 2 行 / pill 留前 3 枚 / 导航链留前 4 条，其余收进「展开全文 +N」；零信息丢失、可展开、净收益 <4px 自动撤销、桌面与打印均不折叠）；末尾第三个 IIFE 统一加载 `reading.js`，按 `英文名-五位课程代码` 目录识别课程，知识点/真题列表导航不覆盖书签。首页可单独清除一门课程的书签或清空全部记录。新增课程只需按约定引入 `dock.js`，不要再逐页添加 `reading.js` 或课程白名单。改这个文件前先看清各 IIFE 的分工。
+- **单一真源**：想改导航动作/样式/加按钮，只改 `assets/dock.js` + theme.css 的 `.dock`，无需手工逐页改导航实现。`dock.js` 的前两个 IIFE 分别负责导航和 **hero 首屏折叠**（窄屏描述 clamp 2 行 / pill 留前 3 枚 / 导航链留前 4 条，其余收进「展开全文 +N」；零信息丢失、可展开、净收益 <4px 自动撤销、桌面与打印均不折叠）；末尾第三个 IIFE 统一加载 `reading.js`，按 `英文名-五位课程代码` 目录识别课程，知识点/真题列表导航不覆盖书签。首页可单独清除一门课程的书签或清空全部记录。新增课程只需按约定引入 `dock.js`，不要再逐页添加 `reading.js` 或课程白名单。改这个文件前先看清各 IIFE 的分工。
 - **例外**：根 `index.html` 与 4 个 `试卷.html` 是**刻意不外链 theme.css 的自包含页**，加组件须自带内联样式、勿依赖 theme。4 个 `试卷.html` 保持纯净、无 `.dock`；**根 `index.html` 已引入 `dock.js` + 内联 `.dock` 样式**（页面约 4500px 长，需要 ↑ 回顶），并自带 `@media print` 隐藏规则。
 - **版本联动**：theme.css 或 dock.js 有改动就全站把 `theme.css?v=` 与 `dock.js?v=` 同步成新日期串破缓存（脚本见 4.1）。
 
@@ -50,17 +65,17 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 - **页内 `<style>` 在 theme 之后**：同特异性下页内胜。想在 `theme.css` 新增规则去压过页内已有规则，必须**提高特异性**（加祖先限定或属性选择器），否则规则写了却完全不生效、也不报错。实证：页内 `.links a` (0,1,1) 顶掉 theme 同名规则 → 最终用 `.wrap .links a` (0,2,1)；13009 真题详解页内 `.fig svg{min-width:560px}` 顶掉 theme → 最终改用 `.wrap svg[viewBox^="0 0 6"]`（及 7/8/9）这类属性选择器把特异性提到 (0,2,1) 才解决。
 - **窄屏改动一律进 `@media (max-width:640px)`**，桌面(>640px) 必须零回归；全站断点统一 640px，不要另设。改完用 768/1200 比对关键计算样式。
 - **`theme.css` 里的 `!important` 是刻意的**：用于压过页内样式与动画页残留（`.gotos`/`.gotos a`、`.hero-extra`、`.toggle::after`、`@media print .dock`、reduced-motion）。**别以「清理技术债」为由删**，删前先 grep 页内同选择器。
-- **同名类先全局 grep 语义再上收**。已知不能上收：`.ok`（内容页绿底提示框 / Prim·Kruskal 动画页步骤日志绿字）、`.tip`（根首页提示条 / 试卷页 / 真题详解提示卡 / `.extbar` 灰字，14 个文件有定义）、`.m`（根首页 `.entry .txt .m` 是元信息、不是公式）、`.tag`（`a.tag` 真题详解考点链 vs `span.tag` 考前抢分标签）。
+- **同名类先全局 grep 语义再上收**。已知不能上收：`.ok`（内容页绿底提示框 / Prim·Kruskal 动画页步骤日志绿字）、`.tip`（根首页提示条 / 试卷页 / 真题详解提示卡 / `.extbar` 灰字，多个文件有定义）、`.m`（根首页 `.entry .txt .m` 是元信息、不是公式）、`.tag`（`a.tag` 真题详解考点链 vs `span.tag` 考前抢分标签）。
 - **屏幕 / 打印分离**：可折叠、可隐藏的交互样式放 `@media screen and (max-width:640px)`，保证 `Ctrl+P` / 存 PDF 内容完整；`@media print` 额外隐藏 `.dock`。根 `index.html` 自带内联 `.dock` 样式副本，**改 `.dock` 须 theme.css 与根首页两处同步**。
-- **新页 viewport 必须带 `viewport-fit=cover`**，否则 iOS 不注入 `env(safe-area-inset-*)`，`.dock` 与 `body` 安全区留白失效（全站 110 页现已齐）。
+- **新页 viewport 必须带 `viewport-fit=cover`**，否则 iOS 不注入 `env(safe-area-inset-*)`，`.dock` 与 `body` 安全区留白失效；全站扫描时应覆盖当前所有 HTML 页面。
 
 ### 2.3 表格与 SVG 的既定兜底（别重复造轮子）
 
 - **多列表格**包一层 `.tscroll`（或放 `.rule`/`.card` 内）；theme 已给 `table.law{width:max-content;min-width:100%;max-width:900px}` + 横滑，360px 下短文本竖排 971→226。单元格 `td,th{overflow-wrap:break-word}` 是刻意的：正文长串仍保留 `overflow-wrap:anywhere`，**不要全局把 `anywhere` 改成 `break-word`**，否则长公式重新顶出横向溢出。父容器子选择器限定 `.tscroll/.rule/.card` 是故意绕开 `.ok`。
 - **非 `table.law` 的自定义表格（如 `.calc table`、`table.anskey`）必须自己包一层 `.tscroll`**，不能裸露在 `.calc`/`.note` 等页内自定义内容盒里：theme 的 `width:max-content;min-width:100%;max-width:900px` 只命中 `.tscroll>table.law`/`.rule>table.law`/`.card>table.law`，非 law 表格按内容自然宽度撑宽自定义盒（`overflow:visible`），最后由外层 `.rule`/`.card` 的 `overflow-x:auto` 兜底，于是**同容器正文、提示框一起整块横滑**，虚线算例框也被表格画破。13011 特征提取页的相关系数算例表踩过：@360 `calcSw 412>288`、`ruleSw 431>326`；两张表各包 `.tscroll` 后 `calcSw=288`、`ruleSw=326`，表格单独横滑 136px、正文 `left` 不变，768/1200 计算形状与 HEAD 完全一致。
-- **`table.law` 直接放 `.rule`/`.card` 内是既有设计**（theme 有配套 `width:max-content` 规则），全站 84 张属此类，别按上一条去「整改」：此时页面本身不溢出，只是整块内容盒横滑，历轮走查已接受。扫「最近横滑祖先」时必须区分 law / 非 law 两类，否则会把这 84 张误报成 bug。
-- **宽 SVG（`viewBox` 以 `0 0 6`/`7`/`8`/`9` 开头）按档设最小渲染宽度**，超宽交给最近的 `.fig` 图容器横滑；等效字号 = 图内 `font-size × 渲染宽 / viewBox 宽`。**`0 0 6` 档（620–680，4 张）= 520px**：一刀切 760px 会把这几张放大到 1.1–1.23 倍、图内字 17–20.8px 比正文 14.5px 还大；**`0 0 7/8/9` 档（700–999，33 张）= 760px**：原本等效仅 3–4px。**不要改图内 `font-size`，也不要删或合并这两档**；改前用五视口复扫 37 张宽图的 `minEff ≥8px`、`maxEff ≤16px`。viewBox 380 的小图不在此列。
-- **宽 SVG 必须放在专用图容器内**（`.fig`，theme 在窄屏给它 `overflow-x:auto`），别直接塞进 `.rule`/`.card` 等内容盒：内容盒虽也有 `overflow-x:auto`、不会撑破页面，但会让**同容器里的表格与正文一起横滑**、文字被裁得错乱（13009 数据库概论的 `.er` E-R 图踩过，现已改为 SVG 外包一层 `.fig`）。全站 37 张宽图应 37/37 直接父为 `.fig`。
+- **`table.law` 直接放 `.rule`/`.card` 内是既有设计**（theme 有配套 `width:max-content` 规则），别按上一条去「整改」：此时页面本身不溢出，只是整块内容盒横滑，历轮走查已接受。扫「最近横滑祖先」时必须区分 law / 非 law 两类，避免把这种既有结构误报成 bug。
+- **宽 SVG（`viewBox` 以 `0 0 6`/`7`/`8`/`9` 开头）按档设最小渲染宽度**，超宽交给最近的 `.fig` 图容器横滑；等效字号 = 图内 `font-size × 渲染宽 / viewBox 宽`。**`0 0 6` 档（620–680）= 520px**：一刀切 760px 会把这档图放大到 1.1–1.23 倍、图内字 17–20.8px 比正文 14.5px 还大；**`0 0 7/8/9` 档（700–999）= 760px**：原本等效仅 3–4px。**不要改图内 `font-size`，也不要删或合并这两档**；改动相关宽图时，按当前文件清单用五视口复扫 `minEff ≥8px`、`maxEff ≤16px`。viewBox 380 的小图不在此列。
+- **宽 SVG 必须放在专用图容器内**（`.fig`，theme 在窄屏给它 `overflow-x:auto`），别直接塞进 `.rule`/`.card` 等内容盒：内容盒虽也有 `overflow-x:auto`、不会撑破页面，但会让**同容器里的表格与正文一起横滑**、文字被裁得错乱（13009 数据库概论的 `.er` E-R 图踩过，现已改为 SVG 外包一层 `.fig`）。全站检查宽图时，直接父应为 `.fig`。
 - 图注补充说明 `<small>` 窄屏统一 12px（`.fig .cap small`）。
 
 ## 3. 内容规范
@@ -80,11 +95,11 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 
 ### 4.1 批量版本联动（可直接复制）
 
-`theme.css` 或 `dock.js` 一改，就把 **105 个外链页**的 `theme.css?v=` 与 `dock.js?v=` 同时换成新日期串（如 `20261105g → 20261105h`，共 210 处），根 `index.html` 的 `dock.js?v=` 也同步；4 个 `试卷.html` 无外链、不动。历史脚本只在临时目录、**不在仓库**，粘贴这段即可：
+`theme.css` 或 `dock.js` 一改，就把所有引用页中的 `theme.css?v=` 与 `dock.js?v=` 同步换成新日期串；根 `index.html` 的 `dock.js?v=` 也要同步；4 个 `试卷.html` 无外链、不动。历史脚本只在临时目录、**不在仓库**，可按需使用下面的批量替换：
 
 ```powershell
 $root='d:/文档/try/自考本科-计算机科学与技术'; $enc=New-Object System.Text.UTF8Encoding($false)
-$oldV='20261105g'; $newV='20261105h'
+$oldV='20261126b'; $newV='20261126c'
 foreach($f in Get-ChildItem -LiteralPath $root -Filter '*.html' -Recurse -File){
   $t=[System.IO.File]::ReadAllText($f.FullName,[System.Text.Encoding]::UTF8); $o=$t
   $t=$t.Replace('theme.css?v='+$oldV,'theme.css?v='+$newV).Replace('dock.js?v='+$oldV,'dock.js?v='+$newV)
@@ -98,7 +113,7 @@ foreach($f in Get-ChildItem -LiteralPath $root -Filter '*.html' -Recurse -File){
 ## 5. 改动后自检
 
 - 纯静态、无构建：无需跑测试；改样式后用浏览器**取计算样式**核验关键类（尤其涉及同名类/新增共享规则时），确认无 404、无串色、布局无回归，再提交。四轮走查形成的固定口径，改 `theme.css`/`dock.js` 后照此复核：
-  - **五视口** 360 / 400 / 640 / 768 / 1200 × 全站 110 页：`document.documentElement.scrollWidth - clientWidth` 为 0、404 为 0；窄屏可点元素高度 ≥28px（桌面鼠标环境不适用此阈值）。
+  - **五视口** 360 / 400 / 640 / 768 / 1200 × 全站 HTML 页面：`document.documentElement.scrollWidth - clientWidth` 为 0、404 为 0；窄屏可点元素高度 ≥28px（桌面鼠标环境不适用此阈值）。
   - **桌面零回归**：768/1200 下注入 `git show HEAD:assets/theme.css` 前后比对关键选择器计算样式与 hero/目录高度，应完全一致。
   - **折叠/精简类改动**：验证折叠 → 展开 → 收起可逆、零信息丢失、每页净收益为正；用 `page.emulateMedia({media:'print'})` 确认打印不折叠、不印 `.dock`。
   - **表格/SVG 回归哨兵**：最宽 `table.law` ≤900px；400/640/768/1200 下等效字号 <8px 的 SVG 为 0、@360 下 >16px 的宽图为 0（防「糊」也防「过大」）；每张宽 SVG 的**直接父**应是 `.fig`（或自带 `overflow-x:auto` 的图容器），扫祖先链确认兜底者不是 `.rule`/`.card` 内容盒；再扫每张表的**最近横滑祖先**，非 law 表格的兜底者应是 `.tscroll` 等专用容器，落在 `.rule`/`.card` 且被撑宽 >30px 即为回归（`table.law` 属 2.3 节的既有设计，不算）。
