@@ -46,9 +46,9 @@
   .reading-home[hidden]{display:none}
   .reading-home h2{font-size:1rem;margin-bottom:8px}
   .reading-home-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .reading-home-item{display:flex;align-items:stretch;gap:8px;min-width:0}
+  .reading-home-item{position:relative;min-width:0}
   .reading-home-item[hidden],.reading-home-clear[hidden],.reading-home-toggle[hidden],.reading-home-clear-all[hidden]{display:none}
-  .reading-home-link{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--primary-deep);text-decoration:none;overflow-wrap:anywhere}
+  .reading-home-link{display:flex;min-width:0;flex-direction:column;gap:3px;padding:12px 48px 12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--primary-deep);text-decoration:none;overflow-wrap:anywhere}
   .reading-home-link b{font-size:.88rem}
   .reading-home-link span,.reading-home p{font-size:.8rem;color:var(--muted)}
   .reading-home p{margin-top:6px}
@@ -56,7 +56,7 @@
   .reading-home-toggle{display:block;min-height:32px;margin-top:10px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--primary-deep);font:inherit;font-size:.8rem;cursor:pointer}
   .reading-home-toggle:hover{border-color:var(--primary);background:var(--primary-soft)}
   .reading-home-clear,.reading-home-clear-all{min-width:40px;min-height:40px;padding:5px 10px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted);font:inherit;cursor:pointer}
-  .reading-home-clear{align-self:center;flex:0 0 40px;width:40px;height:40px;padding:0;font-size:1.35rem;line-height:1}
+  .reading-home-clear{position:absolute;top:7px;right:7px;z-index:1;min-width:32px;min-height:32px;width:32px;height:32px;padding:0;border:0;border-radius:50%;background:transparent;color:var(--muted);font-size:1.25rem;line-height:1}
   .reading-home-clear:hover,.reading-home-clear-all:hover{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
   .reading-home-clear-all{display:block;margin-top:10px;color:#b91c1c;font-size:.8rem}
   .reading-home-link:focus-visible,.reading-home-toggle:focus-visible,.reading-home-clear:focus-visible,.reading-home-clear-all:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
