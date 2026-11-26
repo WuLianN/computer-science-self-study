@@ -11,6 +11,7 @@
 ```
 .
 ├── index.html                     # 站点首页（科目导航入口）
+├── programming-practice/index.html # C / Python 上机练习导航（平台直达、登录说明、可视化小实验）
 ├── AGENTS.md                      # 给 AI 助手的项目约定
 ├── assets/                        # 全站共享资产
 │   ├── theme.css                  # 共享设计系统（配色/版式/内容盒/窄屏兜底）
