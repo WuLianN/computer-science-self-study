@@ -1,5 +1,5 @@
-/* 四门备考科目的小节书签；不记录掌握程度，也不在打开页面时自动恢复旧位置。
- * 内容页通过 script[data-course] 启用；首页读取可见科目的记录。 */
+/* 按课程目录自动记录小节书签；由 dock.js 统一加载，无需逐课配置。
+ * 每门保留一个位置；首页按最近阅读排序，只展示可见科目。 */
 (function () {
   'use strict';
   var script = document.currentScript;
@@ -7,7 +7,12 @@
   window.__readingInjected = true;
   var root = new URL('../', script.src);
   var key = 'cs-reading-v1:' + root.pathname;
-  var course = script.getAttribute('data-course');
+  var path = location.pathname.slice(root.pathname.length);
+  var courseDirectory = path.split('/')[0];
+  var courseMatch = courseDirectory.match(/-(\d{5})$/);
+  var course = courseMatch ? courseMatch[1] : null;
+  var homeExpanded = false;
+  var homeLimit = 4;
 
   function clean(text) { return String(text || '').replace(/\s+/g, ' ').trim(); }
   function read() {
@@ -17,11 +22,13 @@
     } catch (e) {}
     return {};
   }
-  function destination(record) {
+  function destination(record, code) {
     if (!record || typeof record.path !== 'string' || record.path.length > 600 || typeof record.anchor !== 'string' || !record.anchor || record.anchor.length > 160 || typeof record.section !== 'string' || typeof record.page !== 'string') return null;
     try {
       var url = new URL(record.path, root);
       if (url.protocol !== root.protocol || url.host !== root.host || url.username || url.password || !url.pathname.startsWith(root.pathname) || !url.pathname.endsWith('.html') || url.search || url.hash) return null;
+      var directory = url.pathname.slice(root.pathname.length).split('/')[0];
+      if (!directory.endsWith('-' + code)) return null;
       url.hash = encodeURIComponent(record.anchor);
       return url;
     } catch (e) { return null; }
@@ -31,35 +38,58 @@
     var panel = document.querySelector('[data-reading-home]');
     if (!panel) return;
     var list = panel.querySelector('.reading-home-list');
+    var toggle = panel.querySelector('[data-reading-toggle]');
     var records = read();
+    var entries = [];
     list.textContent = '';
     document.querySelectorAll('#app > .subject[id^="sub-"]').forEach(function (subject) {
       var code = subject.id.slice(4);
       var record = records[code];
-      var url = destination(record);
+      var url = destination(record, code);
       if (!url) return;
+      entries.push({subject:subject, code:code, record:record, url:url});
+    });
+    entries.sort(function (a, b) {
+      function timestamp(entry) {
+        return typeof entry.record.updatedAt === 'number' && Number.isFinite(entry.record.updatedAt) ? entry.record.updatedAt : 0;
+      }
+      return timestamp(b) - timestamp(a);
+    });
+    if (entries.length <= homeLimit) homeExpanded = false;
+    entries.forEach(function (entry, i) {
       var a = document.createElement('a');
       a.className = 'reading-home-link';
-      a.href = url.href;
+      a.href = entry.url.href;
+      a.hidden = !homeExpanded && i >= homeLimit;
       var title = document.createElement('b');
-      title.textContent = code + ' · ' + clean(subject.querySelector('h2').textContent);
+      title.textContent = entry.code + ' · ' + clean(entry.subject.querySelector('h2').textContent);
       var detail = document.createElement('span');
-      detail.textContent = record.page + ' · ' + record.section;
+      detail.textContent = entry.record.page + ' · ' + entry.record.section;
       a.appendChild(title);
       a.appendChild(detail);
       list.appendChild(a);
     });
     panel.hidden = !list.children.length;
+    if (toggle) {
+      toggle.hidden = entries.length <= homeLimit;
+      toggle.textContent = homeExpanded ? '收起' : '展开其余 ' + (entries.length - homeLimit) + ' 门';
+      toggle.setAttribute('aria-expanded', String(homeExpanded));
+    }
   }
 
   if (!course) {
+    var toggle = document.querySelector('[data-reading-toggle]');
+    if (toggle) toggle.addEventListener('click', function () {
+      homeExpanded = !homeExpanded;
+      renderHome();
+    });
     renderHome();
     document.addEventListener('reading:render', renderHome);
     window.addEventListener('pageshow', renderHome);
     window.addEventListener('storage', function (e) { if (e.key === key || e.key === null) renderHome(); });
     return;
   }
-  if (!/^\d{5}$/.test(course) || !location.pathname.startsWith(root.pathname)) return;
+  if (!location.pathname.startsWith(root.pathname) || /^(知识点|真题)\/index\.html$/.test(decodeURI(path.slice(courseDirectory.length + 1)))) return;
 
   // 旧页面已有的锚点保持不变；少数无锚点的图示页与真题标题补稳定的顺序 ID。
   document.querySelectorAll('.wrap h2').forEach(function (heading, i) {
@@ -71,7 +101,6 @@
   });
   var targets = Array.prototype.slice.call(document.querySelectorAll('.wrap h2[id], .wrap details.q[id]'));
   if (!targets.length) return;
-  var path = location.pathname.slice(root.pathname.length);
   var title = clean(document.querySelector('h1') ? document.querySelector('h1').textContent : document.title);
   var page = title;
   if (/考前抢分/.test(title)) page = '考前抢分';
@@ -91,7 +120,7 @@
   }
 
   var previous = read()[course];
-  if (!location.hash && destination(previous) && previous.path === path && document.getElementById(previous.anchor)) {
+  if (!location.hash && destination(previous, course) && previous.path === path && document.getElementById(previous.anchor)) {
     var hero = document.querySelector('header.hero');
     if (hero) {
       var resume = document.createElement('div');
@@ -108,6 +137,7 @@
   var printing = false;
   var startY = window.scrollY;
   var timer;
+  var savedAnchor = null;
   function current() {
     var chosen = null;
     var boundary = Math.min(180, window.innerHeight * 0.25);
@@ -125,9 +155,11 @@
     try {
       var records = read();
       var stored = records[course];
-      if (stored && stored.path === path && stored.anchor === target.id) return;
+      // 本次打开后首次阅读也刷新时间；同一位置的连续滚动不反复写入。
+      if (savedAnchor === target.id && stored && stored.path === path && stored.anchor === target.id) return;
       records[course] = {path:path, anchor:target.id, page:page, section:label(target), updatedAt:Date.now()};
       localStorage.setItem(key, JSON.stringify({version:1, records:records}));
+      savedAnchor = target.id;
     } catch (e) {}
   }
   function schedule() {

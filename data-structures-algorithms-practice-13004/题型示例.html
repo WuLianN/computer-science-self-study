@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>图书管理参考程序 · 13004 实践 · 自考 CS 学习笔记</title>
 <meta name="description" content="13004 本站自编题型示例与参考练习，明确原文要求、补充假设、操作步骤和验收结果；非官方答案。">
-<link rel="stylesheet" href="../assets/theme.css?v=20261125b">
+<link rel="stylesheet" href="../assets/theme.css?v=20261126a">
 <style>
 header.hero{background:linear-gradient(135deg,#0369a1,#4f46e5)}
 .sample-code{max-width:100%;overflow-x:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font:13px/1.7 Consolas,"SFMono-Regular",monospace;tab-size:4}
@@ -319,6 +319,6 @@ int main(void)
 <div class="tscroll" role="region" aria-label="图书链表验收案例" tabindex="0"><table class="law"><thead><tr><th scope="col">自拟情形</th><th scope="col">预期结果</th></tr></thead><tbody><tr><td>空表显示 / 查找</td><td>输出 Empty list. / Not found.，不解引用空指针。</td></tr><tr><td>空表位置 1、非空表首 / 中 / 尾插入</td><td>顺序正确，未插入结点保持原顺序。</td></tr><tr><td>位置 0、n+2；重复编号</td><td>拒绝并重新输入，不损坏链表。</td></tr><tr><td>非整数编号、负价格、过长或纯空白书名</td><td>提示重输；价格拒绝无穷值和非数值。</td></tr><tr><td>建表中途 EOF；重新建表；正常退出</td><td>临时链表和最终链表都释放；成功重建才替换旧表。</td></tr></tbody></table></div>
 <div class="card"><p><strong>不要只背这一题：</strong>接着把“数据结构 → 操作 → 不变量 → 边界”套到循环队列、二叉树、哈夫曼编码、图和排序上。排序可统计比较与移动次数，先写清计数规则；循环队列先决定是否留空一格。</p><p>C 基础不稳时返回<a class="inline" href="../high-level-programming-13013/知识点/指针/指针与数组.html">指针</a>与<a class="inline" href="../high-level-programming-13013/知识点/结构体与自定义类型/结构体与自定义类型.html">结构体</a>复习。本题没有覆盖所有考核模块。</p></div>
 <footer><div class="fl"><a href="index.html">课程入口与版本记录</a><a href="版本/2026-01-16/原文.pdf" target="_blank" rel="noopener noreferrer">原文 PDF ↗</a><a href="../index.html">首页</a></div><p>整理：2026-11-26 · 示例验证情况分别注明，本站环境不等同于学校考场环境。</p></footer>
-</div><script src="../assets/dock.js?v=20261125b" defer></script>
+</div><script src="../assets/dock.js?v=20261126a" defer></script>
 </body>
 </html>

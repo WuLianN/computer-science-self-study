@@ -7,8 +7,9 @@
  * 显示：仅窄屏(≤640px)出现，与旧 .totop 一致；样式全在 theme.css 的 .dock
  * （根 index.html 是自包含页，按约定自带内联 .dock 样式；prefix 为空时省略 🏠 只留 ↑）。
  *
- * 本文件同时承载第二个互不依赖的窄屏增强：hero 首屏折叠（见文件末尾 IIFE）。
- * 两者都幂等，视觉一律由 CSS 媒体查询决定，桌面零影响。 */
+ * 本文件同时承载第二个互不依赖的窄屏增强：hero 首屏折叠。
+ * 两者都幂等，视觉一律由 CSS 媒体查询决定，桌面零影响。
+ * 末尾另行加载 reading.js，为首页及所有课程内容页提供阅读书签。 */
 (function () {
   if (window.__dockInjected || document.querySelector('.dock')) { window.__dockInjected = true; return; }
 
@@ -134,4 +135,20 @@
   init();
   if (mq.addEventListener) mq.addEventListener('change', init);
   else if (mq.addListener) mq.addListener(init);
+})();
+
+/* ===== 继续阅读：复用全站入口与缓存版本，新增课程无需再挂脚本 ===== */
+(function () {
+  var script = document.currentScript;
+  if (!script || window.__readingInjected || document.querySelector('script[src*="assets/reading.js"]')) return;
+  var root = new URL('../', script.src);
+  if (!location.pathname.startsWith(root.pathname)) return;
+  var path = decodeURI(location.pathname.slice(root.pathname.length));
+  var isContent = /^[^/]+-\d{5}\/.+\.html$/.test(path) && !/\/(知识点|真题)\/index\.html$/.test(path);
+  if (!document.querySelector('[data-reading-home]') && !isContent) return;
+  var reading = document.createElement('script');
+  var url = new URL('reading.js', script.src);
+  url.search = new URL(script.src).search;
+  reading.src = url.href;
+  document.body.appendChild(reading);
 })();

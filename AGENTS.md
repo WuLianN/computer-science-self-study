@@ -41,7 +41,7 @@ header.hero{background:linear-gradient(135deg,#0891b2,#4f46e5)}  /* 本章识别
 全站浮动导航已收敛为**单一组件**：右下角**竖排**两枚独立圆钮（🏠返回首页 + ↑回到顶部），**仅窄屏(≤640px)显示、桌面隐藏**。🏠 常驻角落；↑ 默认透明隐藏、滚过阈值才淡入浮现于 🏠 上方（由 dock.js 监听 scroll 切换 `nav.dock` 的 `.show-top` 类实现自动显隐）。**根 `index.html` 前缀为空时脚本自动省略 🏠、只建 ↑**（首页不需要「返回首页」）。
 - **启用方式**：`</body>` 前放一行 `<script src="{相对前缀}assets/dock.js?v=版本号" defer></script>` 即可（样式在 theme.css 的 `.dock`）。**不要再手写** `<a class="totop">` 或页尾"回到顶部"链接。
 - **首页链接自适应深度**：`dock.js` 读自身 `<script>` 的 `src`（回退到 theme.css 的 `link`）算出仓库根相对前缀，因此任意目录层级、`file://` 双击、GitHub Pages 都能拼出正确的 `index.html`，**无需按页手写 `../`**。
-- **单一真源**：想改导航动作/样式/加按钮，只改 `assets/dock.js` + theme.css 的 `.dock`，**不动那 105 个外链页**。`dock.js` 现还承载第二个互不依赖的 IIFE：**hero 首屏折叠**（窄屏描述 clamp 2 行 / pill 留前 3 枚 / 导航链留前 4 条，其余收进「展开全文 +N」；零信息丢失、可展开、净收益 <4px 自动撤销、桌面与打印均不折叠）。改这个文件前先看清两个 IIFE 的分工。
+- **单一真源**：想改导航动作/样式/加按钮，只改 `assets/dock.js` + theme.css 的 `.dock`，**不动那 105 个外链页**。`dock.js` 的前两个 IIFE 分别负责导航和 **hero 首屏折叠**（窄屏描述 clamp 2 行 / pill 留前 3 枚 / 导航链留前 4 条，其余收进「展开全文 +N」；零信息丢失、可展开、净收益 <4px 自动撤销、桌面与打印均不折叠）；末尾第三个 IIFE 统一加载 `reading.js`，按 `英文名-五位课程代码` 目录识别课程，知识点/真题列表导航不覆盖书签。新增课程只需按约定引入 `dock.js`，不要再逐页添加 `reading.js` 或课程白名单。改这个文件前先看清各 IIFE 的分工。
 - **例外**：根 `index.html` 与 4 个 `试卷.html` 是**刻意不外链 theme.css 的自包含页**，加组件须自带内联样式、勿依赖 theme。4 个 `试卷.html` 保持纯净、无 `.dock`；**根 `index.html` 已引入 `dock.js` + 内联 `.dock` 样式**（页面约 4500px 长，需要 ↑ 回顶），并自带 `@media print` 隐藏规则。
 - **版本联动**：theme.css 或 dock.js 有改动就全站把 `theme.css?v=` 与 `dock.js?v=` 同步成新日期串破缓存（脚本见 4.1）。
 
