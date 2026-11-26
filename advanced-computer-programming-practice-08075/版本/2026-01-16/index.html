@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>08075 Python实践考核大纲 · 2026-01-16版 · 自考 CS 学习笔记</title>
+<meta name="description" content="08075 华南理工大学实践大纲的 2026-01-16 版本整理：考核要求、软件环境、原文样例及来源凭据；下一考期适用性需核对。">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261125b">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#4f46e5)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Python 实践 08075 · 大纲整理</h1>
+  <p>华南理工大学《计算机高级程序设计》实践考核大纲，涵盖基础编程、数据处理与可视化。</p>
+  <span class="pill">官网日期 2026-01-16</span><span class="pill">原文 6 页</span><span class="pill">版本快照</span>
+  <nav class="gotos" aria-label="资料导航">
+    <a href="../../index.html">← 08075 实践入口</a>
+    <a href="原文.pdf" target="_blank" rel="noopener noreferrer">原始 PDF ↗</a>
+    <a href="../../../advanced-computer-programming-08074/知识点/index.html">Python 知识点</a>
+  </nav>
+</header>
+
+<div class="note"><b>版本说明：</b>本页归纳 2026-01-16 发布的大纲，2026-11-26 已核对官网 PDF 与归档文件一致。原文没有明确适用考期或失效日期；本页不替代当期报名通知。软件、携带资料和考核规则须在报考前复核。</div>
+
+<nav class="toc" aria-label="本章目录">
+  <div class="toc-h">📍 本章目录</div>
+  <a href="#identity">课程与考核规则</a>
+  <a href="#scope">四个实践模块与复习入口</a>
+  <a href="#excluded">本版明确不列入的教材小节</a>
+  <a href="#samples">原文题型示例</a>
+  <a href="#practice">建议训练方式</a>
+  <a href="#source">原文、来源与版本凭据</a>
+</nav>
+
+<h2 class="section" id="identity">课程与考核规则</h2>
+<div class="card">
+  <p><strong>课程：</strong>08075《计算机高级程序设计》，实践考核；原文要求完成对应理论课程学习后参加。本站对应笔试资料代码为 08074。</p>
+  <p><strong>形式与时长：</strong>在计算机房进行现场实操，完成程序编写、运行、调试及结果提交，考核时间 120 分钟。</p>
+  <p><strong>软件环境：</strong>Python 3.x、IDLE，以及 numpy、pandas、matplotlib 等相关扩展库。原文未指定 Python 小版本或库版本，应另行核对当期配置。</p>
+  <p><strong>携带资料：</strong>原文允许携带指定自学教材，不得携带其他参考资料和电子设备。</p>
+  <p><strong>教材：</strong>《Python语言程序设计基础教程》，傅清平、李雪斌、徐文胜编著，清华大学出版社，2022 年第 1 版。</p>
+  <p><strong>成绩：</strong>满分 100 分，采用五级评分制：0–59 分不合格、60–69 分合格、70–79 分中等、80–89 分良好、90–100 分优秀。</p>
+  <p>教材与执行规则依据：<a class="inline" href="原文.pdf#page=5" target="_blank" rel="noopener noreferrer">原文 PDF 第 5 页 ↗</a>。这些是本版记录，不自动外推至下一考期。</p>
+</div>
+
+<h2 class="section" id="scope">四个实践模块与复习入口</h2>
+<p>实践大纲将教材内容归为四个模块，见原文第 2–4 页。下表同时受第 5 页四项排除条款约束，不能仅按章节中的“全部内容”字样扩大范围。</p>
+<div class="tscroll" role="region" aria-label="Python 实践考核内容" tabindex="0">
+  <table class="law">
+    <thead><tr><th scope="col">实践模块与教材对应</th><th scope="col">本版要求归纳</th><th scope="col">本站复习</th></tr></thead>
+    <tbody>
+      <tr><td>基础与程序控制<br>教材第 1–3 章</td><td>环境与 IDLE；数据类型、表达式；条件、循环；try…except…else…finally 异常处理。</td><td><a class="inline" href="../../../advanced-computer-programming-08074/知识点/数据类型/数据类型与内置函数.html">数据类型</a> · <a class="inline" href="../../../advanced-computer-programming-08074/知识点/控制结构/程序控制结构.html">程序控制</a></td></tr>
+      <tr><td>组合类型与函数<br>教材第 4–5 章</td><td>列表、元组、集合、字典的操作与筛选排序；函数及参数、作用域、lambda、简单递归。</td><td><a class="inline" href="../../../advanced-computer-programming-08074/知识点/组合数据类型/列表元组集合字典.html">组合类型</a> · <a class="inline" href="../../../advanced-computer-programming-08074/知识点/函数/函数定义与调用.html">函数</a></td></tr>
+      <tr><td>字符串、文件与面向对象<br>教材第 6–8 章</td><td>文本处理、文件读取/写入/追加、CSV 数据处理；类、实例、属性方法、简单继承与多态。</td><td><a class="inline" href="../../../advanced-computer-programming-08074/知识点/字符串/字符串处理.html">字符串</a> · <a class="inline" href="../../../advanced-computer-programming-08074/知识点/文件/文件与数据维度.html">文件</a> · <a class="inline" href="../../../advanced-computer-programming-08074/知识点/面向对象/面向对象编程.html">面向对象</a></td></tr>
+      <tr><td>科学计算与可视化<br>教材第 9 章</td><td>numpy 数组的创建、运算、访问与筛选；pandas 的 Series、DataFrame 与基础统计；matplotlib 折线、柱形、散点图及标题、坐标轴标签。</td><td><a class="inline" href="../../../advanced-computer-programming-08074/知识点/科学计算/科学计算与可视化.html">科学计算与可视化</a></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<h2 class="section" id="excluded">本版明确不列入的教材小节</h2>
+<div class="note">
+  <p>原文第 5 页明确：教材第 5 章 <strong>5.1.4、5.3.3</strong>，第 6 章 <strong>6.3</strong>，第 7 章 <strong>7.3</strong> 的内容不列入实践考核范围。</p>
+  <p>小节号以指定教材版本为准；在线题单的全部内容不等同于实践必考范围。新版大纲若有调整，应另行核对。</p>
+</div>
+
+<h2 class="section" id="samples">原文题型示例</h2>
+<div class="card">
+  <h3>简单实操：输出 1–100 的质数</h3>
+  <p>使用循环结构和条件判断输出 1–100 之间的所有质数，原文还要求包含异常处理，以防输入非数值数据报错。</p>
+  <p>原文未进一步说明固定区间任务的交互输入方式；自拟练习若增加输入范围等条件，须标明是练习变式。</p>
+  <h3>综合实操：员工销售额统计与绘图</h3>
+  <p>使用与源代码同路径的 <code>data.txt</code>，每行记录一名员工的姓名和销售金额。原文格式示例用冒号连接姓名与金额；具体分隔符字符以实际提供的数据文件为准。原文任务包括：</p>
+  <ol>
+    <li>编写函数读取文件，提取姓名和销售金额。</li>
+    <li>计算全体员工的平均销售金额，用字典保存每位员工的销售金额。</li>
+    <li>用 matplotlib 绘制柱状图展示每位员工的销售金额，并设置图表标题和坐标轴标签。</li>
+  </ol>
+  <p>样例见<a class="inline" href="原文.pdf#page=6" target="_blank" rel="noopener noreferrer">原文 PDF 第 6 页 ↗</a>。原文未附具体 data.txt 数据；后续自拟数据不能标成学校原始数据。</p>
+  <p>这些是题型举例，不能据此认定实际试卷只有两题、固定分值或必出相同任务。</p>
+</div>
+
+<h2 class="section" id="practice">建议训练方式</h2>
+<div class="card">
+  <ol>
+    <li>先练基础语法、条件与循环、组合数据类型、函数和异常处理，能从空白文件写出完整程序。</li>
+    <li>使用<a class="inline" href="../../../programming-practice/index.html#experiments">Python Tutor 小实验</a>观察引用、函数与变量变化；用牛客巩固基础。</li>
+    <li>在本地 IDLE 中练文件路径、文本与 CSV 读取、字典统计、类和实例；单独练 numpy、pandas 和 matplotlib。</li>
+    <li>按员工销售额样例串联“读取 → 处理 → 统计 → 绘图”，检查文件保存、图表标题与标签，再核对当期规则做限时模拟。</li>
+  </ol>
+  <p>本节为本站学习建议。文件和第三方库练习需在本地完成，在线基础题库只能覆盖其中一部分。</p>
+</div>
+
+<h2 class="section" id="source">原文、来源与版本凭据</h2>
+<div class="card">
+  <p><strong>发布单位：</strong>华南理工大学继续教育学院。</p>
+  <p><strong>官网页面标注日期：</strong><time datetime="2026-01-16">2026-01-16</time>。这是页面标注日期，不从网址中的旧路径年份推定版本。</p>
+  <p><strong>核对日期：</strong><time datetime="2026-11-26">2026-11-26</time>。用户提供的 python.pdf 与学校下载文件逐字节一致；本站归档副本未修改。</p>
+  <p><strong>适用考期：</strong>原文未明确；下一考期是否沿用待学校确认。</p>
+  <p><strong>原始 PDF：</strong><a class="inline" href="原文.pdf" target="_blank" rel="noopener noreferrer">打开 6 页归档原文 ↗</a> · <a class="inline" href="https://sce.scut.edu.cn/zkpx/2023/0809/c29157a516236/page.htm" target="_blank" rel="noopener noreferrer">学校发布页 ↗</a></p>
+  <p><strong>SHA-256：</strong><code>8d88ee90646683ceca9cd77d68cc85e6b9c74c18a033e2b2ddac774e14a45245</code></p>
+</div>
+<footer>
+  <div class="fl"><a href="../../index.html">08075 课程入口与版本记录</a><a href="../../../programming-practice/index.html">上机练习导航</a></div>
+  <p>本页为学习归纳；解释有差异时请核对原文及当期学校要求。</p>
+</footer>
+</div>
+<script src="../../../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>

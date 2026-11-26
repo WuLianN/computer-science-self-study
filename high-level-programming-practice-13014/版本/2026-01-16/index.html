@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13014 C 语言实践考核大纲 · 2026-01-16版 · 自考 CS 学习笔记</title>
+<meta name="description" content="13014 华南理工大学实践大纲的 2026-01-16 版本整理：考核要求、软件环境、原文样例及来源凭据；下一考期适用性需核对。">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261125b">
+<style>
+  header.hero{background:linear-gradient(135deg,#047857,#0891b2)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>C 语言实践 13014 · 大纲整理</h1>
+  <p>华南理工大学《高级语言程序设计》实践考核大纲，按官网标注的发布日期保留版本。</p>
+  <span class="pill">官网日期 2026-01-16</span><span class="pill">原文 3 页</span><span class="pill">版本快照</span>
+  <nav class="gotos" aria-label="资料导航">
+    <a href="../../index.html">← 13014 实践入口</a>
+    <a href="原文.pdf" target="_blank" rel="noopener noreferrer">原始 PDF ↗</a>
+    <a href="../../../high-level-programming-13013/知识点/index.html">C 知识点</a>
+  </nav>
+</header>
+
+<div class="note"><b>版本说明：</b>本页归纳 2026-01-16 发布的大纲，2026-11-26 已核对官网 PDF 与归档文件一致。原文没有明确适用考期或失效日期；本页不替代当期报名通知。原文中的软件和携带资料要求仅按此版本记录。</div>
+
+<nav class="toc" aria-label="本章目录">
+  <div class="toc-h">📍 本章目录</div>
+  <a href="#identity">课程与考核规则</a>
+  <a href="#scope">五类考核内容与复习入口</a>
+  <a href="#samples">原文题型示例与疑点</a>
+  <a href="#practice">建议训练方式</a>
+  <a href="#source">原文、来源与版本凭据</a>
+</nav>
+
+<h2 class="section" id="identity">课程与考核规则</h2>
+<div class="card">
+  <p><strong>课程：</strong>13014《高级语言程序设计》，实践考核；需具备计算机编程基础，已学习对应理论课程。本站对应笔试资料代码为 13013。</p>
+  <p><strong>形式与时长：</strong>计算机上机考核，在规定时间内完成题目，考核时间 120 分钟。</p>
+  <p><strong>携带资料：</strong>原文写明考生可携带教材；未在此处明确其他资料及电子设备的携带规则。</p>
+  <p><strong>软件环境：</strong>原文列出 Windows 7 及以上版本、Visual C++ 6.0。本页保留原文配置，报考前须核对当期是否沿用；不自行推定可用其他编译器替代考场环境。</p>
+  <p><strong>教材：</strong>《高级语言程序设计》，郑岩，机械工业出版社，2017 年版。</p>
+  <p><strong>成绩：</strong>满分 100 分，采用五级评分制：0–59 分不合格、60–69 分合格、70–79 分中等、80–89 分良好、90–100 分优秀。</p>
+  <p>规则依据：<a class="inline" href="原文.pdf#page=2" target="_blank" rel="noopener noreferrer">原文 PDF 第 2 页 ↗</a>。</p>
+</div>
+
+<h2 class="section" id="scope">五类考核内容与复习入口</h2>
+<p>以下为大纲第 2 页的内容归纳。原文同时要求掌握编辑、编译、链接、运行与调试 C 程序的操作过程。</p>
+<div class="tscroll" role="region" aria-label="C 实践考核内容" tabindex="0">
+  <table class="law">
+    <thead><tr><th scope="col">模块</th><th scope="col">本版要求归纳</th><th scope="col">本站复习</th></tr></thead>
+    <tbody>
+      <tr><td>顺序、选择、循环</td><td>输入输出、赋值与复合语句、选择与循环结构；完成程序编辑、编译、链接、运行。</td><td><a class="inline" href="../../../high-level-programming-13013/知识点/结构化程序设计/顺序结构与输入输出.html">输入输出</a> · <a class="inline" href="../../../high-level-programming-13013/知识点/结构化程序设计/选择结构.html">选择结构</a> · <a class="inline" href="../../../high-level-programming-13013/知识点/结构化程序设计/循环结构.html">循环结构</a></td></tr>
+      <tr><td>数组</td><td>数组的定义、初始化、元素引用及与循环的配合使用。</td><td><a class="inline" href="../../../high-level-programming-13013/知识点/数组/一维与二维数组.html">一维与二维数组</a></td></tr>
+      <tr><td>函数与指针</td><td>指针变量定义、初始化与引用；函数定义和调用、形参与实参及地址传递。</td><td><a class="inline" href="../../../high-level-programming-13013/知识点/函数/函数与递归.html">函数</a> · <a class="inline" href="../../../high-level-programming-13013/知识点/指针/指针与数组.html">指针与数组</a></td></tr>
+      <tr><td>结构体</td><td>结构体类型及变量的定义、初始化和成员引用。</td><td><a class="inline" href="../../../high-level-programming-13013/知识点/结构体与自定义类型/结构体与自定义类型.html">结构体与自定义类型</a></td></tr>
+      <tr><td>文件</td><td>文件型指针的定义与使用，以及文件操作函数。</td><td><a class="inline" href="../../../high-level-programming-13013/知识点/文件/文件操作.html">文件操作</a></td></tr>
+    </tbody>
+  </table>
+</div>
+<div class="card">
+  <p><strong>命题方向：</strong>原文说明，实践命题分简单应用和综合应用两类。简单应用偏重某一算法；综合应用要求使用大纲范围内的知识，综合处理某一类数据。</p>
+  <p>原文没有给出两类题的固定题量、分值比例或完整题库，本页也不据样例推定实际试卷结构。</p>
+</div>
+
+<h2 class="section" id="samples">原文题型示例与疑点</h2>
+<div class="card">
+  <h3>简单应用：两个整数的公约数</h3>
+  <p>题干前半部分要求编程求两个整数的最大公约数，从键盘输入整数后输出结果。</p>
+  <p class="note"><b>原文疑点：</b>同一题前文写“最大公约数”，输出要求却写“最小公约数”。本页保留这一差异，不擅自改写学校原题。学习时可先练最大公约数算法；正式考核按现场题意或向监考人员确认。</p>
+  <h3>综合应用：学生成绩处理</h3>
+  <p>使用结构体保存学号、姓名和成绩，统计总分与最高分。按原文要求，应创建学生成绩信息结构体，并用函数分别完成输入、输出和统计，最后在主函数中调用、测试。</p>
+  <p>以上是<a class="inline" href="原文.pdf#page=3" target="_blank" rel="noopener noreferrer">原文 PDF 第 3 页的题型举例 ↗</a>，并非历年真题或下一考期的已确认原题。</p>
+</div>
+
+<h2 class="section" id="practice">建议训练方式</h2>
+<div class="card">
+  <ol>
+    <li>先练输入输出、分支、循环，能够从空白文件写出可编译、可运行的完整程序。</li>
+    <li>将数组处理拆成函数，观察传值、指针和地址传递；可用<a class="inline" href="../../../programming-practice/index.html#experiments">Python Tutor 的 C 指针实验</a>辅助理解。</li>
+    <li>按成绩处理样例练结构体与模块化，再单独补齐文件读写任务。</li>
+    <li>熟悉实际采用的编辑器、编译与保存流程；核对当期规则后再做 120 分钟限时模拟。</li>
+  </ol>
+  <p>本节为本站学习建议。在线判题只能覆盖部分训练，完整上机操作仍须在本地完成。</p>
+</div>
+
+<h2 class="section" id="source">原文、来源与版本凭据</h2>
+<div class="card">
+  <p><strong>发布单位：</strong>华南理工大学继续教育学院。</p>
+  <p><strong>官网页面标注日期：</strong><time datetime="2026-01-16">2026-01-16</time>。这是页面标注日期，不从网址中的旧路径年份推定版本。</p>
+  <p><strong>核对日期：</strong><time datetime="2026-11-26">2026-11-26</time>。用户提供的 C语言.pdf 与学校下载文件逐字节一致；本站归档副本未修改。</p>
+  <p><strong>适用考期：</strong>原文未明确；下一考期是否沿用待学校确认。</p>
+  <p><strong>原始 PDF：</strong><a class="inline" href="原文.pdf" target="_blank" rel="noopener noreferrer">打开 3 页归档原文 ↗</a> · <a class="inline" href="https://sce.scut.edu.cn/zkpx/2021/0507/c29157a428235/page.htm" target="_blank" rel="noopener noreferrer">学校发布页 ↗</a></p>
+  <p><strong>SHA-256：</strong><code>26a76cce5f624264df35a253ca70b9d38444052e3cd5a026c4135bea37b443a4</code></p>
+</div>
+<footer>
+  <div class="fl"><a href="../../index.html">13014 课程入口与版本记录</a><a href="../../../programming-practice/index.html">上机练习导航</a></div>
+  <p>本页为学习归纳；解释有差异时请核对原文及当期学校要求。</p>
+</footer>
+</div>
+<script src="../../../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>
