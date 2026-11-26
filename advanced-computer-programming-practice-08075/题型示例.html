@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Python 实践 08075 · 题型示例与参考代码 · 自考 CS 学习笔记</title>
+<meta name="description" content="本站自编 Python 实践参考实现：1–100 质数、异常处理变式、文件销售额统计与 matplotlib 柱状图，附自拟数据和源码下载。">
+<link rel="stylesheet" href="../assets/theme.css?v=20261125b">
+<style>
+  header.hero{background:linear-gradient(135deg,#0284c7,#4f46e5)}
+  .sample-code{max-width:100%;overflow-x:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font:13px/1.7 Consolas,"SFMono-Regular",monospace;tab-size:4}
+  .sample-code>code{display:block;padding:0;background:transparent;color:var(--ink);font:inherit;font-weight:400;white-space:pre;overflow-wrap:normal;word-break:normal}
+  ol.steps{list-style:none;counter-reset:sample-step;padding-left:0}
+  ol.steps>li{position:relative;padding-left:34px;margin:10px 0;counter-increment:sample-step}
+  ol.steps>li::before{content:counter(sample-step);position:absolute;left:0;top:1px;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-size:13px;font-weight:700}
+  .sample-figure{margin:16px 0;overflow-x:auto}
+  .sample-figure img{display:block;max-width:100%;min-width:520px;height:auto;border:1px solid var(--line);border-radius:8px}
+  @media print{
+    .sample-code,.sample-figure{overflow:visible}
+    .sample-code>code{white-space:pre-wrap;overflow-wrap:anywhere}
+    .sample-figure img{min-width:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Python 实践 08075 · 题型示例与参考代码</h1>
+  <p>依据华工 2026-01-16 版大纲，自行实现质数输出、销售额统计与柱状图。</p>
+  <span class="pill">本站参考实现</span><span class="pill">数据自拟</span><span class="pill">非官方答案</span>
+  <nav class="gotos" aria-label="课程导航">
+    <a href="index.html">← 实践课程入口</a>
+    <a href="版本/2026-01-16/index.html#samples">原文题型示例</a>
+    <a href="../programming-practice/index.html">上机练习导航</a>
+  </nav>
+</header>
+<div class="note"><b>先区分来源：</b>代码和 data.txt 均由本站编写，不能当作学校标准答案或原始数据。简单题原文同时提到固定区间与输入异常，本页分别给出固定区间实现和明确标注的输入变式。</div>
+<p>手机可左右滑动代码块，或下载源码在编辑器中完整查看。</p>
+<nav class="toc" aria-label="本章目录">
+  <div class="toc-h">📍 本章目录</div>
+  <a href="#primes">示例一 · 固定输出 1–100 的质数</a>
+  <a href="#primes-input">异常处理变式 · 输入上界</a>
+  <a href="#sales">示例二 · 销售额统计与绘图</a>
+  <a href="#run">运行方法与自测</a>
+</nav>
+
+<h2 class="section" id="primes">示例一 · 固定输出 1–100 的质数</h2>
+<div class="card">
+  <p>这份程序完成原文的固定区间任务，不需要键盘输入；输入异常处理另见下一节变式。</p>
+  <ol class="steps">
+    <li>小于 2 的整数不是质数，直接返回 False。</li>
+    <li>从 2 开始尝试除数；只需检查到除数的平方不超过待判断数字的位置。</li>
+    <li>找到能整除的除数就返回 False；否则返回 True，主程序将区间内的质数输出。</li>
+  </ol>
+  <p><a class="inline" href="示例代码/primes.py" download>下载 primes.py</a> · 保存后在 IDLE 中按 F5 运行。</p>
+  <pre class="sample-code" data-source="示例代码/primes.py"><code>def is_prime(number):
+    if number &lt; 2:
+        return False
+
+    divisor = 2
+    while divisor * divisor &lt;= number:
+        if number % divisor == 0:
+            return False
+        divisor += 1
+    return True
+
+
+def main():
+    primes = [str(n) for n in range(1, 101) if is_prime(n)]
+    print(" ".join(primes))
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+  <h3>预期输出（共 25 个）</h3>
+  <pre class="sample-code"><code>2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97</code></pre>
+  <p><strong>易错点：</strong>1 不是质数；range 的右端点不包含在遍历范围内，因此这里用 <code>range(1, 101)</code>。</p>
+</div>
+
+<h2 class="section" id="primes-input">异常处理变式 · 输入上界</h2>
+<div class="card">
+  <p><strong>本站自拟交互：</strong>允许输入上界，直接回车采用 100；输入 abc、3.5 或小于 2 的整数时提示重输。输出区间仍从 1 开始。输入上界这一步是为练习异常处理补充的约定，原文未规定这套交互。</p>
+  <p>本文件复用上一题的 <code>is_prime</code>。请将 <a class="inline" href="示例代码/primes_with_input.py" download>primes_with_input.py</a> 和 <a class="inline" href="示例代码/primes.py" download>primes.py</a> 保存到同一个文件夹，再运行 primes_with_input.py。</p>
+  <pre class="sample-code" data-source="示例代码/primes_with_input.py"><code>from primes import is_prime
+
+
+def read_upper():
+    while True:
+        try:
+            text = input("Upper bound (Enter for 100): ").strip()
+            upper = 100 if text == "" else int(text)
+            if upper &lt; 2:
+                raise ValueError("upper bound must be at least 2")
+            return upper
+        except ValueError as error:
+            print("Invalid input: {}".format(error))
+        except EOFError:
+            print("No input; cancelled.")
+            return None
+
+
+def main():
+    upper = read_upper()
+    if upper is None:
+        return
+    primes = [str(n) for n in range(1, upper + 1) if is_prime(n)]
+    print(" ".join(primes))
+
+
+if __name__ == "__main__":
+    main()</code></pre>
+  <p><strong>练习：</strong>先输入 abc，看到 Invalid input 后输入 100，应得到上一节的 25 个质数；输入 10 应输出 <code>2 3 5 7</code>。</p>
+</div>
+
+<h2 class="section" id="sales">示例二 · 销售额统计与绘图</h2>
+<div class="card">
+  <p><strong>对应原文：</strong>读取与源码同路径的 data.txt，用字典存储每位员工的销售额，计算平均值，再用 matplotlib 画柱状图并设置标题与坐标轴标签。</p>
+  <p><strong>本站输入约定：</strong>UTF-8 文本，每行使用“姓名:金额”，也接受全角冒号。姓名必须非空且唯一，金额须为有限非负数；空行跳过，其他错误会报告。原文未附数据文件，以下数据为自拟。</p>
+  <h3>① 准备 data.txt</h3>
+  <p><a class="inline" href="示例代码/data.txt" download="data.txt">下载自拟 data.txt</a>，与 sales_report.py 放在同一文件夹。</p>
+  <pre class="sample-code" data-source="示例代码/data.txt"><code>Alice:1200
+Bob:1500
+Carol:900
+David:1400</code></pre>
+  <h3>② 读取、计算与绘图</h3>
+  <ol class="steps">
+    <li>用 <code>Path(__file__).resolve().parent</code> 定位脚本目录，再从同目录读取 data.txt。</li>
+    <li>逐行拆出姓名与金额，检查格式和数值，用字典保存，避免重复姓名悄悄覆盖。</li>
+    <li>平均值等于所有金额之和除以员工人数；空文件会先被拒绝，避免除以 0。</li>
+    <li>将姓名作为横轴、金额作为纵轴画柱状图，保存 sales_report.png 后显示图形窗口。</li>
+  </ol>
+  <p><a class="inline" href="示例代码/sales_report.py" download>下载 sales_report.py</a> · 本题用到 matplotlib，未用到 pandas 或 numpy 的直接调用。</p>
+  <pre class="sample-code" data-source="示例代码/sales_report.py"><code>from pathlib import Path
+import math
+
+import matplotlib.pyplot as plt
+
+
+def read_sales(path):
+    sales = {}
+    with path.open("r", encoding="utf-8-sig") as stream:
+        for line_number, line in enumerate(stream, 1):
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.replace("\uff1a", ":").split(":")
+            if len(parts) != 2:
+                raise ValueError(
+                    "line {}: expected name:amount".format(line_number)
+                )
+            name = parts[0].strip()
+            if not name or name in sales:
+                raise ValueError(
+                    "line {}: empty or duplicate name".format(line_number)
+                )
+            try:
+                amount = float(parts[1].strip())
+            except ValueError:
+                raise ValueError(
+                    "line {}: amount must be numeric".format(line_number)
+                )
+            if not math.isfinite(amount) or amount &lt; 0:
+                raise ValueError(
+                    "line {}: amount must be finite and nonnegative".format(
+                        line_number
+                    )
+                )
+            sales[name] = amount
+
+    if not sales:
+        raise ValueError("No sales records.")
+    return sales
+
+
+def draw_sales(sales, image_path):
+    names = list(sales)
+    amounts = [sales[name] for name in names]
+
+    figure, axes = plt.subplots(figsize=(7, 4))
+    axes.bar(names, amounts, color="#4f46e5")
+    axes.set_title("Employee sales")
+    axes.set_xlabel("Employee")
+    axes.set_ylabel("Sales amount (sample units)")
+    axes.set_ylim(bottom=0)
+    axes.grid(axis="y", alpha=0.2)
+    axes.set_axisbelow(True)
+    figure.tight_layout()
+    figure.savefig(str(image_path), dpi=150)
+    plt.show()
+    plt.close(figure)
+
+
+def main():
+    folder = Path(__file__).resolve().parent
+    try:
+        sales = read_sales(folder / "data.txt")
+    except (OSError, UnicodeError, ValueError) as error:
+        print("Cannot read data: {}".format(error))
+        return 1
+
+    average = sum(sales.values()) / len(sales)
+    for name, amount in sales.items():
+        print("{}: {:.2f}".format(name, amount))
+    print("Average: {:.2f}".format(average))
+
+    image_path = folder / "sales_report.png"
+    draw_sales(sales, image_path)
+    print("Chart saved as sales_report.png")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())</code></pre>
+  <h3>③ 自拟数据的预期输出</h3>
+  <pre class="sample-code"><code>Alice: 1200.00
+Bob: 1500.00
+Carol: 900.00
+David: 1400.00
+Average: 1250.00
+Chart saved as sales_report.png</code></pre>
+  <figure class="sample-figure fig">
+    <img src="示例图/sales-report.png" alt="自拟员工销售额柱状图：Alice 1200，Bob 1500，Carol 900，David 1400，纵轴从 0 开始。" width="1050" height="600" loading="lazy">
+    <figcaption class="cap"><small>以上述自拟数据实际运行代码生成的结果。手机可横滑查看完整图；金额单位仅作练习，原文未指定币种。</small></figcaption>
+  </figure>
+  <p><strong>易错点：</strong>data.txt 采用冒号，不是 CSV 逗号分隔；先保存 .py 文件再运行，避免交互式粘贴时没有 __file__；字典键使用姓名，本例遇到重名会报错。</p>
+</div>
+
+<h2 class="section" id="run">运行方法与自测</h2>
+<div class="card">
+  <ol>
+    <li>保存源码为 .py 文件；简单题可直接用 Python 3 / IDLE 运行。</li>
+    <li>输入变式需要同目录的 primes.py；绘图题需要同目录的 data.txt。</li>
+    <li>自己的练习环境尚无 matplotlib 时，可用对应 Python 执行下方安装命令；考场环境仍以当期学校配置为准。</li>
+  </ol>
+  <pre class="sample-code"><code>python -m pip install matplotlib
+python sales_report.py</code></pre>
+  <p><strong>验证记录：</strong>固定区间输出、非数值输入、错误上界、空文件、重复姓名、错误分隔符和非法金额均已检查；使用自拟数据实际生成柱状图，并核对平均值、柱高、图题与轴标签。</p>
+  <p>可对照 <a class="inline" href="https://docs.python.org/3/library/pathlib.html" target="_blank" rel="noopener noreferrer">Python pathlib 文档 ↗</a>及 <a class="inline" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.bar.html" target="_blank" rel="noopener noreferrer">matplotlib 柱状图文档 ↗</a>理解相关 API。代码适合本地练习，正式考试仍按题面要求调整。</p>
+</div>
+<footer><div class="fl"><a href="index.html">08075 课程入口</a><a href="版本/2026-01-16/index.html">2026-01-16 版大纲</a></div><p>本站自编参考实现 · 示例数据自拟 · 2026-11-26</p></footer>
+</div>
+<script src="../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>

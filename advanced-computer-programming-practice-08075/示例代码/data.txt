@@ -1,0 +1,4 @@
+Alice:1200
+Bob:1500
+Carol:900
+David:1400

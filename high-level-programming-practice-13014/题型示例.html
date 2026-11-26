@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>C 实践 13014 · 题型示例与参考代码 · 自考 CS 学习笔记</title>
+<meta name="description" content="基于华工实践大纲的本站自编参考实现：最大公约数、学生多科成绩统计，含 C89 源码下载、步骤、自拟输入与输出。">
+<link rel="stylesheet" href="../assets/theme.css?v=20261125b">
+<style>
+  header.hero{background:linear-gradient(135deg,#047857,#0891b2)}
+  .sample-code{max-width:100%;overflow-x:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font:13px/1.7 Consolas,"SFMono-Regular",monospace;tab-size:4}
+  .sample-code>code{display:block;padding:0;background:transparent;color:var(--ink);font:inherit;font-weight:400;white-space:pre;overflow-wrap:normal;word-break:normal}
+  ol.steps{list-style:none;counter-reset:sample-step;padding-left:0}
+  ol.steps>li{position:relative;padding-left:34px;margin:10px 0;counter-increment:sample-step}
+  ol.steps>li::before{content:counter(sample-step);position:absolute;left:0;top:1px;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-size:13px;font-weight:700}
+  .sample-figure{margin:16px 0;overflow-x:auto}
+  .sample-figure img{display:block;max-width:100%;min-width:520px;height:auto;border:1px solid var(--line);border-radius:8px}
+  @media print{
+    .sample-code,.sample-figure{overflow:visible}
+    .sample-code>code{white-space:pre-wrap;overflow-wrap:anywhere}
+    .sample-figure img{min-width:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>C 实践 13014 · 题型示例与参考代码</h1>
+  <p>依据华工 2026-01-16 版大纲的两个题型示例，自行编写可运行的 C 参考实现。</p>
+  <span class="pill">本站参考实现</span><span class="pill">非官方答案</span><span class="pill">C89 写法</span>
+  <nav class="gotos" aria-label="课程导航">
+    <a href="index.html">← 实践课程入口</a>
+    <a href="版本/2026-01-16/index.html#samples">原文题型与疑点</a>
+    <a href="../programming-practice/index.html">上机练习导航</a>
+  </nav>
+</header>
+<div class="note"><b>先区分来源：</b>原文 PDF 与大纲归纳保留在版本目录；本页的代码、输入格式和测试数据由本站编写，不是学校标准答案。原题有歧义的地方在各题中说明，正式考核按当期题面要求完成。</div>
+<p>手机可左右滑动代码块，或下载源码在编辑器中完整查看。</p>
+<nav class="toc" aria-label="本章目录">
+  <div class="toc-h">📍 本章目录</div>
+  <a href="#gcd">示例一 · 最大公约数</a>
+  <a href="#students">示例二 · 学生成绩处理</a>
+  <a href="#run">如何编译运行与自测</a>
+</nav>
+
+<h2 class="section" id="gcd">示例一 · 最大公约数</h2>
+<div class="card">
+  <p><strong>采用的题意：</strong>按原题前文的“最大公约数”实现。原文输出要求另写“最小公约数”，这一差异仍保留在<a class="inline" href="版本/2026-01-16/index.html#samples">大纲疑点说明</a>中。</p>
+  <p><strong>本例输入约定：</strong>两个在 C 的 <code>long</code> 范围内的整数，允许负数，但不能同时为 0；输出两数绝对值的最大公约数。超出 long 范围的数字不属于本例输入约定。</p>
+  <ol class="steps">
+    <li>用 <code>magnitude</code> 取得非负幅值，再调用最大公约数函数。</li>
+    <li>当 <code>b != 0</code>，计算余数 <code>a % b</code>，把原来的 b 和余数作为下一组数。</li>
+    <li>b 变成 0 时返回 a；两个数同时为 0 或读取失败时输出错误提示。</li>
+  </ol>
+  <p><a class="inline" href="示例代码/gcd.c" download>下载 gcd.c</a> · 单独编译本文件。</p>
+  <pre class="sample-code" data-source="示例代码/gcd.c"><code>#include &lt;stdio.h&gt;
+
+unsigned long magnitude(long value)
+{
+    if (value &lt; 0) {
+        return 0UL - (unsigned long)value;
+    }
+    return (unsigned long)value;
+}
+
+unsigned long gcd(unsigned long a, unsigned long b)
+{
+    unsigned long remainder;
+
+    while (b != 0) {
+        remainder = a % b;
+        a = b;
+        b = remainder;
+    }
+    return a;
+}
+
+int main(void)
+{
+    long a;
+    long b;
+    unsigned long result;
+
+    if (scanf("%ld %ld", &amp;a, &amp;b) != 2) {
+        fprintf(stderr, "Expected two integers.\n");
+        return 1;
+    }
+    if (a == 0 &amp;&amp; b == 0) {
+        fprintf(stderr, "At least one integer must be nonzero.\n");
+        return 1;
+    }
+
+    result = gcd(magnitude(a), magnitude(b));
+    printf("%lu\n", result);
+    return 0;
+}</code></pre>
+  <h3>自拟输入与预期输出</h3>
+  <p>输入：</p><pre class="sample-code"><code>48 18</code></pre>
+  <p>输出：</p><pre class="sample-code"><code>6</code></pre>
+  <div class="tscroll" role="region" aria-label="最大公约数执行过程" tabindex="0">
+    <table class="law">
+      <thead><tr><th scope="col">当前 a</th><th scope="col">当前 b</th><th scope="col">余数 a % b</th><th scope="col">下一组</th></tr></thead>
+      <tbody><tr><td>48</td><td>18</td><td>12</td><td>18，12</td></tr><tr><td>18</td><td>12</td><td>6</td><td>12，6</td></tr><tr><td>12</td><td>6</td><td>0</td><td>6，0，结束</td></tr></tbody>
+    </table>
+  </div>
+  <p><strong>再试：</strong>-48 与 18 得到 6；0 与 7 得到 7；0 与 0 被拒绝。这里的负数处理采用无符号幅值，避免直接对最小有符号数取负。</p>
+</div>
+
+<h2 class="section" id="students">示例二 · 学生成绩处理</h2>
+<div class="card">
+  <p><strong>对应原文：</strong>用结构体保存学号、姓名和成绩，分别编写输入、输出、统计总分和最高分的函数，并在主函数测试。</p>
+  <p><strong>本站补充约定：</strong>原文未给出输入格式和科目数。本例首行输入学生数 n 与每人科目数 m，随后每行输入学号、姓名和 m 个成绩，<strong>逐个学生</strong>计算总分与最高科目分。m=1 时也可作为单科练习。</p>
+  <p>本例限制：1≤n≤100、1≤m≤10，成绩为 0–100 的有限数值；学号不超过 19 字节、姓名不超过 31 字节且不含空格。示例采用英文姓名便于核对输出；实际格式按题面调整。</p>
+  <ol class="steps">
+    <li><code>Student</code> 结构体保存学号、姓名和成绩数组，学号使用字符串以保留前导 0。</li>
+    <li><code>input_students</code> 读取并检查输入；学生数、科目数和成绩均作范围检查。</li>
+    <li><code>total_score</code> 从 0 开始累加；<code>highest_score</code> 从第一科成绩开始比较。</li>
+    <li><code>output_students</code> 调用两个统计函数输出每位学生的结果，主函数负责串起整个流程。</li>
+  </ol>
+  <p><a class="inline" href="示例代码/student_scores.c" download>下载 student_scores.c</a> · 此文件有自己的 main，和 gcd.c 分开编译。</p>
+  <pre class="sample-code" data-source="示例代码/student_scores.c"><code>#include &lt;stdio.h&gt;
+
+#define MAX_STUDENTS 100
+#define MAX_SUBJECTS 10
+
+typedef struct {
+    char id[20];
+    char name[32];
+    double score[MAX_SUBJECTS];
+} Student;
+
+int input_students(Student students[], int count, int subjects)
+{
+    int i;
+    int j;
+
+    for (i = 0; i &lt; count; ++i) {
+        if (scanf("%19s %31s", students[i].id, students[i].name) != 2) {
+            return 0;
+        }
+        for (j = 0; j &lt; subjects; ++j) {
+            if (scanf("%lf", &amp;students[i].score[j]) != 1) {
+                return 0;
+            }
+            if (!(students[i].score[j] &gt;= 0.0 &amp;&amp;
+                  students[i].score[j] &lt;= 100.0)) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+double total_score(const Student *student, int subjects)
+{
+    double total;
+    int j;
+
+    total = 0.0;
+    for (j = 0; j &lt; subjects; ++j) {
+        total += student-&gt;score[j];
+    }
+    return total;
+}
+
+double highest_score(const Student *student, int subjects)
+{
+    double highest;
+    int j;
+
+    highest = student-&gt;score[0];
+    for (j = 1; j &lt; subjects; ++j) {
+        if (student-&gt;score[j] &gt; highest) {
+            highest = student-&gt;score[j];
+        }
+    }
+    return highest;
+}
+
+void output_students(const Student students[], int count, int subjects)
+{
+    int i;
+    int j;
+
+    printf("ID NAME SCORES TOTAL MAX\n");
+    for (i = 0; i &lt; count; ++i) {
+        printf("%s %s", students[i].id, students[i].name);
+        for (j = 0; j &lt; subjects; ++j) {
+            printf(" %.2f", students[i].score[j]);
+        }
+        printf(" total=%.2f max=%.2f\n",
+               total_score(&amp;students[i], subjects),
+               highest_score(&amp;students[i], subjects));
+    }
+}
+
+int main(void)
+{
+    Student students[MAX_STUDENTS];
+    int count;
+    int subjects;
+
+    if (scanf("%d %d", &amp;count, &amp;subjects) != 2 ||
+        count &lt; 1 || count &gt; MAX_STUDENTS ||
+        subjects &lt; 1 || subjects &gt; MAX_SUBJECTS) {
+        fprintf(stderr, "Invalid student or subject count.\n");
+        return 1;
+    }
+    if (!input_students(students, count, subjects)) {
+        fprintf(stderr, "Invalid student data.\n");
+        return 1;
+    }
+
+    output_students(students, count, subjects);
+    return 0;
+}</code></pre>
+  <h3>自拟输入</h3>
+  <pre class="sample-code"><code>3 3
+001 Alice 80 90 70
+002 Bob 60 75 85
+003 Carol 100 80 90</code></pre>
+  <h3>预期输出</h3>
+  <pre class="sample-code"><code>ID NAME SCORES TOTAL MAX
+001 Alice 80.00 90.00 70.00 total=240.00 max=90.00
+002 Bob 60.00 75.00 85.00 total=220.00 max=85.00
+003 Carol 100.00 80.00 90.00 total=270.00 max=100.00</code></pre>
+  <p><strong>易错点：</strong>数组下标范围为 0 到 m−1；<code>scanf</code> 读取 double 用 <code>%lf</code>；指向结构体的指针通过 <code>-&gt;</code> 访问成员。本例统计的是每个学生，不是把全班所有人的成绩混成一个总分。</p>
+</div>
+
+<h2 class="section" id="run">如何编译运行与自测</h2>
+<div class="card">
+  <p>两份 C 文件均是完整控制台程序，分别编译、分别运行。若当期仍采用 VC++ 6.0，应在该环境创建控制台工程，每次只加入当前示例的 .c 文件。</p>
+  <p>本地已配置 GCC 时，可在源码所在目录使用以下 PowerShell 命令：</p>
+  <pre class="sample-code"><code>gcc -std=c89 -Wall -Wextra gcd.c -o gcd.exe
+.\gcd.exe</code></pre>
+  <p>学生成绩程序把文件名替换为 student_scores.c，输出名换成 student_scores.exe；运行后再输入本页样例。</p>
+  <p><strong>验证记录：</strong>本站使用 GCC 的 <code>-std=c89 -pedantic-errors -Wall -Wextra -Werror</code> 编译两份源码，并检查正常输入、0 与负数、数组上限及无效输入。未在学校的 VC++ 6.0 实机环境验证，考前仍须按当期环境练习。</p>
+  <p>练习顺序：先关掉参考代码独立写一遍，再运行样例，最后自行修改输入核对结果。</p>
+</div>
+<footer><div class="fl"><a href="index.html">13014 课程入口</a><a href="版本/2026-01-16/index.html">2026-01-16 版大纲</a></div><p>本站自编参考实现 · 示例数据自拟 · 2026-11-26</p></footer>
+</div>
+<script src="../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>
