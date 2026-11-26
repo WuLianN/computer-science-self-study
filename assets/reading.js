@@ -57,17 +57,28 @@
     });
     if (entries.length <= homeLimit) homeExpanded = false;
     entries.forEach(function (entry, i) {
+      var item = document.createElement('div');
+      item.className = 'reading-home-item';
+      item.hidden = !homeExpanded && i >= homeLimit;
       var a = document.createElement('a');
       a.className = 'reading-home-link';
       a.href = entry.url.href;
-      a.hidden = !homeExpanded && i >= homeLimit;
       var title = document.createElement('b');
       title.textContent = entry.code + ' · ' + clean(entry.subject.querySelector('h2').textContent);
       var detail = document.createElement('span');
       detail.textContent = entry.record.page + ' · ' + entry.record.section;
       a.appendChild(title);
       a.appendChild(detail);
-      list.appendChild(a);
+      var clear = document.createElement('button');
+      clear.className = 'reading-home-clear';
+      clear.type = 'button';
+      clear.dataset.readingClear = entry.code;
+      clear.textContent = '×';
+      clear.title = '清除这门课的阅读记录';
+      clear.setAttribute('aria-label', '清除 ' + entry.code + ' ' + clean(entry.subject.querySelector('h2').textContent) + ' 的阅读记录');
+      item.appendChild(a);
+      item.appendChild(clear);
+      list.appendChild(item);
     });
     panel.hidden = !list.children.length;
     if (toggle) {
@@ -75,6 +86,8 @@
       toggle.textContent = homeExpanded ? '收起' : '展开其余 ' + (entries.length - homeLimit) + ' 门';
       toggle.setAttribute('aria-expanded', String(homeExpanded));
     }
+    var clearAll = panel.querySelector('[data-reading-clear-all]');
+    if (clearAll) clearAll.hidden = !entries.length;
   }
 
   if (!course) {
@@ -82,6 +95,31 @@
     if (toggle) toggle.addEventListener('click', function () {
       homeExpanded = !homeExpanded;
       renderHome();
+    });
+    var list = document.querySelector('[data-reading-home] .reading-home-list');
+    if (list) list.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-reading-clear]');
+      if (!button) return;
+      var code = button.dataset.readingClear;
+      var subject = document.querySelector('#sub-' + code + ' h2');
+      var name = subject ? clean(subject.textContent) : code;
+      if (!window.confirm('清除「' + name + '」的继续阅读记录？此操作无法撤销。')) return;
+      var records = read();
+      if (!Object.prototype.hasOwnProperty.call(records, code)) return;
+      delete records[code];
+      try {
+        localStorage.setItem(key, JSON.stringify({version:1, records:records}));
+        document.dispatchEvent(new Event('reading:render'));
+      } catch (e) {}
+    });
+    var clearAll = document.querySelector('[data-reading-clear-all]');
+    if (clearAll) clearAll.addEventListener('click', function () {
+      if (!window.confirm('清除所有课程的继续阅读记录？此操作无法撤销。')) return;
+      try {
+        localStorage.setItem(key, JSON.stringify({version:1, records:{}}));
+        homeExpanded = false;
+        document.dispatchEvent(new Event('reading:render'));
+      } catch (e) {}
     });
     renderHome();
     document.addEventListener('reading:render', renderHome);

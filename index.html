@@ -46,15 +46,20 @@
   .reading-home[hidden]{display:none}
   .reading-home h2{font-size:1rem;margin-bottom:8px}
   .reading-home-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-  .reading-home-link{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--primary-deep);text-decoration:none;overflow-wrap:anywhere}
-  .reading-home-link[hidden],.reading-home-toggle[hidden]{display:none}
+  .reading-home-item{display:flex;align-items:stretch;gap:8px;min-width:0}
+  .reading-home-item[hidden],.reading-home-clear[hidden],.reading-home-toggle[hidden],.reading-home-clear-all[hidden]{display:none}
+  .reading-home-link{display:flex;flex:1;min-width:0;flex-direction:column;gap:3px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--card);color:var(--primary-deep);text-decoration:none;overflow-wrap:anywhere}
   .reading-home-link b{font-size:.88rem}
   .reading-home-link span,.reading-home p{font-size:.8rem;color:var(--muted)}
   .reading-home p{margin-top:6px}
-  .reading-home-link:hover{border-color:var(--primary);background:var(--primary-soft)}
+  .reading-home-item:hover .reading-home-link{border-color:var(--primary);background:var(--primary-soft)}
   .reading-home-toggle{display:block;min-height:32px;margin-top:10px;padding:5px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--primary-deep);font:inherit;font-size:.8rem;cursor:pointer}
   .reading-home-toggle:hover{border-color:var(--primary);background:var(--primary-soft)}
-  .reading-home-link:focus-visible,.reading-home-toggle:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
+  .reading-home-clear,.reading-home-clear-all{min-width:40px;min-height:40px;padding:5px 10px;border:1px solid var(--border);border-radius:10px;background:var(--card);color:var(--muted);font:inherit;cursor:pointer}
+  .reading-home-clear{align-self:center;flex:0 0 40px;width:40px;height:40px;padding:0;font-size:1.35rem;line-height:1}
+  .reading-home-clear:hover,.reading-home-clear-all:hover{border-color:#ef4444;background:#fef2f2;color:#b91c1c}
+  .reading-home-clear-all{display:block;margin-top:10px;color:#b91c1c;font-size:.8rem}
+  .reading-home-link:focus-visible,.reading-home-toggle:focus-visible,.reading-home-clear:focus-visible,.reading-home-clear-all:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
   .tip{max-width:960px;margin:18px auto 0;background:#fff;border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:12px;padding:14px 20px;font-size:.9rem;color:var(--muted);box-shadow:var(--shadow)}
   .tip b{color:var(--text)}
   .tip code{background:var(--primary-soft);color:var(--primary-deep);border-radius:5px;padding:1px 7px;font-size:.85em;font-family:"SFMono-Regular",Consolas,monospace}
@@ -184,7 +189,8 @@
   <h2 id="reading-title">继续阅读</h2>
   <div class="reading-home-list" id="reading-list"></div>
   <button class="reading-home-toggle" data-reading-toggle type="button" aria-expanded="false" aria-controls="reading-list" hidden>展开更多课程</button>
-  <p>按最近阅读排序，默认显示最近 4 门；每门保留一个阅读位置，仅保存在本机浏览器。隐藏科目的记录会保留，恢复显示后可继续阅读。</p>
+  <button class="reading-home-clear-all" data-reading-clear-all type="button" hidden>清空全部阅读记录</button>
+  <p>按最近阅读排序，默认显示最近 4 门；每门保留一个阅读位置，仅保存在本机浏览器。可单独清除课程记录或清空全部；隐藏科目的记录会保留，恢复显示后可继续阅读。</p>
 </section>
 <main id="app"></main>
 
@@ -651,6 +657,6 @@ document.getElementById("settingsReset").addEventListener("click", () => {
 render();
 </script>
 <!-- 右下角停靠胶囊：仅窄屏显示，样式自带（本页不外链 theme.css） -->
-<script src="assets/dock.js?v=20261126a" defer></script>
+<script src="assets/dock.js?v=20261126b" defer></script>
 </body>
 </html>
