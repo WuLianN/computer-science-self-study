@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>13006 软件工程实践大纲 · 2026-01-16版 · 自考 CS 学习笔记</title>
+<meta name="description" content="华南理工大学实践大纲版本整理，来源、核对日期、适用考期及原文差异分别说明。">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261125b">
+<style>
+header.hero{background:linear-gradient(135deg,#7c3aed,#be185d)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><h1>软件工程实践 13006 · 大纲整理</h1><p>华南理工大学实践考核大纲，按官网标注发布日期保留版本。</p><span class="pill">官网日期 2026-01-16</span><span class="pill">原文 4 页</span><span class="pill">版本快照</span><nav class="gotos" aria-label="资料导航"><a href="../../index.html">← 13006 实践入口</a><a href="../../题型示例.html">本站参考练习</a><a href="原文.pdf" target="_blank" rel="noopener noreferrer">原始 PDF ↗</a></nav></header>
+<p class="note"><b>版本说明：</b>官网标注日期 2026-01-16，2026-11-26 核对文件一致。原文未明确适用考期或失效日，不能仅凭发布日期确认下一考期适用。</p>
+
+<nav class="toc" aria-label="本章目录"><div class="toc-h">📍 本章目录</div><a href="#identity">课程与考核规则</a><a href="#scope">考核范围</a><a href="#samples">原文题型举例及说明</a><a href="#practice">训练与验收建议</a><a href="#source">来源与版本凭据</a></nav>
+<h2 class="section" id="identity">课程与考核规则</h2>
+<div class="card"><p><strong>课程：</strong>13006《软件工程》实践考核。原文要求具备编程和面向对象基础，并完成软件工程理论学习。</p><p><strong>形式：</strong>计算机机房现场考核，120 分钟；可携带教材。满分 100 分，五级评分制，60 分起合格。</p><p><strong>环境或工具：</strong>StarUML 4.0。</p><p><strong>教材：</strong>《软件工程》，王立福，机械工业出版社，2011 年版。</p><p><strong>五级划分：</strong>0–59 分不合格、60–69 分合格、70–79 分中等、80–89 分良好、90–100 分优秀。</p><p>核对位置：<a class="inline" href="原文.pdf#page=4" target="_blank" rel="noopener noreferrer">原文 PDF 第 4–4 页 ↗</a>。软件和携带规则仍以当期执行要求为准。</p></div>
+<h2 class="section" id="scope">考核范围</h2>
+<p>以下为原文第 2–3 页归纳，不据样例推定固定题量或分值。</p>
+<div class="tscroll" role="region" aria-label="考核范围归纳" tabindex="0"><table class="law"><thead><tr><th scope="col">模块</th><th scope="col">要求归纳</th><th scope="col">教材范围 / 说明</th></tr></thead><tbody><tr><td>需求获取</td><td>常用需求获取方法，结合面向对象方法与 RUP 分析具体业务。</td><td>教材第 2 章、第 4 / 5 章需求相关内容</td></tr>
+<tr><td>需求功能建模</td><td>用例图的主题、参与者、用例；依赖、泛化、包含、扩展等关系。</td><td>教材第 4 / 5 章需求相关内容</td></tr>
+<tr><td>需求行为分析</td><td>活动图和状态图的构成及业务应用。</td><td>活动强调流程；状态强调单个对象的生命周期</td></tr>
+<tr><td>静态结构设计</td><td>类、属性、操作、类间关系，用类图描述系统结构。</td><td>教材第 4 / 5 章设计相关内容</td></tr>
+<tr><td>动态行为设计</td><td>顺序图中的消息、生命线，用交互描述系统行为。</td><td>教材第 4 / 5 章设计相关内容</td></tr></tbody></table></div>
+<h2 class="section" id="samples">原文题型举例及说明</h2>
+<div class="card"><p>原文以“小型公司管理系统分析与设计”为综合题，列出管理者登录、招聘管理、考勤管理和薪资管理四项功能，要求用面向对象方法和 UML 完成分析与设计。</p><p>原文没有逐一指定此样例必须提交哪几张图，也未给出工资公式、审批权限或详细业务约束。本站参考案例用五种图覆盖本版知识范围，明确列出自拟假设；不能把这套图当成学校标准答案或固定交付清单。</p><p>原题位置：<a class="inline" href="原文.pdf#page=4" target="_blank" rel="noopener noreferrer">原文 PDF 第 4 页 ↗</a>；实现与解析另见<a class="inline" href="../../题型示例.html">本站自编参考练习</a>。</p></div>
+<h2 class="section" id="practice">训练与验收建议</h2>
+<div class="card"><p>先从原题提取参与者、系统边界和四类功能，再为一个用例写主流程和异常流程。用同一个业务场景串起用例图、类图、顺序图、活动图和状态图，最后在 StarUML 中独立重画、保存并重新打开。</p><ol><li>写明输入、前提和预期结果，按功能拆分任务。</li><li>覆盖正常、边界和异常情况；解释出现该结果的原因。</li><li>整理源文件或工程、运行结果或截图，并确认保存位置与命名。</li><li>核对当期要求后，完成一次 120 分钟独立模拟。</li></ol><p>本节为学习建议，不能代替学校当期交付和评分要求。</p></div>
+<h2 class="section" id="source">来源与版本凭据</h2>
+<div class="card"><p><strong>发布单位：</strong>华南理工大学继续教育学院。</p><p><strong>官网标注发布日期：</strong>2026-01-16；不从网址中的旧年份推定版本。</p><p><strong>官网核对日期：</strong>2026-11-26。用户提供的 软件工程.pdf 与官网下载文件逐字节一致，归档副本未修改。</p><p><strong>适用考期：</strong>原文未明确；下一考期是否沿用待确认。</p><p><a class="inline" href="原文.pdf" target="_blank" rel="noopener noreferrer">打开 4 页原文 ↗</a> · <a class="inline" href="https://sce.scut.edu.cn/zkpx/2021/0507/c29157a428236/page.htm" target="_blank" rel="noopener noreferrer">学校发布页 ↗</a> · <a class="inline" href="https://sce.scut.edu.cn/_upload/article/files/20/12/c1e7454a42ce8e46ab61b28afbe8/6d62ec3c-8c21-43f5-b85d-2e8667d837b4.pdf" target="_blank" rel="noopener noreferrer">学校原始下载 ↗</a></p><p><strong>SHA-256：</strong><code>0f177d53724a7bcb3700b9e479c7e0366932448b3f24efc0d366b3cc7724c147</code></p></div>
+<footer><div class="fl"><a href="../../index.html">13006 课程入口</a><a href="../../题型示例.html">参考练习</a></div><p>本页为学习归纳；解释有差异时核对原文及当期要求。</p></footer>
+</div>
+<script src="../../../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>

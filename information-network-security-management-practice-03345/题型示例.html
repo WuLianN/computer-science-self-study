@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>企业安全参考练习 · 03345 实践 · 自考 CS 学习笔记</title>
+<meta name="description" content="03345 本站自编题型示例与参考练习，明确原文要求、补充假设、操作步骤和验收结果；非官方答案。">
+<link rel="stylesheet" href="../assets/theme.css?v=20261125b">
+<style>
+header.hero{background:linear-gradient(135deg,#0f766e,#2563eb)}
+.sample-code{max-width:100%;overflow-x:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font:13px/1.7 Consolas,"SFMono-Regular",monospace;tab-size:4}
+.sample-code>code{display:block;padding:0;background:transparent;color:var(--ink);font:inherit;font-weight:400;white-space:pre;overflow-wrap:normal;word-break:normal}
+ol.steps{list-style:none;counter-reset:sample-step;padding-left:0}
+ol.steps>li{position:relative;counter-increment:sample-step;margin:12px 0;padding-left:36px}
+ol.steps>li::before{content:counter(sample-step);position:absolute;left:0;top:2px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:13px}
+@media print{.sample-code{overflow:visible}.sample-code>code{white-space:pre-wrap;overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><h1>信息与网络安全管理实践 03345 · 企业安全参考练习</h1><p>基于 2026-01-16 版大纲题型举例编写；用可检查的结果巩固操作。</p><span class="pill">本站自编</span><span class="pill">非官方答案</span><span class="pill">题意补充另列</span><nav class="gotos" aria-label="资料导航"><a href="index.html">← 03345 实践入口</a><a href="版本/2026-01-16/index.html#samples">原文样例与说明</a><a href="../programming-practice/index.html">上机练习导航</a></nav></header>
+<p class="note"><b>使用说明：</b>大纲仅提供题型举例。下文代码、输入约定、业务规则和验收案例为本站学习补充，不是学校标准答案，也不是下一考期已确认原题。正式考核按现场题意与软件要求完成。</p>
+<nav class="toc" aria-label="本章目录"><div class="toc-h">📍 本章目录</div><a href="#task">原题任务与实验交付</a><a href="#cipher">凯撒密码：代码与测试</a><a href="#pgp">PGP：加密传递与解密核验</a><a href="#firewall">防火墙：限制指定程序出站</a><a href="#database">MySQL：分角色授权</a><a href="#other">其余范围与验证边界</a></nav>
+<h2 class="section" id="task">原题任务与实验交付</h2>
+<div class="card"><p>大纲第 6 页的“企业安全管理与实现”有四项任务：凯撒加解密、用 PGP 经邮件传递凯撒偏移量（密钥）、Windows 防火墙限制软件外网访问、MySQL 分角色授权。下文按任务组织；不把 Snort 配置或备份任务凭空算入这个附录样例。</p><p><strong>本例补充：</strong>使用自拟短文本和本地实验数据库；PGP 练习安排发送者、接收者两组实验密钥；防火墙只匹配一个测试程序；MySQL 选用支持角色的 8.0 及以上版本。学校原文未锁定这些细节。</p><p>建议每项保存“配置前状态、操作步骤、验证结果、输出文件或截图”。这些是本站自测清单，实际提交内容以当期题目要求为准。涉及系统配置的步骤请在自己的实验机或实验虚拟机完成。</p></div>
+<h2 class="section" id="cipher">凯撒密码：代码与测试</h2>
+<div class="card"><p><strong>映射约定：</strong>仅循环移动 ASCII 英文字母，大小写分别保留；数字、标点、中文不变。密钥对 26 取模，支持负数；解密使用相反偏移量。</p><p class="note"><b>知识点：</b>凯撒密码按固定偏移替换字母，属于替代密码，不是置换字符位置。大纲范围还包括置换密码，但附录此处写的是凯撒密码。此古典算法仅用于教学，不能用于实际敏感信息保护。</p></div>
+<p><a class="inline" href="示例代码/caesar.py" download>下载 caesar.py</a>；只用 Python 标准库，无需额外安装依赖。</p>
+<pre class="sample-code"><code>python caesar.py enc 3 &quot;Attack at 9:00!&quot;
+# Dwwdfn dw 9:00!
+python caesar.py dec 3 &quot;Dwwdfn dw 9:00!&quot;
+# Attack at 9:00!
+python caesar.py enc -1 &quot;Abc XYZ&quot;
+# Zab WXY</code></pre>
+<pre class="sample-code" data-source="示例代码/caesar.py"><code>&quot;&quot;&quot;Self-authored Caesar cipher exercise, not an official answer.
+
+Only ASCII letters rotate; case, digits, punctuation and other text persist.
+This classical cipher is for learning, not for protecting real information.
+&quot;&quot;&quot;
+import argparse
+import string
+
+
+def caesar(text: str, shift: int) -&gt; str:
+    shift %= 26
+    source = string.ascii_lowercase + string.ascii_uppercase
+    lower = string.ascii_lowercase
+    upper = string.ascii_uppercase
+    target = lower[shift:] + lower[:shift] + upper[shift:] + upper[:shift]
+    return text.translate(str.maketrans(source, target))
+
+
+def main() -&gt; None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(&quot;mode&quot;, choices=(&quot;enc&quot;, &quot;dec&quot;))
+    parser.add_argument(&quot;shift&quot;, type=int)
+    parser.add_argument(&quot;text&quot;)
+    args = parser.parse_args()
+    shift = args.shift if args.mode == &quot;enc&quot; else -args.shift
+    print(caesar(args.text, shift))
+
+
+if __name__ == &quot;__main__&quot;:
+    main()</code></pre>
+<p>自测包括空串、0 / 26 / 29 / -1 偏移、大小写边界、中文和标点；应满足 <code>caesar(caesar(text, k), -k) == text</code>。</p>
+<h2 class="section" id="pgp">PGP：加密传递与解密核验</h2>
+<div class="card"><ol class="steps"><li><strong>准备密钥：</strong>发送者 A、接收者 B 分别创建实验密钥对；仅交换公钥，核对指纹后再使用。私钥和口令由各自保管。</li><li><strong>准备附件：</strong>将凯撒偏移量保存为 key.txt（本例内容为 3），而非只保存凯撒密文。密文 cipher.txt 另交给 B，供最终复原验证；这是本例的实验安排。</li><li><strong>加密：</strong>在 PGP Desktop 的文件加密 / PGP Zip 流程中选择 key.txt，使用接收者 B 的公钥加密。若练签名，另用发送者 A 的私钥签名；签名属于本站扩展练习。</li><li><strong>发送与接收：</strong>在实验邮箱中把实际加密产物作为附件发送，记录所用接收者密钥。这里练“文件加密后发邮件”；自动邮件插件的界面和设置另按考场版本核对。</li><li><strong>核验：</strong>B 用自己的私钥解密，所得偏移量应仍为 3；若附签名，再用 A 的公钥验证。用收到的偏移量对 cipher.txt 做凯撒解密，应恢复自拟明文。另用不匹配的密钥尝试，应无法完成相应解密或验签。</li></ol><p><strong>保留结果：</strong>密钥标识和指纹核对记录、加密附件、收件记录、解密得到的偏移量与最终复原文本；截图不要包含私钥或口令。</p><p>流程参考 <a class="inline" href="https://knowledge.broadcom.com/external/article/178739/encrypt-files-and-folders-with-pgp-encry.html" target="_blank" rel="noopener noreferrer">Broadcom 官方 PGP 文件加密说明 ↗</a>。不同版本菜单有差异，本文未在 PGP Desktop 中实机复测。</p></div>
+<h2 class="section" id="firewall">防火墙：限制指定程序出站</h2>
+<div class="card"><p>原题要求限制相关软件访问外网，因此核心是<strong>出站规则 + 指定可执行文件</strong>。本例选择阻止该程序全部出站流量，范围比“仅外网”更宽；若题目还要求保留内网访问，必须按题给网段限定远程地址，不能直接照抄。</p><ol class="steps"><li>在实验机先确认目标程序能正常连接测试服务，并记下真正发起连接的 EXE 路径；避免把启动器当成网络进程。</li><li>打开 Windows Defender 防火墙“高级安全” → 出站规则 → 新建规则 → 程序，选择该 EXE → 阻止连接 → 选择实验网络配置文件 → 命名。保留防火墙开启。</li><li>断开旧会话并让该程序发起新连接，验证被阻止；换一个未被匹配的程序连接同一服务，验证仍正常。仅看到规则已创建还不能说明效果正确。</li><li>保存规则方向、程序路径、配置文件和连接结果。实验结束后仅删除自己创建的规则，再次连接以验证恢复。</li></ol><p>现代 Windows 的 PowerShell 等价参考如下；路径为需替换的实验示意值。原文未规定 Windows 版本；若考场较旧、没有 NetSecurity 模块，使用界面按要求操作。</p></div>
+<pre class="sample-code"><code># On a Windows lab machine, use an elevated PowerShell.
+# Replace the path with the absolute path of the lab test program.
+$programPath = (Resolve-Path -LiteralPath 'C:\Lab\TestClient.exe' -ErrorAction Stop).Path
+$ruleName = 'CS03345-Lab-Block-TestClient'
+New-NetFirewallRule -Name $ruleName -DisplayName $ruleName `
+    -Direction Outbound -Program $programPath -Action Block -Profile Any
+Get-NetFirewallRule -Name $ruleName
+Get-NetFirewallRule -Name $ruleName | Get-NetFirewallApplicationFilter
+# After saving evidence, remove ONLY this lab rule:
+# Remove-NetFirewallRule -Name $ruleName</code></pre>
+<p>参数依据 <a class="inline" href="https://learn.microsoft.com/en-us/powershell/module/netsecurity/new-netfirewallrule" target="_blank" rel="noopener noreferrer">Microsoft New-NetFirewallRule 文档 ↗</a>。此命令仅供阅读和实验，本站未在当前主机创建或修改任何防火墙规则。</p>
+<h2 class="section" id="database">MySQL：分角色授权</h2>
+<p><strong>版本前提：</strong>以下为 MySQL 8.0+ 的角色语法示例；若学校使用旧版本，应核对可用语法，不能将直接用户授权称为 CREATE ROLE。权限仅授予本实验表，不授权整个服务器。</p>
+<div class="tscroll" role="region" aria-label="自拟角色矩阵" tabindex="0"><table class="law"><thead><tr><th scope="col">角色 / 实验用户</th><th scope="col">SELECT</th><th scope="col">INSERT / UPDATE</th><th scope="col">DELETE / DROP</th></tr></thead><tbody><tr><td>cs03345_reader / cs03345_read</td><td>允许</td><td>拒绝</td><td>拒绝</td></tr><tr><td>cs03345_editor / cs03345_edit</td><td>允许</td><td>允许</td><td>拒绝</td></tr></tbody></table></div>
+<p><a class="inline" href="示例代码/roles_setup.sql" download>下载 roles_setup.sql</a>，先替换两个口令占位值，再在独立本地 MySQL 实例中以具备权限的实验管理员执行一次。脚本故意不覆盖已有同名对象，重跑遇冲突先检查已有实验状态。</p>
+<pre class="sample-code" data-source="示例代码/roles_setup.sql"><code>-- Self-authored lab, not an official answer. Requires MySQL 8.0+.
+-- Run once as a lab administrator on an isolated local MySQL instance.
+-- Replace BOTH password placeholders before execution.
+-- Existing objects with these names intentionally cause an error.
+CREATE DATABASE cs03345_lab;
+CREATE TABLE cs03345_lab.staff (
+    id INT PRIMARY KEY,
+    name VARCHAR(40) NOT NULL
+);
+INSERT INTO cs03345_lab.staff VALUES (1, 'Alice');
+
+CREATE ROLE 'cs03345_reader'@'localhost',
+            'cs03345_editor'@'localhost';
+GRANT SELECT ON cs03345_lab.staff
+    TO 'cs03345_reader'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON cs03345_lab.staff
+    TO 'cs03345_editor'@'localhost';
+
+CREATE USER 'cs03345_read'@'localhost'
+    IDENTIFIED BY 'REPLACE_WITH_UNIQUE_READER_LAB_PASSWORD';
+CREATE USER 'cs03345_edit'@'localhost'
+    IDENTIFIED BY 'REPLACE_WITH_UNIQUE_EDITOR_LAB_PASSWORD';
+GRANT 'cs03345_reader'@'localhost'
+    TO 'cs03345_read'@'localhost';
+GRANT 'cs03345_editor'@'localhost'
+    TO 'cs03345_edit'@'localhost';
+SET DEFAULT ROLE 'cs03345_reader'@'localhost'
+    TO 'cs03345_read'@'localhost';
+SET DEFAULT ROLE 'cs03345_editor'@'localhost'
+    TO 'cs03345_edit'@'localhost';
+
+SHOW GRANTS FOR 'cs03345_read'@'localhost'
+    USING 'cs03345_reader'@'localhost';
+SHOW GRANTS FOR 'cs03345_edit'@'localhost'
+    USING 'cs03345_editor'@'localhost';</code></pre>
+<div class="card"><h3>必须分别登录，不能只看管理员窗口</h3><p>登录命令不把口令直接写在命令行；<code>-p</code> 后交互输入。localhost 账户与其他来源账户不能混为一谈。</p>
+<pre class="sample-code"><code>mysql -u cs03345_read -p
+# Then repeat in another session:
+mysql -u cs03345_edit -p</code></pre>
+<p>每个实验用户先单独执行以下语句，确认实际身份和活动角色。新会话应启用其默认角色。</p>
+<pre class="sample-code"><code>SELECT CURRENT_USER(), CURRENT_ROLE();
+SELECT * FROM cs03345_lab.staff;</code></pre>
+<p>然后按下表逐项验证。带预期报错的语句单独执行，勿把整段当成必须零报错的自动脚本。</p></div>
+<div class="tscroll" role="region" aria-label="MySQL 角色验收" tabindex="0"><table class="law"><thead><tr><th scope="col">操作（在对应用户会话逐条执行）</th><th scope="col">reader 预期</th><th scope="col">editor 预期</th></tr></thead><tbody><tr><td>SELECT * FROM cs03345_lab.staff;</td><td>成功</td><td>成功</td></tr><tr><td>UPDATE cs03345_lab.staff SET name = 'Bob' WHERE id = 1;</td><td>权限不足</td><td>成功</td></tr><tr><td>INSERT INTO cs03345_lab.staff VALUES (2, 'Carol');</td><td>权限不足</td><td>成功；仅插入一次</td></tr><tr><td>DELETE FROM cs03345_lab.staff WHERE id = 2;</td><td>权限不足</td><td>权限不足</td></tr></tbody></table></div>
+<p>再由实验管理员复核表中数据和 SHOW GRANTS。角色赋予、对象授权、默认角色激活是三个步骤；仅 CREATE ROLE 不会让用户自动获得权限。语法参见 <a class="inline" href="https://dev.mysql.com/doc/refman/8.4/en/roles.html" target="_blank" rel="noopener noreferrer">MySQL 官方角色文档 ↗</a>。当前环境未安装 MySQL 服务，SQL 依据官方语法整理，尚未完成数据库实机验收。</p>
+<h2 class="section" id="other">其余范围与验证边界</h2>
+<div class="tscroll" role="region" aria-label="未被综合样例完整覆盖的范围" tabindex="0"><table class="law"><thead><tr><th scope="col">专项</th><th scope="col">还要练到什么</th></tr></thead><tbody><tr><td>SSL / 证书</td><td>在本地测试网站生成和配置实验用证书，查看证书链、主机名和有效期；自签证书不等于浏览器默认信任。</td></tr><tr><td>Snort / 入侵检测</td><td>先确认学校所用版本，再配置题给检测规则，用实验流量或离线抓包验证匹配与不匹配情形，保留告警；不把防火墙阻断等同于 IDS 告警。</td></tr><tr><td>数据库备份与恢复</td><td>对实验库备份，恢复到单独的空测试实例，比较表结构、行数与关键记录；备份命令成功不等于恢复一定可用。</td></tr><tr><td>置换密码</td><td>另练字符位置重排及逆置换，与凯撒的字母替代区分。</td></tr></tbody></table></div>
+<div class="card"><p>本页已实际运行验证的是凯撒 Python 程序；PGP、Windows 防火墙、MySQL、Snort 与 SSL 的操作清单需在相应实验环境复现。没有把未运行的配置步骤标成“已通过实机测试”。</p><p>补概念可返回<a class="inline" href="../information-network-security-management-03344/知识点/index.html">03344 笔试知识点导航</a>；范围与原文位置见<a class="inline" href="版本/2026-01-16/index.html#scope">03345 实践大纲整理</a>。</p></div>
+<footer><div class="fl"><a href="index.html">课程入口与版本记录</a><a href="版本/2026-01-16/原文.pdf" target="_blank" rel="noopener noreferrer">原文 PDF ↗</a><a href="../index.html">首页</a></div><p>整理：2026-11-26 · 示例验证情况分别注明，本站环境不等同于学校考场环境。</p></footer>
+</div><script src="../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>

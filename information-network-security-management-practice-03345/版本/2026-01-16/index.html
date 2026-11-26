@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>03345 信息与网络安全管理实践大纲 · 2026-01-16版 · 自考 CS 学习笔记</title>
+<meta name="description" content="华南理工大学实践大纲版本整理，来源、核对日期、适用考期及原文差异分别说明。">
+<link rel="stylesheet" href="../../../assets/theme.css?v=20261125b">
+<style>
+header.hero{background:linear-gradient(135deg,#0f766e,#2563eb)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><h1>信息与网络安全管理实践 03345 · 大纲整理</h1><p>华南理工大学实践考核大纲，按官网标注发布日期保留版本。</p><span class="pill">官网日期 2026-01-16</span><span class="pill">原文 6 页</span><span class="pill">版本快照</span><nav class="gotos" aria-label="资料导航"><a href="../../index.html">← 03345 实践入口</a><a href="../../题型示例.html">本站参考练习</a><a href="原文.pdf" target="_blank" rel="noopener noreferrer">原始 PDF ↗</a></nav></header>
+<p class="note"><b>版本说明：</b>官网标注日期 2026-01-16，2026-11-26 核对文件一致。原文未明确适用考期或失效日，不能仅凭发布日期确认下一考期适用。</p>
+
+<nav class="toc" aria-label="本章目录"><div class="toc-h">📍 本章目录</div><a href="#identity">课程与考核规则</a><a href="#scope">考核范围</a><a href="#samples">原文题型举例及说明</a><a href="#practice">训练与验收建议</a><a href="#source">来源与版本凭据</a></nav>
+<h2 class="section" id="identity">课程与考核规则</h2>
+<div class="card"><p><strong>课程：</strong>03345《信息与网络安全管理》实践考核。本版以安全技术的综合操作为重点，对应本站笔试课 03344。</p><p><strong>形式：</strong>计算机机房现场上机考核，120 分钟；开卷，可携带教材。本 PDF 未单独列出分值和等级划分，不沿用其他课程的评分细则。</p><p><strong>环境或工具：</strong>Snort、PGP Desktop、MySQL；附录另要求使用 Windows 自带防火墙。</p><p><strong>教材：</strong>《网络空间信息安全》，苏永红、蒋天发主编，电子工业出版社，2022 年第 2 版。</p><p>核对位置：<a class="inline" href="原文.pdf#page=4" target="_blank" rel="noopener noreferrer">原文 PDF 第 4–6 页 ↗</a>。软件和携带规则仍以当期执行要求为准。</p></div>
+<h2 class="section" id="scope">考核范围</h2>
+<p>以下为原文第 3–4 页归纳，不据样例推定固定题量或分值。</p>
+<div class="tscroll" role="region" aria-label="考核范围归纳" tabindex="0"><table class="law"><thead><tr><th scope="col">模块</th><th scope="col">要求归纳</th><th scope="col">原文位置</th></tr></thead><tbody><tr><td>网络安全与密码</td><td>替代密码、置换密码的设计与实现；SSL 证书生成和网站安全交互；PGP 邮件安全。</td><td>原文第 3 页</td></tr>
+<tr><td>防火墙与入侵防御</td><td>根据安全需求配置防火墙规则；理解误用检测、异常检测，并配置入侵检测规则。</td><td>原文第 3–4 页</td></tr>
+<tr><td>网络数据库安全</td><td>访问控制模型、角色和权限；按场景实现数据库授权、备份与恢复。</td><td>原文第 4 页</td></tr></tbody></table></div>
+<h2 class="section" id="samples">原文题型举例及说明</h2>
+<div class="card"><p>原文“企业安全管理与实现”要求：用任意语言实现凯撒密码加解密，以偏移量为密钥；借助 PGP 将上面设置的偏移量通过邮件发送；用 Windows 自带防火墙限制相关软件访问外网；在 MySQL 中实现不同角色的授权管理。</p><p>本站用 Python 实现凯撒加解密，另列字符范围等练习约定，并给出 PGP、防火墙与 MySQL 的操作及验收清单。PGP 要传递的是偏移量（密钥），不要误写成只发送凯撒密文。样例没有完整覆盖 SSL、入侵检测和备份恢复，这些内容仍需按范围另练。</p><p>原题位置：<a class="inline" href="原文.pdf#page=6" target="_blank" rel="noopener noreferrer">原文 PDF 第 6 页 ↗</a>；实现与解析另见<a class="inline" href="../../题型示例.html">本站自编参考练习</a>。</p></div>
+<h2 class="section" id="practice">训练与验收建议</h2>
+<div class="card"><p>先运行凯撒密码小程序，再按“配置前状态 → 操作 → 正向验证 → 反向验证 → 保存证据”完成 PGP、防火墙和数据库授权。综合题以操作结果为核心；SSL、Snort、备份恢复仍在范围内，需要另做专项训练。</p><ol><li>写明输入、前提和预期结果，按功能拆分任务。</li><li>覆盖正常、边界和异常情况；解释出现该结果的原因。</li><li>整理源文件或工程、运行结果或截图，并确认保存位置与命名。</li><li>核对当期要求后，完成一次 120 分钟独立模拟。</li></ol><p>本节为学习建议，不能代替学校当期交付和评分要求。</p></div>
+<h2 class="section" id="source">来源与版本凭据</h2>
+<div class="card"><p><strong>发布单位：</strong>华南理工大学继续教育学院。</p><p><strong>官网标注发布日期：</strong>2026-01-16；不从网址中的旧年份推定版本。</p><p><strong>官网核对日期：</strong>2026-11-26。用户提供的 信息与网络安全管理.pdf 与官网下载文件逐字节一致，归档副本未修改。</p><p><strong>适用考期：</strong>原文未明确；下一考期是否沿用待确认。</p><p><a class="inline" href="原文.pdf" target="_blank" rel="noopener noreferrer">打开 6 页原文 ↗</a> · <a class="inline" href="https://sce.scut.edu.cn/zkpx/2021/0507/c29157a428226/page.htm" target="_blank" rel="noopener noreferrer">学校发布页 ↗</a> · <a class="inline" href="https://sce.scut.edu.cn/_upload/article/files/fa/60/f54a34fb457b8701bdc0422a8648/75586ea4-a886-44eb-bacb-fbf809ba7760.pdf" target="_blank" rel="noopener noreferrer">学校原始下载 ↗</a></p><p><strong>SHA-256：</strong><code>12d262fce11635dd626d82450c808597562e6dcdc920ea667474ea26352f17e9</code></p></div>
+<footer><div class="fl"><a href="../../index.html">03345 课程入口</a><a href="../../题型示例.html">参考练习</a></div><p>本页为学习归纳；解释有差异时核对原文及当期要求。</p></footer>
+</div>
+<script src="../../../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>

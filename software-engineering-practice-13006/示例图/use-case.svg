@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="490" viewBox="0 0 760 490" role="img" aria-labelledby="title desc">
+<title id="title">小型公司管理系统用例图</title><desc id="desc">管理者关联登录、招聘管理、考勤管理、薪资管理四个用例；后三项的前置条件为已登录。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#475569" stroke-width="1.5"/></marker></defs>
+<style>text{font-family:"Microsoft YaHei","PingFang SC",sans-serif;fill:#1e293b;font-size:15px} .head{font-size:16px;font-weight:700;fill:#6d28d9} .label{font-size:14px;fill:#475569} .box{fill:#faf5ff;stroke:#a78bfa;stroke-width:1.5} .line{fill:none;stroke:#475569;stroke-width:1.5} .dashed{stroke-dasharray:6 5} .caption{font-size:14px;fill:#64748b}</style>
+<rect width="100%" height="100%" fill="#fff"/>
+
+<rect class="line" x="210" y="35" width="480" height="390" rx="4"/><text x="450" y="65" class="head" text-anchor="middle">小型公司管理系统</text>
+<circle class="line" cx="85" cy="197" r="16"/><path class="line" d="M85 213V268 M54 234H116 M85 268L57 302 M85 268L113 302"/><text x="85" y="330" text-anchor="middle">管理者</text>
+<path class="line" d="M116 234L320 110"/><ellipse class="box" cx="455" cy="110" rx="135" ry="25"/><text x="455" y="116" text-anchor="middle">管理者登录</text><path class="line" d="M116 234L320 200"/><ellipse class="box" cx="455" cy="200" rx="135" ry="25"/><text x="455" y="206" text-anchor="middle">招聘管理</text><path class="line" d="M116 234L320 290"/><ellipse class="box" cx="455" cy="290" rx="135" ry="25"/><text x="455" y="296" text-anchor="middle">考勤管理</text><path class="line" d="M116 234L320 380"/><ellipse class="box" cx="455" cy="380" rx="135" ry="25"/><text x="455" y="386" text-anchor="middle">薪资管理</text>
+<text x="30" y="460" class="caption">本站假设：后三项管理用例以前置条件“已登录”约束。</text>
+
+</svg>

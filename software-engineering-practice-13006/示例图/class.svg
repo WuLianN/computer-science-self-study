@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="740" viewBox="0 0 900 740" role="img" aria-labelledby="title desc">
+<title id="title">公司管理系统类图</title><desc id="desc">六个类及选取的关联和依赖。员工与考勤、薪资记录是一对多；账户调用薪资服务，服务读取考勤和维护薪资记录。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#475569" stroke-width="1.5"/></marker></defs>
+<style>text{font-family:"Microsoft YaHei","PingFang SC",sans-serif;fill:#1e293b;font-size:15px} .head{font-size:16px;font-weight:700;fill:#6d28d9} .label{font-size:14px;fill:#475569} .box{fill:#faf5ff;stroke:#a78bfa;stroke-width:1.5} .line{fill:none;stroke:#475569;stroke-width:1.5} .dashed{stroke-dasharray:6 5} .caption{font-size:14px;fill:#64748b}</style>
+<rect width="100%" height="100%" fill="#fff"/>
+
+<rect class="box" x="30" y="60" width="240" height="152"/><text x="150" y="87" class="head" text-anchor="middle">ManagerAccount</text><path class="line" d="M30 102H270 M30 176H270"/><text x="42" y="125">- accountId: int</text><text x="42" y="149">- username: String</text><text x="42" y="198">+ login(): bool</text>
+<rect class="box" x="330" y="60" width="240" height="162"/><text x="450" y="87" class="head" text-anchor="middle">Employee</text><path class="line" d="M330 102H570 M330 186H570"/><text x="342" y="125">- employeeId: int</text><text x="342" y="149">- name: String</text><text x="342" y="173">- basicPay: Decimal</text><text x="342" y="208">+ updateProfile()</text>
+<rect class="box" x="630" y="60" width="240" height="162"/><text x="750" y="87" class="head" text-anchor="middle">Candidate</text><path class="line" d="M630 102H870 M630 186H870"/><text x="642" y="125">- candidateId: int</text><text x="642" y="149">- name: String</text><text x="642" y="173">- status: String</text><text x="642" y="208">+ recordDecision()</text>
+<rect class="box" x="30" y="400" width="240" height="224"/><text x="150" y="427" class="head" text-anchor="middle">PayrollService</text><path class="line" d="M30 442H270 M30 516H270"/><text x="42" y="465">（无持久化业务字段）</text><text x="42" y="538">+ calculate()</text><text x="42" y="562">+ submit(id)</text><text x="42" y="586">+ approve(id)</text><text x="42" y="610">+ pay(id)</text>
+<rect class="box" x="330" y="400" width="240" height="162"/><text x="450" y="427" class="head" text-anchor="middle">AttendanceRecord</text><path class="line" d="M330 442H570 M330 526H570"/><text x="342" y="465">- recordId: int</text><text x="342" y="489">- month: String</text><text x="342" y="513">- absentDays: int</text><text x="342" y="548">+ validate(): bool</text>
+<rect class="box" x="630" y="400" width="240" height="258"/><text x="750" y="427" class="head" text-anchor="middle">Payroll</text><path class="line" d="M630 442H870 M630 550H870"/><text x="642" y="465">- payrollId: int</text><text x="642" y="489">- month: String</text><text x="642" y="513">- amount: Decimal</text><text x="642" y="537">- status: String</text><text x="642" y="572">+ submit()</text><text x="642" y="596">+ approve()</text><text x="642" y="620">+ reject()</text><text x="642" y="644">+ markPaid()</text>
+<path class="line" d="M150 60V28H750V60"/><text x="164" y="49" class="label">1</text><text x="762" y="49" class="label">0..*</text><text x="450" y="22" class="label" text-anchor="middle">维护</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M150 212V400"/><text x="165" y="335" class="label">调用</text>
+<path class="line" d="M450 222V400"/><text x="463" y="242" class="label">1</text><text x="463" y="389" class="label">0..*</text><text x="465" y="335" class="label">考勤</text>
+<path class="line" d="M570 156H600V338H750V400"/><text x="577" y="145" class="label">1</text><text x="762" y="389" class="label">0..*</text><text x="647" y="328" class="label">薪资记录</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M270 480H330"/><text x="300" y="469" class="label" text-anchor="middle">读取</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M150 624V701H750V658"/><text x="450" y="692" class="label" text-anchor="middle">创建 / 更新</text>
+<text x="30" y="731" class="caption">实线：关联（端点旁标多重性）；虚线开箭头：依赖。仅展示本例关键关系。</text>
+
+</svg>

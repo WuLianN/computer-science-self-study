@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>图书管理参考程序 · 13004 实践 · 自考 CS 学习笔记</title>
+<meta name="description" content="13004 本站自编题型示例与参考练习，明确原文要求、补充假设、操作步骤和验收结果；非官方答案。">
+<link rel="stylesheet" href="../assets/theme.css?v=20261125b">
+<style>
+header.hero{background:linear-gradient(135deg,#0369a1,#4f46e5)}
+.sample-code{max-width:100%;overflow-x:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font:13px/1.7 Consolas,"SFMono-Regular",monospace;tab-size:4}
+.sample-code>code{display:block;padding:0;background:transparent;color:var(--ink);font:inherit;font-weight:400;white-space:pre;overflow-wrap:normal;word-break:normal}
+ol.steps{list-style:none;counter-reset:sample-step;padding-left:0}
+ol.steps>li{position:relative;counter-increment:sample-step;margin:12px 0;padding-left:36px}
+ol.steps>li::before{content:counter(sample-step);position:absolute;left:0;top:2px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:13px}
+@media print{.sample-code{overflow:visible}.sample-code>code{white-space:pre-wrap;overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero"><h1>数据结构与算法实践 13004 · 图书管理参考程序</h1><p>基于 2026-01-16 版大纲题型举例编写；用可检查的结果巩固操作。</p><span class="pill">本站自编</span><span class="pill">非官方答案</span><span class="pill">题意补充另列</span><nav class="gotos" aria-label="资料导航"><a href="index.html">← 13004 实践入口</a><a href="版本/2026-01-16/index.html#samples">原文样例与说明</a><a href="../programming-practice/index.html">上机练习导航</a></nav></header>
+<p class="note"><b>使用说明：</b>大纲仅提供题型举例。下文代码、输入约定、业务规则和验收案例为本站学习补充，不是学校标准答案，也不是下一考期已确认原题。正式考核按现场题意与软件要求完成。</p>
+<nav class="toc" aria-label="本章目录"><div class="toc-h">📍 本章目录</div><a href="#task">题意与补充约定</a><a href="#steps">如何拆成函数</a><a href="#run">编译与自拟输入</a><a href="#source">完整 C 源码</a><a href="#verify">边界验证与延伸训练</a></nav>
+<h2 class="section" id="task">题意与补充约定</h2>
+<div class="card"><p><strong>原文要求：</strong>链式保存图书编号、名称和价格；用函数完成建表、显示、按位置插入、按编号查找，再由菜单调用。参见<a class="inline" href="版本/2026-01-16/原文.pdf#page=3" target="_blank" rel="noopener noreferrer">大纲第 3 页 ↗</a>。</p><p class="note"><b>原文缺项：</b>原始结构体没有链接字段；本例添加 <code>struct node *next;</code> 才能组成单链表。另有官网实践代码 13004 / PDF 封面 13003 的差异，见<a class="inline" href="版本/2026-01-16/index.html">归档说明</a>。</p><p><strong>本例约定：</strong>不带头结点，空表用 NULL；位置从 1 开始，长度 n 可插入位置为 1 到 n+1；编号为不重复的正整数，价格非负；书名可含空格，最多 29 字节（不是 29 个汉字），每项输入各占一行。</p><p>菜单 1 建表、2 显示、3 插入、4 查找、0 退出。建表成功后替换旧表；中途遇 EOF 则释放临时表，退出时也释放原表。样例只保存内存数据，文件持久化不是本题原文要求。</p></div>
+<h2 class="section" id="steps">如何拆成函数</h2>
+<div class="card"><ol class="steps"><li><strong>结点：</strong>三个业务字段外加 next 指针，malloc 分配后先检查是否成功。</li><li><strong>建表：</strong>逐个读入图书，尾插保持输入顺序。先构建临时表，全部成功才替换旧表。</li><li><strong>显示与查找：</strong>从首结点遍历，显示全部或按编号返回结点指针；到 NULL 即停止。</li><li><strong>插入：</strong>先验证位置与编号。用指向链接位置的指针 <code>slot</code> 统一处理表头、表中和表尾：先让新结点指向原后继，再更新链接。</li><li><strong>主循环与回收：</strong>菜单分派函数；输入结束或退出时逐个 free，不能先释放结点后再读取其 next。</li></ol><p>遍历、查找、定位插入位置和建表时的重复编号检查均需遍历。当前建表因逐项查重最坏为 O(n²)；定位完成后的链接修改为 O(1)，整表占 O(n) 空间。不要将整个插入函数笼统写成 O(1)。</p></div>
+<h2 class="section" id="run">编译与自拟输入</h2>
+<p><a class="inline" href="示例代码/library.c" download>下载 library.c</a>，保存为独立 C 源文件。示例采用 C89 写法，已用 GCC 严格 C89 模式编译和运行验证；尚未在 Visual C++ 6.0 实机验证，考前需在学校指定环境复测。</p>
+<pre class="sample-code"><code>gcc -std=c89 -pedantic-errors -Wall -Wextra library.c -o library
+# Windows: .\\library.exe
+# Linux / macOS: ./library</code></pre>
+<div class="card"><h3>先建两本，再在第 2 个位置插入一本</h3><p>以下每行对应一次输入；命令数字和字段不能挤在同一行。</p><pre class="sample-code"><code>1
+2
+101
+C Basics
+39.5
+102
+Python Intro
+49
+3
+2
+103
+Algorithms
+58
+2
+4
+103
+4
+999
+0</code></pre>
+<p>忽略交互提示，显示顺序应为：</p><pre class="sample-code"><code>101 | C Basics | 39.50
+103 | Algorithms | 58.00
+102 | Python Intro | 49.00</code></pre>
+<p>随后查询 103 应显示 Algorithms，查询 999 输出 <code>Not found.</code>，最后输出 <code>Bye.</code>。这些编号、价格和结果均为本站自拟数据。</p></div>
+<h2 class="section" id="source">完整 C 源码</h2>
+<p>页面与<a class="inline" href="示例代码/library.c" download>下载源码</a>保持一致。英文提示用于减少旧版编译器的中文编码干扰，函数按上方步骤划分。</p>
+<pre class="sample-code" data-source="示例代码/library.c"><code>/* Self-authored practice solution, not an official answer.
+ * C89; book_name uses at most 29 bytes (spaces allowed).
+ * Commands: 1=create, 2=display, 3=insert, 4=find, 0=exit.
+ * Each numeric value/name is entered on its own line.
+ */
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;ctype.h&gt;
+#include &lt;errno.h&gt;
+#include &lt;limits.h&gt;
+#include &lt;float.h&gt;
+
+typedef struct node {
+    int book_no;
+    char book_name[30];
+    float price;
+    struct node *next; /* Added: the original sample omitted this link. */
+} ListNode;
+typedef ListNode *LinkList;
+
+static void free_list(LinkList head)
+{
+    LinkList next;
+    while (head != NULL) {
+        next = head-&gt;next;
+        free(head);
+        head = next;
+    }
+}
+
+static int read_line(const char *prompt, char *buf, int size)
+{
+    size_t length;
+    int ch;
+    for (;;) {
+        printf(&quot;%s&quot;, prompt);
+        if (fgets(buf, size, stdin) == NULL)
+            return 0;
+        length = strlen(buf);
+        if (length &gt; 0 &amp;&amp; buf[length - 1] == '\n') {
+            buf[--length] = '\0';
+            if (length &gt; 0 &amp;&amp; buf[length - 1] == '\r')
+                buf[length - 1] = '\0';
+            return 1;
+        }
+        ch = getchar();
+        if (ch == EOF || ch == '\n')
+            return 1;
+        while (ch != EOF &amp;&amp; ch != '\n')
+            ch = getchar();
+        puts(&quot;Input too long; try again.&quot;);
+    }
+}
+
+static int read_int(const char *prompt, int low, int high, int *out)
+{
+    char buf[256];
+    char *end;
+    long value;
+    while (read_line(prompt, buf, sizeof(buf))) {
+        errno = 0;
+        value = strtol(buf, &amp;end, 10);
+        if (end != buf) {
+            while (isspace((unsigned char)*end))
+                ++end;
+            if (*end == '\0' &amp;&amp; errno != ERANGE &amp;&amp;
+                value &gt;= low &amp;&amp; value &lt;= high) {
+                *out = (int)value;
+                return 1;
+            }
+        }
+        printf(&quot;Enter an integer in [%d, %d].\n&quot;, low, high);
+    }
+    return 0;
+}
+
+static int read_price(float *out)
+{
+    char buf[256];
+    char *end;
+    double value;
+    while (read_line(&quot;Price: &quot;, buf, sizeof(buf))) {
+        errno = 0;
+        value = strtod(buf, &amp;end);
+        if (end != buf) {
+            while (isspace((unsigned char)*end))
+                ++end;
+            if (*end == '\0' &amp;&amp; errno != ERANGE &amp;&amp;
+                value == value &amp;&amp; value &gt;= 0.0 &amp;&amp; value &lt;= FLT_MAX) {
+                *out = (float)value;
+                return 1;
+            }
+        }
+        puts(&quot;Enter a finite nonnegative price.&quot;);
+    }
+    return 0;
+}
+
+static LinkList find_book(LinkList head, int number)
+{
+    while (head != NULL &amp;&amp; head-&gt;book_no != number)
+        head = head-&gt;next;
+    return head;
+}
+
+static int read_book(LinkList head, ListNode *book)
+{
+    char buf[256];
+    size_t i;
+    int has_text;
+    for (;;) {
+        if (!read_int(&quot;Book number: &quot;, 1, INT_MAX, &amp;book-&gt;book_no))
+            return 0;
+        if (find_book(head, book-&gt;book_no) == NULL)
+            break;
+        puts(&quot;Duplicate number; try again.&quot;);
+    }
+    for (;;) {
+        if (!read_line(&quot;Book name: &quot;, buf, sizeof(buf)))
+            return 0;
+        has_text = 0;
+        for (i = 0; buf[i] != '\0'; ++i)
+            if (!isspace((unsigned char)buf[i]))
+                has_text = 1;
+        if (has_text &amp;&amp; strlen(buf) &lt; sizeof(book-&gt;book_name))
+            break;
+        puts(&quot;Use 1-29 bytes with at least one non-space character.&quot;);
+    }
+    strcpy(book-&gt;book_name, buf);
+    book-&gt;next = NULL;
+    return read_price(&amp;book-&gt;price);
+}
+
+static int list_length(LinkList head)
+{
+    int n;
+    n = 0;
+    while (head != NULL) {
+        ++n;
+        head = head-&gt;next;
+    }
+    return n;
+}
+
+/* Build a temporary list; replace the old list only on success. */
+static int create_list(LinkList *head)
+{
+    int n, i;
+    LinkList first, tail, fresh;
+    first = NULL;
+    tail = NULL;
+    if (!read_int(&quot;Initial count: &quot;, 0, 10000, &amp;n))
+        return 0;
+    for (i = 0; i &lt; n; ++i) {
+        fresh = (LinkList)malloc(sizeof(ListNode));
+        if (fresh == NULL) {
+            puts(&quot;Allocation failed; old list kept.&quot;);
+            free_list(first);
+            return 1;
+        }
+        if (!read_book(first, fresh)) {
+            free(fresh);
+            free_list(first);
+            return 0;
+        }
+        if (tail == NULL)
+            first = fresh;
+        else
+            tail-&gt;next = fresh;
+        tail = fresh;
+    }
+    free_list(*head);
+    *head = first;
+    puts(&quot;Created.&quot;);
+    return 1;
+}
+
+static void show_book(LinkList book)
+{
+    printf(&quot;%d | %s | %.2f\n&quot;,
+           book-&gt;book_no, book-&gt;book_name, book-&gt;price);
+}
+
+static void display_list(LinkList head)
+{
+    if (head == NULL)
+        puts(&quot;Empty list.&quot;);
+    while (head != NULL) {
+        show_book(head);
+        head = head-&gt;next;
+    }
+}
+
+static int insert_book(LinkList *head)
+{
+    int position, i, n;
+    LinkList fresh;
+    LinkList *slot;
+    n = list_length(*head);
+    if (!read_int(&quot;Position (1-based): &quot;, 1, n + 1, &amp;position))
+        return 0;
+    fresh = (LinkList)malloc(sizeof(ListNode));
+    if (fresh == NULL) {
+        puts(&quot;Allocation failed; list kept.&quot;);
+        return 1;
+    }
+    if (!read_book(*head, fresh)) {
+        free(fresh);
+        return 0;
+    }
+    slot = head;
+    for (i = 1; i &lt; position; ++i)
+        slot = &amp;(*slot)-&gt;next;
+    fresh-&gt;next = *slot;
+    *slot = fresh;
+    puts(&quot;Inserted.&quot;);
+    return 1;
+}
+
+int main(void)
+{
+    LinkList head, found;
+    int choice, number, running;
+    head = NULL;
+    running = 1;
+    while (running) {
+        puts(&quot;\n1 Create | 2 Display | 3 Insert | 4 Find | 0 Exit&quot;);
+        if (!read_int(&quot;Choice: &quot;, 0, 4, &amp;choice))
+            break;
+        switch (choice) {
+        case 1:
+            running = create_list(&amp;head);
+            break;
+        case 2:
+            display_list(head);
+            break;
+        case 3:
+            running = insert_book(&amp;head);
+            break;
+        case 4:
+            if (!read_int(&quot;Search number: &quot;, 1, INT_MAX, &amp;number)) {
+                running = 0;
+                break;
+            }
+            found = find_book(head, number);
+            if (found == NULL)
+                puts(&quot;Not found.&quot;);
+            else
+                show_book(found);
+            break;
+        default:
+            running = 0;
+            break;
+        }
+    }
+    free_list(head);
+    puts(&quot;Bye.&quot;);
+    return 0;
+}</code></pre>
+<h2 class="section" id="verify">边界验证与延伸训练</h2>
+<div class="tscroll" role="region" aria-label="图书链表验收案例" tabindex="0"><table class="law"><thead><tr><th scope="col">自拟情形</th><th scope="col">预期结果</th></tr></thead><tbody><tr><td>空表显示 / 查找</td><td>输出 Empty list. / Not found.，不解引用空指针。</td></tr><tr><td>空表位置 1、非空表首 / 中 / 尾插入</td><td>顺序正确，未插入结点保持原顺序。</td></tr><tr><td>位置 0、n+2；重复编号</td><td>拒绝并重新输入，不损坏链表。</td></tr><tr><td>非整数编号、负价格、过长或纯空白书名</td><td>提示重输；价格拒绝无穷值和非数值。</td></tr><tr><td>建表中途 EOF；重新建表；正常退出</td><td>临时链表和最终链表都释放；成功重建才替换旧表。</td></tr></tbody></table></div>
+<div class="card"><p><strong>不要只背这一题：</strong>接着把“数据结构 → 操作 → 不变量 → 边界”套到循环队列、二叉树、哈夫曼编码、图和排序上。排序可统计比较与移动次数，先写清计数规则；循环队列先决定是否留空一格。</p><p>C 基础不稳时返回<a class="inline" href="../high-level-programming-13013/知识点/指针/指针与数组.html">指针</a>与<a class="inline" href="../high-level-programming-13013/知识点/结构体与自定义类型/结构体与自定义类型.html">结构体</a>复习。本题没有覆盖所有考核模块。</p></div>
+<footer><div class="fl"><a href="index.html">课程入口与版本记录</a><a href="版本/2026-01-16/原文.pdf" target="_blank" rel="noopener noreferrer">原文 PDF ↗</a><a href="../index.html">首页</a></div><p>整理：2026-11-26 · 示例验证情况分别注明，本站环境不等同于学校考场环境。</p></footer>
+</div><script src="../assets/dock.js?v=20261125b" defer></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="700" viewBox="0 0 680 700" role="img" aria-labelledby="title desc">
+<title id="title">薪资提交审核活动图</title><desc id="desc">填写草稿，点击提交，校验完整性。完整则进入待审核并成功结束，缺项则提示后返回填写。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#475569" stroke-width="1.5"/></marker></defs>
+<style>text{font-family:"Microsoft YaHei","PingFang SC",sans-serif;fill:#1e293b;font-size:15px} .head{font-size:16px;font-weight:700;fill:#6d28d9} .label{font-size:14px;fill:#475569} .box{fill:#faf5ff;stroke:#a78bfa;stroke-width:1.5} .line{fill:none;stroke:#475569;stroke-width:1.5} .dashed{stroke-dasharray:6 5} .caption{font-size:14px;fill:#64748b}</style>
+<rect width="100%" height="100%" fill="#fff"/>
+
+<circle cx="260" cy="20" r="8" fill="#334155"/>
+<path class="line" marker-end="url(#arrow)" d="M260 28V43"/>
+<path class="box" d="M260 43L267 50L260 57L253 50Z"/>
+<path class="line" marker-end="url(#arrow)" d="M260 57V80"/>
+<rect class="box" x="120" y="80" width="280" height="54" rx="16"/><text x="260" y="113" text-anchor="middle">填写 / 更新薪资草稿</text>
+<path class="line" marker-end="url(#arrow)" d="M260 134V158"/>
+<rect class="box" x="120" y="158" width="280" height="54" rx="16"/><text x="260" y="191" text-anchor="middle">点击“提交审核”</text>
+<path class="line" marker-end="url(#arrow)" d="M260 212V249"/>
+<rect class="box" x="120" y="249" width="280" height="54" rx="16"/><text x="260" y="282" text-anchor="middle">校验草稿内容</text>
+<path class="line" marker-end="url(#arrow)" d="M260 303V321"/>
+<path class="box" d="M260 321L330 364L260 407L190 364Z"/><text x="260" y="370" text-anchor="middle">完整？</text>
+<path class="line" marker-end="url(#arrow)" d="M260 407V447"/><text x="275" y="435" class="label">[是]</text>
+<rect class="box" x="120" y="447" width="280" height="54" rx="16"/><text x="260" y="480" text-anchor="middle">状态变更为“待审核”</text>
+<path class="line" marker-end="url(#arrow)" d="M260 501V541"/>
+<rect class="box" x="120" y="541" width="280" height="54" rx="16"/><text x="260" y="574" text-anchor="middle">显示提交成功</text>
+<path class="line" marker-end="url(#arrow)" d="M260 595V631"/>
+<circle class="line" cx="260" cy="645" r="14"/><circle fill="#334155" cx="260" cy="645" r="9"/>
+<path class="line" marker-end="url(#arrow)" d="M330 364H529V280"/><text x="354" y="352" class="label">[否]</text>
+<rect class="box" x="435" y="225" width="188" height="54" rx="16"/><text x="529" y="258" text-anchor="middle">提示补齐必填项</text>
+<path class="line" marker-end="url(#arrow)" d="M529 225V50H267"/>
+<text x="30" y="687" class="caption">本图只刻画草稿内容完整性分支；其他业务校验可按题意继续补充。</text>
+
+</svg>

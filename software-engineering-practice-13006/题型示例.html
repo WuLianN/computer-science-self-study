@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>小型公司 UML 参考案例 · 13006 实践 · 自考 CS 学习笔记</title>
+<meta name="description" content="基于软件工程实践大纲小型公司管理样例，自编用例图、类图、顺序图、活动图、状态图与 StarUML 重画步骤，非官方答案。">
+<link rel="stylesheet" href="../assets/theme.css?v=20261125b">
+<style>
+header.hero{background:linear-gradient(135deg,#7c3aed,#be185d)}
+.sample-code{max-width:100%;overflow-x:auto;padding:14px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;font:13px/1.7 Consolas,"SFMono-Regular",monospace;tab-size:4}
+.sample-code>code{display:block;padding:0;background:transparent;color:var(--ink);font:inherit;font-weight:400;white-space:pre;overflow-wrap:normal;word-break:normal}
+ol.steps{list-style:none;counter-reset:sample-step;padding-left:0}
+ol.steps>li{position:relative;counter-increment:sample-step;margin:12px 0;padding-left:36px}
+ol.steps>li::before{content:counter(sample-step);position:absolute;left:0;top:2px;display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:13px}
+@media print{.sample-code{overflow:visible}.sample-code>code{white-space:pre-wrap;overflow-wrap:anywhere}}
+.uml-figure{margin:18px 0 6px;border:1px solid var(--line);border-radius:10px;background:#fff;overflow-x:auto}
+.uml-figure img{display:block;width:100%;height:auto;max-width:none}
+.uml-wide img{min-width:760px}
+.uml-compact img{min-width:520px}
+.uml-caption{font-size:13px;color:var(--muted);margin:6px 0 20px}
+@media (max-width:640px){.uml-caption a.inline{display:inline-block;min-height:28px}}
+@media print{.uml-figure{overflow:visible}.uml-figure img{min-width:0;max-width:100%}}
+</style></head>
+<body><div class="wrap">
+<header class="hero"><h1>软件工程实践 13006 · UML 参考案例</h1><p>从原题四项功能出发，用同一个薪资管理场景贯通五种 UML 图。</p><span class="pill">本站自编</span><span class="pill">非官方答案</span><span class="pill">附 SVG 源图</span><nav class="gotos" aria-label="案例导航"><a href="index.html">← 13006 实践入口</a><a href="版本/2026-01-16/index.html#samples">原文题型举例</a><a href="../index.html">🏠 首页</a></nav></header>
+<p class="note"><b>使用说明：</b>这是分析与设计练习，不要求把公司系统完整编程实现。原文功能与本站业务假设分开标注，五张参考图不代表固定考试题量或官方评分答案。</p>
+<nav class="toc" aria-label="本章目录"><div class="toc-h">📍 本章目录</div><a href="#assumptions">原文与自拟假设</a><a href="#usecase">用例图与用例说明</a><a href="#classes">类图：静态结构</a><a href="#sequence">顺序图：提交审核</a><a href="#activity">活动图：正常与回退</a><a href="#state">状态图：薪资单生命周期</a><a href="#staruml">在 StarUML 中重画与交付</a></nav>
+<h2 class="section" id="assumptions">原文与自拟假设</h2>
+<div class="card"><p><strong>原文：</strong>小型公司管理系统包括管理者登录、招聘管理、考勤管理、薪资管理，要求使用面向对象方法和 UML 分析设计。参见<a class="inline" href="版本/2026-01-16/原文.pdf#page=4" target="_blank" rel="noopener noreferrer">大纲第 4 页 ↗</a>。</p><p><strong>本站补充：</strong>用一名“管理者”代表操作者；登录是后三项管理用例的前置条件。招聘管理仅记录应聘者资料与决定；考勤按员工、月份记录；薪资按员工、月份形成薪资单。工资公式、权限细分与支付接口不在原文中，本例不自行指定计算公式。</p><p>为了练习动态建模，另设薪资单“草稿 → 待审核 → 已审核 → 已发放”，支持审核驳回到草稿。审批和支付均由同一管理者角色演示，这是简化的学习模型；实际项目可以拆角色，考试则服从题给约束。</p><p>本页用五种图覆盖大纲相关知识。原文没有规定样例必须提交五张图；下方 SVG 是本站绘制的矢量参考图，可以编辑其源文件，但不能把它们当成 StarUML 的原生模型工程。</p></div>
+<h2 class="section" id="usecase">用例图与用例说明</h2>
+<p>先确定“谁使用系统、为了什么目标”。用例图不画数据库、按钮或内部函数调用。这里将已登录写成前置条件，避免为了出现 include 就把每项业务都强行包含“登录”。</p>
+<div class="fig uml-figure uml-wide" tabindex="0" role="region" aria-label="公司管理系统用例图"><img src="示例图/use-case.svg" alt="公司管理系统用例图" loading="lazy"></div><p class="uml-caption">四个原文功能对应四个用例；图中的参与者与登录前提为本站建模选择 · <a class="inline" href="示例图/use-case.svg" download>下载可编辑 SVG</a>。窄屏可在图内横向滑动。</p>
+<div class="card"><h3>用例展开：提交薪资审核（薪资管理的子流程）</h3><p><strong>前置条件：</strong>管理者已登录，员工和月份已选定，薪资单处于草稿状态。<strong>触发：</strong>点击提交审核。</p><ol class="steps"><li>管理者填写或更新草稿，提交该薪资单编号。</li><li>系统读取草稿，检查当前状态和必填项；金额需已按题给规则计算或填写。</li><li>校验通过，保存状态“待审核”，反馈提交成功。</li><li>校验失败，提示原因，状态维持草稿，允许补齐后重试。</li></ol><p><strong>后置条件：</strong>成功时状态待审核；失败时无状态变化。这里不把审核通过或发放成功写成“提交审核”的必然结果。</p></div>
+<h2 class="section" id="classes">类图：静态结构</h2>
+<p>用类承载业务数据和操作，端点多重性用于解释“一个员工可有多少条记录”。下图仅选取关键关系，省略界面、仓储及其他技术类；顺序图出现的 repo 是后续设计补充的持久化协作者。</p>
+<div class="fig uml-figure uml-wide" tabindex="0" role="region" aria-label="公司管理系统六个类与关键关系"><img src="示例图/class.svg" alt="公司管理系统六个类与关键关系" loading="lazy"></div><p class="uml-caption">Employee 与 AttendanceRecord / Payroll 分别是一对多；PayrollService 通过依赖读取或更新对象 · <a class="inline" href="示例图/class.svg" download>下载可编辑 SVG</a>。窄屏可在图内横向滑动。</p>
+<div class="card"><p><strong>读法：</strong>每条考勤记录、薪资记录关联 1 名员工；每名员工可有 0..* 条记录。管理者账户维护 0..* 位应聘者是本例的简化关联。虚线开箭头是依赖，不是继承；不要为了凑关系无依据地画组合或泛化。</p><p><strong>数据约束（自拟）：</strong>一名员工同一月份最多一张薪资单，由额外唯一性约束说明；这类约束不能仅靠 0..* 多重性表达。金额采用 Decimal 表意，不指定某一种编程语言的类型库。</p></div>
+<h2 class="section" id="sequence">顺序图：提交审核</h2>
+<p>同一用例按时间向下展开：操作者 → 界面 → 服务 → 仓储。服务先加载再校验，alt 两条分支互斥；读取已有草稿不意味着新建 Employee 或 Payroll。</p>
+<div class="fig uml-figure uml-wide" tabindex="0" role="region" aria-label="薪资提交审核顺序图"><img src="示例图/sequence.svg" alt="薪资提交审核顺序图" loading="lazy"></div><p class="uml-caption">实线为调用、虚线为返回；alt 展示成功与校验失败，状态变化与用例后置条件一致 · <a class="inline" href="示例图/sequence.svg" download>下载可编辑 SVG</a>。窄屏可在图内横向滑动。</p>
+<h2 class="section" id="activity">活动图：正常与回退</h2>
+<p>活动图观察流程如何流动。缺项时回到填写，补齐后再提交；回流先经合并节点进入填写，不用并行汇合代替条件合并。本图只细化“完整性”校验，其余状态校验见用例说明。</p>
+<div class="fig uml-figure uml-compact" tabindex="0" role="region" aria-label="薪资提交审核活动图"><img src="示例图/activity.svg" alt="薪资提交审核活动图" loading="lazy"></div><p class="uml-caption">菱形表示条件分支或合并，边上的 [是] / [否] 表示互斥条件 · <a class="inline" href="示例图/activity.svg" download>下载可编辑 SVG</a>。窄屏可在图内横向滑动。</p>
+<h2 class="section" id="state">状态图：薪资单生命周期</h2>
+<p>状态图只观察一张 Payroll。转换写成“事件 [条件] / 动作”，不得把“登录页面”“员工列表”当成薪资单状态。本例把已发放视为流程终点，撤销、退款等场景未建模。</p>
+<div class="fig uml-figure uml-wide" tabindex="0" role="region" aria-label="一张薪资单的状态图"><img src="示例图/state.svg" alt="一张薪资单的状态图" loading="lazy"></div><p class="uml-caption">提交并不等于审核通过；审核驳回回到草稿，支付成功才进入已发放 · <a class="inline" href="示例图/state.svg" download>下载可编辑 SVG</a>。窄屏可在图内横向滑动。</p>
+<h2 class="section" id="staruml">在 StarUML 中重画与交付</h2>
+<div class="card"><ol class="steps"><li><strong>建工程：</strong>按当期环境使用 StarUML；本版大纲列出 4.0。建立公司管理系统模型，先保存工程到指定目录。下述为通用操作，具体菜单按安装版本核对。</li><li><strong>建用例图：</strong>在模型树选容器，通过 Model → Add Diagram → Use Case Diagram 建图；用工具箱创建系统边界、Actor、Use Case，再用关联连接。将已登录前提放在 Note 中。</li><li><strong>建类图：</strong>建立六个关键类，补属性和操作，再添加关联及端点多重性。先保存模型元素，再调布局，不用普通文本框和直线替代所有 UML 元素。</li><li><strong>补动态视图：</strong>对“提交审核”建立 Sequence Diagram、Activity Diagram；在薪资单下组织 Statechart Diagram。检查消息名、操作名、状态与前置条件是否一致。</li><li><strong>检查工程：</strong>保存后关闭再打开，逐张图检查文字、连线和多重性。可按要求导出图片辅助检查，但保留可编辑工程；不能只交截图。具体文件名和交付格式以现场题目为准。</li></ol><p>操作参考 <a class="inline" href="https://docs.staruml.io/user-guide/managing-diagrams/" target="_blank" rel="noopener noreferrer">StarUML 官方图管理说明 ↗</a>、<a class="inline" href="https://docs.staruml.io/working-with-uml-diagrams/use-case-diagram/" target="_blank" rel="noopener noreferrer">用例图工具说明 ↗</a>和<a class="inline" href="https://docs.staruml.io/user-guide/managing-project/" target="_blank" rel="noopener noreferrer">工程保存说明 ↗</a>。官方在线文档可能面向较新版本，不据此改写大纲中的 4.0 要求。</p></div>
+<div class="card"><h3>自测这五个问题</h3><ol><li>四项原文功能是否都有需求落点？是否将自拟规则当成了原题要求？</li><li>同一个“提交审核”在文字、顺序图、活动图和状态图里是否一致？</li><li>类图多重性是否读得通？消息是否对应已有职责？</li><li>正常、缺项、驳回三个场景能否走通？状态是否只在条件满足时改变？</li><li>能否离开参考图，在指定工具里独立重画、保存并重新打开？</li></ol><p>SVG 已在浏览器检查显示；本站尚未在 StarUML 4.0 中复建原生工程，不将 SVG 下载标注成可导入的 .mdj 文件。</p></div>
+<footer><div class="fl"><a href="index.html">课程入口与版本记录</a><a href="版本/2026-01-16/原文.pdf" target="_blank" rel="noopener noreferrer">原始 PDF ↗</a></div><p>整理：2026-11-26 · 矢量图与说明供学习和独立重画使用。</p></footer>
+</div><script src="../assets/dock.js?v=20261125b" defer></script></body></html>

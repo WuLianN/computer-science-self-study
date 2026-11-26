@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700" role="img" aria-labelledby="title desc">
+<title id="title">薪资提交审核顺序图</title><desc id="desc">管理者通过界面提交审核，服务加载草稿并校验，成功更新为待审核，失败返回错误；alt 表示二选一。</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9" fill="none" stroke="#475569" stroke-width="1.5"/></marker></defs>
+<style>text{font-family:"Microsoft YaHei","PingFang SC",sans-serif;fill:#1e293b;font-size:15px} .head{font-size:16px;font-weight:700;fill:#6d28d9} .label{font-size:14px;fill:#475569} .box{fill:#faf5ff;stroke:#a78bfa;stroke-width:1.5} .line{fill:none;stroke:#475569;stroke-width:1.5} .dashed{stroke-dasharray:6 5} .caption{font-size:14px;fill:#64748b}</style>
+<rect width="100%" height="100%" fill="#fff"/>
+
+<rect class="box" x="4" y="24" width="182" height="48"/><text x="95" y="54" class="label" text-anchor="middle">manager:管理者</text><path class="line dashed" d="M95 72V660"/><rect class="box" x="219" y="24" width="182" height="48"/><text x="310" y="54" class="label" text-anchor="middle">view:薪资界面</text><path class="line dashed" d="M310 72V660"/><rect class="box" x="449" y="24" width="182" height="48"/><text x="540" y="54" class="label" text-anchor="middle">service:PayrollService</text><path class="line dashed" d="M540 72V660"/><rect class="box" x="689" y="24" width="182" height="48"/><text x="780" y="54" class="label" text-anchor="middle">repo:薪资仓储</text><path class="line dashed" d="M780 72V660"/>
+<rect fill="#ede9fe" stroke="#a78bfa" x="532" y="167" width="16" height="458"/>
+<path class="line" marker-end="url(#arrow)" d="M95 121H310"/><text x="202" y="111" class="label" text-anchor="middle">点击“提交审核”</text>
+<path class="line" marker-end="url(#arrow)" d="M310 174H532"/><text x="421" y="164" class="label" text-anchor="middle">submit(id)</text>
+<path class="line" marker-end="url(#arrow)" d="M548 227H780"/><text x="664" y="217" class="label" text-anchor="middle">load(id)</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M780 270H548"/><text x="664" y="260" class="label" text-anchor="middle">草稿对象</text>
+<path class="line" marker-end="url(#arrow)" d="M548 304H632V340H548"/><text x="648" y="320" class="label">校验草稿</text>
+<rect class="line" x="17" y="365" width="865" height="271"/><path class="line" d="M17 396H70V365"/><text x="27" y="387" class="head">alt</text><text x="91" y="387" class="label">[状态为草稿且必填项完整]</text>
+<path class="line" marker-end="url(#arrow)" d="M548 424H780"/><text x="664" y="414" class="label" text-anchor="middle">更新状态为“待审核”</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M780 465H548"/><text x="664" y="455" class="label" text-anchor="middle">更新成功</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M532 498H310"/><path class="line dashed" marker-end="url(#arrow)" d="M310 526H95"/>
+<text x="421" y="489" class="label" text-anchor="middle">提交成功</text><text x="202" y="518" class="label" text-anchor="middle">显示成功</text>
+<path class="line dashed" d="M17 544H882"/><text x="91" y="565" class="label">[校验失败]</text>
+<path class="line dashed" marker-end="url(#arrow)" d="M532 591H310"/><path class="line dashed" marker-end="url(#arrow)" d="M310 621H95"/>
+<text x="421" y="582" class="label" text-anchor="middle">返回错误原因</text><text x="202" y="613" class="label" text-anchor="middle">显示错误</text>
+<text x="30" y="686" class="caption">前置条件：已登录。本图仅展开“提交审核”，不把审批或支付混入同一次提交。</text>
+
+</svg>
